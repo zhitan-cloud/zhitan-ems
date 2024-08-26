@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.basicSetup.mapper.SysStandardParametersMapper">
+
+    <resultMap type="SysStandardParameters" id="SysStandardParametersResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="configInfo"    column="config_info"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="code"    column="code"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="showAlarm"    column="show_alarm"    />
+        <result property="categoryId"    column="category_id"    />
+    </resultMap>
+    <sql id="selectSysStandardParametersVo">
+        select
+        id,
+        name,
+        config_info,
+        create_by,
+        create_time,
+        update_by,
+        update_time,
+        remark,
+        code,
+        data_type,
+        show_alarm,
+        category_id
+        from sys_standard_parameters
+    </sql>
+
+    <select id="selectSysStandardParametersList" parameterType="SysStandardParameters" resultMap="SysStandardParametersResult">
+        <include refid="selectSysStandardParametersVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="configInfo != null  and configInfo != ''"> and config_info like concat('%', #{configInfo}, '%')</if>
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="dataType != null  and dataType != ''"> and data_type like concat('%', #{dataType}, '%')</if>
+            <if test="showAlarm != null  and showAlarm != ''"> and show_alarm like concat('%', #{showAlarm}, '%')</if>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectSysStandardParametersById" parameterType="String" resultMap="SysStandardParametersResult">
+        <include refid="selectSysStandardParametersVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysStandardParameters" parameterType="SysStandardParameters">
+        insert into sys_standard_parameters
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="configInfo != null  and configInfo != ''">config_info,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="dataType != null  and dataType != ''">data_type,</if>
+            <if test="showAlarm != null ">show_alarm,</if>
+            <if test="categoryId != null ">category_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="configInfo != null  and configInfo != ''">#{configInfo},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="dataType != null  and dataType != ''">#{dataType},</if>
+            <if test="showAlarm != null ">#{showAlarm},</if>
+            <if test="categoryId != null ">#{categoryId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysStandardParameters" parameterType="SysStandardParameters">
+        update sys_standard_parameters
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="configInfo != null  and configInfo != ''">config_info = #{configInfo},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="dataType != null  and dataType != ''">data_type = #{dataType},</if>
+            <if test="showAlarm != null ">show_alarm = #{showAlarm},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysStandardParametersById" parameterType="String">
+        delete from sys_standard_parameters where id = #{id}
+    </delete>
+
+    <delete id="deleteSysStandardParametersByIds" parameterType="String">
+        delete from sys_standard_parameters where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getStandardParameters" parameterType="SysStandardParameters" resultMap="SysStandardParametersResult">
+        SELECT
+            s.ID,
+            s.NAME,
+            s.config_info
+        FROM
+            sys_standard_parameters s
+            LEFT JOIN model_node n ON s.ID = node_id
+        WHERE
+            s.id =#{id}
+    </select>
+</mapper>

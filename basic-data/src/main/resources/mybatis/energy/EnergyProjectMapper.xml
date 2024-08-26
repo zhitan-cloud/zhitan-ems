@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.energy.mapper.EnergyProjectMapper">
+    
+    <resultMap type="EnergyProject" id="EnergyProjectResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="plan"    column="plan"    />
+        <result property="target"    column="target"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="enddTime"    column="endd_time"    />
+        <result property="people"    column="people"    />
+        <result property="setTime"    column="set_time"    />
+        <result property="createOperator"    column="create_operator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateOperator"    column="update_operator"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectEnergyProjectVo">
+        select id, name, plan, target, start_time, endd_time, people, set_time, create_operator, create_time, update_operator, update_time from energy_project
+    </sql>
+
+    <select id="selectEnergyProjectList" parameterType="EnergyProject" resultMap="EnergyProjectResult">
+        <include refid="selectEnergyProjectVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="plan != null  and plan != ''"> and plan like concat('%', #{plan}, '%')</if>
+            <if test="target != null  and target != ''"> and target like concat('%', #{target}, '%')</if>
+            <if test="startTime != null "> and start_time like concat('%', #{startTime}, '%')</if>
+            <if test="enddTime != null "> and endd_time like concat('%', #{enddTime}, '%')</if>
+            <if test="people != null  and people != ''"> and people like concat('%', #{people}, '%')</if>
+            <if test="setTime != null "> and set_time like concat('%', #{setTime}, '%')</if>
+            <if test="createOperator != null  and createOperator != ''"> and create_operator like concat('%', #{createOperator}, '%')</if>
+            <if test="updateOperator != null  and updateOperator != ''"> and update_operator like concat('%', #{updateOperator}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectEnergyProjectById" parameterType="String" resultMap="EnergyProjectResult">
+        <include refid="selectEnergyProjectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEnergyProject" parameterType="EnergyProject">
+        insert into energy_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="plan != null  and plan != ''">plan,</if>
+            <if test="target != null  and target != ''">target,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="enddTime != null ">endd_time,</if>
+            <if test="people != null  and people != ''">people,</if>
+            <if test="setTime != null ">set_time,</if>
+            <if test="createOperator != null  and createOperator != ''">create_operator,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateOperator != null  and updateOperator != ''">update_operator,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="plan != null  and plan != ''">#{plan},</if>
+            <if test="target != null  and target != ''">#{target},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="enddTime != null ">#{enddTime},</if>
+            <if test="people != null  and people != ''">#{people},</if>
+            <if test="setTime != null ">#{setTime},</if>
+            <if test="createOperator != null  and createOperator != ''">#{createOperator},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateOperator != null  and updateOperator != ''">#{updateOperator},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnergyProject" parameterType="EnergyProject">
+        update energy_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="plan != null  and plan != ''">plan = #{plan},</if>
+            <if test="target != null  and target != ''">target = #{target},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="enddTime != null ">endd_time = #{enddTime},</if>
+            <if test="people != null  and people != ''">people = #{people},</if>
+            <if test="setTime != null ">set_time = #{setTime},</if>
+            <if test="createOperator != null  and createOperator != ''">create_operator = #{createOperator},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateOperator != null  and updateOperator != ''">update_operator = #{updateOperator},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnergyProjectById" parameterType="String">
+        delete from energy_project where id = #{id}
+    </delete>
+
+    <delete id="deleteEnergyProjectByIds" parameterType="String">
+        delete from energy_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

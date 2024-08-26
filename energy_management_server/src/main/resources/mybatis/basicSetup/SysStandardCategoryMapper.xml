@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.basicSetup.mapper.SysStandardCategoryMapper">
+    
+    <resultMap type="SysStandardCategory" id="SysStandardCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="categoryCode"    column="category_code"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="showAlarm"    column="show_alarm"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysStandardCategoryVo">
+        select id, category_name, category_code, data_type, show_alarm, create_by, create_time, update_by, update_time, remark from sys_standard_category
+    </sql>
+
+    <select id="selectSysStandardCategoryList" parameterType="SysStandardCategory" resultMap="SysStandardCategoryResult">
+        <include refid="selectSysStandardCategoryVo"/>
+        <where>  
+            <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
+            <if test="categoryCode != null  and categoryCode != ''"> and category_code like concat('%', #{categoryCode}, '%')</if>
+            <if test="dataType != null  and dataType != ''"> and data_type like concat('%', #{dataType}, '%')</if>
+            <if test="showAlarm != null  and showAlarm != ''"> and show_alarm like concat('%', #{showAlarm}, '%')</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectSysStandardCategoryById" parameterType="String" resultMap="SysStandardCategoryResult">
+        <include refid="selectSysStandardCategoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysStandardCategory" parameterType="SysStandardCategory">
+        insert into sys_standard_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="categoryName != null  and categoryName != ''">category_name,</if>
+            <if test="categoryCode != null  and categoryCode != ''">category_code,</if>
+            <if test="dataType != null  and dataType != ''">data_type,</if>
+            <if test="showAlarm != null  and showAlarm != ''">show_alarm,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="categoryName != null  and categoryName != ''">#{categoryName},</if>
+            <if test="categoryCode != null  and categoryCode != ''">#{categoryCode},</if>
+            <if test="dataType != null  and dataType != ''">#{dataType},</if>
+            <if test="showAlarm != null  and showAlarm != ''">#{showAlarm},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysStandardCategory" parameterType="SysStandardCategory">
+        update sys_standard_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryName != null  and categoryName != ''">category_name = #{categoryName},</if>
+            <if test="categoryCode != null  and categoryCode != ''">category_code = #{categoryCode},</if>
+            <if test="dataType != null  and dataType != ''">data_type = #{dataType},</if>
+            <if test="showAlarm != null  and showAlarm != ''">show_alarm = #{showAlarm},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysStandardCategoryById" parameterType="String">
+        delete from sys_standard_category where id = #{id}
+    </delete>
+
+    <delete id="deleteSysStandardCategoryByIds" parameterType="String">
+        delete from sys_standard_category where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

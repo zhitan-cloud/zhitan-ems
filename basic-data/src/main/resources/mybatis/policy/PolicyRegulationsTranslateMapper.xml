@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.policy.mapper.PolicyRegulationsTranslateMapper">
+    
+    <resultMap type="PolicyRegulationsTranslate" id="PolicyRegulationsTranslateResult">
+        <result property="id"    column="id"    />
+        <result property="titleName"    column="title_name"    />
+        <result property="content"    column="content"    />
+        <result property="sort"    column="sort"    />
+        <result property="creationTime"    column="creation_time"    />
+        <result property="operator"    column="operator"    />
+    </resultMap>
+
+    <sql id="selectPolicyRegulationsTranslateVo">
+         select "id",title_name,"content",fun_getDiceData('policy_sort',sort)as sort,to_char(creation_time,'YYYY-MM-DD') creation_time,"operator" from policy_regulations
+    </sql>
+
+    <select id="selectPolicyRegulationsTranslateList" parameterType="PolicyRegulationsTranslate" resultMap="PolicyRegulationsTranslateResult">
+        <include refid="selectPolicyRegulationsTranslateVo"/>
+        <where>  
+            <if test="titleName != null  and titleName != ''"> and title_name like concat('%', #{titleName}, '%')</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+            <if test="sort != null  and sort != ''"> and sort like concat('%', #{sort}, '%')</if>
+            <if test="creationTime != null "> and creation_time like concat('%', #{creationTime}, '%')</if>
+            <if test="operator != null  and operator != ''"> and operator like concat('%', #{operator}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPolicyRegulationsTranslateById" parameterType="String" resultMap="PolicyRegulationsTranslateResult">
+        <include refid="selectPolicyRegulationsTranslateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPolicyRegulationsTranslate" parameterType="PolicyRegulationsTranslate">
+        insert into policy_regulations
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="titleName != null  and titleName != ''">title_name,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="sort != null  and sort != ''">sort,</if>
+            <if test="creationTime != null ">creation_time,</if>
+            <if test="operator != null  and operator != ''">operator,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="titleName != null  and titleName != ''">#{titleName},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="sort != null  and sort != ''">#{sort},</if>
+            <if test="creationTime != null ">#{creationTime},</if>
+            <if test="operator != null  and operator != ''">#{operator},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePolicyRegulationsTranslate" parameterType="PolicyRegulationsTranslate">
+        update policy_regulations
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="titleName != null  and titleName != ''">title_name = #{titleName},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="sort != null  and sort != ''">sort = #{sort},</if>
+            <if test="creationTime != null ">creation_time = #{creationTime},</if>
+            <if test="operator != null  and operator != ''">operator = #{operator},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePolicyRegulationsTranslateById" parameterType="String">
+        delete from policy_regulations where id = #{id}
+    </delete>
+
+    <delete id="deletePolicyRegulationsTranslateByIds" parameterType="String">
+        delete from policy_regulations where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

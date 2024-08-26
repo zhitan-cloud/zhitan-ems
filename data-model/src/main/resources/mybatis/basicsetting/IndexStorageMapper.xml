@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.IndexStorageMapper">
+  <resultMap id="indexStorageMap" type="com.dingzhuo.energy.data.model.domain.IndexStorage">
+    <result property="id" column="id"/>
+    <result property="indexId" column="index_id"/>
+    <result property="timeType" column="time_type"/>
+    <result property="calcType" column="calc_type"/>
+    <result property="calcText" column="calc_text"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="createTime" column="create_time"/>
+  </resultMap>
+  <insert id="insertIndexStorage">
+    insert into index_storage (id, index_id, time_type, calc_type, calc_text, create_time,
+                               update_time)
+    values (#{id}, #{indexId}, #{timeType}, #{calcType}, #{calcText}, now(), now());
+  </insert>
+  <insert id="saveParams">
+    delete from storage_parameter where storage_id = #{storageId};
+    <foreach collection="parameterIds" item="paramId" separator=";">
+      insert into storage_parameter (storage_id, index_id)
+      values (#{storageId}, #{paramId});
+    </foreach>
+  </insert>
+  <update id="updateIndexStorage">
+    update index_storage
+    set index_id    = #{indexId},
+        calc_type   = #{calcType},
+        calc_text   = #{calcText},
+        update_time = now()
+    where id = #{id};
+  </update>
+  <select id="getIndexStorage" resultMap="indexStorageMap">
+    select *
+    from index_storage
+    where index_id = #{indexId};
+  </select>
+  <select id="getAllCalcIndexStorage" resultMap="indexStorageMap">
+    select *
+    from index_storage
+    where calc_type = #{calcType}
+  </select>
+  <select id="getAllParameter"
+    resultType="com.dingzhuo.energy.data.model.domain.IndexStorageParam">
+    select storage_id as storageId, index_id as indexId
+    from storage_parameter
+  </select>
+  <select id="getWithTimetype" resultMap="indexStorageMap">
+    select *
+    from index_storage
+    where index_id = #{indexId}
+      AND time_type = #{timeType};
+  </select>
+</mapper>

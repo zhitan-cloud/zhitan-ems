@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.monitoring.alarm.mapper.HistoryAlarmMapper">
+
+  <resultMap type="HistoryAlarm" id="HistoryAlarmResult">
+    <result property="id" column="id"/>
+    <result property="indexId" column="index_id"/>
+    <result property="indexName" column="index_name"/>
+    <result property="itemId" column="item_id"/>
+    <result property="limitingValue" column="limiting_value"/>
+    <result property="alarmValue" column="alarm_value"/>
+    <result property="alarmValueQuality" column="alarm_value_quality"/>
+    <result property="beginTime" column="begin_time"/>
+    <result property="endTime" column="end_time"/>
+    <result property="duration" column="duration"/>
+    <result property="content" column="content"/>
+  </resultMap>
+
+  <resultMap type="JkHistoryAlarm" id="JkHistoryAlarmResult">
+    <result property="modelName" column="modelname"/>
+    <result property="code" column="code"/>
+    <result property="indexName" column="indexname"/>
+    <result property="unitId" column="unit_id"/>
+    <result property="alarmLevel" column="alarm_level"/>
+    <result property="limitType" column="limit_type"/>
+    <result property="limitingValue" column="limiting_value"/>
+    <result property="alarmBeginTime" column="begin_time"/>
+    <result property="alarmValue" column="alarm_value"/>
+    <result property="indexId" column="index_id"/>
+    <result property="nodeId" column="node_id"/>
+    <result property="duration" column="duration"/>
+    <result property="alarmBeginTime" column="begin_time"/>
+    <result property="alarmEndTime" column="end_time"/>
+  </resultMap>
+
+  <sql id="selectHistoryAlarmVo">
+    select id,
+           index_id,
+           index_name,
+           item_id,
+           limiting_value,
+           alarm_value,
+           alarm_value_quality,
+           begin_time,
+           end_time,
+           duration,
+           content
+    from history_alarm
+  </sql>
+
+  <select id="selectHistoryAlarmList" parameterType="HistoryAlarm" resultMap="HistoryAlarmResult">
+    <include refid="selectHistoryAlarmVo"/>
+    <where>
+      <if test="indexName != null  and indexName != ''">and index_name like concat('%',
+        #{indexName}, '%')
+      </if>
+      <if test="itemId != null  and itemId != ''">and item_id like concat('%', #{itemId}, '%')</if>
+      <if test="limitingValue != null ">and limiting_value like concat('%', #{limitingValue}, '%')
+      </if>
+      <if test="alarmValue != null ">and alarm_value like concat('%', #{alarmValue}, '%')</if>
+      <if test="alarmValueQuality != null  and alarmValueQuality != ''">and alarm_value_quality like
+        concat('%', #{alarmValueQuality}, '%')
+      </if>
+      <if test="beginTime != null ">and begin_time like concat('%', #{beginTime}, '%')</if>
+      <if test="endTime != null ">and end_time like concat('%', #{endTime}, '%')</if>
+      <if test="duration != null ">and duration like concat('%', #{duration}, '%')</if>
+      <if test="content != null  and content != ''">and content like concat('%', #{content}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectHistoryAlarmById" parameterType="String" resultMap="HistoryAlarmResult">
+    <include refid="selectHistoryAlarmVo"/>
+    where id = #{id}
+  </select>
+
+
+  <update id="updateHistoryAlarm" parameterType="HistoryAlarm">
+    delete from realtime_alarm where alarm_code = #{alarmCode};
+    insert into history_alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="historyAlarm.id != null  and historyAlarm.id != ''">id,</if>
+      <if test="historyAlarm.indexId != null  and historyAlarm.indexId != ''">index_id,</if>
+      <if test="historyAlarm.indexName != null  and historyAlarm.indexName != ''">index_name,</if>
+      <if test="historyAlarm.itemId != null  and historyAlarm.itemId != ''">item_id,</if>
+      <if test="historyAlarm.limitingValue != null ">limiting_value,</if>
+      <if test="historyAlarm.alarmValue != null ">alarm_value,</if>
+      <if test="historyAlarm.alarmValueQuality != null">alarm_value_quality,</if>
+      <if test="historyAlarm.beginTime != null ">begin_time,</if>
+      <if test="historyAlarm.endTime != null ">end_time,</if>
+      <if test="historyAlarm.duration != null ">duration,</if>
+      <if test="historyAlarm.content != null  and historyAlarm.content != ''">content,</if>
+      <if test="historyAlarm.timeCode != null and historyAlarm.timeCode != ''">time_code,</if>
+      <if test="historyAlarm.alarmCode != null and historyAlarm.alarmCode != ''">alarm_code,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="historyAlarm.id != null  and historyAlarm.id != ''">#{historyAlarm.id},</if>
+      <if test="historyAlarm.indexId != null  and historyAlarm.indexId != ''">#{historyAlarm.indexId},</if>
+      <if test="historyAlarm.indexName != null  and historyAlarm.indexName != ''">#{historyAlarm.indexName},</if>
+      <if test="historyAlarm.itemId != null  and historyAlarm.itemId != ''">#{historyAlarm.itemId},</if>
+      <if test="historyAlarm.limitingValue != null ">#{historyAlarm.limitingValue},</if>
+      <if test="historyAlarm.alarmValue != null ">#{historyAlarm.alarmValue},</if>
+      <if test="historyAlarm.alarmValueQuality != null">#{historyAlarm.alarmValueQuality},</if>
+      <if test="historyAlarm.beginTime != null ">#{historyAlarm.beginTime},</if>
+      <if test="historyAlarm.endTime != null ">#{historyAlarm.endTime},</if>
+      <if test="historyAlarm.duration != null ">#{historyAlarm.duration},</if>
+      <if test="historyAlarm.content != null  and historyAlarm.content != ''">#{historyAlarm.content},</if>
+      <if test="historyAlarm.timeCode != null and historyAlarm.timeCode != ''">#{historyAlarm.timeCode},</if>
+      <if test="historyAlarm.alarmCode != null and historyAlarm.alarmCode != ''">#{historyAlarm.alarmCode},</if>
+    </trim>
+    ;
+  </update>
+
+  <delete id="deleteHistoryAlarmById" parameterType="String">
+    delete
+    from history_alarm
+    where id = #{id}
+  </delete>
+
+  <delete id="deleteHistoryAlarmByIds" parameterType="String">
+    delete from history_alarm where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--历史 报警列表页面 采集点 主页面列表查询-->
+  <select id="selectJkHistoryAlarmList" parameterType="JkHistoryAlarm"
+    resultMap="JkHistoryAlarmResult">
+    SELECT
+    mo."name" AS modelname,
+    ei.code,
+    ei.NAME AS indexname,
+    ei.unit_id,
+    alit.alarm_level,
+    alit.limit_type,
+    bj.limiting_value,
+    bj.begin_time,
+    bj.end_time,
+    bj.alarm_value,
+    bj.duration,
+    ei.index_id,
+    mo.node_id
+    FROM
+    energy_index ei,
+    node_index ni,
+    model_node mo,
+    history_alarm bj ,
+    alarm_item alit
+    WHERE
+    ni.node_id IN (
+    SELECT node_id FROM model_node WHERE address LIKE (
+    SELECT address FROM model_node WHERE node_id = #{nodeId} )
+    <if test='eierarchyFlag=="ALL"'>
+      || '%'
+    </if>
+    )
+    AND ei.index_id = ni.index_id
+    AND mo.node_id = ni.node_id
+    AND bj.index_id = ei.index_id
+    AND alit.alarm_code = bj.alarm_code
+    AND alit.time_slot='LIVE'
+    AND ei.index_type=#{indexType}
+    <if test="indexName != null  and indexName != ''">and ei.name like concat('%', #{indexName},
+      '%')
+    </if>
+    <if test="limitType != null  and limitType != ''">and alit.limit_type=#{limitType}</if>
+    <if test="alarmLevel != null  and alarmLevel != ''">and alit.alarm_level=#{alarmLevel}</if>
+    <if test="beginTime != null and beginTime != ''">and begin_time &gt;=
+      to_timestamp(#{beginTime},'yyyy-mm-dd hh24:mi:ss')
+    </if>
+    <if test="endTime != null and endTime != ''">and begin_time &lt;=
+      to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+    </if>
+    order by alarm_level,mo.node_id,limit_type asc
+  </select>
+
+  <select id="selectJkHistoryAlarmListExcel" parameterType="JkHistoryAlarm"
+    resultMap="JkHistoryAlarmResult">
+    SELECT
+    mo."name" AS modelname,
+    ei.code,
+    ei.NAME AS indexname,
+    fun_getdicedata('sys_unit',ei.unit_id) as unit_id,
+    fun_getdicedata('alarm_level',alit.alarm_level) as alarm_level,
+    lt.limit_name as limit_type,
+    bj.limiting_value,
+    bj.begin_time,
+    bj.end_time,
+    bj.alarm_value,
+    bj.duration,
+    ei.index_id,
+    mo.node_id
+    FROM
+    energy_index ei,
+    node_index ni,
+    model_node mo,
+    history_alarm bj ,
+    alarm_item alit,
+    limit_type lt
+    WHERE
+    ni.node_id IN (
+    SELECT node_id FROM model_node WHERE address LIKE (
+    SELECT address FROM model_node WHERE node_id = #{nodeId} )
+    <if test='eierarchyFlag=="ALL"'>
+      || '%'
+    </if>
+    )
+    AND ei.index_id = ni.index_id
+    AND mo.node_id = ni.node_id
+    AND bj.index_id = ei.index_id
+    AND alit.alarm_code = bj.alarm_code
+    AND alit.time_slot='LIVE'
+    AND ei.index_type=#{indexType}
+    AND lt.limit_code=alit.limit_type
+    <if test="indexName != null  and indexName != ''">and ei.name like concat('%', #{indexName},
+      '%')
+    </if>
+    <if test="limitType != null  and limitType != ''">and alit.limit_type=#{limitType}</if>
+    <if test="alarmLevel != null  and alarmLevel != ''">and alit.alarm_level=#{alarmLevel}</if>
+    <if test="beginTime != null and beginTime != '' ">and begin_time &gt;=
+      to_timestamp(#{beginTime},'yyyy-mm-dd hh24:mi:ss')
+    </if>
+    <if test="endTime != null and endTime != ''">and begin_time &lt;=
+      to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+    </if>
+    order by alarm_level,mo.node_id,limit_type asc
+  </select>
+
+  <select id="selectHistoryAlarmNoteList" parameterType="JkHistoryAlarm"
+    resultMap="JkHistoryAlarmResult">
+    SELECT
+    ei.code,
+    ei.NAME AS indexname,
+    fun_getdicedata('sys_unit',ei.unit_id) as unit_id,
+    fun_getdicedata('alarm_level',alit.alarm_level) as alarm_level,
+    lt.limit_name as limit_type,
+    bj.limiting_value,
+    bj.begin_time,
+    bj.end_time,
+    bj.alarm_value,
+    bj.duration,
+    ei.index_id
+    FROM
+    energy_index ei,
+    history_alarm bj ,
+    sys_svg_info svg,
+    alarm_item alit,
+    limit_type lt
+    WHERE
+    svg.node_id=#{nodeId}
+    AND ei.code = svg.tag
+    AND bj.index_id = ei.index_id
+    AND alit.alarm_code = bj.alarm_code
+    AND alit.time_slot='LIVE'
+    AND ei.index_type=#{indexType}
+    AND lt.limit_code=alit.limit_type
+    <if test="indexName != null  and indexName != ''">and ei.name like concat('%', #{indexName},
+      '%')
+    </if>
+    <if test="limitType != null  and limitType != ''">and alit.limit_type=#{limitType}</if>
+    <if test="alarmLevel != null  and alarmLevel != ''">and alit.alarm_level=#{alarmLevel}</if>
+    <if test="beginTime != null and beginTime != '' ">and begin_time &gt;=
+      to_timestamp(#{beginTime},'yyyy-mm-dd hh24:mi:ss')
+    </if>
+    <if test="endTime != null and endTime != ''">and begin_time &lt;=
+      to_timestamp(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+    </if>
+    order by alarm_level,limit_type asc
+  </select>
+
+</mapper>

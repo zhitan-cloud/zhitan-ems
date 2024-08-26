@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.benchmarking.mapper.BenchmarkingManagementMapper">
+    
+    <resultMap type="BenchmarkingManagement" id="BenchmarkingManagementResult">
+        <result property="indexId"    column="index_id"    />
+        <result property="indexName"    column="index_name"    />
+        <result property="indexCode"    column="index_code"    />
+        <result property="unitId"    column="unit_id"    />
+        <result property="timeType"    column="time_type"    />
+        <result property="dateTime"    column="date_time"    />
+        <result property="value"    column="value"    />
+        <result property="timeCode"    column="time_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="actualValue"    column="actual_value"    />
+        <result property="benchmarkingRange"    column="benchmarking_range"    />
+        <result property="benchmarkingType"    column="benchmarking_type"    />
+    </resultMap>
+
+    <sql id="selectBenchmarkingManagementVo">
+        SELECT
+            e.index_id,
+            e.name as index_name,
+            e.code as index_code,
+            e.unit_id,
+            bm.time_type,
+            bm.date_time,
+            bm."value",
+            bm.time_code,
+            bm.actual_value,
+            benchmarking_range,
+            benchmarking_type
+        FROM
+            energy_index e
+            LEFT JOIN benchmarking_management bm ON bm.index_id = e.index_id
+    </sql>
+
+    <select id="selectBenchmarkingManagementList" parameterType="BenchmarkingManagement" resultMap="BenchmarkingManagementResult">
+        <include refid="selectBenchmarkingManagementVo"/>
+        <where>
+            e.index_id in <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+            <if test="timeCode != null  and timeCode !=''"> AND bm.time_code = #{timeCode}</if>
+        </where>
+    </select>
+    <select id="selectBenchmarkingList" parameterType="BenchmarkingManagement" resultMap="BenchmarkingManagementResult">
+        SELECT
+            e.index_id,
+            e.name as index_name,
+            e.code as index_code,
+            e.unit_id
+        FROM
+            energy_index e
+         where e.index_id in <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+    </select>
+
+    <insert id="save">
+        insert into benchmarking_management (index_id,
+        time_code,
+        time_type,
+        value,
+        actual_value,
+        date_time,
+        benchmarking_range,
+        benchmarking_type,
+        create_time)
+        select #{benchmarkingManagement.indexId},
+        #{benchmarkingManagement.timeCode},
+        #{benchmarkingManagement.timeType},
+        #{benchmarkingManagement.value,jdbcType = DOUBLE},
+        #{benchmarkingManagement.actualValue,jdbcType = DOUBLE},
+        #{benchmarkingManagement.dateTime},
+        #{benchmarkingManagement.benchmarkingRange},
+        #{benchmarkingManagement.benchmarkingType},
+        now()
+        on conflict
+        (index_id,time_code)
+        do update
+        set
+        <if test="benchmarkingManagement.value != null  and benchmarkingManagement.value != ''"> value = #{benchmarkingManagement.value, jdbcType = DOUBLE},</if>
+        <if test="benchmarkingManagement.actualValue != null  and benchmarkingManagement.actualValue != ''"> actual_value = #{benchmarkingManagement.actualValue, jdbcType = DOUBLE},</if>
+        benchmarking_range=#{benchmarkingManagement.benchmarkingRange},
+        benchmarking_type=#{benchmarkingManagement.benchmarkingType},
+        update_time = now();
+    </insert>
+
+
+
+    <select id="selectBenchmarkingManagementById" parameterType="String" resultMap="BenchmarkingManagementResult">
+        SELECT
+            bm.time_type,
+            bm.date_time,
+            bm."value",
+            bm.time_code,
+            bm.actual_value,
+            benchmarking_range,
+            benchmarking_type
+        FROM
+           benchmarking_management bm
+        where bm.index_id = #{indexId}
+    </select>
+
+    <insert id="insertBenchmarkingManagement" parameterType="BenchmarkingManagement">
+        insert into benchmarking_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="indexId != null  and indexId != ''">index_id,</if>
+            <if test="timeType != null  and timeType != ''">time_type,</if>
+            <if test="dateTime != null ">date_time,</if>
+            <if test="value != null  and value != ''">value,</if>
+            <if test="timeCode != null  and timeCode != ''">time_code,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="actualValue != null  and actualValue != ''">actual_value,</if>
+            <if test="benchmarkingRange != null ">benchmarking_range,</if>
+            <if test="benchmarkingType != null ">benchmarking_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="indexId != null  and indexId != ''">#{indexId},</if>
+            <if test="timeType != null  and timeType != ''">#{timeType},</if>
+            <if test="dateTime != null ">#{dateTime},</if>
+            <if test="value != null  and value != ''">#{value},</if>
+            <if test="timeCode != null  and timeCode != ''">#{timeCode},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="actualValue != null  and actualValue != ''">#{actualValue},</if>
+            <if test="benchmarkingRange != null ">#{benchmarkingRange},</if>
+            <if test="benchmarkingType != null ">#{benchmarkingType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBenchmarkingManagement" parameterType="BenchmarkingManagement">
+        update benchmarking_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="timeType != null  and timeType != ''">time_type = #{timeType},</if>
+            <if test="dateTime != null ">date_time = #{dateTime},</if>
+            <if test="value != null  and value != ''">value = #{value},</if>
+            <if test="timeCode != null  and timeCode != ''">time_code = #{timeCode},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="actualValue != null  and actualValue != ''">actual_value = #{actualValue},</if>
+            <if test="benchmarkingRange != null ">benchmarking_range = #{benchmarkingRange},</if>
+            <if test="benchmarkingType != null ">benchmarking_type = #{benchmarkingType},</if>
+        </trim>
+        where index_id = #{indexId}
+    </update>
+
+    <delete id="deleteBenchmarkingManagementById" parameterType="String">
+        delete from benchmarking_management where index_id = #{indexId}
+    </delete>
+
+    <delete id="deleteBenchmarkingManagementByIds" parameterType="String">
+        delete from benchmarking_management where index_id in
+        <foreach item="indexId" collection="array" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+    </delete>
+    
+</mapper>

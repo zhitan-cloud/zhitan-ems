@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.comprehensiveStatistics.mapper.dailyComprehensiveMapper">
+    <resultMap id="dataItemMap" type="com.dingzhuo.energy.project.comprehensiveStatistics.domain.dailyComprehensive">
+        <result column="index_id" property="indexId"/>
+        <result column="index_name" property="indexName"/>
+        <result column="time_type" property="timeType"/>
+        <result column="time_code" property="timeCode"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="value1" property="value1"/>
+        <result column="value2" property="value2"/>
+        <result column="value3" property="value3"/>
+        <result column="value4" property="value4"/>
+        <result column="value5" property="value5"/>
+        <result column="value6" property="value6"/>
+        <result column="value7" property="value7"/>
+        <result column="value8" property="value8"/>
+        <result column="value9" property="value9"/>
+        <result column="value10" property="value10"/>
+        <result column="value11" property="value11"/>
+        <result column="value12" property="value12"/>
+        <result column="value13" property="value13"/>
+        <result column="value14" property="value14"/>
+        <result column="value15" property="value15"/>
+        <result column="value16" property="value16"/>
+        <result column="value17" property="value17"/>
+        <result column="value18" property="value18"/>
+        <result column="value19" property="value19"/>
+        <result column="value20" property="value20"/>
+        <result column="value21" property="value21"/>
+        <result column="value22" property="value22"/>
+        <result column="value23" property="value23"/>
+        <result column="value0" property="value0"/>
+    </resultMap>
+    <!--全厂能耗统计-->
+    <select id="getdailyComprehensiveList" resultMap="dataItemMap">
+        SELECT
+            aa.index_id,
+            aa.index_name,
+            <foreach item="item" index="index" collection="dataList">
+                COALESCE ( MAX ( CASE WHEN data_time = #{item.dataTime} THEN "value" END ), null ) AS ${item.value},
+            </foreach>
+            aa.time_type,
+            aa.order_num orderNum
+        FROM
+            (
+            SELECT
+                ni.index_id,
+                ei."name" AS "index_name",
+                di."value",
+                di.data_time,
+                di.time_type,
+                mn.order_num
+            FROM
+                model_node mn
+                LEFT JOIN node_index ni ON ni.node_id = mn.node_id
+                LEFT JOIN energy_index ei ON ei.index_id = ni.index_id
+                LEFT JOIN data_item di ON ni.index_id = di.index_id
+            WHERE
+                mn.parent_id = #{nodeId}
+                AND di.data_time >= #{beginTime}
+                AND di.data_time &lt; #{endTime}
+                AND di.time_type = #{timeType}
+                <if test="indexStorageId !='' and indexStorageId !=null">
+                    and ei.energy_id=#{indexStorageId}
+                </if>
+            ) aa
+        GROUP BY
+            aa.index_id, aa.index_name, aa.time_type, aa.order_num
+        ORDER BY aa.order_num ASC
+    </select>
+
+    <select id="getListChart" resultMap="dataItemMap">
+        SELECT
+            di.index_id,
+            ci.name AS "index_name",
+            ci.unit_id,
+            di."value",
+            di.data_time,
+            di.time_type,
+            di.time_code
+        FROM
+        data_item di LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+        WHERE
+            di.index_id =#{indexId}
+            AND di.data_time &lt; #{endTime}
+            AND di.data_time >= #{beginTime}
+            AND di.time_type = #{timeType}
+        ORDER BY data_time ASC
+    </select>
+</mapper>

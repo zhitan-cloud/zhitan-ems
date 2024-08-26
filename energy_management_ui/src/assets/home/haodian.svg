@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>耗气量</title>
+    <defs>
+        <linearGradient x1="15.5954832%" y1="17.9558225%" x2="79.6918238%" y2="77.5510976%" id="linearGradient-1">
+            <stop stop-color="#53DBDD" offset="0%"></stop>
+            <stop stop-color="#51C6D8" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-247.000000, -701.000000)">
+            <g id="1" transform="translate(224.000000, 623.000000)">
+                <g id="耗气量" transform="translate(23.000000, 78.000000)">
+                    <circle id="椭圆形" fill="url(#linearGradient-1)" cx="10" cy="10" r="10"></circle>
+                    <path d="M10.2132025,11.3611714 L10.2132025,11.5368764 C10.2115497,11.6275763 10.1982731,11.7174915 10.173806,11.8036876 L9.65602283,15.5 L13.5,8.34164857 L10.6859611,8.34164857 C10.3905615,8.2944645 10.1782668,7.98905354 10.2019464,7.64533623 L10.2019464,7.46963124 C10.2027605,7.37192021 10.2179872,7.27508608 10.246971,7.18329721 L10.7647542,3.5 L6.95454545,10.664859 L9.76858437,10.664859 C10.0481503,10.7328446 10.2393164,11.032228 10.2132025,11.3611714 L10.2132025,11.3611714 Z" id="路径" fill="#FFFFFF" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

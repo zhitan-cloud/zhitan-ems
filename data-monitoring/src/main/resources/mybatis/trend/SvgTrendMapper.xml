@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.monitoring.trend.svg.mapper.SvgTrendMapper">
+    <resultMap type="EnergyIndex" id="EnergyIndexResult">
+        <result property="indexId" column="index_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="indexType" column="index_type"/>
+        <result property="indexCategory" column="index_category"/>
+        <result property="remark" column="remark"/>
+        <result property="unitId" column="unit_id"/>
+        <result property="meterId" column="meter_id"/>
+        <result property="meterName" column="meter_name"/>
+    </resultMap>
+    <select id="selectSvgTrendList" parameterType="EnergyIndex" resultMap="EnergyIndexResult">
+        select ei.index_id, name, ei.code, index_type, ei.remark, ei.unit_id, index_category,meter_name
+        from
+        energy_index ei,
+        sys_svg_info svg,
+        meter_implement as me
+        <where>
+            ei.code = svg.tag
+            and ei.meter_id = me.id
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="code != null  and code != ''">and ei.code like concat('%', #{code}, '%')</if>
+            <if test="indexType != null">and index_type = #{indexType}</if>
+            <if test="nodeId != null  and nodeId != ''">and svg.node_id = #{nodeId}</if>
+            <if test="indexCategory != null  and indexCategory != ''">and index_category =
+                #{indexCategory}
+            </if>
+        </where>
+    </select>
+
+</mapper>

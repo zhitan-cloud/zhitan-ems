@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.statisticalData.mapper.GxdhCountMapper">
+    
+    <resultMap type="GxdhCount" id="GxdhCountResult">
+        <result property="id"    column="id"    />
+        <result property="repProductType"    column="rep_product_type"    />
+        <result property="electricIndex"    column="electric_index"    />
+        <result property="gasIndex"    column="gas_index"    />
+        <result property="steamIndex"    column="steam_index"    />
+        <result property="varietyType"    column="variety_type"    />
+    </resultMap>
+
+    <resultMap type="GxdhCountIndex" id="GxdhCountIndexResult">
+        <result property="index_id"    column="index_id"    />
+        <result property="repProductType"    column="rep_product_type"    />
+        <result property="varietyType"    column="variety_type"    />
+        <result property="FL"    column="fl"    />
+        <result property="a1" column="a1"/>
+        <result property="a2" column="a2"/>
+        <result property="a3" column="a3"/>
+        <result property="a4" column="a4"/>
+        <result property="a5" column="a5"/>
+        <result property="a6" column="a6"/>
+        <result property="a7" column="a7"/>
+        <result property="a8" column="a8"/>
+        <result property="a9" column="a9"/>
+        <result property="a10" column="a10"/>
+        <result property="a11" column="a11"/>
+        <result property="a12" column="a12"/>
+        <result property="a13" column="a13"/>
+        <result property="a14" column="a14"/>
+        <result property="a15" column="a15"/>
+        <result property="a16" column="a16"/>
+        <result property="a17" column="a17"/>
+        <result property="a18" column="a18"/>
+        <result property="a19" column="a19"/>
+        <result property="a20" column="a20"/>
+        <result property="a21" column="a21"/>
+        <result property="a22" column="a22"/>
+        <result property="a23" column="a23"/>
+        <result property="a24" column="a24"/>
+        <result property="a25" column="a25"/>
+        <result property="a26" column="a26"/>
+        <result property="a27" column="a27"/>
+        <result property="a28" column="a28"/>
+        <result property="a29" column="a29"/>
+        <result property="a30" column="a30"/>
+        <result property="a31" column="a31"/>
+        <result property="a32" column="a32"/>
+        <result property="a33" column="a33"/>
+        <result property="a34" column="a34"/>
+        <result property="a35" column="a35"/>
+        <result property="a36" column="a36"/>
+    </resultMap>
+
+    <sql id="selectGxdhCountVo">
+        select id, rep_product_type, electric_index, gas_index, steam_index, variety_type from gxdh_count
+    </sql>
+
+    <select id="selectGxdhCountList" parameterType="GxdhCount" resultMap="GxdhCountResult">
+        <include refid="selectGxdhCountVo"/>
+        <where>  
+            <if test="repProductType != null  and repProductType != ''"> and rep_product_type = #{repProductType}</if>
+            <if test="varietyType != null  and varietyType != ''"> and variety_type = #{varietyType}</if>
+        </where>
+    </select>
+    
+    <select id="selectGxdhCountById" parameterType="String" resultMap="GxdhCountResult">
+        <include refid="selectGxdhCountVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGxdhCount" parameterType="GxdhCount">
+        insert into gxdh_count
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="repProductType != null  and repProductType != ''">rep_product_type,</if>
+            <if test="electricIndex != null  and electricIndex != ''">electric_index,</if>
+            <if test="gasIndex != null  and gasIndex != ''">gas_index,</if>
+            <if test="steamIndex != null  and steamIndex != ''">steam_index,</if>
+            <if test="varietyType != null  and varietyType != ''">variety_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="repProductType != null  and repProductType != ''">#{repProductType},</if>
+            <if test="electricIndex != null  and electricIndex != ''">#{electricIndex},</if>
+            <if test="gasIndex != null  and gasIndex != ''">#{gasIndex},</if>
+            <if test="steamIndex != null  and steamIndex != ''">#{steamIndex},</if>
+            <if test="varietyType != null  and varietyType != ''">#{varietyType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGxdhCount" parameterType="GxdhCount">
+        update gxdh_count
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="repProductType != null  and repProductType != ''">rep_product_type = #{repProductType},</if>
+            <if test="electricIndex != null  and electricIndex != ''">electric_index = #{electricIndex},</if>
+            <if test="gasIndex != null  and gasIndex != ''">gas_index = #{gasIndex},</if>
+            <if test="steamIndex != null  and steamIndex != ''">steam_index = #{steamIndex},</if>
+            <if test="varietyType != null  and varietyType != ''">variety_type = #{varietyType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGxdhCountById" parameterType="String">
+        delete from gxdh_count where id = #{id}
+    </delete>
+
+    <delete id="deleteGxdhCountByIds" parameterType="String">
+        delete from gxdh_count where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectGxdhCountIndexList" parameterType="GxdhCountIndex" resultMap="GxdhCountIndexResult">
+        <!--能源消耗量 或  产品产量的  焦炭的  电   煤气 蒸汽 -->
+        SELECT
+        aa.index_id,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '01'		THEN "value" END ) AS 	A1	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '02'		THEN "value" END ) AS 	A2	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '03'		THEN "value" END ) AS 	A3	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '04'		THEN "value" END ) AS 	A4	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '05'		THEN "value" END ) AS 	A5	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '06'		THEN "value" END ) AS 	A6	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '07'		THEN "value" END ) AS 	A7	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '08'		THEN "value" END ) AS 	A8	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '09'		THEN "value" END ) AS 	A9	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '10'		THEN "value" END ) AS 	A10	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '11'		THEN "value" END ) AS 	A11	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '12'		THEN "value" END ) AS 	A12	,
+        max(rep_product_type) rep_product_type,
+        max(variety_type) variety_type,
+        'DIAN' as FL
+        FROM
+        (
+        SELECT
+        a.index_id,
+        "value",
+        data_time,
+        b.rep_product_type,
+        b.variety_type
+        FROM
+        data_item a,
+        gxdh_count b
+        WHERE
+        to_char(data_time,'YYYY') = #{selectYear}
+        AND time_type = 'MONTH'
+        and b.variety_type=#{varietyType}
+        and b.rep_product_type=#{repProductType}
+        and a.index_id = b.electric_index
+        ) aa
+        GROUP BY
+        aa.index_id
+        UNION all
+        SELECT
+        aa.index_id,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '01'		THEN "value" END ) AS 	A1	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '02'		THEN "value" END ) AS 	A2	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '03'		THEN "value" END ) AS 	A3	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '04'		THEN "value" END ) AS 	A4	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '05'		THEN "value" END ) AS 	A5	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '06'		THEN "value" END ) AS 	A6	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '07'		THEN "value" END ) AS 	A7	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '08'		THEN "value" END ) AS 	A8	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '09'		THEN "value" END ) AS 	A9	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '10'		THEN "value" END ) AS 	A10	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '11'		THEN "value" END ) AS 	A11	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '12'		THEN "value" END ) AS 	A12	,
+        max(rep_product_type),
+        max(variety_type),
+        'MQ' as FL
+        FROM
+        (
+        SELECT
+        a.index_id,
+        "value",
+        data_time,
+        b.rep_product_type,
+        b.variety_type
+        FROM
+        data_item a,
+        gxdh_count b
+        WHERE
+        to_char(data_time,'YYYY') = #{selectYear}
+        AND time_type = 'MONTH'
+        and b.variety_type=#{varietyType}
+        and b.rep_product_type=#{repProductType}
+        and  a.index_id = b.gas_index
+        ) aa
+        GROUP BY
+        aa.index_id
+        UNION all
+        SELECT
+        aa.index_id,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '01'		THEN "value" END ) AS 	A1	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '02'		THEN "value" END ) AS 	A2	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '03'		THEN "value" END ) AS 	A3	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '04'		THEN "value" END ) AS 	A4	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '05'		THEN "value" END ) AS 	A5	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '06'		THEN "value" END ) AS 	A6	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '07'		THEN "value" END ) AS 	A7	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '08'		THEN "value" END ) AS 	A8	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '09'		THEN "value" END ) AS 	A9	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '10'		THEN "value" END ) AS 	A10	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '11'		THEN "value" END ) AS 	A11	,
+        MAX ( CASE WHEN to_char(data_time,'mm') = '12'		THEN "value" END ) AS 	A12	,
+        max(rep_product_type),
+        max(variety_type),
+        'ZQ' as FL
+        FROM
+        (
+        SELECT
+        a.index_id,
+        "value",
+        data_time,
+        b.rep_product_type,
+        b.variety_type
+        FROM
+        data_item a,
+        gxdh_count b
+        WHERE
+        to_char(data_time,'YYYY') = #{selectYear}
+        AND time_type = 'MONTH'
+        and b.variety_type=#{varietyType}
+        and b.rep_product_type=#{repProductType}
+        and a.index_id = b.steam_index
+        ) aa
+        GROUP BY
+        aa.index_id
+    </select>
+
+</mapper>

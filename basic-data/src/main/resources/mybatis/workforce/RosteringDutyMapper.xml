@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.workforce.mapper.RosteringDutyMapper">
+    
+    <resultMap type="RosteringDuty" id="RosteringDutyResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRosteringDutyVo">
+        select id, code, name, dept_id,(SELECT s.dept_name FROM sys_dept s WHERE  s.dept_id = rostering_duty.dept_id )  deptName, order_no, description, create_by, create_time, update_by, update_time from rostering_duty
+    </sql>
+
+    <select id="selectRosteringDutyList" parameterType="RosteringDuty" resultMap="RosteringDutyResult">
+        <include refid="selectRosteringDutyVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="deptId != null  and deptId != ''"> and dept_id like concat('%', #{deptId}, '%')</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="createTime != null "> and create_time like concat('%', #{createTime}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time like concat('%', #{updateTime}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRosteringDutyById" parameterType="String" resultMap="RosteringDutyResult">
+        <include refid="selectRosteringDutyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRosteringDuty" parameterType="RosteringDuty">
+        insert into rostering_duty
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="deptId != null  and deptId != ''">dept_id,</if>
+            <if test="orderNo != null  and orderNo != ''">order_no,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="deptId != null  and deptId != ''">#{deptId},</if>
+            <if test="orderNo != null  and orderNo != ''">#{orderNo},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRosteringDuty" parameterType="RosteringDuty">
+        update rostering_duty
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="deptId != null  and deptId != ''">dept_id = #{deptId},</if>
+            <if test="orderNo != null  and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRosteringDutyById" parameterType="String">
+        delete from rostering_duty where id = #{id}
+    </delete>
+
+    <delete id="deleteRosteringDutyByIds" parameterType="String">
+        delete from rostering_duty where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.ModelInfoMapper">
+
+    <resultMap type="com.dingzhuo.energy.data.model.domain.ModelInfo" id="ModelInfoResult">
+        <result property="modelCode" column="model_code"/>
+        <result property="modelName" column="model_name"/>
+        <result property="isShow" column="is_show"/>
+        <result property="modelType" column="model_type"/>
+    </resultMap>
+
+    <sql id="selectModelInfoVo">
+        select model_code, model_name, is_show, model_type
+        from model_info
+    </sql>
+
+    <select id="selectModelInfoList" parameterType="com.dingzhuo.energy.data.model.domain.ModelInfo"
+            resultMap="ModelInfoResult">
+        <include refid="selectModelInfoVo"/>
+        <where>
+            <if test="modelCode != null  and modelCode != ''">and model_code like concat('%', #{modelCode}, '%')</if>
+            <if test="modelName != null  and modelName != ''">and model_name like concat('%', #{modelName}, '%')</if>
+            <if test="isShow != null">and is_show = #{isShow}</if>
+        </where>
+        order by model_code;
+    </select>
+
+    <select id="selectModelInfoById" parameterType="String" resultMap="ModelInfoResult">
+        <include refid="selectModelInfoVo"/>
+        where model_code = #{modelCode}
+    </select>
+
+    <insert id="insertModelInfo" parameterType="ModelInfo">
+        insert into model_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="modelCode != null  and modelCode != ''">model_code,</if>
+            <if test="modelName != null  and modelName != ''">model_name,</if>
+            <if test="modelType != null  and modelType != ''">model_type,</if>
+            is_show,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="modelCode != null  and modelCode != ''">#{modelCode},</if>
+            <if test="modelName != null  and modelName != ''">#{modelName},</if>
+            <if test="modelType != null  and modelType != ''">#{modelType},</if>
+            1,
+        </trim>
+    </insert>
+
+    <update id="updateModelInfo" parameterType="ModelInfo">
+        update model_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modelName != null  and modelName != ''">model_name = #{modelName},</if>
+            <if test="isShow != null ">is_show = #{isShow},</if>
+        </trim>
+        where model_code = #{modelCode}
+    </update>
+
+    <delete id="deleteModelInfoById" parameterType="String">
+        delete
+        from model_info
+        where model_code = #{modelCode}
+    </delete>
+
+    <delete id="deleteModelInfoByCode" parameterType="String">
+        delete
+        from model_info
+        where model_code = #{modelCode};
+    </delete>
+
+</mapper>

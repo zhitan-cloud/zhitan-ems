@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.dingzhuo</groupId>
+  <artifactId>energy-management</artifactId>
+  <version>1.0.0</version>
+  <modules>
+    <module>data-service</module>
+    <module>data-model</module>
+    <module>parent</module>
+    <module>data-monitoring</module>
+    <module>energy_management_server</module>
+    <module>basic</module>
+    <module>basic-data</module>
+    <module>compute-engine</module>
+  </modules>
+  <packaging>pom</packaging>
+
+  <name>energyManagement</name>
+  <description>企业能源管理系统</description>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.5.RELEASE</version>
+    <relativePath/>
+  </parent>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+    <mybatis.spring.boot.starter.version>1.3.2</mybatis.spring.boot.starter.version>
+    <pagehelper.spring.boot.starter.version>1.2.5</pagehelper.spring.boot.starter.version>
+    <fastjson.version>1.2.47</fastjson.version>
+    <druid.version>1.1.14</druid.version>
+    <commons.io.version>2.5</commons.io.version>
+    <commons.fileupload.version>1.3.3</commons.fileupload.version>
+    <bitwalker.version>1.19</bitwalker.version>
+    <jwt.version>0.9.0</jwt.version>
+    <swagger.version>2.9.2</swagger.version>
+    <poi.version>3.17</poi.version>
+    <oshi.version>3.9.1</oshi.version>
+    <velocity.version>1.7</velocity.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>public</id>
+      <name>aliyun nexus</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>public</id>
+      <name>aliyun nexus</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <!--当前环境,生产环境为空-->
+        <profile.name>dev</profile.name>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <!--当前环境,生产环境为空-->
+        <profile.name>prod</profile.name>
+      </properties>
+    </profile>
+  </profiles>
+</project>

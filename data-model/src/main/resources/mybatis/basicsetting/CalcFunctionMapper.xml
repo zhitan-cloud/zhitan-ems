@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.CalcFunctionMapper">
+
+    <resultMap type="com.dingzhuo.energy.data.model.domain.CalcFunction" id="CalcFunctionResult">
+        <result property="id" column="id"/>
+        <result property="info" column="info"/>
+        <result property="funcName" column="func_name"/>
+        <result property="funcText" column="func_text"/>
+    </resultMap>
+
+    <sql id="selectCalcFunctionVo">
+        select id, func_name, func_text, info
+        from calc_function
+    </sql>
+
+    <select id="selectCalcFunctionList" parameterType="com.dingzhuo.energy.data.model.domain.CalcFunction" resultMap="CalcFunctionResult">
+        <include refid="selectCalcFunctionVo"/>
+        <where>
+            <if test="funcName != null  and funcName != ''">and func_name like concat('%', #{funcName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectCalcFunctionById" parameterType="String" resultMap="CalcFunctionResult">
+        <include refid="selectCalcFunctionVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCalcFunction" parameterType="com.dingzhuo.energy.data.model.domain.CalcFunction">
+        insert into calc_function
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="funcName != null  and funcName != ''">func_name,</if>
+            <if test="funcText != null  and funcText != ''">func_text,</if>
+            <if test="info != null  and info != ''">info,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="funcName != null  and funcName != ''">#{funcName},</if>
+            <if test="funcText != null  and funcText != ''">#{funcText},</if>
+            <if test="info != null  and info != ''">#{info},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCalcFunction" parameterType="com.dingzhuo.energy.data.model.domain.CalcFunction">
+        update calc_function
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="info != null  and info != ''">info = #{info},</if>
+            <if test="funcName != null  and funcName != ''">func_name = #{funcName},</if>
+            <if test="funcText != null  and funcText != ''">func_text = #{funcText},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCalcFunctionById" parameterType="String">
+        delete
+        from calc_function
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCalcFunctionByIds" parameterType="String">
+        delete from calc_function where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.energyBalance.mapper.energybalanceMapper">
+
+    <resultMap id="dataItemMap" type="com.dingzhuo.energy.dataservice.domain.DataItem">
+        <id column="index_id" property="indexId"/>
+        <id column="time_code" property="timeCode"/>
+        <id column="index_code" property="indexCode"/>
+        <id column="index_name" property="indexName"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="data_time" property="dataTime"/>
+        <result column="value" property="value"/>
+        <result column="time_type" property="timeType"/>
+        <result column="quality" property="quality"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <sql id="itemHead">
+    SELECT di.index_id,
+           di.time_code,
+           di.time_type,
+           di.begin_time,
+           di.end_time,
+           di.data_time,
+           di.value,
+           di.quality,
+           di.create_time,
+           di.update_time,
+           ci.code AS "index_code",
+           ci.name AS "index_name"
+    FROM data_item di
+           LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+  </sql>
+    <select id="getBalanceList" resultMap="dataItemMap">
+        <include refid="itemHead"/>
+        where di.time_code = #{timeCode}
+        AND di.index_id in
+        <foreach item="indexId" index="index" collection="indexIds"
+                 open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+        ORDER BY "value" DESC
+    </select>
+
+</mapper>

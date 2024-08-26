@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.plannedOutput.mapper.PlanEnergyMapper">
+    
+    <resultMap type="PlanEnergy" id="PlanEnergyResult">
+        <result property="productId"    column="product_id"    />
+        <result property="value"    column="value"    />
+        <result property="energyValue"    column="energy_value"    />
+        <result property="timeType"    column="time_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="steamEnereyValue"    column="steam_enerey_value"    />
+        <result property="waterValue"    column="water_value"    />
+        <result property="waterEnergyValue"    column="water_energy_value"    />
+        <result property="coalValue"    column="coal_value"    />
+        <result property="coalEnergyValue"    column="coal_energy_value"    />
+        <result property="steamValue"    column="steam_value"    />
+        <result property="planValue"    column="plan_value"    />
+        <result property="timeCode"    column="time_code"    />
+        <result property="dataTime"    column="data_time"    />
+        <result property="actualValue"    column="actual_value"    />
+    </resultMap>
+
+    <sql id="selectPlanEnergyVo">
+        SELECT
+            productid as product_id,
+            productsno,
+            productname,
+            P.muid,
+            po.plan_value,
+            pe."value",
+            pe.energy_value,
+            pe.water_value,
+            pe.water_energy_value,
+            pe.coal_value,
+            pe.coal_energy_value,
+            pe.steam_value,
+            pe.steam_energy_value,
+            pe.actual_value
+        FROM
+            sys_product P
+            LEFT JOIN planned_output po ON po.product_id = P.productid
+            LEFT JOIN  plan_energy pe ON pe.product_id=p.productid
+    </sql>
+
+    <select id="PlanEnergyList" parameterType="PlanEnergy" resultMap="PlanEnergyResult">
+        <include refid="selectPlanEnergyVo"/>
+        <where>
+            p.productid in
+            <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+            <if test="type != null  and type !=''"> AND pe.time_type = #{type} </if>
+            <if test="timeCode != null  and timeCode !=''"> AND pe.time_code = #{timeCode} AND po.time_code = #{timeCode}  </if>
+        </where>
+    </select>
+    <select id="selectPlanEnergyList" parameterType="PlanEnergy" resultMap="PlanEnergyResult">
+        SELECT
+            productid as product_id,
+            productsno,
+            productname,
+            P.muid,
+            po.plan_value
+        FROM
+            sys_product P
+            LEFT JOIN planned_output po ON po.product_id = P.productid
+        <where>
+            p.productid in
+            <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+            <if test="timeCode != null  and timeCode !=''"> AND po.time_code = #{timeCode} </if>
+        </where>
+    </select>
+    <insert id="save">
+        insert into plan_energy (product_id,
+                               time_code,
+                               time_type,
+                               value,
+                               actual_value,
+                               energy_value,
+                               coal_value,
+                               coal_energy_value,
+                               steam_value,
+                               steam_energy_value,
+                               water_value,
+                               water_energy_value,
+                               data_time,
+                               create_time)
+        select #{planEnergy.productId},
+               #{planEnergy.timeCode},
+               #{planEnergy.timeType},
+               #{planEnergy.value,jdbcType = DOUBLE},
+               #{planEnergy.actualValue,jdbcType = DOUBLE},
+               #{planEnergy.energyValue,jdbcType = DOUBLE},
+               #{planEnergy.coalValue,jdbcType = DOUBLE},
+               #{planEnergy.coalEnergyValue,jdbcType = DOUBLE},
+               #{planEnergy.steamValue,jdbcType = DOUBLE},
+               #{planEnergy.steamEnereyValue,jdbcType = DOUBLE},
+               #{planEnergy.waterValue,jdbcType = DOUBLE},
+               #{planEnergy.waterEnergyValue,jdbcType = DOUBLE},
+               #{planEnergy.dataTime},
+               now()
+        on conflict
+          (product_id,time_code)
+        do update
+        set <if test="planEnergy.value !='' and planEnergy.value !=null">value = #{planEnergy.value, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.actualValue !='' and planEnergy.actualValue !=null">actual_value = #{planEnergy.actualValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.energyValue !='' and planEnergy.energyValue !=null">energy_value = #{planEnergy.energyValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.coalValue !='' and planEnergy.coalValue !=null">coal_value = #{planEnergy.coalValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.coalEnergyValue !='' and planEnergy.coalEnergyValue !=null">coal_energy_value = #{planEnergy.coalEnergyValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.steamValue !='' and planEnergy.steamValue !=null">steam_value = #{planEnergy.steamValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.steamEnereyValue !='' and planEnergy.steamEnereyValue !=null">steam_energy_value = #{planEnergy.steamEnereyValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.waterValue !='' and planEnergy.waterValue !=null">water_value = #{planEnergy.waterValue, jdbcType = DOUBLE},</if>
+        <if test="planEnergy.waterEnergyValue !='' and planEnergy.waterEnergyValue !=null">water_energy_value = #{planEnergy.waterEnergyValue, jdbcType = DOUBLE},</if>
+          update_time = now();
+  </insert>
+</mapper>

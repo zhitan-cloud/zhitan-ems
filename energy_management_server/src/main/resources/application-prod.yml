@@ -1,0 +1,37 @@
+# 数据源配置
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/energy_dongli
+    username: 
+    password: 
+  redis:
+    host: localhost
+    port: 
+
+server:
+  port: 8097
+
+rtdb:
+  host: localhost
+  port: 8086
+#  host: 192.168.8.122
+#  port: 8086
+
+upload:
+  #  path: /Users/fanxinfu/Documents/MyWork/dingzhuo/upload
+  #  path: D:/workspace/energy-management/energy_management_ui/upload
+  path: D:/energy_system/upload
+
+# 表达式不能包含年的部分 最多六个
+govReport:
+  # 15分钟执行一次
+  cronDay: 0 30/15 0,1 * * *
+  # 每月从1号开始 每天零点执行一次
+  cronMonth: 0 0 0 1,2,3,4 * *
+
+mqtt:
+  host: tcp://localhost:30509
+  username: 
+  password: 
+  subhbt: iot-2/evt/waconn/#
+  subhbtqos: 0

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.energyBalance.mapper.EnergyPicMapper">
+
+    <resultMap type="EnergyPic" id="EnergyPicResult">
+        <result property="index_id"    column="index_id"    />
+        <result property="name"    column="name"    />
+        <result property="code"    column="code"    />
+        <result property="address"    column="address"    />
+        <result property="modename"    column="modename"    />
+        <result property="a1" column="a1"/>
+        <result property="a2" column="a2"/>
+        <result property="a3" column="a3"/>
+        <result property="a4" column="a4"/>
+        <result property="a5" column="a5"/>
+        <result property="a6" column="a6"/>
+        <result property="a7" column="a7"/>
+        <result property="a8" column="a8"/>
+        <result property="a9" column="a9"/>
+        <result property="a10" column="a10"/>
+        <result property="a11" column="a11"/>
+        <result property="a12" column="a12"/>
+        <result property="a13" column="a13"/>
+        <result property="a14" column="a14"/>
+        <result property="a15" column="a15"/>
+        <result property="a16" column="a16"/>
+        <result property="a17" column="a17"/>
+        <result property="a18" column="a18"/>
+        <result property="a19" column="a19"/>
+        <result property="a20" column="a20"/>
+        <result property="a21" column="a21"/>
+        <result property="a22" column="a22"/>
+        <result property="a23" column="a23"/>
+        <result property="a24" column="a24"/>
+        <result property="a25" column="a25"/>
+        <result property="a26" column="a26"/>
+        <result property="a27" column="a27"/>
+        <result property="a28" column="a28"/>
+        <result property="a29" column="a29"/>
+        <result property="a30" column="a30"/>
+        <result property="a31" column="a31"/>
+        <result property="a32" column="a32"/>
+        <result property="a33" column="a33"/>
+        <result property="a34" column="a34"/>
+        <result property="a35" column="a35"/>
+        <result property="a36" column="a36"/>
+    </resultMap>
+
+
+    <select id="selectEnergyPicList" parameterType="EnergyPic" resultMap="EnergyPicResult">
+        select * from (
+        SELECT
+        aa.index_id,
+        aa.data_time,
+        aa.name,
+        aa.code,
+        aa.address,
+        aa.modename,
+        max(value) as A1
+        FROM
+        (
+        SELECT di.index_id,
+        "value",
+        data_time,
+        ei.name,
+        ei.code,
+        mo.address,
+        mo."name" as modename
+        FROM	data_item di ,
+        energy_index ei,
+        node_index ni,
+        model_node mo
+        WHERE
+        to_char( data_time, 'YYYY-MM-DD HH24' ) = #{sqlWhereDataTime}
+        AND time_type = 'HOUR'
+        and di.index_id = ei.index_id
+        and ei.index_id = ni.index_id
+        and ni.node_id = mo.node_id
+        and ni.node_id IN ( SELECT node_id FROM model_node WHERE address LIKE ( SELECT address FROM model_node WHERE node_id = #{nodeid} ) || '%' )
+        ) aa
+        GROUP BY
+        aa.index_id,aa.data_time,aa.name,aa.code,aa.address,aa."modename") t
+        order by t.address
+    </select>
+
+</mapper>

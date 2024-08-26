@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.comprehensiveStatistics.mapper.comprehensiveStatisticsMapper">
+    <resultMap id="dataItemMap" type="com.dingzhuo.energy.project.comprehensiveStatistics.domain.comprehensiveStatistics">
+        <id column="index_id" property="indexId"/>
+        <id column="time_code" property="timeCode"/>
+        <id column="index_code" property="indexCode"/>
+        <id column="index_name" property="indexName"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="data_time" property="dataTime"/>
+        <result column="value" property="value"/>
+        <result column="time_type" property="timeType"/>
+        <result column="quality" property="quality"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+        <result column="name" property="name"/>
+        <result column="index_type" property="indexType"/>
+        <result column="facility_name" property="facilityName"/>
+    </resultMap>
+    <resultMap id="comprehensiveMap" type="com.dingzhuo.energy.project.comprehensiveStatistics.domain.comprehensive">
+        <result column="index_id" property="indexId"/>
+        <result column="index_name" property="indexName"/>
+        <result column="time_type" property="timeType"/>
+        <result column="value1" property="value1"/>
+        <result column="value2" property="value2"/>
+        <result column="value3" property="value3"/>
+        <result column="value4" property="value4"/>
+        <result column="value5" property="value5"/>
+        <result column="value6" property="value6"/>
+        <result column="value7" property="value7"/>
+        <result column="value8" property="value8"/>
+        <result column="value9" property="value9"/>
+        <result column="value10" property="value10"/>
+        <result column="value11" property="value11"/>
+        <result column="value12" property="value12"/>
+        <result column="value13" property="value13"/>
+        <result column="value14" property="value14"/>
+        <result column="value15" property="value15"/>
+        <result column="value16" property="value16"/>
+        <result column="value17" property="value17"/>
+        <result column="value18" property="value18"/>
+        <result column="value19" property="value19"/>
+        <result column="value20" property="value20"/>
+        <result column="value21" property="value21"/>
+        <result column="value22" property="value22"/>
+        <result column="value23" property="value23"/>
+        <result column="value24" property="value24"/>
+        <result column="value25" property="value25"/>
+        <result column="value26" property="value26"/>
+        <result column="value27" property="value27"/>
+        <result column="value28" property="value28"/>
+        <result column="value29" property="value29"/>
+        <result column="value30" property="value30"/>
+        <result column="value31" property="value31"/>
+    </resultMap>
+
+    <sql id="itemHead">
+        SELECT di.index_id,
+               di.time_code,
+               di.time_type,
+               di.begin_time,
+               di.end_time,
+               di.data_time,
+               di.value,
+               di.quality,
+               di.create_time,
+               di.update_time,
+               ci.code AS "index_code",
+               ci.name AS "index_name",
+               ci.unit_id AS unitId,
+               f.facility_name AS facilityName
+        FROM data_item di
+               LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+               LEFT JOIN facility_archives f ON f."id"=ci.equipment
+    </sql>
+    <select id="getStatisticsEnergy" resultType="com.dingzhuo.energy.basic.data.enerInfoManage.domain.SysEnergy">
+        select enerid, enersno, enername,( SELECT d.dict_label FROM sys_dict_data d WHERE dict_type = 'sys_unit' AND d.dict_code	= e.muid) muidName
+        from sys_energy e
+               left join node_energy ne on e.enerid = ne.energy_id
+        where ne.node_id = #{nodeId};
+    </select>
+    <select id="getDatasByIndex" resultMap="dataItemMap">
+        SELECT
+            e.NAME,
+            e.index_code,
+            di.index_id,
+            di.time_code,
+            di.time_type,
+            di.begin_time,
+            di.end_time,
+            di.data_time,
+            di.VALUE,
+            di.quality,
+            di.create_time,
+            di.update_time
+        FROM
+            data_item di
+            LEFT JOIN energy_statistics e ON di.index_id = e.index_id
+        where di.time_code = #{timeCode}
+            AND di.index_id in
+            <foreach item="indexId" index="index" collection="indexIds" open="(" separator="," close=")">
+                #{indexId}
+            </foreach>
+    </select>
+    <select id="getEnergyByIndex" resultMap="dataItemMap">
+       select "name",index_id from  energy_statistics where index_type=#{indexType}
+    </select>
+    <select id="getFacilityArchives" resultType="com.dingzhuo.energy.basic.data.facility.domain.FacilityArchives">
+        SELECT ID,code,facility_name AS facilityName FROM facility_archives
+    </select>
+
+    <select id="getDatasIndex" resultMap="dataItemMap">
+        SELECT di.index_id,
+        di.time_code,
+        di.time_type,
+        di.begin_time,
+        di.end_time,
+        di.data_time,
+        di.value,
+        di.quality,
+        di.create_time,
+        di.update_time,
+        ci.code AS "index_code",
+        ci.name AS "index_name",
+        ci.unit_id AS unitId,
+        f.facility_name AS "facility_name"
+        FROM data_item di
+        LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+        LEFT JOIN facility_archives f ON f."id"=ci.equipment
+        where di.time_code = #{timeCode}
+        AND di.index_id in
+        <foreach item="indexId" index="index" collection="indexIds"
+                 open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+         and ci.equipment is not null
+        ORDER BY di."value" desc
+    </select>
+
+    <select id="getDatasByList" resultMap="dataItemMap">
+        SELECT
+            e.NAME,
+            e.index_code,
+            di.index_id,
+            di.time_code,
+            di.time_type,
+            di.begin_time,
+            di.end_time,
+            di.data_time,
+            di.VALUE,
+            di.quality,
+            di.create_time,
+            di.update_time
+        FROM
+            data_item di
+            LEFT JOIN energy_statistics e ON di.index_id = e.index_id
+        where di.time_type = #{timeType}
+            AND di.data_time &gt;= #{beginTime}
+            AND di.data_time &lt; #{endTime}
+            AND di.index_id in
+            <foreach item="indexId" index="index" collection="indexIds"
+                     open="(" separator="," close=")">
+                #{indexId}
+            </foreach>
+        ORDER BY di."value" desc
+    </select>
+</mapper>

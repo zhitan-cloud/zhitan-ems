@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.enerInfoManage.mapper.SysProductMapper">
+
+    <resultMap type="SysProduct" id="SysProductResult">
+        <result property="productid"    column="productid"    />
+        <result property="productname"    column="productname"    />
+        <result property="productsno"    column="productsno"    />
+        <result property="muid"    column="muid"    />
+        <result property="superid"    column="superid"    />
+        <result property="issub"    column="issub"    />
+        <result property="procofficient"    column="procofficient"    />
+        <result property="isshow"    column="isshow"    />
+        <result property="iscpnyproduct"    column="iscpnyproduct"    />
+        <result property="oprMan"    column="opr_man"    />
+        <result property="oprTime"    column="opr_time"    />
+        <result property="modMan"    column="mod_man"    />
+        <result property="modTime"    column="mod_time"    />
+        <result property="note"    column="note"    />
+    </resultMap>
+
+    <sql id="selectSysProductVo">
+        select productid, productname, productsno, muid,
+        superid, issub, procofficient,
+        isshow, iscpnyproduct, opr_man, opr_time, mod_man, mod_time, note,price from sys_product
+    </sql>
+
+    <select id="selectSysProductList" parameterType="SysProduct" resultMap="SysProductResult">
+        select a.productid, a.productname, productsno, muid,
+        b.productname as superidname,
+        issub, procofficient,
+        isshow, iscpnyproduct, opr_man, opr_time, mod_man, mod_time, note,price from sys_product a
+        left join (select productid,productname from sys_product) as b on a.superid = b.productid
+        <where>
+            <if test="productname != null  and productname != ''"> and a.productname like concat('%', #{productname}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectSysProductById" parameterType="Integer" resultMap="SysProductResult">
+        <include refid="selectSysProductVo"/>
+        where productid = #{productid}
+    </select>
+
+    <insert id="insertSysProduct" parameterType="SysProduct">
+        insert into sys_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            opr_time,
+            mod_time,
+            <if test="productname != null  and productname != ''">productname,</if>
+            <if test="productsno != null  and productsno != ''">productsno,</if>
+            <if test="muid != null ">muid,</if>
+            <if test="superid != null ">superid,</if>
+            <if test="issub != null ">issub,</if>
+            <if test="procofficient != null ">procofficient,</if>
+            <if test="isshow != null ">isshow,</if>
+            <if test="iscpnyproduct != null ">iscpnyproduct,</if>
+            <if test="oprMan != null  and oprMan != ''">opr_man,</if>
+
+            <if test="modMan != null  and modMan != ''">mod_man,</if>
+
+            <if test="note != null  and note != ''">note,</if>
+            <if test="price != null  and price != ''">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),
+            now(),
+            <if test="productid != null ">#{productid},</if>
+            <if test="productname != null  and productname != ''">#{productname},</if>
+            <if test="productsno != null  and productsno != ''">#{productsno},</if>
+            <if test="muid != null ">#{muid},</if>
+            <if test="superid != null ">#{superid},</if>
+            <if test="issub != null ">#{issub},</if>
+            <if test="procofficient != null ">#{procofficient},</if>
+            <if test="isshow != null ">#{isshow},</if>
+            <if test="iscpnyproduct != null ">#{iscpnyproduct},</if>
+            <if test="oprMan != null  and oprMan != ''">#{oprMan},</if>
+            <if test="modMan != null  and modMan != ''">#{modMan},</if>
+            <if test="note != null  and note != ''">#{note},</if>
+            <if test="price != null  and price != ''">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysProduct" parameterType="SysProduct">
+        update sys_product
+        <trim prefix="SET" suffixOverrides=",">
+            mod_time = now(),
+            <if test="productname != null  and productname != ''">productname = #{productname},</if>
+            <if test="productsno != null  and productsno != ''">productsno = #{productsno},</if>
+            <if test="muid != null ">muid = #{muid},</if>
+            <if test="superid != null ">superid = #{superid},</if>
+            <if test="issub != null ">issub = #{issub},</if>
+            <if test="procofficient != null ">procofficient = #{procofficient},</if>
+            <if test="isshow != null ">isshow = #{isshow},</if>
+            <if test="iscpnyproduct != null ">iscpnyproduct = #{iscpnyproduct},</if>
+            <if test="modMan != null  and modMan != ''">mod_man = #{modMan},</if>
+            <if test="note != null  and note != ''">note = #{note},</if>
+            <if test="price != null  and price != ''">price = #{price},</if>
+        </trim>
+        where productid = #{productid}
+    </update>
+
+    <delete id="deleteSysProductById" parameterType="Integer">
+        delete from sys_product where productid = #{productid}
+    </delete>
+
+    <delete id="deleteSysProductByIds" parameterType="String">
+        delete from sys_product where productid in
+        <foreach item="productid" collection="array" open="(" separator="," close=")">
+            #{productid}
+        </foreach>
+    </delete>
+
+    <select id="selectCountByName" parameterType="SysProduct" resultType="Integer">
+        select count(productid) from sys_product where productname = #{productname}
+    </select>
+
+    <select id="selectCountByNo" parameterType="SysProduct" resultType="Integer">
+        select count(productid) from sys_product where productsno = #{productsno}
+    </select>
+
+    <select id="selectIdByName" parameterType="SysProduct" resultType="Integer">
+        select productid from sys_product where productname = #{productname}
+    </select>
+
+    <select id="selectIdByNo" parameterType="SysProduct" resultType="Integer">
+        select productid from sys_product where productsno = #{productsno}
+    </select>
+</mapper>

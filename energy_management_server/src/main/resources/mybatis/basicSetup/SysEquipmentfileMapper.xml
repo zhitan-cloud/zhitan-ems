@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.basicSetup.mapper.SysEquipmentfileMapper">
+  <resultMap id="SysEquipmentFile"
+    type="com.dingzhuo.energy.project.basicSetup.domain.SysEquipmentfile">
+    <result property="nodeId" column="node_id"/>
+    <result property="filePath" column="filepath"/>
+  </resultMap>
+  <resultMap id="SysSvgInfo"
+    type="com.dingzhuo.energy.project.basicSetup.domain.SysSvgInfo">
+    <result property="id" column="id"/>
+    <result property="param" column="param"/>
+    <result property="tag" column="tag"/>
+  </resultMap>
+
+  <insert id="saveSettingInfo">
+    delete
+    from sys_svg_info
+    where node_id = #{nodeId};
+
+    <foreach collection="svgInfo" item="info" separator=";">
+      insert into sys_svg_info (id, node_id, param, tag)
+      values (#{info.id}, #{nodeId}, #{info.param}, #{info.tag});
+    </foreach>
+  </insert>
+
+  <update id="saveEquipmentFile">
+    insert into sys_equipmentfile (node_id, filepath)
+    select #{nodeId}, #{filePath}
+    on conflict
+      (node_id)
+    do update
+    set filepath = #{filePath}
+  </update>
+  <select id="getConfigure" resultMap="SysEquipmentFile">
+    select node_id, filepath
+    from sys_equipmentfile
+    where node_id = #{nodeId};
+  </select>
+  <select id="getConfigureTag" resultMap="SysSvgInfo">
+    select id, param, tag
+    from sys_svg_info
+    where node_id = #{nodeId}
+  </select>
+
+</mapper>

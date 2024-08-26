@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.gateway.mapper.GatewaySettingMapper">
+
+    <resultMap type="GatewaySetting" id="GatewaySettingResult">
+        <result property="id"    column="id"    />
+        <result property="gatewayNum"    column="gateway_num"    />
+        <result property="plantArea"    column="plant_area"    />
+        <result property="address"    column="address"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="hbtTime"    column="hbt_time"    />
+    </resultMap>
+
+    <sql id="selectGatewaySettingVo">
+        select id, gateway_num, plant_area, address, create_by, create_time, update_by, update_time, hbt_time from gateway_setting
+    </sql>
+
+    <select id="selectGatewaySettingList" parameterType="GatewaySetting" resultMap="GatewaySettingResult">
+        <include refid="selectGatewaySettingVo"/>
+        <where>
+            <if test="gatewayNum != null  and gatewayNum != ''"> and gateway_num like concat('%', #{gatewayNum}, '%')</if>
+            <if test="address != null  and address != ''"> and address like concat('%', #{address}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectGatewaySettingById" parameterType="String" resultMap="GatewaySettingResult">
+        <include refid="selectGatewaySettingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGatewaySetting" parameterType="GatewaySetting">
+        insert into gateway_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="gatewayNum != null  and gatewayNum != ''">gateway_num,</if>
+            <if test="plantArea != null  and plantArea != ''">plant_area,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="hbtTime != null ">hbt_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="gatewayNum != null  and gatewayNum != ''">#{gatewayNum},</if>
+            <if test="plantArea != null  and plantArea != ''">#{plantArea},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="hbtTime != null ">#{hbtTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGatewaySetting" parameterType="GatewaySetting">
+        update gateway_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="gatewayNum != null  and gatewayNum != ''">gateway_num = #{gatewayNum},</if>
+            <if test="plantArea != null  and plantArea != ''">plant_area = #{plantArea},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="hbtTime != null ">hbt_time = #{hbtTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGatewaySettingById" parameterType="String">
+        delete from gateway_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteGatewaySettingByIds" parameterType="String">
+        delete from gateway_setting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateGatewaySettingByNum" parameterType="GatewaySetting">
+        update gateway_setting
+        set hbt_time = #{hbtTime}
+        where gateway_num = #{gatewayNum}
+    </update>
+
+
+    <select id="selectGatewaySettingMonitorList" resultMap="GatewaySettingResult">
+        <include refid="selectGatewaySettingVo"/>
+    </select>
+
+    <select id="checkOne" parameterType="GatewaySetting" resultMap="GatewaySettingResult">
+        <include refid="selectGatewaySettingVo"/>
+        where
+        gateway_num=#{gatewayNum}
+        <if test="id != null  and id != ''">
+            and id != #{id}
+        </if>
+    </select>
+</mapper>

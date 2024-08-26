@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.reportForm.mapper.reportSetMapper">
+    <resultMap type="reportSet" id="reportSetResult">
+        <result property="id" column="id"/>
+        <result property="indexId" column="index_id"/>
+        <result property="dateType" column="date_type"/>
+        <result property="nodeId" column="node_id"/>
+        <result property="enableLimitValue" column="enable_limit_value"/>
+        <result property="limitValUp" column="limit_val_up"/>
+        <result property="limitValDown" column="limit_val_down"/>
+        <result property="limitReplaceValUp" column="limit_replace_val_up"/>
+        <result property="limitReplaceValDown" column="limit_replace_val_down"/>
+    </resultMap>
+    <select id="listReportSet" parameterType="String" resultMap="reportSetResult">
+        SELECT
+            *
+        FROM
+            report_set
+        WHERE
+            index_id =#{indexId}
+            AND node_id = #{nodeId} AND del = 0
+   </select>
+
+    <select id="listNodeReportSet" parameterType="String" resultMap="reportSetResult">
+        SELECT
+            *
+        FROM
+            report_set
+        WHERE
+            node_id = #{nodeId} AND del = 0
+   </select>
+
+    <update id="deleteReportSetByNodeId" parameterType="String">
+        update report_set set del = 1 , update_time = now(),update_by=#{username} where node_id = #{nodeId} AND index_id = #{indexId} and del=0
+    </update>
+
+    <insert id="saveReportSet">
+        insert into report_set (
+        id,
+        index_id,
+        node_id,
+        date_type,
+        limit_val_up,
+        limit_val_down,
+        limit_replace_val_up,
+        limit_replace_val_down,
+        update_time,
+        update_by,
+        create_time,
+        create_by,del,enable_limit_value)
+        values
+        <foreach collection="list" item="data" index="index" separator=",">
+            (#{data.id},
+            #{data.indexId},
+            #{data.nodeId},
+            #{data.dateType},
+            #{data.limitValUp},
+            #{data.limitValDown},
+            #{data.limitReplaceValUp},
+            #{data.limitReplaceValDown},
+            now(),
+            #{data.updateBy},
+            now(),
+            #{data.createBy},0,#{data.enableLimitValue})
+        </foreach>
+    </insert>
+
+    <resultMap type="reportSetDataModel" id="reportSetDataResult">
+        <result property="indexId" column="index_id"/>
+        <result property="indexCode" column="code"/>
+        <result property="indexName" column="name"/>
+        <result property="meterName" column="meter_name"/>
+    </resultMap>
+
+    <select id="listNodeIndex" parameterType="String" resultMap="reportSetDataResult">
+        select
+            ni.index_id,ei."name",ei.code,mi.meter_name
+        from
+            node_index ni
+            left join energy_index ei on ni.index_id = ei.index_id
+						LEFT JOIN meter_implement mi on mi."id" = ei.meter_id
+					WHERE
+            ni.node_id =#{nodeId}
+            AND  ei.index_type = #{indexType}
+   </select>
+
+    <update id="updateEnableStatus" >
+        update report_set set enable_limit_value = #{enableStatus} , update_time = now(),update_by=#{username} where node_id = #{nodeId} AND index_id = #{indexId} and del=0
+    </update>
+
+    <select id="getAllEnableSetByDateType" parameterType="String" resultMap="reportSetResult">
+        SELECT
+            *
+        FROM
+            report_set
+        WHERE del = 0 AND enable_limit_value = 1 AND date_type = #{dateType}
+    </select>
+</mapper>

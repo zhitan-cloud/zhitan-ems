@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.enerInfoManage.mapper.SysEnerclassMapper">
+
+    <resultMap type="SysEnerclass" id="SysEnerclassResult">
+        <result property="enerclassid"    column="enerclassid"    />
+        <result property="enerclassname"    column="enerclassname"    />
+        <result property="oprMan"    column="opr_man"    />
+        <result property="oprTime"    column="opr_time"    />
+        <result property="modMan"    column="mod_man"    />
+        <result property="modTime"    column="mod_time"    />
+        <result property="note"    column="note"    />
+    </resultMap>
+
+    <sql id="selectSysEnerclassVo">
+        select enerclassid, enerclassname, opr_man, opr_time, mod_man, mod_time, note from sys_enerclass
+    </sql>
+
+    <select id="selectSysEnerclassList" parameterType="SysEnerclass" resultMap="SysEnerclassResult">
+        <include refid="selectSysEnerclassVo"/>
+        <where>
+            <if test="enerclassname != null  and enerclassname != ''"> and enerclassname like concat('%', #{enerclassname}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectSysEnerclassById" parameterType="Integer" resultMap="SysEnerclassResult">
+        <include refid="selectSysEnerclassVo"/>
+        where enerclassid = #{enerclassid}
+    </select>
+
+    <insert id="insertSysEnerclass" parameterType="SysEnerclass">
+        insert into sys_enerclass
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            mod_time,
+            opr_time,
+            <if test="note != null  and note != ''">note,</if>
+            <if test="enerclassid != null ">enerclassid,</if>
+            <if test="enerclassname != null  and enerclassname != ''">enerclassname,</if>
+            <if test="oprMan != null  and oprMan != ''">opr_man,</if>
+            <if test="modMan != null  and modMan != ''">mod_man,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),
+            now(),
+            <if test="note != null  and note != ''">#{note},</if>
+            <if test="enerclassid != null ">#{enerclassid},</if>
+            <if test="enerclassname != null  and enerclassname != ''">#{enerclassname},</if>
+            <if test="oprMan != null  and oprMan != ''">#{oprMan},</if>
+            <if test="modMan != null  and modMan != ''">#{modMan},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysEnerclass" parameterType="SysEnerclass">
+        update sys_enerclass
+        <trim prefix="SET" suffixOverrides=",">
+            mod_time = now(),
+            <if test="enerclassname != null  and enerclassname != ''">enerclassname = #{enerclassname},</if>
+            <if test="modMan != null  and modMan != ''">mod_man = #{modMan},</if>
+            <if test="note != null  and note != ''">note = #{note},</if>
+        </trim>
+        where enerclassid = #{enerclassid}
+    </update>
+
+    <delete id="deleteSysEnerclassById" parameterType="Integer">
+        delete from sys_enerclass where enerclassid = #{enerclassid}
+    </delete>
+
+    <delete id="deleteSysEnerclassByIds" parameterType="String">
+        delete from sys_enerclass where enerclassid in
+        <foreach item="enerclassid" collection="array" open="(" separator="," close=")">
+            #{enerclassid}
+        </foreach>
+    </delete>
+
+    <select id="selectSameEnergyNameNum" parameterType="String" resultType="Integer">
+        select COUNT(enerclassid) from sys_enerclass where enerclassname = #{enerclassname}
+    </select>
+
+    <select id="selectIdByName" parameterType="String" resultType="Integer">
+        select enerclassid from sys_enerclass where enerclassname = #{enerclassname}
+    </select>
+</mapper>

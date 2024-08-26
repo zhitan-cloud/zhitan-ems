@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.monitoring.device.mapper.DeviceFormulaParamMapper">
+    
+    <resultMap type="DeviceFormulaParam" id="DeviceFormulaParamResult">
+        <result property="id"    column="id"    />
+        <result property="devFormulaId"    column="dev_formula_id"    />
+        <result property="paramName"    column="param_name"    />
+        <result property="paramValue"    column="param_value"    />
+    </resultMap>
+
+    <sql id="selectDeviceFormulaParamVo">
+        select id, dev_formula_id, param_name, param_value from device_formula_param
+    </sql>
+
+    <select id="selectDeviceFormulaParamList" parameterType="DeviceFormulaParam" resultMap="DeviceFormulaParamResult">
+        <include refid="selectDeviceFormulaParamVo"/>
+        <where>  
+            <if test="paramName != null  and paramName != ''"> and param_name like concat('%', #{paramName}, '%')</if>
+            <if test="paramValue != null  and paramValue != ''"> and param_value like concat('%', #{paramValue}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDeviceFormulaParamById" parameterType="String" resultMap="DeviceFormulaParamResult">
+        <include refid="selectDeviceFormulaParamVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDeviceFormulaParam" parameterType="DeviceFormulaParam">
+        insert into device_formula_param
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="devFormulaId != null  and devFormulaId != ''">dev_formula_id,</if>
+            <if test="paramName != null  and paramName != ''">param_name,</if>
+            <if test="paramValue != null  and paramValue != ''">param_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="devFormulaId != null  and devFormulaId != ''">#{devFormulaId},</if>
+            <if test="paramName != null  and paramName != ''">#{paramName},</if>
+            <if test="paramValue != null  and paramValue != ''">#{paramValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeviceFormulaParam" parameterType="DeviceFormulaParam">
+        update device_formula_param
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="devFormulaId != null  and devFormulaId != ''">dev_formula_id = #{devFormulaId},</if>
+            <if test="paramName != null  and paramName != ''">param_name = #{paramName},</if>
+            <if test="paramValue != null  and paramValue != ''">param_value = #{paramValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeviceFormulaParamById" parameterType="String">
+        delete from device_formula_param where id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceFormulaParamByIds" parameterType="String">
+        delete from device_formula_param where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getFormulaParam" resultMap="DeviceFormulaParamResult">
+        select *
+        from device_formula_param
+        where dev_formula_id = #{devFormulaId}
+  </select>
+
+    <insert id="saveDeviceFormulaParam">
+        delete
+        from device_formula_param
+        where dev_formula_id = #{devFormulaId};
+        <foreach collection="deviceFormulaParams" item="formulaParam" separator=";">
+            insert into device_formula_param (id, dev_formula_id, param_name, param_value) values
+            (#{formulaParam.id}, #{formulaParam.devFormulaId},
+            #{formulaParam.paramName},
+            #{formulaParam.paramValue})
+        </foreach>
+    </insert>
+</mapper>

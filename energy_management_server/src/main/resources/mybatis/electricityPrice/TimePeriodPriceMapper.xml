@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.electricity.mapper.TimePeriodPriceMapper">
+    
+    <resultMap type="TimePeriodPrice" id="TimePeriodPriceResult">
+        <result property="id"    column="id"    />
+        <result property="effectiveDate"    column="effective_date"    />
+        <result property="timePeriod"    column="time_period"    />
+        <result property="price"    column="price"    />
+        <result property="dictType"    column="dict_type"    />
+        <result property="dictValue"    column="dict_value"    />
+        <result property="dictLabel"    column="dict_label"    />
+    </resultMap>
+
+    <sql id="selectTimePeriodPriceVo">
+        select id, effective_date, time_period, price from time_period_price
+    </sql>
+
+    <select id="selectTimePeriodPriceList" parameterType="TimePeriodPrice" resultMap="TimePeriodPriceResult">
+        <include refid="selectTimePeriodPriceVo"/>
+        <where>
+            <if test="effectiveDate != null "> and effective_date = #{effectiveDate}</if>
+            <if test="timePeriod != null and timePeriod != '' "> and time_period = #{timePeriod}</if>
+        </where>
+    </select>
+    
+    <select id="selectTimePeriodPriceById" parameterType="String" resultMap="TimePeriodPriceResult">
+        <include refid="selectTimePeriodPriceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTimePeriodPrice" parameterType="TimePeriodPrice">
+        insert into time_period_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="effectiveDate != null ">effective_date,</if>
+            <if test="timePeriod != null  and timePeriod != ''">time_period,</if>
+            <if test="price != null  and price != ''">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="effectiveDate != null ">#{effectiveDate},</if>
+            <if test="timePeriod != null  and timePeriod != ''">#{timePeriod},</if>
+            <if test="price != null  and price != ''">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTimePeriodPrice" parameterType="TimePeriodPrice">
+        update time_period_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="effectiveDate != null ">effective_date = #{effectiveDate},</if>
+            <if test="timePeriod != null  and timePeriod != ''">time_period = #{timePeriod},</if>
+            <if test="price != null  and price != ''">price = #{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTimePeriodPriceById" parameterType="String">
+        delete from time_period_price where id = #{id}
+    </delete>
+
+    <delete id="deleteTimePeriodPriceByIds" parameterType="String">
+        delete from time_period_price where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectDictType" parameterType="TimePeriodPrice" resultMap="TimePeriodPriceResult">
+        select d.dict_label, d.dict_value, d.dict_type,p.price,p.id
+		from sys_dict_data d left join time_period_price p on d.dict_value=p.time_period
+        where d.status = '0'
+        and d.dict_type = #{dictType}
+        <if test="effectiveDate != null "> and p.effective_date = #{effectiveDate}</if>
+        order by d.dict_sort asc
+    </select>
+
+    <select id="dictTypeList" parameterType="TimePeriodPrice" resultMap="TimePeriodPriceResult">
+        select dict_label, dict_value, dict_type
+        from sys_dict_data
+        where status = '0'
+        and dict_type = #{dictType}
+        order by dict_sort asc
+    </select>
+</mapper>

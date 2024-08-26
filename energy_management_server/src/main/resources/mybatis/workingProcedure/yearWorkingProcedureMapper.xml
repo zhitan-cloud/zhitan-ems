@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.workingProcedure.mapper.yearWorkingProcedureMapper">
+    <resultMap id="dataItemMap" type="com.dingzhuo.energy.project.workingProcedure.domain.yearWorkingProcedure">
+        <result column="index_id" property="indexId"/>
+        <result column="index_name" property="indexName"/>
+        <result column="time_type" property="timeType"/>
+        <result column="time_code" property="timeCode"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="value1" property="value1"/>
+        <result column="value2" property="value2"/>
+        <result column="value3" property="value3"/>
+        <result column="value4" property="value4"/>
+        <result column="value5" property="value5"/>
+        <result column="value6" property="value6"/>
+        <result column="value7" property="value7"/>
+        <result column="value8" property="value8"/>
+        <result column="value9" property="value9"/>
+        <result column="value10" property="value10"/>
+        <result column="value11" property="value11"/>
+        <result column="value12" property="value12"/>
+    </resultMap>
+    <!--全厂能耗统计-->
+    <select id="getYearWorkingProcedureList" resultMap="dataItemMap">
+        SELECT
+        aa.index_id,
+        aa.index_name,
+        <foreach item="item" index="index" collection="dataList">
+            MAX ( CASE WHEN data_time = #{item.dataTime} THEN "value" END ) AS ${item.value},
+        </foreach>
+        aa.time_type
+        FROM
+        (
+        SELECT
+        ci.index_id,
+        ci.NAME  AS "index_name",
+        di."value",
+        di.data_time,
+        di.time_type
+        FROM
+        data_item di LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+        WHERE
+        di.data_time >= #{beginTime}
+        AND di.data_time &lt; #{endTime}
+        AND di.index_id IN <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+        AND di.time_type = #{timeType}
+        <if test="indexStorageId !='' and indexStorageId !=null">
+            and ci.energy_id=#{indexStorageId}
+        </if>
+        ) aa
+        GROUP BY
+        aa.index_id,aa.index_name,aa.time_type
+    </select>
+
+    <select id="getListChart" resultMap="dataItemMap">
+        SELECT
+            di.index_id,
+            ci.name AS "index_name",
+            ci.unit_id,
+            di."value",
+            di.data_time,
+            di.time_type,
+            di.time_code
+        FROM
+        data_item di LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+        WHERE
+            di.index_id =#{indexId}
+            AND di.data_time &lt; #{endTime}
+            AND di.data_time >= #{beginTime}
+            AND di.time_type = #{timeType}
+    </select>
+</mapper>

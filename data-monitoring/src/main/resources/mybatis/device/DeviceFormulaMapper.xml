@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.monitoring.device.mapper.DeviceFormulaMapper">
+
+  <resultMap type="DeviceFormula" id="DeviceFormulaResult">
+    <result property="id" column="id"/>
+    <result property="deviceId" column="device_id"/>
+    <result property="stateId" column="state_id"/>
+    <result property="formulaText" column="formula_text"/>
+    <result property="calcText" column="calc_text"/>
+    <result property="isEnable" column="is_enable"/>
+  </resultMap>
+
+  <sql id="selectDeviceFormulaVo">
+    select id, device_id, state_id, formula_text, calc_text, is_enable
+    from device_formula
+  </sql>
+
+  <select id="selectDeviceFormulaList" parameterType="DeviceFormula"
+    resultMap="DeviceFormulaResult">
+    <include refid="selectDeviceFormulaVo"/>
+    <where>
+    </where>
+  </select>
+
+  <select id="selectDeviceFormulaById" parameterType="String" resultMap="DeviceFormulaResult">
+    <include refid="selectDeviceFormulaVo"/>
+    where id = #{id}
+  </select>
+
+  <insert id="insertDeviceFormula" parameterType="DeviceFormula">
+    insert into device_formula
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null  and id != ''">id,</if>
+      <if test="deviceId != null  and deviceId != ''">device_id,</if>
+      <if test="stateId != null  and stateId != ''">state_id,</if>
+      <if test="formulaText != null  and formulaText != ''">formula_text,</if>
+      <if test="calcText != null  and calcText != ''">calc_text,</if>
+      <if test="isEnable != null  and isEnable != ''">is_enable,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null  and id != ''">#{id},</if>
+      <if test="deviceId != null  and deviceId != ''">#{deviceId},</if>
+      <if test="stateId != null  and stateId != ''">#{stateId},</if>
+      <if test="formulaText != null  and formulaText != ''">#{formulaText},</if>
+      <if test="calcText != null  and calcText != ''">#{calcText},</if>
+      <if test="isEnable != null  and isEnable != ''">#{isEnable},</if>
+    </trim>
+  </insert>
+
+  <update id="updateDeviceFormula" parameterType="DeviceFormula">
+    update device_formula
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="deviceId != null  and deviceId != ''">device_id = #{deviceId},</if>
+      <if test="stateId != null  and stateId != ''">state_id = #{stateId},</if>
+      <if test="formulaText != null  and formulaText != ''">formula_text = #{formulaText},</if>
+      <if test="calcText != null  and calcText != ''">calc_text = #{calcText},</if>
+      <if test="isEnable != null  and isEnable != ''">is_enable = #{isEnable},</if>
+    </trim>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteDeviceFormulaById" parameterType="String">
+    delete
+    from device_formula
+    where id = #{id}
+  </delete>
+
+  <delete id="deleteDeviceFormulaByIds" parameterType="String">
+    delete from device_formula where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+  <select id="getDeviceFormula" parameterType="String" resultMap="DeviceFormulaResult">
+    <include refid="selectDeviceFormulaVo"/>
+    where device_id = #{nodeId} and state_id = #{stateId}
+  </select>
+  <select id="getAllDeviceFormula" resultMap="DeviceFormulaResult">
+    select *
+    from device_formula
+    where is_enable = 'Y';
+  </select>
+
+  <update id="editDeviceFormulaIsEnable">
+    update device_formula SET is_enable=#{isEnable} where device_id= #{nodeId} and state_id in
+    <foreach item="id" collection="ids" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </update>
+</mapper>

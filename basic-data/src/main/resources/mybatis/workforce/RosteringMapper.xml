@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.workforce.mapper.RosteringMapper">
+    
+    <resultMap type="Rostering" id="RosteringResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="schemeId"    column="scheme_id"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="dutyId"    column="duty_id"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="departMemberId"    column="depart_member_id"  />
+        <result property="beginTimes"    column="begin_times"    />
+        <result property="endTimes"    column="end_times"  />
+    </resultMap>
+    <resultMap type="RosteringScheme" id="RosteringSchemeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+    <resultMap type="RosteringCopy" id="RosteringCopyResult">
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="schemeId"    column="scheme_id"    />
+        <result property="shiftName"    column="name"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="enddTime"    column="endd_time"    />
+        <result property="isCrossDay"    column="is_cross_day"    />
+        <result property="dutyName"    column="name"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="dutyId"    column="duty_id"    />
+    </resultMap>
+    <sql id="selectRosteringVo">
+        SELECT r.ID,
+            r.code,
+            r.NAME,
+            r.begin_times,
+            r.end_times,
+            r.scheme_id,
+            (SELECT name from rostering_scheme a where a.id=r.scheme_id) schemeName,
+            r.shift_id,
+           (SELECT name from rostering_shift d where d.id=r.shift_id) shiftName,
+            r.duty_id,
+            (SELECT name from rostering_duty d where d.id=r.duty_id) dutyName,
+            r.depart_member_id,
+            (SELECT s.dept_name FROM sys_dept s WHERE s.dept_id=r.depart_member_id) deptName,
+            r.description
+        FROM
+            rostering r
+
+    </sql>
+
+    <select id="selectRosteringList" parameterType="Rostering" resultMap="RosteringResult">
+        <include refid="selectRosteringVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="schemeId != null  and schemeId != ''"> and scheme_id like concat('%', #{schemeId}, '%')</if>
+            <if test="shiftId != null  and shiftId != ''"> and shift_id like concat('%', #{shiftId}, '%')</if>
+            <if test="dutyId != null  and dutyId != ''"> and duty_id like concat('%', #{dutyId}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+            <if test="departMemberId != null  and departMemberId != ''"> and depart_member_id like concat('%', #{departMemberId}, '%')</if>
+        </where>
+    </select>
+    <select id="selectSchemeNameList" parameterType="RosteringScheme" resultMap="RosteringSchemeResult">
+         select id,name from rostering_scheme
+    </select>
+
+    <select id="selectRosteringById" parameterType="String" resultMap="RosteringResult">
+        <include refid="selectRosteringVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRostering" parameterType="Rostering">
+        insert into rostering
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="schemeId != null  and schemeId != ''">scheme_id,</if>
+            <if test="shiftId != null  and shiftId != ''">shift_id,</if>
+            <if test="dutyId != null  and dutyId != ''">duty_id,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="departMemberId != null  and departMemberId != ''">depart_member_id,</if>
+            <if test="beginTimes != null">begin_times,</if>
+            <if test="endTimes != null">end_times,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="schemeId != null  and schemeId != ''">#{schemeId},</if>
+            <if test="shiftId != null  and shiftId != ''">#{shiftId},</if>
+            <if test="dutyId != null  and dutyId != ''">#{dutyId},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="departMemberId != null  and departMemberId != ''">#{departMemberId},</if>
+            <if test="beginTimes != null">#{beginTimes},</if>
+            <if test="endTimes != null">#{endTimes},</if>
+         </trim>
+    </insert>
+    <insert id="saveRostering1" parameterType="java.util.List">
+        <foreach item="dataItems" collection="dataItemVlues">
+            <if test="dataItems != null">
+                insert into rostering (id,code,name,scheme_id,shift_id,duty_id,description,create_by,create_time,depart_member_id,begin_times,end_times)
+                values (#{dataItems.id},#{dataItems.code},#{dataItems.name},#{dataItems.schemeId},#{dataItems.shiftId},#{dataItems.dutyId},#{dataItems.description},#{dataItems.createBy},#{dataItems.createTime},#{dataItems.departMemberId},#{dataItems.beginTimes},#{dataItems.endTimes});
+            </if>
+        </foreach>
+    </insert>
+    <insert id="saveRostering">
+        insert into rostering (id,code,name,scheme_id,shift_id,duty_id,description,create_by,create_time,depart_member_id,begin_times,end_times)
+        values
+        <foreach collection="list" item="dataItems" index="index" separator=",">
+            (#{dataItems.id},#{dataItems.code},#{dataItems.name},#{dataItems.schemeId},#{dataItems.shiftId},#{dataItems.dutyId},#{dataItems.description},#{dataItems.createBy},#{dataItems.createTime},#{dataItems.departMemberId},#{dataItems.beginTimes},#{dataItems.endTimes})
+        </foreach>
+    </insert>
+    <update id="updateRostering" parameterType="Rostering">
+        update rostering
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="schemeId != null  and schemeId != ''">scheme_id = #{schemeId},</if>
+            <if test="shiftId != null  and shiftId != ''">shift_id = #{shiftId},</if>
+            <if test="dutyId != null  and dutyId != ''">duty_id = #{dutyId},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="departMemberId != null  and departMemberId != ''">depart_member_id = #{departMemberId},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="beginTimes != null">begin_times = #{beginTimes},</if>
+            <if test="endTimes != null">end_times = #{endTimes},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRosteringById" parameterType="String">
+        delete from rostering where id = #{id}
+    </delete>
+
+    <delete id="deleteRosteringByIds" parameterType="String">
+        delete from rostering where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectList" parameterType="RosteringCopy" resultMap="RosteringCopyResult">
+        SELECT
+            s.code,
+            s.name,
+            s.scheme_id,
+            s.shift_id,
+	        s.duty_id,
+            (rs.name) shiftName,
+            rs.start_time,
+            rs.endd_time,
+            rs.is_cross_day,
+            (d.name) dutyName
+        FROM
+            rostering_scheme_item s
+            LEFT JOIN rostering_shift rs ON rs.id = s.shift_id
+            LEFT JOIN rostering_duty d ON d.id = s.duty_id
+        WHERE
+            scheme_id = #{schemeId}
+            AND rs.dept_id = #{departMemberId}
+
+    </select>
+</mapper>

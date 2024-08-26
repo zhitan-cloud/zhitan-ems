@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.workforce.mapper.RosteringSchemeitemMapper">
+    <resultMap type="RosteringSchemeitem" id="RosteringSchemeitemResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="schemeId"    column="scheme_id"    />
+        <result property="dayofloopdays"    column="dayOfLoopDays"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="dutyId"    column="duty_id"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRosteringSchemeitemVo">
+        select id, code, name, scheme_id,(select name from rostering_scheme where id=scheme_id) schemeName, "dayOfLoopDays", shift_id,(select name from rostering_shift where id=shift_id) shiftName, duty_id,(select name from rostering_duty where id=duty_id) dutyName, description, create_by, create_time, update_by, update_time from rostering_scheme_item
+    </sql>
+
+    <select id="selectRosteringSchemeitemList" parameterType="RosteringSchemeitem" resultMap="RosteringSchemeitemResult">
+        <include refid="selectRosteringSchemeitemVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="schemeId != null  and schemeId != ''"> and scheme_id like concat('%', #{schemeId}, '%')</if>
+            <if test="dayofloopdays != null  and dayofloopdays != ''"> and dayOfLoopDays like concat('%', #{dayofloopdays}, '%')</if>
+            <if test="shiftId != null  and shiftId != ''"> and shift_id like concat('%', #{shiftId}, '%')</if>
+            <if test="dutyId != null  and dutyId != ''"> and duty_id like concat('%', #{dutyId}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectRosteringSchemeitemById" parameterType="String" resultMap="RosteringSchemeitemResult">
+        <include refid="selectRosteringSchemeitemVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRosteringSchemeitem" parameterType="RosteringSchemeitem">
+        insert into rostering_scheme_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="schemeId != null  and schemeId != ''">scheme_id,</if>
+            <if test="dayofloopdays != null  and dayofloopdays != ''">"dayOfLoopDays",</if>
+            <if test="shiftId != null  and shiftId != ''">shift_id,</if>
+            <if test="dutyId != null  and dutyId != ''">duty_id,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="schemeId != null  and schemeId != ''">#{schemeId},</if>
+            <if test="dayofloopdays != null  and dayofloopdays != ''">#{dayofloopdays},</if>
+            <if test="shiftId != null  and shiftId != ''">#{shiftId},</if>
+            <if test="dutyId != null  and dutyId != ''">#{dutyId},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRosteringSchemeitem" parameterType="RosteringSchemeitem">
+        update rostering_scheme_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="schemeId != null  and schemeId != ''">scheme_id = #{schemeId},</if>
+            <if test="dayofloopdays != null  and dayofloopdays != ''">"dayOfLoopDays" = #{dayofloopdays},</if>
+            <if test="shiftId != null  and shiftId != ''">shift_id = #{shiftId},</if>
+            <if test="dutyId != null  and dutyId != ''">duty_id = #{dutyId},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRosteringSchemeitemById" parameterType="String">
+        delete from rostering_scheme_item where id = #{id}
+    </delete>
+
+    <delete id="deleteRosteringSchemeitemByIds" parameterType="String">
+        delete from rostering_scheme_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

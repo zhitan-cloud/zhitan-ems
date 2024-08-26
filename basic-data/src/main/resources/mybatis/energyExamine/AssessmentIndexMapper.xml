@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.energyExamine.mapper.AssessmentIndexMapper">
+    
+    <resultMap type="AssessmentIndex" id="AssessmentIndexResult">
+        <result property="id"    column="id"    />
+        <result property="modeNodeId"    column="mode_node_id"    />
+        <result property="indexId"    column="index_id"    />
+        <result property="plan"    column="plan"    />
+        <result property="benchmarking"    column="benchmarking"    />
+        <result property="benchRange"    column="bench_range"    />
+        <result property="benchType"    column="bench_type"    />
+        <result property="dualControl"    column="dual_control"    />
+        <result property="customStandard"    column="custom_standard"    />
+        <result property="customVal"    column="custom_val"    />
+        <result property="modename"    column="modename"    />
+        <result property="indexname"    column="indexname"    />
+        <result property="jldw"    column="jldw"    />
+    </resultMap>
+
+    <sql id="selectAssessmentIndexVo">
+        select id, mode_node_id, index_id, plan, benchmarking, bench_range, bench_type, dual_control, custom_standard, custom_val from assessment_Index
+    </sql>
+
+    <select id="selectAssessmentIndexList" parameterType="AssessmentIndex" resultMap="AssessmentIndexResult">
+        <include refid="selectAssessmentIndexVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectAssessmentIndexListByMode" parameterType="AssessmentIndex" resultMap="AssessmentIndexResult">
+        SELECT ID,
+            mode_node_id,
+            a.index_id,
+            plan,
+            benchmarking,
+            bench_range,
+            bench_type,
+            dual_control,
+            custom_standard,
+            custom_val,
+            b.name as modename,
+            c.name as indexname,
+            d.dict_label as jldw
+        FROM
+            assessment_Index a,model_node b,energy_index c,sys_dict_data d
+        WHERE
+            a.mode_node_id IN ( SELECT node_id FROM model_node WHERE address LIKE ( SELECT address FROM
+            model_node WHERE node_id = #{modeNodeId} )
+            <if test='eierarchyFlag=="ALL"'>
+                || '%'
+            </if>
+            )
+            and a.mode_node_id = b.node_id
+            and a.index_id = c.index_id
+            and d.dict_type='sys_unit'
+            and c.unit_id = d.dict_value
+    </select>
+    
+    <select id="selectAssessmentIndexById" parameterType="String" resultMap="AssessmentIndexResult">
+        SELECT ID,
+            mode_node_id,
+            a.index_id,
+            plan,
+            benchmarking,
+            bench_range,
+            bench_type,
+            dual_control,
+            custom_standard,
+            custom_val,
+            b.name as modename,
+            c.name as indexname,
+            d.dict_label as jldw
+        FROM
+            assessment_Index a,model_node b,energy_index c,sys_dict_data d
+        WHERE
+            a.id = #{id}
+            and a.mode_node_id = b.node_id
+            and a.index_id = c.index_id
+            and d.dict_type='sys_unit'
+            and c.unit_id = d.dict_value
+    </select>
+        
+    <insert id="insertAssessmentIndex" parameterType="AssessmentIndex">
+        insert into assessmentIndex
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="modeNodeId != null  and modeNodeId != ''">mode_node_id,</if>
+            <if test="indexId != null  and indexId != ''">index_id,</if>
+            <if test="plan != null  and plan != ''">plan,</if>
+            <if test="benchmarking != null  and benchmarking != ''">benchmarking,</if>
+            <if test="benchRange != null ">bench_range,</if>
+            <if test="benchType != null ">bench_type,</if>
+            <if test="dualControl != null  and dualControl != ''">dual_control,</if>
+            <if test="customStandard != null  and customStandard != ''">custom_standard,</if>
+            <if test="customVal != null ">custom_val,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="modeNodeId != null  and modeNodeId != ''">#{modeNodeId},</if>
+            <if test="indexId != null  and indexId != ''">#{indexId},</if>
+            <if test="plan != null  and plan != ''">#{plan},</if>
+            <if test="benchmarking != null  and benchmarking != ''">#{benchmarking},</if>
+            <if test="benchRange != null ">#{benchRange},</if>
+            <if test="benchType != null ">#{benchType},</if>
+            <if test="dualControl != null  and dualControl != ''">#{dualControl},</if>
+            <if test="customStandard != null  and customStandard != ''">#{customStandard},</if>
+            <if test="customVal != null ">#{customVal},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAssessmentIndex" parameterType="AssessmentIndex">
+        update assessment_Index
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modeNodeId != null  and modeNodeId != ''">mode_node_id = #{modeNodeId},</if>
+            <if test="indexId != null  and indexId != ''">index_id = #{indexId},</if>
+            <if test="plan != null  and plan != ''">plan = #{plan},</if>
+            <if test="benchmarking != null  and benchmarking != ''">benchmarking = #{benchmarking},</if>
+            <if test="benchRange != null ">bench_range = #{benchRange},</if>
+            <if test="benchType != null ">bench_type = #{benchType},</if>
+            <if test="dualControl != null  and dualControl != ''">dual_control = #{dualControl},</if>
+            <if test="customStandard != null  and customStandard != ''">custom_standard = #{customStandard},</if>
+            <if test="customVal != null ">custom_val = #{customVal},</if>
+            <if test="plan == null  or plan == ''">plan = false,</if>
+            <if test="benchmarking == null  or benchmarking == ''">benchmarking = false,</if>
+            <if test="dualControl == null  or dualControl == ''">dual_control = false,</if>
+            <if test="customStandard == null  or customStandard == ''">custom_standard = false,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAssessmentIndexById" parameterType="String">
+        delete from assessment_Index where id = #{id}
+    </delete>
+
+    <delete id="deleteAssessmentIndexByIds" parameterType="String">
+        delete from assessment_Index where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <insert id="batchAssessIndex">
+        insert into assessment_Index(id, mode_node_id, index_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.id},#{item.modeNodeId},#{item.indexId})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.enerInfoManage.mapper.SysEnercoefficientMapper">
+
+    <resultMap type="SysEnercoefficient" id="SysEnercoefficientResult">
+        <result property="ecid"    column="ecid"    />
+        <result property="enerid"    column="enerid"    />
+        <result property="coefficient"    column="coefficient"    />
+        <result property="coefficient2"    column="coefficient2"    />
+        <result property="execdate"    column="execdate"    />
+        <result property="oprMan"    column="opr_man"    />
+        <result property="oprTime"    column="opr_time"    />
+        <result property="modMan"    column="mod_man"    />
+        <result property="modTime"    column="mod_time"    />
+        <result property="note"    column="note"    />
+    </resultMap>
+
+    <sql id="selectSysEnercoefficientVo">
+        select ecid, enerid, coefficient, coefficient2, execdate, opr_man, opr_time, mod_man, mod_time, note from sys_enercoefficient
+    </sql>
+
+    <select id="selectSysEnercoefficientList" parameterType="SysEnercoefficient" resultMap="SysEnercoefficientResult">
+        select a.ecid, a.enerid, a.coefficient, a.coefficient2, a.execdate, a.opr_man, a.opr_time, a.mod_man, a.mod_time, a.note,b.enername
+        from sys_enercoefficient a
+        left join sys_energy b on a.enerid = b.enerid
+        <where>
+            <if test="enername != null  and enername != ''"> and enername like concat('%', #{enername}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectSysEnercoefficientById" parameterType="Integer" resultMap="SysEnercoefficientResult">
+        <include refid="selectSysEnercoefficientVo"/>
+        where ecid = #{ecid}
+    </select>
+
+    <insert id="insertSysEnercoefficient" parameterType="SysEnercoefficient">
+        insert into sys_enercoefficient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ecid != null ">ecid,</if>
+            <if test="enerid != null ">enerid,</if>
+            <if test="coefficient != null  and coefficient != ''">coefficient,</if>
+            <if test="coefficient2 != null  and coefficient2 != ''">coefficient2,</if>
+            <if test="execdate != null ">execdate,</if>
+            <if test="oprMan != null  and oprMan != ''">opr_man,</if>
+            <if test="oprTime != null ">opr_time,</if>
+            <if test="modMan != null  and modMan != ''">mod_man,</if>
+            <if test="modTime != null ">mod_time,</if>
+            <if test="note != null  and note != ''">note,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ecid != null ">#{ecid},</if>
+            <if test="enerid != null ">#{enerid},</if>
+            <if test="coefficient != null  and coefficient != ''">#{coefficient},</if>
+            <if test="coefficient2 != null  and coefficient2 != ''">#{coefficient2},</if>
+            <if test="execdate != null ">#{execdate},</if>
+            <if test="oprMan != null  and oprMan != ''">#{oprMan},</if>
+            <if test="oprTime != null ">#{oprTime},</if>
+            <if test="modMan != null  and modMan != ''">#{modMan},</if>
+            <if test="modTime != null ">#{modTime},</if>
+            <if test="note != null  and note != ''">#{note},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysEnercoefficient" parameterType="SysEnercoefficient">
+        update sys_enercoefficient
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="enerid != null ">enerid = #{enerid},</if>
+            <if test="coefficient != null  and coefficient != ''">coefficient = #{coefficient},</if>
+            <if test="coefficient2 != null  and coefficient2 != ''">coefficient2 = #{coefficient2},</if>
+            <if test="execdate != null ">execdate = #{execdate},</if>
+            <if test="oprMan != null  and oprMan != ''">opr_man = #{oprMan},</if>
+            <if test="oprTime != null ">opr_time = #{oprTime},</if>
+            <if test="modMan != null  and modMan != ''">mod_man = #{modMan},</if>
+            <if test="modTime != null ">mod_time = #{modTime},</if>
+            <if test="note != null  and note != ''">note = #{note},</if>
+        </trim>
+        where ecid = #{ecid}
+    </update>
+
+    <delete id="deleteSysEnercoefficientById" parameterType="Integer">
+        delete from sys_enercoefficient where ecid = #{ecid}
+    </delete>
+
+    <delete id="deleteSysEnercoefficientByIds" parameterType="String">
+        delete from sys_enercoefficient where ecid in
+        <foreach item="ecid" collection="array" open="(" separator="," close=")">
+            #{ecid}
+        </foreach>
+    </delete>
+
+</mapper>

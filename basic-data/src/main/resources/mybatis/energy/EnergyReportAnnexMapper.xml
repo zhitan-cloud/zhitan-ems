@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.energy.mapper.EnergyReportAnnexMapper">
+    
+    <resultMap type="EnergyReportAnnex" id="EnergyReportAnnexResult">
+        <result property="id"    column="id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileSuffix"    column="file_suffix"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="delFlage"    column="del_flage"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectEnergyReportAnnexVo">
+        select id, report_id, file_name, file_suffix, file_path, del_flage, create_time, create_by, update_time, update_by from energy_report_annex
+    </sql>
+
+    <select id="selectEnergyReportAnnexList" parameterType="EnergyReportAnnex" resultMap="EnergyReportAnnexResult">
+        <include refid="selectEnergyReportAnnexVo"/>
+        <where>  
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileSuffix != null  and fileSuffix != ''"> and file_suffix like concat('%', #{fileSuffix}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path like concat('%', #{filePath}, '%')</if>
+            <if test="delFlage != null  and delFlage != ''"> and del_flage like concat('%', #{delFlage}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectEnergyReportAnnexById" parameterType="String" resultMap="EnergyReportAnnexResult">
+        <include refid="selectEnergyReportAnnexVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEnergyReportAnnex" parameterType="EnergyReportAnnex">
+        insert into energy_report_annex
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="reportId != null  and reportId != ''">report_id,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">file_suffix,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="reportId != null  and reportId != ''">#{reportId},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">#{fileSuffix},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="delFlage != null  and delFlage != ''">#{delFlage},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnergyReportAnnex" parameterType="EnergyReportAnnex">
+        update energy_report_annex
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportId != null  and reportId != ''">report_id = #{reportId},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">file_suffix = #{fileSuffix},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage = #{delFlage},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnergyReportAnnexById" parameterType="String">
+        delete from energy_report_annex where id = #{id}
+    </delete>
+
+    <delete id="deleteEnergyReportAnnexByIds" parameterType="String">
+        delete from energy_report_annex where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

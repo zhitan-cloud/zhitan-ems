@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.govReports.mapper.DataItemPubMapper">
+
+    <resultMap type="DataItemPub" id="DataItemPubResult">
+        <result property="indexId" column="index_id"/>
+        <result property="timeCode" column="time_code"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="value" column="value"/>
+        <result property="quality" column="quality"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="timeType" column="time_type"/>
+        <result property="dataTime" column="data_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="sendStatus" column="send_status"/>
+        <result property="sendDate" column="send_date"/>
+        <result property="sendTimes" column="send_times"/>
+        <result property="reportSetId" column="report_set_id"/>
+        <result property="reportUpperLimit" column="report_upper_limit"/>
+        <result property="reportUpperReplace" column="report_upper_replace"/>
+        <result property="reportLowerLimit" column="report_lower_limit"/>
+        <result property="reportLowerReplace" column="report_lower_replace"/>
+        <result property="originValue" column="origin_value"/>
+    </resultMap>
+
+    <resultMap type="DataItemPubVo" id="DataItemPubResultVo">
+        <result property="indexId" column="index_id"/>
+        <result property="indexCode" column="code"/>
+        <result property="indexName" column="name"/>
+        <result property="timeCode" column="time_code"/>
+        <result property="value" column="value"/>
+        <result property="originValue" column="origin_value"/>
+        <result property="reportUpperLimit" column="report_upper_limit"/>
+        <result property="reportUpperReplace" column="report_upper_replace"/>
+        <result property="reportLowerLimit" column="report_lower_limit"/>
+        <result property="reportLowerReplace" column="report_lower_replace"/>
+    </resultMap>
+
+    <sql id="selectDataItemPubVo">
+        select index_id,
+               time_code,
+               begin_time,
+               end_time,
+               value,
+               quality,
+               create_time,
+               update_time,
+               time_type,
+               data_time,
+               create_by,
+               send_status,
+               send_date,
+               send_times,
+               report_set_id,
+               report_upper_limit,
+               report_upper_replace,
+               report_lower_limit,
+               report_lower_replace,
+               origin_value
+        from data_item_pub
+    </sql>
+
+    <select id="selectDataItemPubList" parameterType="DataItemPub" resultMap="DataItemPubResult">
+        <include refid="selectDataItemPubVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectDataItemPubById" parameterType="String" resultMap="DataItemPubResult">
+        <include refid="selectDataItemPubVo"/>
+        where index_id = #{indexId}
+    </select>
+
+    <insert id="insertDataItemPub" parameterType="DataItemPub">
+        insert into data_item_pub
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="indexId != null  and indexId != ''">index_id,</if>
+            <if test="timeCode != null  and timeCode != ''">time_code,</if>
+            <if test="beginTime != null ">begin_time,</if>
+            <if test="endTime != null ">end_time,</if>
+            <if test="value != null ">value,</if>
+            <if test="quality != null  and quality != ''">quality,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="timeType != null  and timeType != ''">time_type,</if>
+            <if test="dataTime != null ">data_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="sendStatus != null ">send_status,</if>
+            <if test="sendDate != null ">send_date,</if>
+            <if test="sendTimes != null ">send_times,</if>
+            <if test="reportSetId != null  and reportSetId != ''">report_set_id,</if>
+            <if test="reportUpperLimit != null ">report_upper_limit,</if>
+            <if test="reportUpperReplace != null ">report_upper_replace,</if>
+            <if test="reportLowerLimit != null ">report_lower_limit,</if>
+            <if test="reportLowerReplace != null ">report_lower_replace,</if>
+            <if test="originValue != null ">origin_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="indexId != null  and indexId != ''">#{indexId},</if>
+            <if test="timeCode != null  and timeCode != ''">#{timeCode},</if>
+            <if test="beginTime != null ">#{beginTime},</if>
+            <if test="endTime != null ">#{endTime},</if>
+            <if test="value != null ">#{value},</if>
+            <if test="quality != null  and quality != ''">#{quality},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="timeType != null  and timeType != ''">#{timeType},</if>
+            <if test="dataTime != null ">#{dataTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="sendStatus != null ">#{sendStatus},</if>
+            <if test="sendDate != null ">#{sendDate},</if>
+            <if test="sendTimes != null ">#{sendTimes},</if>
+            <if test="reportSetId != null  and reportSetId != ''">#{reportSetId},</if>
+            <if test="reportUpperLimit != null ">#{reportUpperLimit},</if>
+            <if test="reportUpperReplace != null ">#{reportUpperReplace},</if>
+            <if test="reportLowerLimit != null ">#{reportLowerLimit},</if>
+            <if test="reportLowerReplace != null ">#{reportLowerReplace},</if>
+            <if test="originValue != null ">#{originValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDataItemPub" parameterType="DataItemPub">
+        update data_item_pub
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="timeCode != null  and timeCode != ''">time_code = #{timeCode},</if>
+            <if test="beginTime != null ">begin_time = #{beginTime},</if>
+            <if test="endTime != null ">end_time = #{endTime},</if>
+            <if test="value != null ">value = #{value},</if>
+            <if test="quality != null  and quality != ''">quality = #{quality},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="timeType != null  and timeType != ''">time_type = #{timeType},</if>
+            <if test="dataTime != null ">data_time = #{dataTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="sendStatus != null ">send_status = #{sendStatus},</if>
+            <if test="sendDate != null ">send_date = #{sendDate},</if>
+            <if test="sendTimes != null ">send_times = #{sendTimes},</if>
+            <if test="reportSetId != null  and reportSetId != ''">report_set_id = #{reportSetId},</if>
+            <if test="reportUpperLimit != null ">report_upper_limit = #{reportUpperLimit},</if>
+            <if test="reportUpperReplace != null ">report_upper_replace = #{reportUpperReplace},</if>
+            <if test="reportLowerLimit != null ">report_lower_limit = #{reportLowerLimit},</if>
+            <if test="reportLowerReplace != null ">report_lower_replace = #{reportLowerReplace},</if>
+            <if test="originValue != null ">origin_value = #{originValue},</if>
+        </trim>
+        where index_id = #{indexId}
+    </update>
+
+    <delete id="deleteDataItemPubById" parameterType="String">
+        delete
+        from data_item_pub
+        where index_id = #{indexId}
+    </delete>
+
+    <delete id="deleteDataItemPubByIds" parameterType="String">
+        delete from data_item_pub where index_id in
+        <foreach item="indexId" collection="array" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+    </delete>
+
+    <select id="getReportData" resultMap="DataItemPubResult">
+        SELECT
+            dItem.index_id,
+            dItem.VALUE AS originValue,
+            dItem.VALUE,
+            dItem.begin_time,
+            dItem.end_time,
+            dItem.quality,
+            dItem.create_time,
+            dItem.update_time,
+            dItem.time_type,
+            dItem.data_time,
+            dItem.create_by,
+            dItem.time_code
+        FROM
+            data_item dItem
+        WHERE dItem.time_code = #{timeCode}
+          AND dItem.time_type = #{dateType}
+    </select>
+
+<!--    注意!!!!!!!!  此处是PostGreSql的写法!-->
+    <insert id="insertOrUpdateDateItemPub">
+        INSERT INTO data_item_pub (
+        index_id,
+        time_code,
+        begin_time,
+        end_time,
+        value,
+        quality,
+        create_time,
+        update_time,
+        time_type,
+        data_time,
+        create_by,
+        send_status,
+        send_date,
+        send_times,
+        report_set_id,
+        report_upper_limit,
+        report_upper_replace,
+        report_lower_limit,
+        report_lower_replace,
+        origin_value
+        )
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (
+            #{item.indexId},
+            #{item.timeCode},
+            #{item.beginTime},
+            #{item.endTime},
+            #{item.value},
+            #{item.quality},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.timeType},
+            #{item.dataTime},
+            #{item.createBy},
+            #{item.sendStatus},
+            #{item.sendDate},
+            #{item.sendTimes},
+            #{item.reportSetId},
+            #{item.reportUpperLimit},
+            #{item.reportUpperReplace},
+            #{item.reportLowerLimit},
+            #{item.reportLowerReplace},
+            #{item.originValue}
+            )
+        </foreach>
+        ON CONFLICT(index_id,time_code) DO UPDATE
+        SET index_id = EXCLUDED.index_id,
+        time_code = EXCLUDED.time_code,
+        begin_time = EXCLUDED.begin_time,
+        end_time = EXCLUDED.end_time,
+        value = EXCLUDED.value,
+        quality = EXCLUDED.quality,
+        create_time = EXCLUDED.create_time,
+        update_time = EXCLUDED.update_time,
+        time_type = EXCLUDED.time_type,
+        data_time = EXCLUDED.data_time,
+        create_by = EXCLUDED.create_by,
+        send_status = EXCLUDED.send_status,
+        send_date = EXCLUDED.send_date,
+        send_times = EXCLUDED.send_times,
+        report_set_id = EXCLUDED.report_set_id,
+        report_upper_limit = EXCLUDED.report_upper_limit,
+        report_upper_replace = EXCLUDED.report_upper_replace,
+        report_lower_limit = EXCLUDED.report_lower_limit,
+        report_lower_replace = EXCLUDED.report_lower_replace,
+        origin_value = EXCLUDED.origin_value
+    </insert>
+
+    <select id="selectDataItemPubInfoList" parameterType="DataItemPub" resultMap="DataItemPubResultVo">
+        select ei.index_id,
+            ei.code,
+            ei."name",
+            dip.time_code,
+            dip."value",
+            dip.origin_value,
+            dip.report_upper_limit,
+            dip.report_upper_replace,
+            dip.report_lower_limit,
+            dip.report_lower_replace
+        from energy_index ei,data_item_pub dip
+        where ei.index_id = dip.index_id
+        <if test="timeCode != null and timeCode != ''" >
+            and dip.time_code=#{timeCode}
+        </if>
+
+    </select>
+
+</mapper>

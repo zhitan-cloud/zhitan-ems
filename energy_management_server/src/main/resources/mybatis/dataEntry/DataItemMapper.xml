@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.dataEntry.mapper.DataItemMapper">
+    <resultMap type="stagseDataEntry" id="stagseDataEntryResult">
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="indexId" column="index_id"/>
+        <result property="timeType" column="time_type"/>
+        <result property="unitId" column="unit_id"/>
+        <result property="calcType" column="calc_type"/>
+        <result property="value" column="value"/>
+        <result property="timeCode" column="time_code"/>
+        <result property="dataTime" column="data_time"/>
+    </resultMap>
+
+    <select id="getSettingIndex" parameterType="stagseDataEntry" resultMap="stagseDataEntryResult">
+
+        SELECT
+        ei.index_id,
+        code,
+        NAME,
+        si.time_type,
+        ei.unit_id
+        FROM
+        energy_index ei
+        LEFT JOIN node_index ni ON ei.index_id = ni.index_id
+        LEFT JOIN index_storage si ON si.index_id = ei.index_id
+        WHERE
+        not EXISTS ( SELECT index_id FROM data_item WHERE index_id =ei.index_id and  data_time >= #{beginTime} AND data_time &lt;= #{endTime}) AND
+        ni.node_id =  #{nodeId}
+        and si.time_type = #{timeType}
+        AND si.calc_type = #{calcType}
+   </select>
+    <select id="getSettingEdit" parameterType="stagseDataEntry" resultMap="stagseDataEntryResult">
+        SELECT
+            ei.index_id,
+            code,
+            NAME,
+            si.time_type,
+            ei.unit_id,
+            di.value,
+            di.data_time
+        FROM
+            energy_index ei
+            LEFT JOIN node_index ni ON ei.index_id = ni.index_id
+            LEFT JOIN index_storage si ON si.index_id = ei.index_id
+            LEFT JOIN data_item di on di.index_id=ei.index_id
+        WHERE
+            ni.node_id = #{nodeId}
+            and si.time_type = #{timeType}
+            AND si.calc_type = #{calcType}
+            AND data_time &gt;= #{beginTime}
+            AND data_time &lt;= #{endTime}
+    </select>
+    <select id="stagseDataByCode" parameterType="stagseDataEntry" resultMap="stagseDataEntryResult">
+        SELECT
+            ei.index_id,
+            code,
+            NAME,
+            ei.unit_id,
+            di.value,
+            di.data_time,
+            di.time_type
+        FROM
+            energy_index ei
+            LEFT JOIN node_index ni ON ei.index_id = ni.index_id
+            LEFT JOIN data_item di on di.index_id=ei.index_id
+        WHERE
+            ni.node_id = #{nodeId}
+            and ei.code IN
+            <foreach item="indexCode" index="index" collection="indexCodes"
+                     open="(" separator="," close=")">
+                #{indexCode}
+            </foreach>
+            and di.time_type = #{timeType}
+            AND di.data_time &gt;= #{beginTime}
+            AND di.data_time &lt;= #{endTime}
+    </select>
+
+    <select id="getDataItemHourInforByIndexIds" resultType="com.dingzhuo.energy.dataservice.domain.DataItem">
+        SELECT
+            index_id indexId,
+            data_time dataTime,
+            "value"
+        FROM
+            "data_item"
+        WHERE
+            index_id IN
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+            AND ( begin_time BETWEEN #{beginTime} AND #{endTime} )
+            AND time_type = #{timeType}
+    </select>
+
+    <select id="getDataItemInforByIndexIds" resultType="com.dingzhuo.energy.dataservice.domain.DataItem">
+        SELECT
+            index_id indexId,
+            begin_time beginTime,
+            "value"
+        FROM
+            "data_item"
+        WHERE
+            index_id IN
+            <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+                #{indexId}
+            </foreach>
+            AND time_code = #{timeCode}
+    </select>
+</mapper>

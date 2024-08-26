@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.plannedOutput.mapper.PlannedOutputMapper">
+
+    <resultMap type="PlannedOutput" id="PlannedOutputResult">
+        <result property="palnType"    column="paln_type"    />
+        <result property="productId"    column="product_id"    />
+        <result property="planValue"    column="plan_value"    />
+        <result property="waterValue"    column="water_value"    />
+        <result property="coalValue"    column="coal_value"    />
+        <result property="value"    column="value"    />
+        <result property="steamValue"    column="steam_value"    />
+        <result property="dataTime"    column="data_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="productname"    column="productname"    />
+        <result property="productsno"    column="productsno"    />
+        <result property="muid"    column="muid"    />
+        <result property="timeCode"    column="time_code"    />
+    </resultMap>
+
+    <sql id="selectPlannedOutputVo">
+        SELECT
+            productid as product_id,
+            productsno,
+            productname,
+            p.muid,
+            po.plan_value,
+            po.paln_type,
+            po."value",
+            po.coal_value,
+            po.steam_value,
+            po.water_value
+        FROM
+            sys_product P
+          left JOIN planned_output po on po.product_id= p.productid
+    </sql>
+
+    <select id="selectPlannedOutputList" parameterType="PlannedOutput" resultMap="PlannedOutputResult">
+        <include refid="selectPlannedOutputVo"/>
+        <where>
+          p.productid in <foreach item="indexId" index="index" collection="indexIds"
+                                open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+          <if test="palnType != null  and palnType !=''"> AND po.paln_type = #{palnType} </if>
+          <if test="timeCode != null  and timeCode !=''"> AND po.time_code = #{timeCode} </if>
+        </where>
+    </select>
+    <select id="selectPlanList" parameterType="PlannedOutput" resultMap="PlannedOutputResult">
+        SELECT
+            productid as product_id,
+            productsno,
+            productname,
+            p.muid
+        FROM
+            sys_product P
+        <where>
+             p.productid in <foreach item="indexId" index="index" collection="indexIds"
+                                open="(" separator="," close=")">
+            #{indexId}
+            </foreach>
+        </where>
+    </select>
+    <insert id="insertPlannedOutput" parameterType="PlannedOutput">
+        insert into planned_output
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="palnType != null  and palnType != ''">paln_type,</if>
+            <if test="productId != null ">product_id,</if>
+            <if test="planValue != null  and planValue != ''">plan_value,</if>
+            <if test="dataTime != null ">data_time,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="palnType != null  and palnType != ''">#{palnType},</if>
+            <if test="productId != null ">#{productId},</if>
+            <if test="planValue != null  and planValue != ''">#{planValue},</if>
+            <if test="dataTime != null ">#{dataTime},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <insert id="save">
+        insert into planned_output (
+                               time_code,
+                               paln_type,
+                               product_id,
+                               plan_value,
+                               value,
+                               coal_value,
+                               steam_value,
+                               water_value,
+                               data_time,
+                               create_time)
+        select #{plannedOutput.timeCode},
+               #{plannedOutput.palnType},
+               #{plannedOutput.productId},
+               #{plannedOutput.planValue,jdbcType = DOUBLE},
+               #{plannedOutput.value,jdbcType = DOUBLE},
+               #{plannedOutput.coalValue,jdbcType = DOUBLE},
+               #{plannedOutput.steamValue,jdbcType = DOUBLE},
+               #{plannedOutput.waterValue,jdbcType = DOUBLE},
+               #{plannedOutput.dataTime},
+               now()
+        on conflict
+          (product_id,time_code)
+        do update
+        set plan_value = #{plannedOutput.planValue, jdbcType = DOUBLE},
+            <if test="plannedOutput.value !='' and plannedOutput.value !=null">value = #{plannedOutput.value, jdbcType = DOUBLE},</if>
+            <if test="plannedOutput.coalValue !='' and plannedOutput.coalValue !=null">coal_value = #{plannedOutput.coalValue, jdbcType = DOUBLE},</if>
+            <if test="plannedOutput.steamValue !='' and plannedOutput.steamValue !=null">steam_value = #{plannedOutput.steamValue, jdbcType = DOUBLE},</if>
+            <if test="plannedOutput.waterValue !='' and plannedOutput.waterValue !=null">water_value = #{plannedOutput.waterValue, jdbcType = DOUBLE},</if>
+            update_time = now();
+
+  </insert>
+    <insert id="saveDataList" parameterType="java.util.List">
+        <foreach item="PlannedOutput" collection="ItemVlues">
+            <if test="PlannedOutput != null">
+                insert into planned_output (
+                time_code,
+                paln_type,
+                product_id,
+                plan_value,
+                data_time,
+                create_time)
+                select #{plannedOutput.timeCode},
+                #{plannedOutput.palnType},
+                #{plannedOutput.productId},
+                #{plannedOutput.planValue,jdbcType = DOUBLE},
+                #{plannedOutput.dataTime},
+                now()
+                on conflict
+                (product_id,time_code)
+                do update
+                set plan_value = #{plannedOutput.planValue, jdbcType = DOUBLE},
+                update_time = now();
+            </if>
+        </foreach>
+    </insert>
+
+
+</mapper>

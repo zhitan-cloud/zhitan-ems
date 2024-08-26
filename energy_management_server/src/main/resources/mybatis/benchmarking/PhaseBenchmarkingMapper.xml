@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.benchmarking.mapper.PhaseBenchmarkingMapper">
+    
+    <resultMap type="com.dingzhuo.energy.project.benchmarking.domain.BenchmarkingManagement" id="PhaseBenchmarkingResult">
+        <result property="indexId"    column="index_id"    />
+        <result property="indexName"    column="index_name"    />
+        <result property="indexCode"    column="index_code"    />
+        <result property="unitId"    column="unit_id"    />
+        <result property="timeType"    column="time_type"    />
+        <result property="dateTime"    column="date_time"    />
+        <result property="value"    column="value"    />
+        <result property="timeCode"    column="time_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="actualValue"    column="actual_value"    />
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+    </resultMap>
+
+    <sql id="selectPhaseBenchmarkingVo">
+        SELECT
+            e.index_id,
+            e.name as index_name,
+            e.code as index_code,
+            e.unit_id,
+            bm.time_type,
+            bm.date_time,
+            bm."value",
+            bm.time_code,
+            bm.actual_value
+        FROM
+            energy_index e
+            LEFT JOIN benchmarking_management bm ON bm.index_id = e.index_id
+    </sql>
+
+    <select id="selectPhaseBenchmarkingList" parameterType="com.dingzhuo.energy.project.benchmarking.domain.BenchmarkingManagement" resultMap="PhaseBenchmarkingResult">
+        <include refid="selectPhaseBenchmarkingVo"/>
+        <where>
+            e.index_id =#{indexId}
+            AND bm.time_type = #{timeType}
+            AND bm.date_time &gt;= #{beginTime}
+            AND bm.date_time &lt;= #{endTime}
+        </where>
+    </select>
+    <select id="selectRealTimeListrealTime" parameterType="com.dingzhuo.energy.project.benchmarking.domain.BenchmarkingManagement" resultMap="PhaseBenchmarkingResult">
+        <include refid="selectPhaseBenchmarkingVo"/>
+        <where>
+            e.index_id in <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+            <if test="timeCode != null  and timeCode !=''"> AND bm.time_code = #{timeCode}</if>
+        </where>
+    </select>
+</mapper>

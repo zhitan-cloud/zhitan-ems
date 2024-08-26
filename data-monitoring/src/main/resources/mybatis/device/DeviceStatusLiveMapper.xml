@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.monitoring.device.mapper.DeviceStatusLiveMapper">
+    
+    <resultMap type="DeviceStatusLive" id="DeviceStatusLiveResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="statusId"    column="status_id"    />
+        <result property="statusName"    column="status_name"    />
+        <result property="statusCode"    column="status_code"    />
+        <result property="beginTime"    column="begin_time"    />
+    </resultMap>
+
+    <sql id="selectDeviceStatusLiveVo">
+        select id, device_id, status_id, status_name, status_code, begin_time from device_status_live
+    </sql>
+
+    <select id="selectDeviceStatusLiveList" parameterType="DeviceStatusLive" resultMap="DeviceStatusLiveResult">
+        <include refid="selectDeviceStatusLiveVo"/>
+        <where>  
+            <if test="statusName != null  and statusName != ''"> and status_name like concat('%', #{statusName}, '%')</if>
+            <if test="statusCode != null  and statusCode != ''"> and status_code like concat('%', #{statusCode}, '%')</if>
+            <if test="beginTime != null "> and begin_time like concat('%', #{beginTime}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectDeviceStatusLiveById" parameterType="String" resultMap="DeviceStatusLiveResult">
+        <include refid="selectDeviceStatusLiveVo"/>
+        where device_id = #{id}
+    </select>
+    <select id="getDeviceStatus" resultMap="DeviceStatusLiveResult">
+        <include refid="selectDeviceStatusLiveVo"/>
+        where device_id = #{deviceId} and status_id = #{statusId}
+    </select>
+
+    <insert id="insertDeviceStatusLive" parameterType="DeviceStatusLive">
+        insert into device_status_live
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="deviceId != null  and deviceId != ''">device_id,</if>
+            <if test="statusId != null  and statusId != ''">status_id,</if>
+            <if test="statusName != null  and statusName != ''">status_name,</if>
+            <if test="statusCode != null  and statusCode != ''">status_code,</if>
+            <if test="beginTime != null ">begin_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="deviceId != null  and deviceId != ''">#{deviceId},</if>
+            <if test="statusId != null  and statusId != ''">#{statusId},</if>
+            <if test="statusName != null  and statusName != ''">#{statusName},</if>
+            <if test="statusCode != null  and statusCode != ''">#{statusCode},</if>
+            <if test="beginTime != null ">#{beginTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeviceStatusLive" parameterType="DeviceStatusLive">
+        update device_status_live
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null  and deviceId != ''">device_id = #{deviceId},</if>
+            <if test="statusId != null  and statusId != ''">status_id = #{statusId},</if>
+            <if test="statusName != null  and statusName != ''">status_name = #{statusName},</if>
+            <if test="statusCode != null  and statusCode != ''">status_code = #{statusCode},</if>
+            <if test="beginTime != null ">begin_time = #{beginTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDeviceStatusLiveById" parameterType="String">
+        delete from device_status_live where id = #{id}
+    </delete>
+
+    <delete id="deleteDeviceStatusLiveByIds" parameterType="String">
+        delete from device_status_live where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.meter.mapper.MeterImplementMapper">
+    
+    <resultMap type="MeterImplement" id="MeterImplementResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="meterName"    column="meter_name"    />
+        <result property="meterType"    column="meter_type"    />
+        <result property="modelNumber"    column="model_number"    />
+        <result property="measureRange"    column="measure_range"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="personCharge"    column="person_charge"    />
+        <result property="installactionLocation"    column="installaction_location"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="checkCycle"    column="check_cycle"    />
+        <result property="reminderCycle"    column="reminder_cycle"    />
+        <result property="meterStatus"    column="meter_status"    />
+        <result property="delFlage"    column="del_flage"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="txflage"    column="txflage"    />
+        <result property="putrunTime"    column="putrun_time"    />
+    </resultMap>
+    <resultMap type="MeterImplementExcel" id="MeterImplementResultExcel">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="meterName"    column="meter_name"    />
+        <result property="meterType"    column="meter_type"    />
+        <result property="modelNumber"    column="model_number"    />
+        <result property="measureRange"    column="measure_range"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="personCharge"    column="person_charge"    />
+        <result property="installactionLocation"    column="installaction_location"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="checkCycle"    column="check_cycle"    />
+        <result property="reminderCycle"    column="reminder_cycle"    />
+        <result property="meterStatus"    column="meter_status"    />
+        <result property="delFlage"    column="del_flage"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+    <sql id="selectMeterImplementVo">
+        select id, code, meter_name, meter_type, model_number, measure_range, manufacturer, person_charge, installaction_location, start_time, check_cycle, reminder_cycle, meter_status, del_flage, remark, putrun_time,create_time, create_by, update_time, update_by,(start_time+check_cycle-reminder_cycle)&lt;=current_date as txflage from meter_implement
+    </sql>
+
+    <select id="selectMeterImplementList" parameterType="MeterImplement" resultMap="MeterImplementResult">
+        <include refid="selectMeterImplementVo"/>
+        <where>
+            del_flage='N'
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="meterName != null  and meterName != ''"> and meter_name like concat('%', #{meterName}, '%')</if>
+            <if test="meterType != null  and meterType != ''"> and meter_type = #{meterType}</if>
+            <if test="measureRange != null  and measureRange != ''"> and measure_range like concat('%', #{measureRange}, '%')</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer like concat('%', #{manufacturer}, '%')</if>
+            <if test="installactionLocation != null  and installactionLocation != ''"> and installaction_location like concat('%', #{installactionLocation}, '%')</if>
+        </where>
+        order by code
+    </select>
+
+    <select id="exectMeterImplementList" parameterType="MeterImplement" resultMap="MeterImplementResultExcel">
+        select id, code, meter_name, fun_getDiceData('sys_device_type',meter_status) as meter_type, model_number, measure_range, manufacturer,
+        person_charge, installaction_location, to_char(start_time,'YYYY-MM-DD') start_time, check_cycle, reminder_cycle, fun_getDiceData('meter_status',meter_status) as meter_status,
+        del_flage, remark, create_time, create_by, update_time, update_by
+        from meter_implement
+        <where>
+            del_flage='N'
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="meterName != null  and meterName != ''"> and meter_name like concat('%', #{meterName}, '%')</if>
+            <if test="meterType != null  and meterType != ''"> and meter_type = #{meterType}</if>
+            <if test="measureRange != null  and measureRange != ''"> and measure_range like concat('%', #{measureRange}, '%')</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer like concat('%', #{manufacturer}, '%')</if>
+            <if test="installactionLocation != null  and installactionLocation != ''"> and installaction_location like concat('%', #{installactionLocation}, '%')</if>
+        </where>
+        order by code
+    </select>
+
+    <select id="selectMeterImplementById" parameterType="String" resultMap="MeterImplementResult">
+        <include refid="selectMeterImplementVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectMeterImplementByCode" parameterType="MeterImplement" resultMap="MeterImplementResult">
+        <include refid="selectMeterImplementVo"/>
+        where code = #{code}
+        <if test="id != null  and id != ''"> and id != #{id} or id is null</if>
+    </select>
+
+    <select id="listMeterImplementByIds" resultMap="MeterImplementResult">
+        SELECT
+            "id",
+            code,
+            meter_name,
+            meter_type,
+            meter_status,
+            installaction_location
+        FROM
+            "meter_implement"
+        WHERE
+            id IN
+            <foreach collection="meterIdList" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </select>
+
+    <insert id="insertMeterImplement" parameterType="MeterImplement">
+        insert into meter_implement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="meterName != null  and meterName != ''">meter_name,</if>
+            <if test="meterType != null  and meterType != ''">meter_type,</if>
+            <if test="modelNumber != null  and modelNumber != ''">model_number,</if>
+            <if test="measureRange != null  and measureRange != ''">measure_range,</if>
+            <if test="manufacturer != null  and manufacturer != ''">manufacturer,</if>
+            <if test="personCharge != null  and personCharge != ''">person_charge,</if>
+            <if test="installactionLocation != null  and installactionLocation != ''">installaction_location,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="putrunTime != null ">putrun_time,</if>
+            <if test="checkCycle != null ">check_cycle,</if>
+            <if test="reminderCycle != null ">reminder_cycle,</if>
+            <if test="meterStatus != null  and meterStatus != ''">meter_status,</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="meterName != null  and meterName != ''">#{meterName},</if>
+            <if test="meterType != null  and meterType != ''">#{meterType},</if>
+            <if test="modelNumber != null  and modelNumber != ''">#{modelNumber},</if>
+            <if test="measureRange != null  and measureRange != ''">#{measureRange},</if>
+            <if test="manufacturer != null  and manufacturer != ''">#{manufacturer},</if>
+            <if test="personCharge != null  and personCharge != ''">#{personCharge},</if>
+            <if test="installactionLocation != null  and installactionLocation != ''">#{installactionLocation},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="putrunTime != null ">#{putrunTime},</if>
+            <if test="checkCycle != null ">#{checkCycle},</if>
+            <if test="reminderCycle != null ">#{reminderCycle},</if>
+            <if test="meterStatus != null  and meterStatus != ''">#{meterStatus},</if>
+            <if test="delFlage != null  and delFlage != ''">#{delFlage},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMeterImplement" parameterType="MeterImplement">
+        update meter_implement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="meterName != null  and meterName != ''">meter_name = #{meterName},</if>
+            <if test="meterType != null  and meterType != ''">meter_type = #{meterType},</if>
+            <if test="modelNumber != null  and modelNumber != ''">model_number = #{modelNumber},</if>
+            <if test="measureRange != null  and measureRange != ''">measure_range = #{measureRange},</if>
+            <if test="manufacturer != null  and manufacturer != ''">manufacturer = #{manufacturer},</if>
+            <if test="personCharge != null  and personCharge != ''">person_charge = #{personCharge},</if>
+            <if test="installactionLocation != null  and installactionLocation != ''">installaction_location = #{installactionLocation},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="putrunTime != null ">putrun_time = #{putrunTime},</if>
+            <if test="checkCycle != null ">check_cycle = #{checkCycle},</if>
+            <if test="reminderCycle != null ">reminder_cycle = #{reminderCycle},</if>
+            <if test="meterStatus != null  and meterStatus != ''">meter_status = #{meterStatus},</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage = #{delFlage},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMeterImplementById" parameterType="String">
+        <!--update meter_implement set del_flage='Y' where id = #{id} 先用物理删除，后期有必要再打开逻辑删除-->
+        delete from meter_implement where id = #{id}
+    </delete>
+
+    <delete id="deleteMeterImplementByIds" parameterType="String">
+        <!--update meter_implement set del_flage='Y' where id in 先用物理删除，后期有必要再打开逻辑删除-->
+        delete from meter_implement where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

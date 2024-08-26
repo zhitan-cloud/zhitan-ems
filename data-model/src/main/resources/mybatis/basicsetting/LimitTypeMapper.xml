@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.LimitTypeMapper">
+    
+    <resultMap type="LimitType" id="LimitTypeResult">
+        <result property="id"    column="id"    />
+        <result property="limitName"    column="limit_name"    />
+        <result property="limitCode"    column="limit_code"    />
+        <result property="colorNumber"    column="color_number"    />
+        <result property="comparatorOperator"    column="comparator_operator"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="alarmType"    column="alarm_type"    />
+    </resultMap>
+
+    <sql id="selectLimitTypeVo">
+        select id, limit_name, limit_code, color_number,comparator_operator,alarm_type,create_time, create_by, update_time, update_by from limit_type
+    </sql>
+
+    <select id="selectLimitTypeList" parameterType="LimitType" resultMap="LimitTypeResult">
+        <include refid="selectLimitTypeVo"/>
+        <where>  
+            <if test="limitName != null  and limitName != ''"> and limit_name like concat('%', #{limitName}, '%')</if>
+        </where>
+        order by limit_code
+    </select>
+    
+    <select id="selectLimitTypeById" parameterType="String" resultMap="LimitTypeResult">
+        <include refid="selectLimitTypeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLimitType" parameterType="LimitType">
+        insert into limit_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="limitName != null  and limitName != ''">limit_name,</if>
+            <if test="limitCode != null  and limitCode != ''">limit_code,</if>
+            <if test="colorNumber != null  and colorNumber != ''">color_number,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="comparatorOperator != null  and comparatorOperator != ''">comparator_operator,</if>
+            <if test="alarmType != null  and alarmType != ''">alarm_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="limitName != null  and limitName != ''">#{limitName},</if>
+            <if test="limitCode != null  and limitCode != ''">#{limitCode},</if>
+            <if test="colorNumber != null  and colorNumber != ''">#{colorNumber},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="comparatorOperator != null  and comparatorOperator != ''">#{comparatorOperator},</if>
+            <if test="alarmType != null  and alarmType != ''">#{alarmType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLimitType" parameterType="LimitType">
+        update limit_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="limitName != null  and limitName != ''">limit_name = #{limitName},</if>
+            <if test="limitCode != null  and limitCode != ''">limit_code = #{limitCode},</if>
+            <if test="colorNumber != null  and colorNumber != ''">color_number = #{colorNumber},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="comparatorOperator != null  and comparatorOperator != ''">comparator_operator = #{comparatorOperator},</if>
+            <if test="alarmType != null  and alarmType != ''">alarm_type = #{alarmType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLimitTypeById" parameterType="String">
+        delete from limit_type where id = #{id}
+    </delete>
+
+    <delete id="deleteLimitTypeByIds" parameterType="String">
+        delete from limit_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

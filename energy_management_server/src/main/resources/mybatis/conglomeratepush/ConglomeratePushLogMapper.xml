@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.conglomeratepush.mapper.ConglomeratePushLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="orderMiningSendResultMap" type="com.dingzhuo.energy.project.conglomeratepush.domain.ConglomeratePushLog">
+        <result column="id" property="id"/>
+        <result column="push_time" property="pushTime"/>
+        <result column="push_content" property="pushContent"/>
+        <result column="push_status" property="pushStatus"/>
+        <result column="push_result" property="pushResult"/>
+        <result column="push_count" property="pushCount"/>
+        <result column="error_info" property="errorInfo"/>
+    </resultMap>
+
+    <insert id="saveLog" parameterType="ConglomeratePushLog">
+        insert into conglomerate_push_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="pushTime != null ">push_time,</if>
+            <if test="pushContent != null  and pushContent != ''">push_content,</if>
+            <if test="pushStatus != null ">push_status,</if>
+            <if test="pushResult != null ">push_result,</if>
+            <if test="pushCount != null  and pushCount != ''">push_count,</if>
+            <if test="errorInfo != null  and errorInfo != ''">error_info,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="pushTime != null ">#{pushTime},</if>
+            <if test="pushContent != null  and pushContent != ''">#{pushContent},</if>
+            <if test="pushStatus != null ">#{pushStatus},</if>
+            <if test="pushResult != null ">#{pushResult},</if>
+            <if test="pushCount != null  and pushCount != ''">#{pushCount},</if>
+            <if test="errorInfo != null  and errorInfo != ''">#{errorInfo},</if>
+        </trim>
+    </insert>
+
+</mapper>

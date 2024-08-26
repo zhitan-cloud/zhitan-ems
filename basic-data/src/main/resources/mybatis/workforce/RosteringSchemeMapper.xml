@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.workforce.mapper.RosteringSchemeMapper">
+    
+    <resultMap type="RosteringScheme" id="RosteringSchemeResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="departMemberId"    column="departMemberId"    />
+        <result property="rosteringschemekind"    column="rosteringSchemeKind"    />
+        <result property="referencedate"    column="referenceDate"    />
+        <result property="isautorostering"    column="isAutoRostering"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRosteringSchemeVo">
+        select ID, code, NAME, "rosteringSchemeKind", "referenceDate", "isAutoRostering", description,(SELECT s.dept_name FROM sys_dept s WHERE  s.dept_id = "departMemberId" )  departMember, created_by, created_time, update_by, update_time from rostering_scheme
+    </sql>
+
+    <select id="selectRosteringSchemeList" parameterType="RosteringScheme" resultMap="RosteringSchemeResult">
+        <include refid="selectRosteringSchemeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="departMemberId != null  and departMemberId != ''"> and "departMemberId" like concat('%', #{departMemberId}, '%')</if>
+            <if test="rosteringschemekind != null  and rosteringschemekind != ''"> and "rosteringSchemeKind" like concat('%', #{rosteringschemekind}, '%')</if>
+            <if test="referencedate != null "> and "referenceDate" like concat('%', #{referencedate}, '%')</if>
+            <if test="isautorostering != null "> and "isAutoRostering" like concat('%', #{isautorostering}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRosteringSchemeById" parameterType="String" resultMap="RosteringSchemeResult">
+        <include refid="selectRosteringSchemeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRosteringScheme" parameterType="RosteringScheme">
+        insert into rostering_scheme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="departMemberId != null  and departMemberId != ''">"departMemberId",</if>
+            <if test="rosteringschemekind != null  and rosteringschemekind != ''">"rosteringSchemeKind",</if>
+            <if test="referencedate != null ">"referenceDate",</if>
+            <if test="isautorostering != null ">"isAutoRostering",</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="createBy != null  and createdBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="departMemberId != null  and departMemberId != ''">#{departMemberId},</if>
+            <if test="rosteringschemekind != null  and rosteringschemekind != ''">#{rosteringschemekind},</if>
+            <if test="referencedate != null ">#{referencedate},</if>
+            <if test="isautorostering != null ">#{isautorostering},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRosteringScheme" parameterType="RosteringScheme">
+        update rostering_scheme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="departMemberId != null  and departMemberId != ''">"departMemberId" = #{departMemberId},</if>
+            <if test="rosteringschemekind != null  and rosteringschemekind != ''">"rosteringSchemeKind" = #{rosteringschemekind},</if>
+            <if test="referencedate != null ">"referenceDate" = #{referencedate},</if>
+            <if test="isautorostering != null ">"isAutoRostering" = #{isautorostering},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="createdBy != null  and createdBy != ''">created_by = #{createdBy},</if>
+            <if test="createdTime != null ">created_time = #{createdTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRosteringSchemeById" parameterType="String">
+        delete from rostering_scheme where id = #{id}
+    </delete>
+
+    <delete id="deleteRosteringSchemeByIds" parameterType="String">
+        delete from rostering_scheme where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

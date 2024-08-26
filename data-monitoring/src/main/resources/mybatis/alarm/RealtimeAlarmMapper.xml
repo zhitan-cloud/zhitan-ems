@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.monitoring.alarm.mapper.RealtimeAlarmMapper">
+
+
+  <resultMap type="com.dingzhuo.energy.data.monitoring.alarm.domain.RealTimeAlarm"
+    id="RealTimeAlarmResult">
+    <result property="id" column="id"/>
+    <result property="indexId" column="index_id"/>
+    <result property="indexName" column="index_name"/>
+    <result property="itemId" column="item_id"/>
+    <result property="limitingValue" column="limiting_value"/>
+    <result property="alarmValue" column="alarm_value"/>
+    <result property="alarmValueQuality" column="alarm_value_quality"/>
+    <result property="beginTime" column="begin_time"/>
+    <result property="content" column="content"/>
+    <result property="timeCode" column="time_code"/>
+    <result property="alarmCode" column="alarm_code"/>
+    <association property="alarmItem"
+      javaType="com.dingzhuo.energy.data.monitoring.alarm.domain.AlarmItem">
+      <result property="id" column="itemId"/>
+      <result property="timeSlot" column="time_slot"/>
+      <result property="limitType" column="limit_type"/>
+      <result property="alarmLevel" column="alarm_level"/>
+    </association>
+  </resultMap>
+
+  <resultMap type="JkRealTimeAlarmList" id="JkRealTimeAlarmListResult">
+    <result property="modelName" column="modelname"/>
+    <result property="code" column="code"/>
+    <result property="indexName" column="indexname"/>
+    <result property="unitId" column="unit_id"/>
+    <result property="alarmLevel" column="alarm_level"/>
+    <result property="limitType" column="limit_type"/>
+    <result property="limitingValue" column="limiting_value"/>
+    <result property="alarmBeginTime" column="begin_time"/>
+    <result property="alarmValue" column="alarm_value"/>
+    <result property="indexId" column="index_id"/>
+    <result property="nodeId" column="node_id"/>
+  </resultMap>
+
+
+  <select id="selectRealtimeAlarmList" parameterType="RealTimeAlarm"
+    resultMap="RealTimeAlarmResult">
+    select id, index_id, index_name, item_id, limiting_value, alarm_value, alarm_value_quality,
+    begin_time, content from realtime_alarm
+    <where>
+      <if test="indexName != null  and indexName != ''">and index_name like concat('%',
+        #{indexName}, '%')
+      </if>
+      <if test="itemId != null  and itemId != ''">and item_id like concat('%', #{itemId}, '%')</if>
+      <if test="limitingValue != null ">and limiting_value like concat('%', #{limitingValue}, '%')
+      </if>
+      <if test="alarmValue != null ">and alarm_value like concat('%', #{alarmValue}, '%')</if>
+      <if test="alarmValueQuality != null">and alarm_value_quality like
+        concat('%', #{alarmValueQuality}, '%')
+      </if>
+      <if test="beginTime != null ">and begin_time like concat('%', #{beginTime}, '%')</if>
+      <if test="content != null  and content != ''">and content like concat('%', #{content}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectRealtimeAlarmById" parameterType="String" resultMap="RealTimeAlarmResult">
+    select id,
+           index_id,
+           index_name,
+           item_id,
+           limiting_value,
+           alarm_value,
+           alarm_value_quality,
+           begin_time,
+           content
+    from realtime_alarm
+    where id = #{id}
+  </select>
+
+  <insert id="insertRealtimeAlarm" parameterType="RealTimeAlarm">
+    insert into realtime_alarm
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null  and id != ''">id,</if>
+      <if test="indexId != null  and indexId != ''">index_id,</if>
+      <if test="indexName != null  and indexName != ''">index_name,</if>
+      <if test="itemId != null  and itemId != ''">item_id,</if>
+      <if test="limitingValue != null ">limiting_value,</if>
+      <if test="alarmValue != null ">alarm_value,</if>
+      <if test="alarmValueQuality != null">alarm_value_quality,</if>
+      <if test="beginTime != null ">begin_time,</if>
+      <if test="content != null  and content != ''">content,</if>
+      <if test="timeCode != null  and timeCode != ''">time_code,</if>
+      <if test="alarmCode != null  and alarmCode != ''">alarm_code,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null  and id != ''">#{id},</if>
+      <if test="indexId != null  and indexId != ''">#{indexId},</if>
+      <if test="indexName != null  and indexName != ''">#{indexName},</if>
+      <if test="itemId != null  and itemId != ''">#{itemId},</if>
+      <if test="limitingValue != null ">#{limitingValue},</if>
+      <if test="alarmValue != null ">#{alarmValue},</if>
+      <if test="alarmValueQuality != null">#{alarmValueQuality},</if>
+      <if test="beginTime != null ">#{beginTime},</if>
+      <if test="content != null  and content != ''">#{content},</if>
+      <if test="timeCode != null  and timeCode != ''">#{timeCode},</if>
+      <if test="alarmCode != null  and alarmCode != ''">#{alarmCode},</if>
+    </trim>
+  </insert>
+
+  <update id="updateRealtimeAlarm" parameterType="RealTimeAlarm">
+    update realtime_alarm
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="indexId != null  and indexId != ''">index_id = #{indexId},</if>
+      <if test="indexName != null  and indexName != ''">index_name = #{indexName},</if>
+      <if test="itemId != null  and itemId != ''">item_id = #{itemId},</if>
+      <if test="limitingValue != null ">limiting_value = #{limitingValue},</if>
+      <if test="alarmValue != null ">alarm_value = #{alarmValue},</if>
+      <if test="alarmValueQuality != null">alarm_value_quality =
+        #{alarmValueQuality},
+      </if>
+      <if test="beginTime != null ">begin_time = #{beginTime},</if>
+      <if test="content != null  and content != ''">content = #{content},</if>
+    </trim>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteRealtimeAlarmById" parameterType="String">
+    delete
+    from realtime_alarm
+    where id = #{id}
+  </delete>
+
+  <delete id="deleteRealtimeAlarmByIds" parameterType="String">
+    delete from realtime_alarm where id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--实时报警列表页面 采集点 主页面列表查询-->
+  <select id="selectRealtimeAlarmJkList" parameterType="JkRealTimeAlarmList"
+    resultMap="JkRealTimeAlarmListResult">
+    SELECT
+    mo."name" AS modelname,
+    ei.code,
+    ei.NAME AS indexname,
+    ei.unit_id,
+    alit.alarm_level,
+    alit.limit_type,
+    bj.limiting_value,
+    bj.begin_time,
+    round(cast(bj.alarm_value as numeric ),2) as alarm_value,
+    ei.index_id,
+    mo.node_id
+    FROM
+    energy_index ei,
+    node_index ni,
+    model_node mo,
+    realtime_alarm bj ,
+    alarm_item alit
+    WHERE
+    ni.node_id IN (
+    SELECT node_id FROM model_node WHERE address LIKE (
+    SELECT address FROM model_node WHERE node_id = #{nodeId} )
+    <if test='eierarchyFlag=="ALL"'>
+      || '%'
+    </if>
+    )
+    AND ei.index_id = ni.index_id
+    AND mo.node_id = ni.node_id
+    AND bj.index_id = ei.index_id
+    AND alit.alarm_code = bj.alarm_code
+    AND alit.time_slot='LIVE'
+    AND ei.index_type=#{indexType}
+    <if test="indexName != null  and indexName != ''">and ei.name like concat('%', #{indexName},
+      '%')
+    </if>
+    <if test="limitType != null  and limitType != ''">and alit.limit_type=#{limitType}</if>
+    <if test="alarmLevel != null  and alarmLevel != ''">and alit.alarm_level=#{alarmLevel}</if>
+    order by alarm_level,mo.node_id,limit_type asc
+  </select>
+  <select id="getRealTimeAlarmByAlarmCode" resultMap="RealTimeAlarmResult">
+    select *
+    from realtime_alarm
+    where alarm_code = #{itemId}
+  </select>
+  <select id="getRealTimeAlarm" resultMap="RealTimeAlarmResult">
+    select *
+    from realtime_alarm ra
+  </select>
+  <select id="getAlarmByItemIdAndTimeCode" resultMap="RealTimeAlarmResult">
+    select *
+    from realtime_alarm
+    where item_id = #{itemId}
+      and time_code = #{timeCode}
+  </select>
+
+</mapper>

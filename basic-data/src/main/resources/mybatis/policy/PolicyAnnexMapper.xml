@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.policy.mapper.PolicyAnnexMapper">
+    
+    <resultMap type="PolicyAnnex" id="PolicyAnnexResult">
+        <result property="filePath"    column="file_path"    />
+        <result property="delFlage"    column="del_flage"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createOperator"    column="create_operator"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateOperator"    column="update_operator"    />
+        <result property="id"    column="id"    />
+        <result property="regulationsId"    column="regulations_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileSuffix"    column="file_suffix"    />
+    </resultMap>
+
+    <sql id="selectPolicyAnnexVo">
+        select file_path, del_flage, create_time, create_operator, update_time, update_operator, id, regulations_id, file_name, file_suffix from policy_annex
+    </sql>
+
+    <select id="selectPolicyAnnexList" parameterType="PolicyAnnex" resultMap="PolicyAnnexResult">
+        <include refid="selectPolicyAnnexVo"/>
+        <where>  
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectPolicyAnnexById" parameterType="String" resultMap="PolicyAnnexResult">
+        <include refid="selectPolicyAnnexVo"/>
+        where file_path = #{filePath}
+    </select>
+        
+    <insert id="insertPolicyAnnex" parameterType="PolicyAnnex">
+        insert into policy_annex
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createOperator != null  and createOperator != ''">create_operator,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateOperator != null  and updateOperator != ''">update_operator,</if>
+            <if test="id != null  and id != ''">id,</if>
+            <if test="regulationsId != null  and regulationsId != ''">regulations_id,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">file_suffix,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="delFlage != null  and delFlage != ''">#{delFlage},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createOperator != null  and createOperator != ''">#{createOperator},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateOperator != null  and updateOperator != ''">#{updateOperator},</if>
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="regulationsId != null  and regulationsId != ''">#{regulationsId},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">#{fileSuffix},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePolicyAnnex" parameterType="PolicyAnnex">
+        update policy_annex
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="delFlage != null  and delFlage != ''">del_flage = #{delFlage},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createOperator != null  and createOperator != ''">create_operator = #{createOperator},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateOperator != null  and updateOperator != ''">update_operator = #{updateOperator},</if>
+            <if test="id != null  and id != ''">id = #{id},</if>
+            <if test="regulationsId != null  and regulationsId != ''">regulations_id = #{regulationsId},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="fileSuffix != null  and fileSuffix != ''">file_suffix = #{fileSuffix},</if>
+        </trim>
+        where file_path = #{filePath}
+    </update>
+
+    <delete id="deletePolicyAnnexById" parameterType="String">
+        delete from policy_annex where id = #{id}
+    </delete>
+
+    <delete id="deletePolicyAnnexByIds" parameterType="String">
+        delete from policy_annex where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.energyStatistics.mapper.energyStatisticsMapper">
+
+    <resultMap type="EnergyIndex" id="EnergyIndexResult">
+        <result property="indexId" column="index_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="indexType" column="index_type"/>
+        <result property="indexCategory" column="index_category"/>
+        <result property="remark" column="remark"/>
+        <result property="unitId" column="unit_id"/>
+        <result property="meterId" column="meter_id"/>
+    </resultMap>
+    <resultMap id="dataItemMap" type="com.dingzhuo.energy.project.energyStatistics.domain.dataTimeSVG">
+        <id column="index_id" property="indexId"/>
+        <id column="time_code" property="timeCode"/>
+        <id column="index_code" property="indexCode"/>
+        <id column="index_name" property="indexName"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="data_time" property="dataTime"/>
+        <result column="value" property=""/>
+        <result column="time_type" property="timeType"/>
+        <result column="unit_id" property="unitId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <select id="reportFormsvg" resultMap="dataItemMap">
+        SELECT
+            d.index_id,
+            time_code,
+            data_time,
+            i.code AS index_code,
+            i.NAME AS index_name,
+            i.unit_id,
+            VALUE
+        FROM
+            data_item d,
+            energy_index i,
+            sys_svg_info svg
+        WHERE
+            d.index_id = i.index_id
+            AND svg.tag = i.code
+            AND svg.node_id = #{nodeId}
+            AND index_type = #{indexType}
+            AND time_type = #{timeType}
+            AND data_time &gt;= #{beginTime}
+            AND data_time &lt;= #{endTime}
+            order by data_time DESC
+    </select>
+    <select id="selectDataTimelist" resultMap="dataItemMap">
+        SELECT
+            d.index_id,
+            time_code,
+            data_time,
+            i.code AS index_code,
+            i.NAME AS index_name,
+            i.unit_id,
+            m.meter_name,
+            VALUE
+        FROM
+            data_item d,
+            energy_index i,
+            meter_implement m
+        WHERE
+            d.index_id = i.index_id
+            AND m.id = i.meter_id
+            AND index_type = #{indexType}
+            AND time_type = #{timeType}
+            AND data_time &gt;= #{beginTime}
+            AND data_time &lt;= #{endTime}
+            order by data_time DESC
+    </select>
+</mapper>

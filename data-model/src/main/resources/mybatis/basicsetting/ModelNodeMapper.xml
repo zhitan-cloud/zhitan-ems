@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.ModelNodeMapper">
+
+  <resultMap type="com.dingzhuo.energy.data.model.domain.ModelNode" id="ModelNodeResult">
+    <result property="nodeId" column="node_id"/>
+    <result property="code" column="code"/>
+    <result property="name" column="name"/>
+    <result property="parentId" column="parent_id"/>
+    <result property="address" column="address"/>
+    <result property="modelCode" column="model_code"/>
+    <result property="nodeCategory" column="node_category"/>
+  </resultMap>
+
+  <sql id="selectModelNodeVo">
+    select node_id, code, name, parent_id, address, model_code, node_category
+    from model_node
+  </sql>
+
+  <select id="selectModelNodeList"
+    parameterType="com.dingzhuo.energy.data.model.domain.ModelNode"
+    resultMap="ModelNodeResult">
+    <include refid="selectModelNodeVo"/>
+    <where>
+      <if test="code != null  and code != ''">and code like concat('%', #{code}, '%')</if>
+      <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+    </where>
+    order by order_num
+  </select>
+
+  <select id="selectModelNodeById" parameterType="String" resultMap="ModelNodeResult">
+    <include refid="selectModelNodeVo"/>
+    where node_id = #{nodeId}
+  </select>
+  <select id="getModelNodeByModelCode" resultMap="ModelNodeResult">
+    <include refid="selectModelNodeVo"/>
+    where model_code = #{modelCode}
+    order by order_num
+  </select>
+  <select id="getMaxOrder" resultType="java.lang.Integer">
+    select COALESCE(max(order_num), 0)
+    from model_node
+    where parent_id = #{parentId}
+  </select>
+  <select id="modelNodeHasExist" resultType="java.lang.Integer">
+    select count(*)
+    from model_node
+    where code = #{code}
+      and model_code = #{modelCode};
+  </select>
+  <select id="modelNodeHasExistWhenUpdate" resultType="java.lang.Integer">
+    select count(*)
+    from model_node
+    where code = #{code}
+      and model_code = #{modelCode}
+      AND node_id != #{nodeId};
+  </select>
+  <select id="getSettingDevice"
+    resultType="com.dingzhuo.energy.basic.data.meter.domain.MeterImplement">
+    select id, code, meter_name as meterName
+    from meter_implement m
+           left join node_device nd on m.id = nd.device_id
+    where nd.node_id = #{nodeId};
+  </select>
+  <select id="getSettingIndex"
+    resultType="com.dingzhuo.energy.data.model.domain.EnergyIndex">
+    select ei.index_id as indexId, code, name, index_type as indexType
+    from energy_index ei
+           left join node_index ni on ei.index_id = ni.index_id
+    where ni.node_id = #{nodeId}
+  </select>
+  <select id="getSettingEnergy"
+    resultType="com.dingzhuo.energy.basic.data.enerInfoManage.domain.SysEnergy">
+    select enerid, enersno, enername
+    from sys_energy e
+           left join node_energy ne on e.enerid = ne.energy_id
+    where ne.node_id = #{nodeId};
+  </select>
+  <select id="getSettingProduct"
+    resultType="com.dingzhuo.energy.basic.data.enerInfoManage.domain.SysProduct">
+    select productid, productsno, productname
+    from sys_product p
+           left join node_product np on p.productid = np.product_id
+    where np.node_id = #{nodeId};
+  </select>
+  <select id="getSettingIndexByType"
+    resultType="com.dingzhuo.energy.data.model.domain.EnergyIndex">
+    select ei.index_id as indexId, code, name, index_type as indexType
+    from energy_index ei
+           left join node_index ni on ei.index_id = ni.index_id
+    where ni.node_id = #{nodeId}
+      and ei.index_type = #{indexType}
+  </select>
+  <select id="getModelNodeByNodeCodes" resultMap="ModelNodeResult">
+    <include refid="selectModelNodeVo"/>
+    where code in
+    <foreach item="nodeCode" collection="list" open="(" separator="," close=")">
+      #{nodeCode}
+    </foreach>
+    order by order_num
+  </select>
+  <select id="getModelNodeByModelCodeWithAuth" resultMap="ModelNodeResult">
+    <include refid="selectModelNodeVo"/>
+    where model_code = #{modelCode}
+    and (
+      node_id in (
+        select node_id from data_auth_user where user_id = #{userId} and model_code = #{modelCode}
+      )
+      or node_id in (
+        select node_id from data_auth_role where role_id in (
+          select cast(r.role_id as varchar) from sys_role r
+          left join sys_user_role ur on ur.role_id = r.role_id
+          left join sys_user u on u.user_id = ur.user_id
+          where cast(u.user_id as VARCHAR) = #{userId}
+        ) and model_code = #{modelCode}
+      )
+    )
+    order by order_num
+  </select>
+
+  <insert id="insertModelNode"
+    parameterType="com.dingzhuo.energy.data.model.domain.ModelNode">
+    insert into model_node
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nodeId != null  and nodeId != ''">node_id,</if>
+      <if test="code != null  and code != ''">code,</if>
+      <if test="name != null  and name != ''">name,</if>
+      <if test="parentId != null  and parentId != ''">parent_id,</if>
+      <if test="address != null  and address != ''">address,</if>
+      <if test="modelCode != null  and modelCode != ''">model_code,</if>
+      <if test="nodeCategory != null  and nodeCategory != ''">node_category,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nodeId != null  and nodeId != ''">#{nodeId},</if>
+      <if test="code != null  and code != ''">#{code},</if>
+      <if test="name != null  and name != ''">#{name},</if>
+      <if test="parentId != null  and parentId != ''">#{parentId},</if>
+      <if test="address != null  and address != ''">#{address},</if>
+      <if test="modelCode != null  and modelCode != ''">#{modelCode},</if>
+      <if test="nodeCategory != null  and nodeCategory != ''">#{nodeCategory},</if>
+    </trim>
+  </insert>
+  <insert id="setDevice">
+    delete
+    from node_device
+    where node_id = #{nodeId};
+    <foreach collection="deviceIds" item="deviceId" separator=";">
+      insert into node_device (node_id, device_id)
+      values (#{nodeId}, #{deviceId})
+    </foreach>
+  </insert>
+  <insert id="setEnergy">
+    delete
+    from node_energy
+    where node_id = #{nodeId};
+    <foreach collection="energyIds" item="energyId" separator=";">
+      insert into node_energy (node_id, energy_id)
+      values (#{nodeId}, #{energyId})
+    </foreach>
+  </insert>
+  <insert id="setProduct">
+    delete
+    from node_product
+    where node_id = #{nodeId};
+    <foreach collection="productIds" item="productId" separator=";">
+      insert into node_product (node_id, product_id)
+      values (#{nodeId}, #{productId})
+    </foreach>
+  </insert>
+
+  <update id="updateModelNode"
+    parameterType="com.dingzhuo.energy.data.model.domain.ModelNode">
+    update model_node
+    <trim prefix="SET" suffixOverrides=",">
+      <if test="code != null  and code != ''">code = #{code},</if>
+      <if test="name != null  and name != ''">name = #{name},</if>
+      <if test="parentId != null  and parentId != ''">parent_id = #{parentId},</if>
+      <if test="address != null  and address != ''">address = #{address},</if>
+      <if test="modelCode != null  and modelCode != ''">model_code = #{modelCode},</if>
+      <if test="nodeCategory != null and nodeCategory != ''">node_category = #{nodeCategory},</if>
+    </trim>
+    where node_id = #{nodeId}
+  </update>
+  <update id="updateModelNodeParent">
+    update model_node
+    set parent_id = #{parentId}
+    where node_id = #{nodeId};
+
+    update model_node
+    set address = replace(address, (select address from model_node where node_id = #{nodeId}),
+                          (select address ||
+                                  (select code from model_node where node_id = #{nodeId}) ||
+                                  ','
+                           from model_node
+                           where node_id = #{parentId}))
+    where parent_id = #{nodeId}
+       or node_id = #{nodeId};
+  </update>
+  <update id="updateModelNodeOrder">
+    <foreach collection="orders" index="id" item="order" separator=";">
+      update model_node
+      set order_num = #{order}
+      where node_id = #{id}
+    </foreach>
+  </update>
+  <update id="setIndex">
+    delete
+    from node_index
+    where node_id = #{nodeId} and index_id in (select ni.index_id
+    from node_index ni left join energy_index ei on ni.index_id = ei.index_id
+    where node_id = #{nodeId} and ei.index_type = #{indexType});
+    <foreach collection="indexIds" item="indexId" separator=";">
+      insert into node_index (node_id, index_id)
+      values (#{nodeId}, #{indexId})
+    </foreach>
+  </update>
+
+  <delete id="deleteModelNodeById" parameterType="String">
+    delete
+    from model_node
+    where node_id = #{nodeId}
+  </delete>
+
+  <delete id="deleteModelNodeByIds" parameterType="String">
+    delete from model_node where node_id in
+    <foreach item="nodeId" collection="array" open="(" separator="," close=")">
+      #{nodeId}
+    </foreach>
+  </delete>
+  <delete id="delDevice">
+    delete
+    from node_device
+    where node_id = #{nodeId} and device_id in
+    <foreach item="deviceId" collection="deviceIds" open="(" separator="," close=")">
+      #{deviceId}
+    </foreach>
+  </delete>
+  <delete id="delEnergy">
+    delete
+    from node_energy
+    where node_id = #{nodeId} and energy_id in
+    <foreach item="energyId" collection="energyIds" open="(" separator="," close=")">
+      #{energyId}
+    </foreach>
+  </delete>
+  <delete id="delProduct">
+    delete
+    from node_product
+    where node_id = #{nodeId} and product_id in
+    <foreach item="productId" collection="productIds" open="(" separator="," close=")">
+      #{productId}
+    </foreach>
+  </delete>
+  <delete id="delIndex">
+    delete
+    from node_index
+    where node_id = #{nodeId} and index_id in
+    <foreach item="indexId" collection="indexIds" open="(" separator="," close=")">
+      #{indexId}
+    </foreach>
+  </delete>
+
+  <select id="getSettingIndexByWhere"
+          resultType="com.dingzhuo.energy.data.model.domain.EnergyIndex">
+    select ei.index_id as indexId, code, name, index_type as indexType
+    from energy_index ei
+           left join node_index ni on ei.index_id = ni.index_id
+    where ni.node_id = #{nodeId}
+    <if test="indexName!=null and indexName!=''">
+      and ei.name like concat('%', #{indexName}, '%')
+    </if>
+  </select>
+
+  <select id="listIndesxByCodeList" resultType="java.lang.String">
+    SELECT
+      index_id
+    FROM
+      "node_index"
+    WHERE
+      node_id IN
+    <foreach item="nodeId" collection="nodeIds" open="(" separator="," close=")">
+      #{nodeId}
+    </foreach>
+  </select>
+
+  <select id="getModelNodeIndexIdRelationInforByCode"
+          resultType="com.dingzhuo.energy.data.model.domain.vo.ModelNodeIndexInfor">
+    SELECT
+      mn.node_id nodeId,
+      mn."name" name,
+      ni.index_id indexId
+    FROM
+      "model_node" mn
+      LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
+    WHERE
+      mn.model_code = #{code}
+      AND   mn.parent_id IS NOT NULL
+  </select>
+
+  <select id="listModelNodeIndexIdRelationInforByParentId" resultType="com.dingzhuo.energy.data.model.domain.vo.ModelNodeIndexInfor">
+    SELECT
+      mn.node_id nodeId,
+      mn."name" name,
+      ni.index_id indexId
+    FROM
+      "model_node" mn
+      LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
+    WHERE
+      mn.parent_id = #{parentId}
+  </select>
+
+  <select id="getModelNodeIndexIdRelationInforByNodeId"
+          resultType="com.dingzhuo.energy.data.model.domain.vo.ModelNodeIndexInfor">
+    SELECT
+      mn.node_id nodeId,
+      mn."name" name,
+      ni.index_id indexId
+    FROM
+      "model_node" mn
+      LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
+    WHERE
+      mn.node_id = #{nodeId}
+  </select>
+
+  <select id="getModelNodeByModelCodeByIndexCode" resultType="com.dingzhuo.energy.data.model.domain.ModelNode">
+    SELECT
+      node_id nodeId,
+      code,
+      "name",
+      parent_id parentId,
+      address,
+      model_code modelCode,
+      node_category nodeCategory
+    FROM
+      "model_node"
+    WHERE
+      model_code = #{indexCode}
+      AND parent_id IS NULL
+      LIMIT 1;
+  </select>
+
+</mapper>

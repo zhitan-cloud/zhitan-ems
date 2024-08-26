@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.DaqTemplateMapper">
+
+    <resultMap type="DaqTemplate" id="DaqTemplateResult">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="unit" column="unit"/>
+    </resultMap>
+
+    <sql id="selectDaqTemplateVo">
+        select id, code, name, device_type, unit
+        from daq_template
+    </sql>
+
+    <select id="selectDaqTemplateList" parameterType="DaqTemplate" resultMap="DaqTemplateResult">
+        <include refid="selectDaqTemplateVo"/>
+        <where>
+            <if test="code != null  and code != ''">and code = #{code}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''">and device_type = #{deviceType}</if>
+        </where>
+        order by device_type, code
+    </select>
+
+    <select id="selectDaqTemplateById" parameterType="String" resultMap="DaqTemplateResult">
+        <include refid="selectDaqTemplateVo"/>
+        where id = #{id}
+    </select>
+    <select id="dapHasExist" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM daq_template
+        WHERE code = #{code}
+          AND device_type = #{deviceType}
+    </select>
+    <select id="dapHasExistWhenUpdate" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM daq_template
+        WHERE code = #{code}
+          AND device_type = #{deviceType}
+          AND id != #{id}
+    </select>
+
+    <insert id="insertDaqTemplate" parameterType="DaqTemplate">
+        insert into daq_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="deviceType != null  and deviceType != ''">device_type,</if>
+            <if test="unit != null  and unit != ''">unit,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="deviceType != null  and deviceType != ''">#{deviceType},</if>
+            <if test="unit != null  and unit != ''">#{unit},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDaqTemplate" parameterType="DaqTemplate">
+        update daq_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="deviceType != null  and deviceType != ''">device_type = #{deviceType},</if>
+            <if test="unit != null  and unit != ''">unit = #{unit},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDaqTemplateById" parameterType="String">
+        delete
+        from daq_template
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteDaqTemplateByIds" parameterType="String">
+        delete from daq_template where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

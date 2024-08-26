@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.facility.mapper.FacilityArchivesMapper">
+
+    <resultMap type="FacilityArchives" id="FacilityArchivesResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="facilityName"    column="facility_name"    />
+        <result property="facilityType"    column="facility_type"    />
+        <result property="branchFactory"    column="branch_factory"    />
+        <result property="istallationLocationn"    column="installation_location"    />
+        <result property="facilityGrade"    column="facility_grade"    />
+        <result property="ratedPower"    column="rated_power"    />
+        <result property="productionDate"    column="production_date"    />
+        <result property="putrunDate"    column="putrun_date"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="personCharge"    column="person_charge"    />
+        <result property="technicalData"    column="technical_data"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="checkCycle"    column="check_cycle"    />
+        <result property="reminderCycle"    column="reminder_cycle"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="txflage"    column="txflage"    />
+        <result property="pointFlag"    column="point_flag"    />
+    </resultMap>
+
+    <sql id="selectFacilityArchivesVo">
+        select id, code, facility_name, facility_type, branch_factory, installation_location, facility_grade, rated_power, production_date, putrun_date, manufacturer, person_charge, technical_data, start_time, check_cycle, reminder_cycle, remark, create_time, create_by, update_time, update_by,point_flag,(start_time+check_cycle-reminder_cycle)&lt;=current_date as txflage from facility_archives
+    </sql>
+
+    <select id="selectFacilityArchivesList" parameterType="FacilityArchives" resultMap="FacilityArchivesResult">
+        <include refid="selectFacilityArchivesVo"/>
+        <where>
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="facilityName != null  and facilityName != ''"> and facility_name like concat('%', #{facilityName}, '%')</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer like concat('%', #{manufacturer}, '%')</if>
+            <if test="facilityType != null  and facilityType != ''"> and facility_type = #{facilityType}</if>
+            <if test="branchFactory != null  and branchFactory != ''"> and branch_factory = #{branchFactory}</if>
+            <if test="istallationLocationn != null  and istallationLocationn != ''"> and installation_location like concat('%', #{istallationLocationn}, '%')</if>
+            <if test="facilityGrade != null  and facilityGrade != ''"> and facility_grade = #{facilityGrade}</if>
+            <if test="ratedPower != null  and ratedPower != ''"> and to_number(rated_power,'9999999999') >= to_number(#{ratedPower},'9999999999')</if>
+        </where>
+        order by code
+    </select>
+
+    <select id="selectFacilityArchivesById" parameterType="String" resultMap="FacilityArchivesResult">
+        <include refid="selectFacilityArchivesVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFacilityArchives" parameterType="FacilityArchives">
+        insert into facility_archives
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="facilityName != null  and facilityName != ''">facility_name,</if>
+            <if test="facilityType != null  and facilityType != ''">facility_type,</if>
+            <if test="branchFactory != null  and branchFactory != ''">branch_factory,</if>
+            <if test="istallationLocationn != null  and istallationLocationn != ''">installation_location,</if>
+            <if test="facilityGrade != null  and facilityGrade != ''">facility_grade,</if>
+            <if test="ratedPower != null  and ratedPower != ''">rated_power,</if>
+            <if test="productionDate != null ">production_date,</if>
+            <if test="putrunDate != null ">putrun_date,</if>
+            <if test="manufacturer != null  and manufacturer != ''">manufacturer,</if>
+            <if test="personCharge != null  and personCharge != ''">person_charge,</if>
+            <if test="technicalData != null  and technicalData != ''">technical_data,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="checkCycle != null ">check_cycle,</if>
+            <if test="reminderCycle != null ">reminder_cycle,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="pointFlag != null  and pointFlag != ''">point_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="facilityName != null  and facilityName != ''">#{facilityName},</if>
+            <if test="facilityType != null  and facilityType != ''">#{facilityType},</if>
+            <if test="branchFactory != null  and branchFactory != ''">#{branchFactory},</if>
+            <if test="istallationLocationn != null  and istallationLocationn != ''">#{istallationLocationn},</if>
+            <if test="facilityGrade != null  and facilityGrade != ''">#{facilityGrade},</if>
+            <if test="ratedPower != null  and ratedPower != ''">#{ratedPower},</if>
+            <if test="productionDate != null ">#{productionDate},</if>
+            <if test="putrunDate != null ">#{putrunDate},</if>
+            <if test="manufacturer != null  and manufacturer != ''">#{manufacturer},</if>
+            <if test="personCharge != null  and personCharge != ''">#{personCharge},</if>
+            <if test="technicalData != null  and technicalData != ''">#{technicalData},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="checkCycle != null ">#{checkCycle},</if>
+            <if test="reminderCycle != null ">#{reminderCycle},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="pointFlag != null  and pointFlag != ''">#{pointFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFacilityArchives" parameterType="FacilityArchives">
+        update facility_archives
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="facilityName != null  and facilityName != ''">facility_name = #{facilityName},</if>
+            <if test="facilityType != null  and facilityType != ''">facility_type = #{facilityType},</if>
+            <if test="branchFactory != null  and branchFactory != ''">branch_factory = #{branchFactory},</if>
+            <if test="istallationLocationn != null  and istallationLocationn != ''">installation_location = #{istallationLocationn},</if>
+            <if test="facilityGrade != null  and facilityGrade != ''">facility_grade = #{facilityGrade},</if>
+            <if test="ratedPower != null  and ratedPower != ''">rated_power = #{ratedPower},</if>
+            <if test="productionDate != null ">production_date = #{productionDate},</if>
+            <if test="putrunDate != null ">putrun_date = #{putrunDate},</if>
+            <if test="manufacturer != null  and manufacturer != ''">manufacturer = #{manufacturer},</if>
+            <if test="personCharge != null  and personCharge != ''">person_charge = #{personCharge},</if>
+            <if test="technicalData != null  and technicalData != ''">technical_data = #{technicalData},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="checkCycle != null ">check_cycle = #{checkCycle},</if>
+            <if test="reminderCycle != null ">reminder_cycle = #{reminderCycle},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="pointFlag != null  and pointFlag != ''">point_flag = #{pointFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFacilityArchivesById" parameterType="String">
+        delete from facility_archives where id = #{id}
+    </delete>
+
+    <delete id="deleteFacilityArchivesByIds" parameterType="String">
+        delete from facility_archives where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <update id="resetFacilityArchivesByIds" parameterType="String" >
+        update facility_archives
+        set start_time = NOW()
+        where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="selectFacilityArchivesByCode" parameterType="FacilityArchives" resultMap="FacilityArchivesResult">
+        <include refid="selectFacilityArchivesVo"/>
+        where code = #{code}
+        <if test="id != null  and id != ''"> and id != #{id} or id is null</if>
+    </select>
+    <select id="excelFacilityArchivesList" parameterType="FacilityArchives" resultMap="FacilityArchivesResult">
+        select id, code, facility_name, fun_getDiceData('facility_type',facility_type) as facility_type,
+        fun_getDiceData('branch_factory',branch_factory) as branch_factory, installation_location,
+        fun_getDiceData('facility_grade',facility_grade) as facility_grade, rated_power, to_char(production_date,'YYYY-MM-DD') as  production_date,
+        to_char(putrun_date,'YYYY-MM-DD') as putrun_date, manufacturer, person_charge,
+          technical_data, start_time, check_cycle, reminder_cycle, remark, create_time, create_by,
+           update_time, update_by
+        from facility_archives
+        <where>
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="facilityName != null  and facilityName != ''"> and facility_name like concat('%', #{facilityName}, '%')</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer like concat('%', #{manufacturer}, '%')</if>
+            <if test="facilityType != null  and facilityType != ''"> and facility_type = #{facilityType}</if>
+            <if test="branchFactory != null  and branchFactory != ''"> and branch_factory = #{branchFactory}</if>
+            <if test="istallationLocationn != null  and istallationLocationn != ''"> and installation_location like concat('%', #{istallationLocationn}, '%')</if>
+            <if test="facilityGrade != null  and facilityGrade != ''"> and facility_grade = #{facilityGrade}</if>
+            <if test="ratedPower != null  and ratedPower != ''"> and to_number(rated_power,'9999999999') >= #{ratedPower}</if>
+        </where>
+        order by code
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.plannedOutput.mapper.energyMonitoringMapper">
+    
+    <resultMap type="energyMonitoring" id="energyMonitoringResult">
+        <result property="peValue"    column="pe_value"    />
+        <result property="peWaterValue"    column="pe_water_value"    />
+        <result property="peCoalValue"    column="pe_coal_value"    />
+        <result property="peSteamValue"    column="pe_steam_value"    />
+        <result property="actualValue"    column="actual_value"    />
+        <result property="planValue"    column="plan_value"    />
+        <result property="poValue"    column="po_value"    />
+        <result property="poVaterValue"    column="po_water_value"    />
+        <result property="poCoalValue"    column="po_coal_value"    />
+        <result property="poSteamValue"    column="po_steam_value"    />
+        <result property="productid"    column="productid"    />
+        <result property="productname"    column="productname"    />
+        <result property="muid"    column="muid"    />
+    </resultMap>
+
+    <select id="selectEnergyMonitoringList" parameterType="energyMonitoring" resultMap="energyMonitoringResult">
+        SELECT
+            pe."value" AS pe_value,
+            pe.water_value AS pe_water_value,
+            pe.coal_value AS pe_coal_value,
+            pe.steam_value AS pe_steam_value,
+            pe.actual_value,
+            po.plan_value,
+            po."value" AS po_value,
+            po.water_value AS po_water_value,
+            po.coal_value AS po_coal_value,
+            po.steam_value AS po_steam_value,
+            p.productid,
+            P.productname,
+            P.muid
+        FROM
+            plan_energy pe
+            LEFT JOIN planned_output po ON po.product_id = pe.product_id
+            LEFT JOIN sys_product P ON P.productid = pe.product_id
+        WHERE  p.productid in  <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
+            <if test="timeCode != null  and timeCode !=''"> AND pe.time_code = #{timeCode} </if>
+            <if test="timeCode != null  and timeCode !=''"> AND po.time_code = #{timeCode} </if>
+    </select>
+</mapper>

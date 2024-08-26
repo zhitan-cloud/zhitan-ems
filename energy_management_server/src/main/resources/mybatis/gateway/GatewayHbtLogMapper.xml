@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.gateway.mapper.GatewayHbtLogMapper">
+
+    <resultMap type="GatewayHbtLog" id="GatewayHbtLogResult">
+        <result property="id"    column="id"    />
+        <result property="gatewayNo"    column="gateway_no"    />
+        <result property="hbtTime"    column="hbt_time"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectGatewayHbtLogVo">
+        select id, gateway_no, hbt_time, content from gateway_hbt_log
+    </sql>
+
+    <select id="selectGatewayHbtLogList" parameterType="GatewayHbtLog" resultMap="GatewayHbtLogResult">
+        <include refid="selectGatewayHbtLogVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectGatewayHbtLogById" parameterType="String" resultMap="GatewayHbtLogResult">
+        <include refid="selectGatewayHbtLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGatewayHbtLog" parameterType="GatewayHbtLog">
+        insert into gateway_hbt_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="gatewayNo != null  and gatewayNo != ''">gateway_no,</if>
+            <if test="hbtTime != null ">hbt_time,</if>
+            <if test="content != null  and content != ''">content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="gatewayNo != null  and gatewayNo != ''">#{gatewayNo},</if>
+            <if test="hbtTime != null ">#{hbtTime},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGatewayHbtLog" parameterType="GatewayHbtLog">
+        update gateway_hbt_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="gatewayNo != null  and gatewayNo != ''">gateway_no = #{gatewayNo},</if>
+            <if test="hbtTime != null ">hbt_time = #{hbtTime},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGatewayHbtLogById" parameterType="String">
+        delete from gateway_hbt_log where id = #{id}
+    </delete>
+
+    <delete id="deleteGatewayHbtLogByIds" parameterType="String">
+        delete from gateway_hbt_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

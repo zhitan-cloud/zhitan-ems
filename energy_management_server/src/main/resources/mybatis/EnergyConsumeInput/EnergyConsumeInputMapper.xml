@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.energyConsumeInput.mapper.EnergyConsumeInputMapper">
+
+    <resultMap type="EnergyConsumeInput" id="EnergyConsumeInputResult">
+        <result property="indexId" column="index_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="unit" column="unit_name"/>
+        <result property="dataTime" column="data_time"/>
+        <result property="value" column="value"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="energyName" column="energy_name"/>
+    </resultMap>
+
+
+    <select id="selectEnergyConsumeInputList" resultMap="EnergyConsumeInputResult">
+         select
+            ni.index_id,ei."name",ei.code,dd3.dict_label unit_name,di.data_time,di."value",
+            di.create_time,di.create_by,dd1.dict_label category_name,dd2.dict_label energy_name
+        from
+            node_index ni
+            left join energy_index ei on ni.index_id = ei.index_id
+            left join index_storage ist on ist.index_id = ei.index_id
+            left join  data_item di on ei.index_id = di.index_id and di.time_code = #{timeCode}
+            left join sys_dict_data dd1 on dd1.dict_value = ei.index_category and dd1.dict_type = 'sys_index_category'
+            left join sys_dict_data dd2 on dd2.dict_value = ei.energy_id and dd2.dict_type = 'energy_type'
+            left join sys_dict_data dd3 on dd3.dict_value = ei.unit_id and dd3.dict_type = 'sys_unit'
+        WHERE
+            ist.calc_type = 'INPUT' and ist.time_type = #{timeType}
+            AND ni.node_id = #{nodeId}
+            order by data_time DESC
+    </select>
+
+    <delete id="deleteEnergyConsumeInputByIds" parameterType="String">
+        delete from data_item where time_code = #{timeCode} and index_id in
+        <foreach item="id" collection="indexIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="saveEnergyConsumeInputList">
+        insert into data_item (index_id, time_code,
+        time_type,
+        begin_time,
+        end_time,
+        data_time,
+        value,
+        quality,
+        create_time,
+        create_by)
+        values
+        <foreach collection="list" item="dataItem" index="index" separator=",">
+            (#{dataItem.indexId},
+            #{dataItem.timeCode},
+            #{dataItem.timeType},
+            #{dataItem.beginTime},
+            #{dataItem.endTime},
+            #{dataItem.dataTime},
+            #{dataItem.value, jdbcType = DOUBLE},
+            #{dataItem.quality},
+            now(),
+            #{dataItem.createBy})
+        </foreach>
+    </insert>
+
+    <select id="queryReCalcIndexIdByIds" parameterType="String" resultMap="EnergyConsumeInputResult">
+        select
+        ifp.index_id
+        from
+        index_formula_param ifp
+        WHERE
+        ifp.param_value in (
+        SELECT ei.code FROM energy_index ei where ei.index_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+    </select>
+
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.EnergyBenchmarking.mapper.EnergyBenchmarkingMapper">
+    
+    <resultMap type="EnergyBenchmarking" id="EnergyBenchmarkingResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="codeId"    column="code_id"    />
+        <result property="unit"    column="unit"    />
+        <result property="range"    column="range"    />
+        <result property="type"    column="type"    />
+        <result property="value"    column="value"    />
+        <result property="termValidity"    column="term_validity"    />
+        <result property="modelNode"    column="model_node"    />
+    </resultMap>
+
+    <sql id="selectEnergyBenchmarkingVo">
+        select id, name, code_id, unit, range, type, value, term_validity,model_node from energy_benchmarking
+    </sql>
+
+    <select id="selectEnergyBenchmarkingList" parameterType="EnergyBenchmarking" resultMap="EnergyBenchmarkingResult">
+        <include refid="selectEnergyBenchmarkingVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="modelNode != null  and modelNode != ''"> and model_node like concat('%', #{modelNode}, '%')</if>
+            <if test="codeId != null  and codeId != ''"> and code_id like concat('%', #{codeId}, '%')</if>
+            <if test="unit != null  and unit != ''"> and unit like concat('%', #{unit}, '%')</if>
+            <if test="range != null  and range != ''"> and range like concat('%', #{range}, '%')</if>
+            <if test="type != null  and type != ''"> and type like concat('%', #{type}, '%')</if>
+            <if test="value != null  and value != ''"> and value like concat('%', #{value}, '%')</if>
+            <if test="termValidity != null "> and term_validity like concat('%', #{termValidity}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectEnergyBenchmarkingById" parameterType="String" resultMap="EnergyBenchmarkingResult">
+        <include refid="selectEnergyBenchmarkingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEnergyBenchmarking" parameterType="EnergyBenchmarking">
+        insert into energy_benchmarking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="codeId != null  and codeId != ''">code_id,</if>
+            <if test="unit != null  and unit != ''">unit,</if>
+            <if test="range != null  and range != ''">range,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="value != null  and value != ''">value,</if>
+            <if test="termValidity != null ">term_validity,</if>
+            <if test="modelNode != null ">model_node,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="codeId != null  and codeId != ''">#{codeId},</if>
+            <if test="unit != null  and unit != ''">#{unit},</if>
+            <if test="range != null  and range != ''">#{range},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="value != null  and value != ''">#{value},</if>
+            <if test="termValidity != null ">#{termValidity},</if>
+            <if test="modelNode != null ">#{modelNode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnergyBenchmarking" parameterType="EnergyBenchmarking">
+        update energy_benchmarking
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="codeId != null  and codeId != ''">code_id = #{codeId},</if>
+            <if test="unit != null  and unit != ''">unit = #{unit},</if>
+            <if test="range != null  and range != ''">range = #{range},</if>
+            <if test="type != null  and type != ''">type = #{type},</if>
+            <if test="value != null  and value != ''">value = #{value},</if>
+            <if test="termValidity != null ">term_validity = #{termValidity},</if>
+            <if test="modelNode != null ">model_node= #{modelNode},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnergyBenchmarkingById" parameterType="String">
+        delete from energy_benchmarking where id = #{id}
+    </delete>
+
+    <delete id="deleteEnergyBenchmarkingByIds" parameterType="String">
+        delete from energy_benchmarking where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

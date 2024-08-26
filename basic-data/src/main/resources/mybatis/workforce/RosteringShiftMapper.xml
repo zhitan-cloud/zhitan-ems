@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.workforce.mapper.RosteringShiftMapper">
+    
+    <resultMap type="RosteringShift" id="RosteringShiftResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="enddTime"    column="endd_time"    />
+        <result property="isCrossDay"    column="is_cross_day"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+    <resultMap type="SysDept" id="SysDeptResult">
+        <id property="deptId" column="dept_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="deptName" column="dept_name"/>
+    </resultMap>
+    <sql id="selectRosteringShiftVo">
+        select id, code, name, dept_id, start_time, endd_time, is_cross_day, order_no, description,(SELECT s.dept_name FROM sys_dept s WHERE  s.dept_id = rostering_shift.dept_id )  deptName, create_by, create_time, update_by, update_time from rostering_shift
+
+    </sql>
+
+    <select id="selectRosteringShiftList" parameterType="RosteringShift" resultMap="RosteringShiftResult">
+        <include refid="selectRosteringShiftVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="deptId != null  and deptId != ''"> and dept_id like concat('%', #{deptId}, '%')</if>
+            <if test="startTime != null "> and start_time like concat('%', #{startTime}, '%')</if>
+            <if test="enddTime != null "> and endd_time like concat('%', #{enddTime}, '%')</if>
+            <if test="isCrossDay != null  and isCrossDay != ''"> and is_cross_day like concat('%', #{isCrossDay}, '%')</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRosteringShiftById" parameterType="String" resultMap="RosteringShiftResult">
+        <include refid="selectRosteringShiftVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRosteringShift" parameterType="RosteringShift">
+        insert into rostering_shift
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="deptId != null  and deptId != ''">dept_id,</if>
+            <if test="startTime != null ">start_time,</if>
+            <if test="enddTime != null ">endd_time,</if>
+            <if test="isCrossDay != null  and isCrossDay != ''">is_cross_day,</if>
+            <if test="orderNo != null  and orderNo != ''">order_no,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="deptId != null  and deptId != ''">#{deptId},</if>
+            <if test="startTime != null ">#{startTime},</if>
+            <if test="enddTime != null ">#{enddTime},</if>
+            <if test="isCrossDay != null  and isCrossDay != ''">#{isCrossDay},</if>
+            <if test="orderNo != null  and orderNo != ''">#{orderNo},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRosteringShift" parameterType="RosteringShift">
+        update rostering_shift
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="deptId != null  and deptId != ''">dept_id = #{deptId},</if>
+            <if test="startTime != null ">start_time = #{startTime},</if>
+            <if test="enddTime != null ">endd_time = #{enddTime},</if>
+            <if test="isCrossDay != null  and isCrossDay != ''">is_cross_day = #{isCrossDay},</if>
+            <if test="orderNo != null  and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="description != null  and description != ''">description = #{description},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRosteringShiftById" parameterType="String">
+        delete from rostering_shift where id = #{id}
+    </delete>
+
+    <delete id="deleteRosteringShiftByIds" parameterType="String">
+        delete from rostering_shift where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="treeList" parameterType="SysDept" resultMap="SysDeptResult">
+        SELECT
+            dept_id,
+            parent_id,
+            dept_name
+        FROM
+            sys_dept
+        WHERE
+            status = '0'
+            AND del_flag = '0'
+    </select>
+    
+</mapper>

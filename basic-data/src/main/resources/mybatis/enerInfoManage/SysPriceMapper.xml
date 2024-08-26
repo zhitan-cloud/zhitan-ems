@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.enerInfoManage.mapper.SysPriceMapper">
+
+    <resultMap type="SysPrice" id="SysPriceResult">
+        <result property="oprTime"    column="opr_time"    />
+        <result property="modMan"    column="mod_man"    />
+        <result property="priceid"    column="priceid"    />
+        <result property="objectid"    column="objectid"    />
+        <result property="objecttype"    column="objecttype"    />
+        <result property="price"    column="price"    />
+        <result property="execdate"    column="execdate"    />
+        <result property="oprMan"    column="opr_man"    />
+        <result property="modTime"    column="mod_time"    />
+        <result property="note"    column="note"    />
+    </resultMap>
+
+    <sql id="selectSysPriceVo">
+        select a.opr_time, a.mod_man, a.priceid, a.objectid, a.objecttype, a.price, a.execdate, a.opr_man, a.mod_time, a.note , b.enername
+        from sys_price a
+        left join sys_energy b on objectid = enerid and objecttype = 1
+    </sql>
+
+    <select id="selectSysPriceList" parameterType="SysPrice" resultMap="SysPriceResult">
+        <include refid="selectSysPriceVo"/>
+        <where>
+            <if test="enername != null  and enername != ''"> and enername like concat('%', #{enername}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectSysPriceById" parameterType="Date" resultMap="SysPriceResult">
+        <include refid="selectSysPriceVo"/>
+        where opr_time = #{oprTime}
+    </select>
+
+    <insert id="insertSysPrice" parameterType="SysPrice">
+        insert into sys_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oprTime != null ">opr_time,</if>
+            <if test="modMan != null  and modMan != ''">mod_man,</if>
+            <if test="priceid != null ">priceid,</if>
+            <if test="objectid != null ">objectid,</if>
+            <if test="objecttype != null ">objecttype,</if>
+            <if test="price != null ">price,</if>
+            <if test="execdate != null ">execdate,</if>
+            <if test="oprMan != null  and oprMan != ''">opr_man,</if>
+            <if test="modTime != null ">mod_time,</if>
+            <if test="note != null  and note != ''">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oprTime != null ">#{oprTime},</if>
+            <if test="modMan != null  and modMan != ''">#{modMan},</if>
+            <if test="priceid != null ">#{priceid},</if>
+            <if test="objectid != null ">#{objectid},</if>
+            <if test="objecttype != null ">#{objecttype},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="execdate != null ">#{execdate},</if>
+            <if test="oprMan != null  and oprMan != ''">#{oprMan},</if>
+            <if test="modTime != null ">#{modTime},</if>
+            <if test="note != null  and note != ''">#{note},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysPrice" parameterType="SysPrice">
+        update sys_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="modMan != null  and modMan != ''">mod_man = #{modMan},</if>
+            <if test="priceid != null ">priceid = #{priceid},</if>
+            <if test="objectid != null ">objectid = #{objectid},</if>
+            <if test="objecttype != null ">objecttype = #{objecttype},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="execdate != null ">execdate = #{execdate},</if>
+            <if test="oprMan != null  and oprMan != ''">opr_man = #{oprMan},</if>
+            <if test="modTime != null ">mod_time = #{modTime},</if>
+            <if test="note != null  and note != ''">note = #{note},</if>
+        </trim>
+        where opr_time = #{oprTime}
+    </update>
+
+    <delete id="deleteSysPriceById" parameterType="Date">
+        delete from sys_price where opr_time = #{oprTime}
+    </delete>
+
+    <delete id="deleteSysPriceByIds" parameterType="String">
+        delete from sys_price where opr_time in
+        <foreach item="oprTime" collection="array" open="(" separator="," close=")">
+            #{oprTime}
+        </foreach>
+    </delete>
+
+</mapper>

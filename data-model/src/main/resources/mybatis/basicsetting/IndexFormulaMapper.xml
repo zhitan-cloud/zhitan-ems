@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.IndexFormulaMapper">
+  <resultMap id="formulaMap" type="com.dingzhuo.energy.data.model.domain.IndexFormula">
+    <result property="id" column="id"/>
+    <result property="indexId" column="index_id"/>
+    <result property="formulaText" column="formula_text"/>
+  </resultMap>
+  <resultMap id="formulaParamMap" type="com.dingzhuo.energy.data.model.domain.IndexFormulaParam">
+    <result property="formulaId" column="formula_id"/>
+    <result property="paramName" column="param_name"/>
+    <result property="paramValue" column="param_value"/>
+  </resultMap>
+  <insert id="insertIndexFormula">
+    insert into index_formula (id, index_id, formula_text)
+    values (#{id}, #{indexId}, #{formulaText});
+  </insert>
+  <insert id="saveIndexFormulaParam">
+    delete
+    from index_formula_param
+    where index_id = #{indexId};
+    <foreach collection="indexFormulaParams" item="formulaParam" separator=";">
+      insert into index_formula_param (id, formula_id,index_id, param_name, param_value) values
+      (#{formulaParam.id}, #{formulaParam.formulaId}, #{formulaParam.indexId},
+      #{formulaParam.paramName},
+      #{formulaParam.paramValue})
+    </foreach>
+  </insert>
+  <update id="updateIndexFormula">
+    update index_formula
+    set formula_text = #{formulaText}
+    where id = #{id}
+  </update>
+  <select id="getFormula" resultMap="formulaMap">
+    select *
+    from index_formula
+    where index_id = #{indexId}
+  </select>
+  <select id="getFormulaParam" resultMap="formulaParamMap">
+    select *
+    from index_formula_param
+    where index_id = #{indexId}
+  </select>
+</mapper>

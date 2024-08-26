@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.DataAuthMapper">
+  <update id="setUserDataAuth">
+    delete
+    from data_auth_user
+    where user_id = #{id}
+    and model_code = #{modelCode};
+    <foreach collection="ids" item="authId" separator=";">
+      insert into data_auth_user (user_id, node_id, model_code)
+      values (#{id},#{authId},#{modelCode})
+    </foreach>
+  </update>
+  <update id="setRoleDataAuth">
+    delete
+    from data_auth_role
+    where role_id = #{id}
+    and model_code = #{modelCode};
+    <foreach collection="ids" item="authId" separator=";">
+      insert into data_auth_role (role_id, node_id, model_code)
+      values (#{id},#{authId},#{modelCode})
+    </foreach>
+  </update>
+  <select id="getUserDataAuth" resultType="java.lang.String">
+    select node_id
+    from data_auth_user
+    where user_id = #{id}
+      and model_code = #{modelCode};
+  </select>
+  <select id="getRoleDataAuth" resultType="java.lang.String">
+    select node_id
+    from data_auth_role
+    where role_id = #{id}
+      and model_code = #{modelCode};
+  </select>
+</mapper>

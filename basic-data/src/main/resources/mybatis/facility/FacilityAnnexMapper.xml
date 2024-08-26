@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.basic.data.facility.mapper.FacilityAnnexMapper">
+    
+    <resultMap type="FacilityAnnex" id="FacilityAnnexResult">
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="id"    column="id"    />
+        <result property="facilityId"    column="facility_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filesuffix"    column="file_suffix"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="delFlage"    column="del_flage"    />
+    </resultMap>
+
+    <sql id="selectFacilityAnnexVo">
+        select create_time, create_by, update_time, update_by, id, facility_id, file_name, file_suffix, file_path, del_flage from facility_annex
+    </sql>
+
+    <select id="selectFacilityAnnexList" parameterType="FacilityAnnex" resultMap="FacilityAnnexResult">
+        <include refid="selectFacilityAnnexVo"/>
+        <where>
+            del_flage='N'
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="facilityId != null  and facilityId != ''"> and facility_id=#{facilityId}</if>
+        </where>
+    </select>
+    
+    <select id="selectFacilityAnnexById" parameterType="Date" resultMap="FacilityAnnexResult">
+        <include refid="selectFacilityAnnexVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFacilityAnnex" parameterType="FacilityAnnex">
+        insert into facility_annex
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="id != null  and id != ''">id,</if>
+            <if test="facilityId != null  and facilityId != ''">facility_id,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="filesuffix != null  and filesuffix != ''">file_suffix,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="facilityId != null  and facilityId != ''">#{facilityId},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="filesuffix != null  and filesuffix != ''">#{filesuffix},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="delFlage != null  and delFlage != ''">#{delFlage},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFacilityAnnex" parameterType="FacilityAnnex">
+        update facility_annex
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="id != null  and id != ''">id = #{id},</if>
+            <if test="facilityId != null  and facilityId != ''">facility_id = #{facilityId},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="filesuffix != null  and filesuffix != ''">file_suffix = #{filesuffix},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="delFlage != null  and delFlage != ''">del_flage = #{delFlage},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFacilityAnnexById" parameterType="Date">
+        <!--delete from facility_annex where create_time = #{createTime}-->
+        update facility_annex set del_flage='Y',update_time=now() where id = #{id}
+    </delete>
+
+    <delete id="deleteFacilityAnnexByIds" parameterType="String">
+        <!--delete from facility_annex where create_time in-->
+        update facility_annex set del_flage='Y',update_time=now() where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

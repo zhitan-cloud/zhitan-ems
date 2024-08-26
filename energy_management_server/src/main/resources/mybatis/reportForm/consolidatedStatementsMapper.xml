@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.reportForm.mapper.consolidatedStatementsMapper">
+
+    <resultMap type="com.dingzhuo.energy.project.reportForm.domain.consolidatedStatements" id="consolidatedResult">
+        <result property="id"    column="id"    />
+        <result property="trRljmZb"    column="tr_rljm_zb"    />
+        <result property="trRljmSwl"    column="tr_rljm_swl"    />
+        <result property="trRljmZbzm"    column="tr_rljm_zbzm"    />
+        <result property="trDianZb"    column="tr_dian_zb"    />
+        <result property="trDianSwl"    column="tr_dian_swl"    />
+        <result property="trDianZbzm"    column="tr_dian_zbzm"    />
+        <result property="trShuiZb"    column="tr_shui_zb"    />
+        <result property="trShuiSwl"    column="tr_shui_swl"    />
+        <result property="trShuiZbzm"    column="tr_shui_zbzm"    />
+        <result property="trZqZb"    column="tr_zq_zb"    />
+        <result property="trZqSwl"    column="tr_zq_swl"    />
+        <result property="trZqZbzm"    column="tr_zq_zbzm"    />
+        <result property="ccJtZb"    column="cc_jt_zb"    />
+        <result property="ccJtSwl"    column="cc_jt_swl"    />
+        <result property="ccJtZbzm"    column="cc_jt_zbzm"    />
+        <result property="ccJyZb"    column="cc_jy_zb"    />
+        <result property="ccJySwl"    column="cc_jy_swl"    />
+        <result property="ccJyZbzm"    column="cc_jy_zbzm"    />
+        <result property="ccCbZb"    column="cc_cb_zb"    />
+        <result property="ccCbSwl"    column="cc_cb_swl"    />
+        <result property="ccCbZbzm"    column="cc_cb_zbzm"    />
+        <result property="ccMqZb"    column="cc_mq_zb"    />
+        <result property="ccMqSwl"    column="cc_mq_swl"    />
+        <result property="ccMqZbzm"    column="cc_mq_zbzm"    />
+        <result property="ccDianZb"    column="cc_dian_zb"    />
+        <result property="ccDianSwl"    column="cc_dian_swl"    />
+        <result property="ccDianZbzm"    column="cc_dian_zbzm"    />
+        <result property="ccZqZb"    column="cc_zq_zb"    />
+        <result property="ccZqSwl"    column="cc_zq_swl"    />
+        <result property="ccZqZbzm"    column="cc_zq_zbzm"    />
+        <result property="timeType"    column="time_type"    />
+        <result property="dataTime"    column="data_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="timeCode"    column="time_code"    />
+        <result property="trZbzm"    column="tr_zbzm"    />
+        <result property="ccZbzm"    column="cc_zbzm"    />
+        <result property="jhbm"    column="jhbm"    />
+        <result property="zhnh"    column="zhnh"    />
+    </resultMap>
+
+
+    <sql id="selectConsolidatedStatementsVo">
+        select id, tr_rljm_zb, tr_rljm_swl, tr_rljm_zbzm, tr_dian_zb, tr_dian_swl, tr_dian_zbzm, tr_shui_zb, tr_shui_swl, tr_shui_zbzm, tr_zq_zb, tr_zq_swl, tr_zq_zbzm, cc_jt_zb, cc_jt_swl, cc_jt_zbzm, cc_jy_zb, cc_jy_swl, cc_jy_zbzm, cc_cb_zb, cc_cb_swl, cc_cb_zbzm, cc_mq_zb, cc_mq_swl, cc_mq_zbzm, cc_dian_zb, cc_dian_swl, cc_dian_zbzm, cc_zq_zb, cc_zq_swl, cc_zq_zbzm, time_type, create_time, create_by, update_time, update_by, remark, time_code, data_time, tr_zbzm, cc_zbzm, jhbm, zhnh from consolidated_statements
+    </sql>
+    <select id="selectconsolidatedStatementsList" resultMap="consolidatedResult" parameterType="com.dingzhuo.energy.project.reportForm.domain.consolidatedStatements">
+        <include refid="selectConsolidatedStatementsVo"/>
+        <where><if test="dataTime !='' and dataTime !=null">data_time= #{dataTime}</if></where>
+    </select>
+
+    <select id="selectconsolidatedStatementsById" parameterType="String" resultMap="consolidatedResult">
+        <include refid="selectConsolidatedStatementsVo"/>
+        where data_time = #{id}
+    </select>
+
+    <insert id="insertconsolidatedStatements" parameterType="com.dingzhuo.energy.project.reportForm.domain.consolidatedStatements">
+        insert into consolidated_statements
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="trRljmZb != null  and trRljmZb != ''">tr_rljm_zb,</if>
+            <if test="trRljmSwl != null  and trRljmSwl != ''">tr_rljm_swl,</if>
+            <if test="trRljmZbzm != null  and trRljmZbzm != ''">tr_rljm_zbzm,</if>
+            <if test="trDianZb != null  and trDianZb != ''">tr_dian_zb,</if>
+            <if test="trDianSwl != null  and trDianSwl != ''">tr_dian_swl,</if>
+            <if test="trDianZbzm != null  and trDianZbzm != ''">tr_dian_zbzm,</if>
+            <if test="trShuiZb != null  and trShuiZb != ''">tr_shui_zb,</if>
+            <if test="trShuiSwl != null  and trShuiSwl != ''">tr_shui_swl,</if>
+            <if test="trShuiZbzm != null  and trShuiZbzm != ''">tr_shui_zbzm,</if>
+            <if test="trZqZb != null  and trZqZb != ''">tr_zq_zb,</if>
+            <if test="trZqSwl != null  and trZqSwl != ''">tr_zq_swl,</if>
+            <if test="trZqZbzm != null  and trZqZbzm != ''">tr_zq_zbzm,</if>
+            <if test="ccJtZb != null  and ccJtZb != ''">cc_jt_zb,</if>
+            <if test="ccJtSwl != null  and ccJtSwl != ''">cc_jt_swl,</if>
+            <if test="ccJtZbzm != null  and ccJtZbzm != ''">cc_jt_zbzm,</if>
+            <if test="ccJyZb != null  and ccJyZb != ''">cc_jy_zb,</if>
+            <if test="ccJySwl != null  and ccJySwl != ''">cc_jy_swl,</if>
+            <if test="ccJyZbzm != null  and ccJyZbzm != ''">cc_jy_zbzm,</if>
+            <if test="ccCbZb != null  and ccCbZb != ''">cc_cb_zb,</if>
+            <if test="ccCbSwl != null  and ccCbSwl != ''">cc_cb_swl,</if>
+            <if test="ccCbZbzm != null  and ccCbZbzm != ''">cc_cb_zbzm,</if>
+            <if test="ccMqZb != null  and ccMqZb != ''">cc_mq_zb,</if>
+            <if test="ccMqSwl != null  and ccMqSwl != ''">cc_mq_swl,</if>
+            <if test="ccMqZbzm != null  and ccMqZbzm != ''">cc_mq_zbzm,</if>
+            <if test="ccDianZb != null  and ccDianZb != ''">cc_dian_zb,</if>
+            <if test="ccDianSwl != null  and ccDianSwl != ''">cc_dian_swl,</if>
+            <if test="ccDianZbzm != null  and ccDianZbzm != ''">cc_dian_zbzm,</if>
+            <if test="ccZqZb != null  and ccZqZb != ''">cc_zq_zb,</if>
+            <if test="ccZqSwl != null  and ccZqSwl != ''">cc_zq_swl,</if>
+            <if test="ccZqZbzm != null  and ccZqZbzm != ''">cc_zq_zbzm,</if>
+            <if test="timeType != null  and timeType != ''">time_type,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="timeCode != null  and timeCode != ''">time_code,</if>
+            <if test="dataTime != null  and dataTime != ''">data_time,</if>
+            <if test="trZbzm != null  and trZbzm != ''">tr_zbzm,</if>
+            <if test="ccZbzm != null  and ccZbzm != ''">cc_zbzm,</if>
+            <if test="jhbm != null  and jhbm != ''">jhbm,</if>
+            <if test="zhnh != null  and zhnh != ''">zhnh,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="trRljmZb != null  and trRljmZb != ''">#{trRljmZb},</if>
+            <if test="trRljmSwl != null  and trRljmSwl != ''">#{trRljmSwl},</if>
+            <if test="trRljmZbzm != null  and trRljmZbzm != ''">#{trRljmZbzm},</if>
+            <if test="trDianZb != null  and trDianZb != ''">#{trDianZb},</if>
+            <if test="trDianSwl != null  and trDianSwl != ''">#{trDianSwl},</if>
+            <if test="trDianZbzm != null  and trDianZbzm != ''">#{trDianZbzm},</if>
+            <if test="trShuiZb != null  and trShuiZb != ''">#{trShuiZb},</if>
+            <if test="trShuiSwl != null  and trShuiSwl != ''">#{trShuiSwl},</if>
+            <if test="trShuiZbzm != null  and trShuiZbzm != ''">#{trShuiZbzm},</if>
+            <if test="trZqZb != null  and trZqZb != ''">#{trZqZb},</if>
+            <if test="trZqSwl != null  and trZqSwl != ''">#{trZqSwl},</if>
+            <if test="trZqZbzm != null  and trZqZbzm != ''">#{trZqZbzm},</if>
+            <if test="ccJtZb != null  and ccJtZb != ''">#{ccJtZb},</if>
+            <if test="ccJtSwl != null  and ccJtSwl != ''">#{ccJtSwl},</if>
+            <if test="ccJtZbzm != null  and ccJtZbzm != ''">#{ccJtZbzm},</if>
+            <if test="ccJyZb != null  and ccJyZb != ''">#{ccJyZb},</if>
+            <if test="ccJySwl != null  and ccJySwl != ''">#{ccJySwl},</if>
+            <if test="ccJyZbzm != null  and ccJyZbzm != ''">#{ccJyZbzm},</if>
+            <if test="ccCbZb != null  and ccCbZb != ''">#{ccCbZb},</if>
+            <if test="ccCbSwl != null  and ccCbSwl != ''">#{ccCbSwl},</if>
+            <if test="ccCbZbzm != null  and ccCbZbzm != ''">#{ccCbZbzm},</if>
+            <if test="ccMqZb != null  and ccMqZb != ''">#{ccMqZb},</if>
+            <if test="ccMqSwl != null  and ccMqSwl != ''">#{ccMqSwl},</if>
+            <if test="ccMqZbzm != null  and ccMqZbzm != ''">#{ccMqZbzm},</if>
+            <if test="ccDianZb != null  and ccDianZb != ''">#{ccDianZb},</if>
+            <if test="ccDianSwl != null  and ccDianSwl != ''">#{ccDianSwl},</if>
+            <if test="ccDianZbzm != null  and ccDianZbzm != ''">#{ccDianZbzm},</if>
+            <if test="ccZqZb != null  and ccZqZb != ''">#{ccZqZb},</if>
+            <if test="ccZqSwl != null  and ccZqSwl != ''">#{ccZqSwl},</if>
+            <if test="ccZqZbzm != null  and ccZqZbzm != ''">#{ccZqZbzm},</if>
+            <if test="timeType != null  and timeType != ''">#{timeType},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="timeCode != null  and timeCode != ''">#{timeCode},</if>
+            <if test="dataTime != null  and dataTime != ''">#{dataTime},</if>
+            <if test="trZbzm != null  and trZbzm != ''">#{trZbzm},</if>
+            <if test="ccZbzm != null  and ccZbzm != ''">#{ccZbzm},</if>
+            <if test="jhbm != null  and jhbm != ''">#{jhbm},</if>
+            <if test="zhnh != null  and zhnh != ''">#{zhnh},</if>
+        </trim>
+    </insert>
+
+    <update id="updateconsolidatedStatements" parameterType="com.dingzhuo.energy.project.reportForm.domain.consolidatedStatements">
+        update consolidated_statements
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trRljmZb != null  and trRljmZb != ''">tr_rljm_zb = #{trRljmZb},</if>
+            <if test="trRljmSwl != null  and trRljmSwl != ''">tr_rljm_swl = #{trRljmSwl},</if>
+            <if test="trRljmZbzm != null  and trRljmZbzm != ''">tr_rljm_zbzm = #{trRljmZbzm},</if>
+            <if test="trDianZb != null  and trDianZb != ''">tr_dian_zb = #{trDianZb},</if>
+            <if test="trDianSwl != null  and trDianSwl != ''">tr_dian_swl = #{trDianSwl},</if>
+            <if test="trDianZbzm != null  and trDianZbzm != ''">tr_dian_zbzm = #{trDianZbzm},</if>
+            <if test="trShuiZb != null  and trShuiZb != ''">tr_shui_zb = #{trShuiZb},</if>
+            <if test="trShuiSwl != null  and trShuiSwl != ''">tr_shui_swl = #{trShuiSwl},</if>
+            <if test="trShuiZbzm != null  and trShuiZbzm != ''">tr_shui_zbzm = #{trShuiZbzm},</if>
+            <if test="trZqZb != null  and trZqZb != ''">tr_zq_zb = #{trZqZb},</if>
+            <if test="trZqSwl != null  and trZqSwl != ''">tr_zq_swl = #{trZqSwl},</if>
+            <if test="trZqZbzm != null  and trZqZbzm != ''">tr_zq_zbzm = #{trZqZbzm},</if>
+            <if test="ccJtZb != null  and ccJtZb != ''">cc_jt_zb = #{ccJtZb},</if>
+            <if test="ccJtSwl != null  and ccJtSwl != ''">cc_jt_swl = #{ccJtSwl},</if>
+            <if test="ccJtZbzm != null  and ccJtZbzm != ''">cc_jt_zbzm = #{ccJtZbzm},</if>
+            <if test="ccJyZb != null  and ccJyZb != ''">cc_jy_zb = #{ccJyZb},</if>
+            <if test="ccJySwl != null  and ccJySwl != ''">cc_jy_swl = #{ccJySwl},</if>
+            <if test="ccJyZbzm != null  and ccJyZbzm != ''">cc_jy_zbzm = #{ccJyZbzm},</if>
+            <if test="ccCbZb != null  and ccCbZb != ''">cc_cb_zb = #{ccCbZb},</if>
+            <if test="ccCbSwl != null  and ccCbSwl != ''">cc_cb_swl = #{ccCbSwl},</if>
+            <if test="ccCbZbzm != null  and ccCbZbzm != ''">cc_cb_zbzm = #{ccCbZbzm},</if>
+            <if test="ccMqZb != null  and ccMqZb != ''">cc_mq_zb = #{ccMqZb},</if>
+            <if test="ccMqSwl != null  and ccMqSwl != ''">cc_mq_swl = #{ccMqSwl},</if>
+            <if test="ccMqZbzm != null  and ccMqZbzm != ''">cc_mq_zbzm = #{ccMqZbzm},</if>
+            <if test="ccDianZb != null  and ccDianZb != ''">cc_dian_zb = #{ccDianZb},</if>
+            <if test="ccDianSwl != null  and ccDianSwl != ''">cc_dian_swl = #{ccDianSwl},</if>
+            <if test="ccDianZbzm != null  and ccDianZbzm != ''">cc_dian_zbzm = #{ccDianZbzm},</if>
+            <if test="ccZqZb != null  and ccZqZb != ''">cc_zq_zb = #{ccZqZb},</if>
+            <if test="ccZqSwl != null  and ccZqSwl != ''">cc_zq_swl = #{ccZqSwl},</if>
+            <if test="ccZqZbzm != null  and ccZqZbzm != ''">cc_zq_zbzm = #{ccZqZbzm},</if>
+            <if test="timeType != null  and timeType != ''">time_type = #{timeType},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="timeCode != null  and timeCode != ''">time_code = #{timeCode},</if>
+            <if test="dataTime != null  and dataTime != ''">data_time=#{dataTime},</if>
+            <if test="trZbzm != null  and trZbzm != ''">tr_zbzm = #{trZbzm},</if>
+            <if test="ccZbzm != null  and ccZbzm != ''">cc_zbzm = #{ccZbzm},</if>
+            <if test="jhbm != null  and jhbm != ''">jhbm = #{jhbm},</if>
+            <if test="zhnh != null  and zhnh != ''">zhnh = #{zhnh},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteconsolidatedStatementsById" parameterType="String">
+        delete from consolidated_statements where id = #{id}
+    </delete>
+
+    <delete id="deleteconsolidatedStatementsByIds" parameterType="String">
+        delete from consolidated_statements where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.data.model.mapper.StateTypeMapper">
+    
+    <resultMap type="StateType" id="StateTypeResult">
+        <result property="stateId"    column="state_id"    />
+        <result property="stateName"    column="state_name"    />
+        <result property="stateCode"    column="state_code"    />
+        <result property="colorNumber"    column="color_number"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectStateTypeVo">
+        select state_id, state_name, state_code, color_number, create_time, create_by, update_time, update_by from state_type
+    </sql>
+
+    <select id="selectStateTypeList" parameterType="StateType" resultMap="StateTypeResult">
+        <include refid="selectStateTypeVo"/>
+        <where>  
+            <if test="stateName != null  and stateName != ''"> and state_name like concat('%', #{stateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectStateTypeById" parameterType="String" resultMap="StateTypeResult">
+        <include refid="selectStateTypeVo"/>
+        where state_id = #{stateId}
+    </select>
+        
+    <insert id="insertStateType" parameterType="StateType">
+        insert into state_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stateId != null  and stateId != ''">state_id,</if>
+            <if test="stateName != null  and stateName != ''">state_name,</if>
+            <if test="stateCode != null  and stateCode != ''">state_code,</if>
+            <if test="colorNumber != null  and colorNumber != ''">color_number,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stateId != null  and stateId != ''">#{stateId},</if>
+            <if test="stateName != null  and stateName != ''">#{stateName},</if>
+            <if test="stateCode != null  and stateCode != ''">#{stateCode},</if>
+            <if test="colorNumber != null  and colorNumber != ''">#{colorNumber},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStateType" parameterType="StateType">
+        update state_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stateName != null  and stateName != ''">state_name = #{stateName},</if>
+            <if test="stateCode != null  and stateCode != ''">state_code = #{stateCode},</if>
+            <if test="colorNumber != null  and colorNumber != ''">color_number = #{colorNumber},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+        </trim>
+        where state_id = #{stateId}
+    </update>
+
+    <delete id="deleteStateTypeById" parameterType="String">
+        delete from state_type where state_id = #{stateId}
+    </delete>
+
+    <delete id="deleteStateTypeByIds" parameterType="String">
+        delete from state_type where state_id in 
+        <foreach item="stateId" collection="array" open="(" separator="," close=")">
+            #{stateId}
+        </foreach>
+    </delete>
+    
+</mapper>

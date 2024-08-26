@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingzhuo.energy.project.electricity.mapper.ElectricityPriceMapper">
+
+    <resultMap type="ElectricityPrice" id="ElectricityPriceResult">
+        <result property="id"    column="id"    />
+        <result property="effectiveDate"    column="effective_date"    />
+        <result property="priceId"    column="price_id"    />
+        <result property="beginDate"    column="begin_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="effectiveName"    column="effective_name"    />
+    </resultMap>
+
+    <sql id="selectElectricityPriceVo">
+        select id, effective_date, price_id, begin_date, end_date, effective_name from electricity_price
+    </sql>
+
+    <select id="selectElectricityPriceList" parameterType="ElectricityPrice" resultMap="ElectricityPriceResult">
+        select e.id, e.effective_date,e.price_id,
+                e.begin_date,
+                e.end_date,
+                e.effective_name,
+                t.price
+        from electricity_price e LEFT JOIN time_period_price t ON e.price_id=t.id
+        <where> 1=1
+            <if test="effectiveName != null  and effectiveName != ''"> and e.effective_name like concat('%', #{effectiveName}, '%')</if>
+            <if test="effectiveDate != null "> and e.effective_date = #{effectiveDate}</if>
+        </where>
+        order by effective_date desc
+    </select>
+
+    <select id="selectElectricityPriceById" parameterType="String" resultMap="ElectricityPriceResult">
+        <include refid="selectElectricityPriceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertElectricityPrice" parameterType="ElectricityPrice">
+        insert into electricity_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="effectiveDate != null ">effective_date,</if>
+            <if test="priceId != null  and priceId != ''">price_id,</if>
+            <if test="beginDate != null ">begin_date,</if>
+            <if test="endDate != null ">end_date,</if>
+            <if test="effectiveName != null  and effectiveName != ''">effective_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="effectiveDate != null ">#{effectiveDate},</if>
+            <if test="priceId != null  and priceId != ''">#{priceId},</if>
+            <if test="beginDate != null ">#{beginDate},</if>
+            <if test="endDate != null ">#{endDate},</if>
+            <if test="effectiveName != null  and effectiveName != ''">#{effectiveName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateElectricityPrice" parameterType="ElectricityPrice">
+        update electricity_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="effectiveDate != null ">effective_date = #{effectiveDate},</if>
+            <if test="priceId != null  and priceId != ''">price_id = #{priceId},</if>
+            <if test="beginDate != null ">begin_date = #{beginDate},</if>
+            <if test="endDate != null ">end_date = #{endDate},</if>
+            <if test="effectiveName != null  and effectiveName != ''">effective_name = #{effectiveName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteElectricityPriceById" parameterType="String">
+        delete from electricity_price where id = #{id}
+    </delete>
+
+    <delete id="deleteElectricityPriceByIds" parameterType="String">
+        delete from electricity_price where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--生效日期-->
+    <select id="selectList" parameterType="ElectricityPrice" resultMap="ElectricityPriceResult">
+        select distinct effective_date from electricity_price
+        <where>
+            <if test="effectiveName != null  and effectiveName != ''"> and effective_name like concat('%', #{effectiveName}, '%')</if>
+        </where>
+        order by effective_date desc
+    </select>
+</mapper>
