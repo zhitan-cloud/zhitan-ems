@@ -1,5 +1,5 @@
 <p align="center">
-	<img alt="logo" src="readme/logo">
+	<img alt="logo" src="readme/logo.png">
 </p>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">zhitan-EMS</h1>
 <h4 align="center">智碳能源管理平台</h4>
