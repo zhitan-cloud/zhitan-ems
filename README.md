@@ -1,7 +1,7 @@
 <p align="center">
 	<img alt="logo" src="readme/logo.png">
 </p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳企业能源管理平台</h1>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">企业能源管理平台</h1>
 <h4 align="center">基于SpringBoot和若依框架开发</h4>
 
 
