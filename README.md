@@ -23,269 +23,47 @@
 #### 亮点功能
 ![输入图片说明](readme/亮点功能.png)
 #### 功能规划
-<table border="0" cellpadding="0" cellspacing="0" width="447" style="border-collapse:
- collapse;table-layout:fixed;width:335pt">
- <colgroup><col class="xl106" width="116" style="mso-width-source:userset;mso-width-alt:4454;
- width:87pt">
- <col class="xl106" width="171" style="mso-width-source:userset;mso-width-alt:6553;
- width:128pt">
- <col class="xl106" width="80" span="2" style="mso-width-source:userset;mso-width-alt:
- 3072;width:60pt">
- </colgroup><tbody><tr height="21" style="height:16.0pt">
-  <td height="21" class="xl107" width="116" style="height:16.0pt;width:87pt">模块</td>
-  <td class="xl107" width="171" style="border-left:none;width:128pt">二级模块</td>
-  <td class="xl107" width="80" style="border-left:none;width:60pt">是否完成</td>
-  <td class="xl107" width="80" style="border-left:none;width:60pt">计划完成</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none">首页</td>
-  <td class="xl108" style="border-top:none;border-left:none">首页看板</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="2" height="42" class="xl108" style="height:32.0pt;border-top:none">实时数据监测</td>
-  <td class="xl108" style="border-top:none;border-left:none">实时数据</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">历史数据</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="3" height="63" class="xl108" style="height:48.0pt;border-top:none">综合指标分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">综合指标分析（日）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">综合指标分析（月）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">综合指标分析（年）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="3" height="63" class="xl108" style="height:48.0pt;border-top:none">重点设备分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">重点设备分析（日）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">重点设备分析（月）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">重点设备分析（年）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="3" height="63" class="xl108" style="height:48.0pt;border-top:none">工序能耗分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">工序能耗分析（日）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">工序能耗分析（月）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">工序能耗分析（年）</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="2" height="42" class="xl108" style="height:32.0pt;border-top:none">尖峰平谷统计</td>
-  <td class="xl108" style="border-top:none;border-left:none">尖峰平谷配置</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">尖峰平谷数据</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="5" height="105" class="xl108" style="height:80.0pt;border-top:none">能耗对比分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">电同比分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">电环比分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">水同比分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">水环比分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">能耗指标对比</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="2" height="42" class="xl108" style="height:32.0pt;border-top:none">智能报警管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">实时报警</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">报警统计</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="2" height="42" class="xl108" style="height:32.0pt;border-top:none">能耗深度分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">能耗产消统计</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">能耗平衡分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="5" height="105" class="xl108" style="height:80.0pt;border-top:none">能源计划实际</td>
-  <td class="xl108" style="border-top:none;border-left:none">计划产量</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">实际产量</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">用能预测</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">能源消耗计划</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">计划与实际对比分析</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none">能源辅助录入</td>
-  <td class="xl108" style="border-top:none;border-left:none">阶段数据录入</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="2" height="42" class="xl108" style="height:32.0pt;border-top:none">用能考核管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">用能考核标准</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">阶段考核统计</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="3" height="63" class="xl108" style="height:48.0pt;border-top:none">能源对标管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">标杆管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">实时对标</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">阶段性对标</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="2" height="42" class="xl108" style="height:32.0pt;border-top:none">节能项目管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">节能分析报告</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">节能项目管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none">综合报表管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">能源品种报表</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td rowspan="3" height="63" class="xl108" style="height:48.0pt;border-top:none">系统管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">用户管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">部门管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <tr height="21" style="height:16.0pt">
-  <td height="21" class="xl108" style="height:16.0pt;border-top:none;border-left:
-  none">岗位管理</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
-  <td class="xl108" style="border-top:none;border-left:none">　</td>
- </tr>
- <!--[if supportMisalignedColumns]-->
- <tr height="0" style="display:none">
-  <td width="116" style="width:87pt"></td>
-  <td width="171" style="width:128pt"></td>
-  <td width="80" style="width:60pt"></td>
-  <td width="80" style="width:60pt"></td>
- </tr>
- <!--[endif]-->
-</tbody></table>
+1.  首页看板：
+2.  实时数据监测  
+2.1.  实时数据查看  
+2.2.  组态图分析（svg 图绑定）
+3. 历史数据分析
+4. 综合指标分析  
+   4.1.  综合指标分析（日）  
+   4.2.  综合指标分析（月）  
+   4.3.  综合指标分析（年）  
+5. 重点设备分析
+   5.1.  重点设备分析（日）  
+   5.2.  重点设备分析（月）    
+   5.3.  重点设备分析（年）
+6. 工序能耗分析
+   6.1.  工序能耗分析（日）  
+   6.2.  工序能耗分析（月）    
+   6.3.  工序能耗分析（年）  
+7. 尖峰平谷分析
+   7.1.  尖峰平谷配置  
+   7.2.  尖峰平谷数据
+8. 能耗对比分析（各能源品种）  
+   8.1.  电同环比分析      
+   8.2.  水同环比分析
+9. 智能报警
+   9.1.  报警分析        
+   9.2.  报警配置
+10. 单耗分析
+11. 计划与实绩
+12. 用能考核
+13. 用能对标
+14. 辅助录入
+15. 节能项目管理
+16. 能源平衡分析
+17. 能源对标分析
+18. 模型配置管理（计算模型等）
+19. 基础数据管理（字典、能源类型等）
+20. 系统管理（用户、角色、权限等）
+
+
+
+
 
 #### 使用说明
 
