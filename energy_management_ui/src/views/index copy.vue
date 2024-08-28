@@ -486,7 +486,6 @@ export default {
 
 <style lang="scss" scoped>
 .home-show {
-  background: #f0f2f5;
   overflow: hidden;
   overflow-y: scroll;
   height: calc(100vh - 90px);

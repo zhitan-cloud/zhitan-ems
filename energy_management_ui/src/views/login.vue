@@ -6,15 +6,23 @@
         :src="'https://www.toray.cn/shared/images/toray_logo_ch.svg'"
         alt=""
       />
-      <div>东丽医疗能源管理平台</div>
+      <div>综合能源管理系统</div>
     </div>
     <div class="login">
-      <div class="demo-image">
+      <!-- <div class="demo-image">
         <el-image style="width: 75%;" :src="logo"></el-image>
-      </div>
+      </div> -->
       <div class="login-form">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
-          <div class="title">用户登录</div>
+          <!-- <div class="title">用户登录</div> -->
+          <div class="logo-view title">
+            <img
+              style="width: 100px;margin-right: 30px "
+              :src="'https://www.toray.cn/shared/images/toray_logo_ch.svg'"
+              alt=""
+            />
+            <div>综合能源管理系统</div>
+          </div>
           <el-form-item prop="username" style="margin-bottom: 21px">
             <el-input
               v-model="loginForm.username"
@@ -170,22 +178,28 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .logo-page {
   height: 100%;
-  background-image: url("../assets/image/login-background.png");
+  background-image: url("../assets/image/bg.jpg");
+  // background-image: url("../assets/image/login-background.png");
   background-size: cover;
   overflow: hidden;
+  // background: ;
+  // background: linear-gradient(80deg, #073b70 0%, rgba(7, 59, 112, 0) 100%);
+  // background: linear-gradient(90deg, #101d32 0%, rgba(0, 0, 0, 0.5) 100%);
 
   .logo-png {
     font-size: 24px;
     display: flex;
     align-items: center;
     font-weight: bold;
-    color: #333;
+    color: #fff;
     padding: 3.4% 0 0 74px;
+    position: absolute;
   }
 
   .login {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: center;
     padding: 0 17.24%;
     height: calc(100% - 73px * 2);
     align-items: center;
@@ -194,15 +208,29 @@ export default {
   .title {
     font-size: 22px;
     color: #38bcbf;
-    margin-bottom: 22px;
+    margin-bottom: 32px;
     font-weight: 600;
   }
 
   .login-form {
     border-radius: 10px;
-    background: #ffffff;
-    width: 32%;
-    padding: 25px 25px 5px 25px;
+    // background: #ffffff;
+    width: 36%;
+    padding: 32px 64px;
+    // background: #061844;
+    border-radius: 4px;
+    // box-shadow: 0 7px 14px 6px #2f4b9a;
+    margin-top: 6px;
+    border: 1px solid #061844;
+    background: rgba($color: #ffffff, $alpha: 0.06);
+
+    .logo-view {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 26px;
+      font-weight: 600;
+    }
 
     .el-input {
       height: 38px;

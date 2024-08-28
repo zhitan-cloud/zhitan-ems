@@ -23,93 +23,89 @@
         </div>
       </div>
     </el-card> -->
+    <el-card
+      class="body-left-title"
+      :bordered="false"
+      style="margin-bottom: 12px;"
+    >
+      <div slot="header" class="clearfix">
+        <span>当日双控数据指标总览</span>
+      </div>
+      <el-row class="double-data-show-content">
+        <el-col :span="5" class="total">
+          <img alt="" src="~@/assets/home/zonghe.svg" />
+          <div class="left-title-style">
+            <div>
+              <div>全厂综合能耗</div>
+              <div class="unit">{{ summation }} tce</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col
+          :span="5"
+          class="co2"
+          v-for="(item, index) in energyStatistic"
+          :key="index"
+          style="border-left: 1px solid #999;"
+        >
+          <img
+            v-if="item.item.includes('电')"
+            src="~@/assets/home/haodian.svg"
+            alt=""
+          />
+          <img
+            v-if="item.item.includes('水')"
+            src="~@/assets/home/haoshui.svg"
+            alt=""
+          />
+          <img
+            v-if="item.item.includes('气')"
+            src="~@/assets/home/haoqi.svg"
+            alt=""
+          />
+          <img
+            v-if="item.item.includes('蒸汽')"
+            src="~@/assets/home/haozhengqi.svg"
+            alt=""
+          />
+          <div class="left-title-style">
+            <div>
+              <div>
+                耗{{
+                  item.item.indexOf("天然") !== -1
+                    ? item.item.replace("天然", "")
+                    : item.item
+                }}量
+                {{ item.unit ? `（${item.unit}）` : "" }}
+              </div>
+              <div class="unit">
+                {{ item.count || 0 }}
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="5" class="total" style="border-left: 1px solid #999;">
+          <img alt="" src="~@/assets/home/wen.png" />
+          <div class="left-title-style">
+            <div>
+              <div>室外温度</div>
+              <div class="unit">{{ temperature }}</div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="5" class="total" style="border-left: 1px solid #999;">
+          <img alt="" src="~@/assets/home/shi.png" />
+          <div class="left-title-style">
+            <div>
+              <div>室外湿度</div>
+              <div class="unit">{{ humidity }}</div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
     <el-row type="flex" class="data-indicator-overview">
       <el-col class="home-body-left">
-        <el-card class="body-left-title" :bordered="false">
-          <div slot="header" class="clearfix">
-            <span>当日双控数据指标总览</span>
-          </div>
-          <el-row class="double-data-show-content">
-            <el-col :span="4" class="total">
-              <img alt="" src="~@/assets/home/zonghe.svg" />
-              <div class="left-title-style">
-                <div>
-                  <div>全厂综合能耗</div>
-                  <div class="unit">{{ summation }} tce</div>
-                </div>
-              </div>
-            </el-col>
-            <el-col
-              :span="5"
-              class="co2"
-              v-for="(item, index) in energyStatistic"
-              :key="index"
-              style="border-left: 1px solid #e9e9e9;"
-            >
-              <img
-                v-if="item.item.includes('电')"
-                src="~@/assets/home/haodian.svg"
-                alt=""
-              />
-              <img
-                v-if="item.item.includes('水')"
-                src="~@/assets/home/haoshui.svg"
-                alt=""
-              />
-              <img
-                v-if="item.item.includes('气')"
-                src="~@/assets/home/haoqi.svg"
-                alt=""
-              />
-              <img
-                v-if="item.item.includes('蒸汽')"
-                src="~@/assets/home/haozhengqi.svg"
-                alt=""
-              />
-              <div class="left-title-style">
-                <div>
-                  <div>
-                    耗{{
-                      item.item.indexOf("天然") !== -1
-                        ? item.item.replace("天然", "")
-                        : item.item
-                    }}量
-                    {{ item.unit ? `（${item.unit}）` : "" }}
-                  </div>
-                  <div class="unit">
-                    {{ item.count || 0 }}
-                  </div>
-                </div>
-              </div>
-            </el-col>
-            <el-col
-              :span="5"
-              class="total"
-              style="border-left: 1px solid #e9e9e9;"
-            >
-              <img alt="" src="~@/assets/home/wen.png" />
-              <div class="left-title-style">
-                <div>
-                  <div>室外温度</div>
-                  <div class="unit">{{ temperature }}</div>
-                </div>
-              </div>
-            </el-col>
-            <el-col
-              :span="5"
-              class="total"
-              style="border-left: 1px solid #e9e9e9;"
-            >
-              <img alt="" src="~@/assets/home/shi.png" />
-              <div class="left-title-style">
-                <div>
-                  <div>室外湿度</div>
-                  <div class="unit">{{ humidity }}</div>
-                </div>
-              </div>
-            </el-col>
-          </el-row>
-        </el-card>
         <el-card :bordered="false" class="body-left-title">
           <div slot="header" class="clearfix">
             <span>能源实时监测</span>
@@ -120,7 +116,7 @@
             }}</span>
             <BarChart class="line-content" :chartData="chartDataObj" />
           </div>
-          <div class="chart-wrapper" style="border-top: 1px solid #e9e9e9">
+          <div class="chart-wrapper" style="border-top: 1px solid #999">
             <span class="chart-left-unit">{{
               `水/单位${monitoringWaterUnit}`
             }}</span>
@@ -169,6 +165,7 @@
             class="second-chat"
             :chartData="secondPieData"
             pieTitle="能耗设备占比"
+            height="280px"
           />
         </el-card>
       </el-col>
@@ -187,7 +184,6 @@ import {
   getHomeOutdoorTemperature
 } from "@/api/home/home";
 import mixins from "@/layout/mixin/getHeight";
-import moment from "moment";
 import PieChart from "./dashboard/PieChart";
 import LineChart from "./dashboard/LineChart";
 import BarChart from "./dashboard/BarChart";
@@ -256,9 +252,9 @@ export default {
     clearInterval(this.timer);
     clearInterval(this.timer30);
     this.getHomeOutdoorTemperatureData();
-    this.timer = setInterval(() => {
-      this.getHomeOutdoorTemperatureData();
-    }, 12000);
+    // this.timer = setInterval(() => {
+    //   this.getHomeOutdoorTemperatureData();
+    // }, 12000);
     this.timer30 = setInterval(() => {
       // this.getEnergyType();
       this.getSummationData();
@@ -549,22 +545,53 @@ export default {
 
 <style lang="scss" scoped>
 .home-show {
-  background: #f0f2f5;
   overflow: hidden;
   overflow-y: scroll;
-  height: calc(100vh - 90px);
+  // height: calc(100vh - 88px);
   .home-head {
     display: flex;
     align-items: center;
 
     .home-select-label {
       margin-right: 10px;
-      color: #000;
+      color: #fff;
       font-weight: 600;
     }
 
     .select-month {
       margin: 0 8px;
+    }
+  }
+  .double-data-show-content {
+    display: flex;
+    align-items: center;
+    // border-bottom: 1px solid #e9e9e9;
+    // padding: 23px 0 24px 40px;
+    .el-col {
+      padding: 23px 0 24px 10px;
+    }
+
+    & > div {
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .left-title-style {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+      // border-right: 1px solid #e9e9e9;
+
+      .unit {
+        font-size: 22px;
+        color: #fff;
+        margin-top: 4px;
+      }
     }
   }
 
@@ -575,7 +602,7 @@ export default {
       position: absolute;
       top: 16px;
       left: 24px;
-      color: #333;
+      color: #fff;
       font-size: 18px;
     }
 
@@ -598,42 +625,9 @@ export default {
         margin: 0 16px 0px 0;
       }
 
-      .double-data-show-content {
-        display: flex;
-        align-items: center;
-        // border-bottom: 1px solid #e9e9e9;
-        // padding: 23px 0 24px 40px;
-        .el-col {
-          padding: 23px 0 24px 10px;
-        }
-
-        & > div {
-          display: flex;
-          align-items: center;
-        }
-
-        img {
-          width: 20px;
-          height: 20px;
-        }
-
-        .left-title-style {
-          display: flex;
-          align-items: center;
-          margin-left: 10px;
-          // border-right: 1px solid #e9e9e9;
-
-          .unit {
-            font-size: 22px;
-            color: #000000;
-            margin-top: 4px;
-          }
-        }
-      }
-
       .left-line-style {
         padding: 24px;
-        color: #000000;
+        color: #fff;
 
         .radio-list {
           width: 122px;
@@ -656,7 +650,7 @@ export default {
             position: absolute;
             top: 16px;
             left: 0;
-            color: #333;
+            color: #fff;
           }
 
           .line-content {
@@ -700,7 +694,7 @@ export default {
 
                 .number {
                   font-size: 24px;
-                  color: #000000;
+                  color: #fff;
                 }
               }
             }
@@ -718,7 +712,7 @@ export default {
 
         .first-chat {
           margin: 10px 0 0 0;
-          height: 340px;
+          height: 300px;
         }
       }
 
@@ -727,7 +721,7 @@ export default {
 
         .second-chat {
           margin: 10px 0 0 0;
-          height: 340px;
+          height: 290px;
         }
 
         .bottom-description-list {
@@ -744,7 +738,7 @@ export default {
 
             .energy-cost-sum {
               font-size: 24px;
-              color: #000000;
+              color: #fff;
             }
           }
 
