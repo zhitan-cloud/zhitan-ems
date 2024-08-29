@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
-const name = defaultSettings.title || "庞巴迪能源管理系统"; // 标题
+const name = defaultSettings.title || "智碳未来能源管理系统"; // 标题
 
 const port = process.env.port || process.env.npm_config_port || 80; // 端口
 
@@ -33,9 +33,7 @@ module.exports = {
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
-        // target: 'http://47.110.84.144:8097',
-        target: "http://192.168.0.6:8097",
-        // target: "http://q7unm6.natappfree.cc",
+        target: "http://localhost:8097",
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: ""

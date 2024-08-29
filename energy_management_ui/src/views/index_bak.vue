@@ -1,9 +1,8 @@
 <template>
   <div class="dashboard-editor-container">
-
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-row style="padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
@@ -27,19 +26,18 @@
 
     <!--&lt;!&ndash;实时&ndash;&gt;-->
     <!--<div class="live">-->
-      <!--<div class="live_content">实时报警</div>-->
-      <!--<div class="live_number">35</div>-->
+    <!--<div class="live_content">实时报警</div>-->
+    <!--<div class="live_number">35</div>-->
     <!--</div>-->
   </div>
-
 </template>
 
 <script>
-import PanelGroup from './dashboard/PanelGroup'
-import LineChart from './dashboard/LineChart'
-import RaddarChart from './dashboard/RaddarChart'
-import PieChart from './dashboard/PieChart'
-import BarChart from './dashboard/BarChart'
+import PanelGroup from "./dashboard/PanelGroup";
+import LineChart from "./dashboard/LineChart";
+import RaddarChart from "./dashboard/RaddarChart";
+import PieChart from "./dashboard/PieChart";
+import BarChart from "./dashboard/BarChart";
 
 const lineChartData = {
   newVisitis: {
@@ -58,10 +56,10 @@ const lineChartData = {
     expectedData: [130, 140, 141, 142, 145, 150, 160],
     actualData: [120, 82, 91, 154, 162, 140, 130]
   }
-}
+};
 
 export default {
-  name: 'Index',
+  name: "Index",
   components: {
     PanelGroup,
     LineChart,
@@ -72,79 +70,77 @@ export default {
   data() {
     return {
       lineChartData: lineChartData.newVisitis
-    }
+    };
   },
   methods: {
     handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+      this.lineChartData = lineChartData[type];
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
-  background-color: rgb(240, 242, 245);
   position: relative;
 
   .chart-wrapper {
-    background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }
 }
 
-@media (max-width:1024px) {
+@media (max-width: 1024px) {
   .chart-wrapper {
     padding: 8px;
   }
 }
-  .live{
-    position: fixed;
-    right: 0px;
-    top:70px;
-    display: flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    width: 100px;
-    height: 60px;
-    background-color: red;
-    animation: fade 600ms infinite;
-    -webkit-animation: fade 600ms infinite;
-  }
-  .live_content{
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
-  }
-  .live_number{
-    font-size: 32px;
-    color: white;
-    font-weight: bolder;
-  }
+.live {
+  position: fixed;
+  right: 0px;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 60px;
+  background-color: red;
+  animation: fade 600ms infinite;
+  -webkit-animation: fade 600ms infinite;
+}
+.live_content {
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+.live_number {
+  font-size: 32px;
+  color: white;
+  font-weight: bolder;
+}
 @keyframes fade {
   from {
-    opacity: 1.0;
+    opacity: 1;
   }
   50% {
     opacity: 0.4;
   }
   to {
-    opacity: 1.0;
+    opacity: 1;
   }
 }
 
 @-webkit-keyframes fade {
   from {
-    opacity: 1.0;
+    opacity: 1;
   }
   50% {
     opacity: 0.4;
   }
   to {
-    opacity: 1.0;
+    opacity: 1;
   }
 }
 </style>
