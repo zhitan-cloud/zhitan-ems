@@ -4,22 +4,29 @@
       <router-link
         v-if="collapse"
         key="expand"
-        class="sidebar-logo-link"
+        class="sidebar-logo-link-collapse"
         to="/"
       >
         <div class="collapse-logo">
-          <img v-if="logoImg2" :src="logoImg2" style="width: 44px" />
+          <img
+            v-if="logoImg2"
+            :src="logoImg2"
+            style="width: 40px;height: 40px;"
+          />
         </div>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <img v-if="logoImg2" :src="logoImg2" class="sidebar-logo" />
+        {{ title }}
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
-// import logoImg2 from "@/assets/logo/toray_group_icon.png";
+import { title } from "../../../settings";
+
+import logoImg2 from "@/assets/logo/logo.png";
 
 export default {
   name: "SidebarLogo",
@@ -31,9 +38,10 @@ export default {
   },
   data() {
     return {
-      title: "东丽医疗能源管理系统",
-      logo: "https://www.toray.cn/shared/images/toray_logo_ch.svg",
-      logoImg2: "https://www.toray.cn/shared/images/toray_logo_ch.svg"
+      title: "综合能源管理",
+      logoImg2,
+      logo: "https://www.toray.cn/shared/images/toray_logo_ch.svg"
+      // logoImg2: "http://yunlu.com.cn/template/pc/skin/images/index/u21.png"
     };
   }
 };
@@ -54,27 +62,45 @@ export default {
   width: 100%;
   height: 64px;
   line-height: 64px;
-  background: #16a5b6;
+  background: #001233;
   text-align: center;
   overflow: hidden;
+  .sidebar-logo-link-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    .collapse-logo {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+  }
 
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
 
     .collapse-logo {
       display: flex;
       align-items: center;
-      height: 100%;
       text-align: center;
-      width: 100%;
       justify-content: center;
+      height: 100%;
+      width: 100%;
     }
 
     & .sidebar-logo {
-      width: 190px;
+      width: 40px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: 6px;
     }
 
     & .sidebar-title {

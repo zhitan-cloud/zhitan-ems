@@ -286,7 +286,10 @@ export default {
           }
         },
         legend: {
-          right: "center"
+          right: "center",
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
           left: "1",
@@ -300,14 +303,19 @@ export default {
         },
         yAxis: {
           type: "value",
-          boundaryGap: [0, 0.01]
+          boundaryGap: [0, 0.01],
+          splitLine: {
+            lineStyle: {
+              color: "rgba(32, 121, 160, 0.5)" // y轴分割线颜色
+            }
+          }
         },
         series: [
           {
             name: titleName,
             type: "line",
-            data: legendArr
-            // color: "#919191"
+            data: legendArr,
+            color: "#e6e6e6"
           }
         ]
       };
@@ -337,7 +345,7 @@ export default {
   align-items: center;
   height: 100px;
   z-index: 1000;
-  background: #fff;
+  background: #061844;
   border-radius: 4px;
   margin-bottom: 12px;
   padding: 0 24px;

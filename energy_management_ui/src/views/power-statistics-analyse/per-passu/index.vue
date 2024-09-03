@@ -246,10 +246,10 @@ export default {
       });
     },
     setCharts() {
-      this.bodyStyle.height = window.innerHeight - 155 + "px";
+      this.bodyStyle.height = window.innerHeight - 185 + "px";
       this.bodyStyleRight = {
         ...this.bodyStyle,
-        height: window.innerHeight - 105 + "px"
+        height: window.innerHeight - 155 + "px"
       };
     },
 
@@ -341,7 +341,7 @@ export default {
   margin-bottom: 0;
 }
 .chart-list {
-  margin-top: 16px;
+  // margin-top: 16px;
   ::v-deep .el-card__body {
     padding: 10px 12px;
   }

@@ -1,26 +1,26 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
+import echarts from "echarts";
+require("echarts/theme/macarons"); // echarts theme
 /*import resize from './mixins/resize'*/
 
 export default {
- /* mixins: [resize],*/
+  /* mixins: [resize],*/
   props: {
     className: {
       type: String,
-      default: 'chart'
+      default: "chart"
     },
     width: {
       type: String,
-      default: '100%'
+      default: "100%"
     },
     height: {
       type: String,
-      default: '350px'
+      default: "350px"
     },
     autoResize: {
       type: Boolean,
@@ -34,49 +34,51 @@ export default {
   data() {
     return {
       chart: null
-    }
+    };
   },
   watch: {
     chartData: {
       deep: true,
       handler(val) {
-        this.setOptions(val)
+        this.setOptions(val);
       }
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   },
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-      this.setOptions(this.chartData)
+      this.chart = echarts.init(this.$el, "macarons");
+      this.setOptions(this.chartData);
     },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
-
         title: {
-          text: '关联点位能耗(单位: Kwh)'
+          text: "关联点位能耗(单位: Kwh)"
         },
         tooltip: {
-          trigger: 'axis'
+          trigger: "axis"
         },
         legend: {
-          data: ['FT01', 'FT02' , 'FT03' , 'FT04']
+          data: ["FT01", "FT02", "FT03", "FT04"],
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
           containLabel: true
         },
         toolbox: {
@@ -85,41 +87,41 @@ export default {
           }
         },
         xAxis: {
-          type: 'category',
+          type: "category",
           boundaryGap: false,
-          data: ['2月1日', '2月2日', '2月3日', '2月4日']
+          data: ["2月1日", "2月2日", "2月3日", "2月4日"]
         },
         yAxis: {
-          type: 'value'
+          type: "value"
         },
         series: [
           {
-            name: 'FT01',
-            type: 'line',
-            stack: '总量',
+            name: "FT01",
+            type: "line",
+            stack: "总量",
             data: [210, 172, 181, 224]
           },
           {
-            name: 'FT02',
-            type: 'line',
-            stack: '总量',
+            name: "FT02",
+            type: "line",
+            stack: "总量",
             data: [210, 182, 191, 234]
           },
           {
-            name: 'FT03',
-            type: 'line',
-            stack: '总量',
+            name: "FT03",
+            type: "line",
+            stack: "总量",
             data: [210, 182, 191, 234]
           },
           {
-            name: 'FT04',
-            type: 'line',
-            stack: '总量',
+            name: "FT04",
+            type: "line",
+            stack: "总量",
             data: [210, 182, 191, 234, 290]
-          },
+          }
         ]
-      })
+      });
     }
   }
-}
+};
 </script>

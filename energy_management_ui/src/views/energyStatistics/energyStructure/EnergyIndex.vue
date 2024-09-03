@@ -324,20 +324,18 @@ export default {
 <style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
-  background-color: rgb(240, 242, 245);
   position: relative;
   .chart-wrapper {
-    background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }
 }
 .chart-title {
   display: block;
-  background: #f2f6fc;
   height: 30px;
   line-height: 30px;
   padding: 0 10px;
+  color: #fff;
 }
 @media (max-width: 1024px) {
   .chart-wrapper {

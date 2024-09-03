@@ -49,16 +49,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/styles/variables.scss";
 .basic-container {
   height: 100%;
   box-sizing: border-box;
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
 
   .card-header {
-    font-size: 18px;
     font-weight: 500;
-    height: 34px;
-    color: #272727;
+    color: #a3cbff;
     position: relative;
     padding-left: 10px;
 
@@ -67,8 +66,8 @@ export default {
       position: absolute;
       display: block;
       width: 4px;
-      height: 17px;
-      background-color: #38bcbf;
+      height: 16px;
+      background-color: $primary-color;
       border-radius: 3px;
       top: 2px;
       left: 0;
@@ -92,7 +91,7 @@ export default {
   }
 }
 
-.basic-container:first-child {
-  margin-top: 5px;
-}
+// .basic-container:first-child {
+//   margin-top: 5px;
+// }
 </style>

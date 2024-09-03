@@ -1,104 +1,181 @@
 <template>
   <div class="historicalAlarm-right">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px" class="query-form">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="68px"
+      class="query-form"
+    >
       <el-form-item>
         <el-radio-group v-model="queryParams.eierarchyFlag">
-          <el-radio label="B" style="margin-right: 10px!important;" onselect="true">本级</el-radio>
+          <el-radio
+            label="B"
+            style="margin-right: 10px!important;"
+            onselect="true"
+            >本级</el-radio
+          >
           <el-radio label="ALL">包含下级</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="限值类型" prop="limitType">
-        <el-select v-model="queryParams.limitType" placeholder="限值类型" clearable>
+        <el-select
+          v-model="queryParams.limitType"
+          placeholder="限值类型"
+          clearable
+        >
           <el-option
-              v-for="dict in limitTypeOptions"
-              :key="dict.limitCode"
-              :label="dict.limitName"
-              :value="dict.limitCode">
+            v-for="dict in limitTypeOptions"
+            :key="dict.limitCode"
+            :label="dict.limitName"
+            :value="dict.limitCode"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="报警级别" prop="alarmLevel">
-        <el-select v-model="queryParams.alarmLevel" placeholder="报警级别" clearable>
+        <el-select
+          v-model="queryParams.alarmLevel"
+          placeholder="报警级别"
+          clearable
+        >
           <el-option
-              v-for="dict in alarmLevelOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue">
+            v-for="dict in alarmLevelOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="指标名称" prop="indexName">
         <el-input
-            v-model="queryParams.indexName"
-            placeholder="请输入指标名称"
-            clearable
-            size="small"
-            @keyup.enter.native="handleQuery"
-            style="width:160px"
+          v-model="queryParams.indexName"
+          placeholder="请输入指标名称"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+          style="width:160px"
         />
       </el-form-item>
       <el-form-item label="起止时间">
         <el-date-picker
-            v-model="dateRange"
-            type="datetimerange"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
+          v-model="dateRange"
+          type="datetimerange"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
         <el-button
-            type="warning"
-            icon="el-icon-download"
-            size="mini"
-            @click="handleExport"
-            v-hasPermi="['energyAlarm:historicalAlarm:export']"
-        >导出
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >查询</el-button
+        >
+        <el-button
+          type="warning"
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+          v-hasPermi="['energyAlarm:historicalAlarm:export']"
+          >导出
         </el-button>
       </el-form-item>
-
     </el-form>
     <el-form>
-      <el-table :data="JkHistoryAlarmList" v-loading="loading" border @selection-change="" @cell-click="openDialog"
-                :height="height"
+      <el-table
+        :data="JkHistoryAlarmList"
+        v-loading="loading"
+        border
+        @selection-change=""
+        @cell-click="openDialog"
+        :height="height"
       >
-        <el-table-column label="序号" type="index" align="center"/>
-        <el-table-column label="单位名称" align="center" prop="modelName"/>
-        <el-table-column label="指标编码" align="center" prop="code"/>
+        <el-table-column label="序号" type="index" align="center" />
+        <el-table-column label="单位名称" align="center" prop="modelName" />
+        <el-table-column label="指标编码" align="center" prop="code" />
         <el-table-column label="指标名称" align="center" prop="indexName">
           <template slot-scope="scope">
-            <div style="color:blue;text-decoration:underline ;cursor:pointer">{{ scope.row.indexName }}</div>
+            <div style="color:blue;text-decoration:underline ;cursor:pointer">
+              {{ scope.row.indexName }}
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="指标单位" align="center" prop="unitId" :formatter="unitIdFormat"/>
-        <el-table-column label="报警级别" align="center" prop="alarmLevel" :formatter="alarmLevelFormat"/>
-        <el-table-column label="限值类型" align="center" prop="limitType" :formatter="limitTypeFormat"/>
-        <el-table-column label="限值" align="center" prop="limitingValue"/>
-        <el-table-column label="报警时间起" align="center" prop="alarmBeginTime"/>
-        <el-table-column label="报警时间止" align="center" prop="alarmEndTime"/>
-        <el-table-column label="预警值" align="center" prop="alarmValue"/>
-        <el-table-column label="持续时长(分钟)" align="center" prop="duration" width="96px"/>
+        <el-table-column
+          label="指标单位"
+          align="center"
+          prop="unitId"
+          :formatter="unitIdFormat"
+        />
+        <el-table-column
+          label="报警级别"
+          align="center"
+          prop="alarmLevel"
+          :formatter="alarmLevelFormat"
+        />
+        <el-table-column
+          label="限值类型"
+          align="center"
+          prop="limitType"
+          :formatter="limitTypeFormat"
+        />
+        <el-table-column label="限值" align="center" prop="limitingValue" />
+        <el-table-column
+          label="报警时间起"
+          align="center"
+          prop="alarmBeginTime"
+        />
+        <el-table-column
+          label="报警时间止"
+          align="center"
+          prop="alarmEndTime"
+        />
+        <el-table-column label="预警值" align="center" prop="alarmValue" />
+        <el-table-column
+          label="持续时长(分钟)"
+          align="center"
+          prop="duration"
+          width="96px"
+        />
       </el-table>
     </el-form>
     <pagination
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="getList"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
     />
     <!--弹框-->
-    <el-dialog :title="title" :visible.sync="open" width="1000px" :close-on-click-modal="false">
-      <el-row style="background:#fff;margin-bottom:32px;">
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="1000px"
+      :close-on-click-modal="false"
+    >
+      <el-row style="margin-bottom:32px;">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="历史数据曲线图" name="second">
-            <history-alarm-view ref="historyAlarmView" :code="code" :activeName="activeName"
-                                :limitVal="limitVal"></history-alarm-view>
+            <history-alarm-view
+              ref="historyAlarmView"
+              :code="code"
+              :activeName="activeName"
+              :limitVal="limitVal"
+            ></history-alarm-view>
           </el-tab-pane>
           <el-tab-pane label="历史数据查询" name="third">
-            <history-alarm-table ref="historyAlarmTable" :code="code" :indexName="indexName" :activeName="activeName"
-                                 :indexUnit="indexUnit" :limitVal="limitVal"></history-alarm-table>
+            <history-alarm-table
+              ref="historyAlarmTable"
+              :code="code"
+              :indexName="indexName"
+              :activeName="activeName"
+              :indexUnit="indexUnit"
+              :limitVal="limitVal"
+            ></history-alarm-table>
           </el-tab-pane>
         </el-tabs>
       </el-row>
@@ -110,16 +187,19 @@
 </template>
 
 <script>
-
-import {listHistoryAlarm, exportHistoricalAlarm, getHistoricalAlarm} from "@/api/basicsetting/historyAlarm";
-import {listLimitType} from "@/api/basicsetting/limitType"
-import historyAlarmView from "../realTimeAlarm/historyAlarmView"
-import historyAlarmTable from "../realTimeAlarm/historyAlarmTable"
+import {
+  listHistoryAlarm,
+  exportHistoricalAlarm,
+  getHistoricalAlarm
+} from "@/api/basicsetting/historyAlarm";
+import { listLimitType } from "@/api/basicsetting/limitType";
+import historyAlarmView from "../realTimeAlarm/historyAlarmView";
+import historyAlarmTable from "../realTimeAlarm/historyAlarmTable";
 import mixins from "@/layout/mixin/getHeight";
 
 export default {
-  components: {historyAlarmView, historyAlarmTable},
-  name: 'historyAlarm',
+  components: { historyAlarmView, historyAlarmTable },
+  name: "historyAlarm",
   mixins: [mixins],
   data() {
     return {
@@ -129,11 +209,11 @@ export default {
         /*  value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],*/
       },
       code: undefined,
-      value: '',
+      value: "",
       options: undefined,
       // handleClick:'simple',
-      radio: 'B',
-      activeName: 'second',
+      radio: "B",
+      activeName: "second",
       indexId: undefined,
       indexName: undefined,
       indexUnit: undefined,
@@ -174,13 +254,13 @@ export default {
       unitIdOptions: [],
       // 查询参数
       lineChartData: {
-        newVisitis: null,
+        newVisitis: null
       },
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        eierarchyFlag: 'B',
-        indexType: 'COLLECT',
+        eierarchyFlag: "B",
+        indexType: "COLLECT",
         code: undefined,
         indexName: undefined,
         /* unitId: undefined,*/
@@ -190,8 +270,7 @@ export default {
         /* limitingValue:undefined,*/
         nodeId: undefined,
         beginTime: undefined,
-        endTime: undefined,
-
+        endTime: undefined
       },
       // 表单参数
       form: {},
@@ -216,11 +295,13 @@ export default {
   },
   methods: {
     setCharts() {
-      this.height = window.innerHeight - 370 + 'px'
+      this.height = window.innerHeight - 370 + "px";
     },
     getList() {
       this.loading = true;
-      listHistoryAlarm(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+      listHistoryAlarm(
+        this.addDateRange(this.queryParams, this.dateRange)
+      ).then(response => {
         this.JkHistoryAlarmList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -266,7 +347,8 @@ export default {
       this.queryParams.nodeId = modelNode.id;
       this.settingDeviceList = [];
       this.settingIndexList = [];
-      this.disabledSetting = modelNode === undefined || modelNode === '' || modelNode === null;
+      this.disabledSetting =
+        modelNode === undefined || modelNode === "" || modelNode === null;
       if (modelNode) {
         this.currentNode = modelNode;
         this.deviceLoading = true;
@@ -292,7 +374,6 @@ export default {
     //   return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
     // },
 
-
     /** 搜索按钮操作 */
     handleQuery() {
       this.getList();
@@ -303,8 +384,7 @@ export default {
       this.resetForm("queryForm");
     },
 
-    handleSelectionChange() {
-    },
+    handleSelectionChange() {},
     openDialog(row, column, event, cell) {
       if ("indexName" == column.property) {
         this.open = true;
@@ -319,51 +399,56 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有报警数据项?', "警告", {
+      this.$confirm("是否确认导出所有报警数据项?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function () {
-        return exportHistoricalAlarm(queryParams);
-      }).then(response => {
-        this.download(response.msg);
-      }).catch(function () {
-      });
-
+      })
+        .then(function() {
+          return exportHistoricalAlarm(queryParams);
+        })
+        .then(response => {
+          this.download(response.msg);
+        })
+        .catch(function() {});
     },
     //限制类型翻译
     limitTypeFormat(row, column) {
       var actions = [];
-      Object.keys(this.limitTypeOptions).map((key) => {
-        if (this.limitTypeOptions[key].limitCode == ('' + row.limitType)) {
+      Object.keys(this.limitTypeOptions).map(key => {
+        if (this.limitTypeOptions[key].limitCode == "" + row.limitType) {
           actions.push(this.limitTypeOptions[key].limitName);
         }
       });
-      return actions.join('');
+      return actions.join("");
     },
     handleClick(tab, event) {
       this.activeName = tab.name;
     },
     getTime() {
       var myDate = new Date();
-      var monthFirst = new Date(myDate.getFullYear(), parseInt(myDate.getMonth()), 1);
+      var monthFirst = new Date(
+        myDate.getFullYear(),
+        parseInt(myDate.getMonth()),
+        1
+      );
       this.dateRange = [this.formatDate(monthFirst), this.formatDate(myDate)];
     },
-    formatDate: function (value) {
+    formatDate: function(value) {
       let date = new Date(value);
       let y = date.getFullYear();
       let MM = date.getMonth() + 1;
-      MM = MM < 10 ? ('0' + MM) : MM;
+      MM = MM < 10 ? "0" + MM : MM;
       let d = date.getDate();
-      d = d < 10 ? ('0' + d) : d;
+      d = d < 10 ? "0" + d : d;
       let h = date.getHours();
-      h = h < 10 ? ('0' + h) : h;
+      h = h < 10 ? "0" + h : h;
       let m = date.getMinutes();
-      m = m < 10 ? ('0' + m) : m;
+      m = m < 10 ? "0" + m : m;
       let s = date.getSeconds();
-      s = s < 10 ? ('0' + s) : s;
-      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-    },
+      s = s < 10 ? "0" + s : s;
+      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
+    }
   }
 };
 </script>

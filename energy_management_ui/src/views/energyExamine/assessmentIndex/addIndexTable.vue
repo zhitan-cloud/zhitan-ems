@@ -1,6 +1,13 @@
 <template>
   <!-- 导入表 -->
-  <el-dialog :title="title" :visible.sync="open"  :destroy-on-close="true" :append-to-body="true" width="800px" top="5vh">
+  <el-dialog
+    :title="title"
+    :visible.sync="open"
+    :destroy-on-close="true"
+    :append-to-body="true"
+    width="800px"
+    top="5vh"
+  >
     <!--
     <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
       <el-form-item>
@@ -8,12 +15,16 @@
       </el-form-item>
     </el-form>-->
 
-
     <el-row>
-      <el-table v-loading="loading" :data="impIndexList" @selection-change="handleSelectionChange" stripe max-height="350">
+      <el-table
+        v-loading="loading"
+        :data="impIndexList"
+        @selection-change="handleSelectionChange"
+        max-height="350"
+      >
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="指标编码" align="center" prop="code"  />
-        <el-table-column label="指标名称" align="center" prop="name"  />
+        <el-table-column label="指标编码" align="center" prop="code" />
+        <el-table-column label="指标名称" align="center" prop="name" />
       </el-table>
     </el-row>
     <div slot="footer" class="dialog-footer">
@@ -24,13 +35,13 @@
 </template>
 
 <script>
-import { listIndex,addIndex } from "@/api/energyExamine/addIndex";
+import { listIndex, addIndex } from "@/api/energyExamine/addIndex";
 
 export default {
   data() {
     return {
       //模型节点
-      modeNode:'',
+      modeNode: "",
       // 遮罩层
       loading: true,
       // 选中数组
@@ -41,7 +52,7 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
-      qjcode:"",
+      qjcode: "",
       //  指标  表格数据
       impIndexList: [],
       // 弹出层标题
@@ -54,20 +65,19 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        implementId:'',
+        implementId: "",
         tableName: undefined
-      },
+      }
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
     // 显示弹框
     show(modeNode) {
-      this.modeNode=modeNode;
+      this.modeNode = modeNode;
       this.reset();
       this.getList();
-      this.title="添加"+this.modeNode.label+"考核指标";
+      this.title = "添加" + this.modeNode.label + "考核指标";
       this.open = true;
     },
     // 表单重置
@@ -75,7 +85,7 @@ export default {
       this.queryParams = {
         pageNum: 1,
         pageSize: 10,
-        implementId:'',
+        implementId: "",
         tableName: undefined
       };
       //清空上传组件的文件列表
@@ -83,39 +93,34 @@ export default {
     },
     // 查询  指标
     getList() {
-      listIndex("STATISTIC",this.modeNode.id).then(response => {
+      listIndex("STATISTIC", this.modeNode.id).then(response => {
         this.impIndexList = response.data;
         this.loading = false;
       });
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.indexId)
+      this.ids = selection.map(item => item.indexId);
     },
     /** 保存按钮操作 */
-    handsave()
-    {
-      if(this.ids==null || this.ids.length<=0){
+    handsave() {
+      if (this.ids == null || this.ids.length <= 0) {
         this.msgSuccess("请选择指标!");
         return;
       }
-      addIndex(this.ids,this.modeNode.id).then(response => {
-        if(response!=null && response.code=="200")
-        {
+      addIndex(this.ids, this.modeNode.id).then(response => {
+        if (response != null && response.code == "200") {
           this.msgSuccess(response.msg);
-          this.open=false;
-        }else{
+          this.open = false;
+        } else {
           this.msgSuccess(response.msg);
         }
       });
     },
     /** 关闭按钮操作 */
-    handclose()
-    {
-      this.open=false;
-    },
-
+    handclose() {
+      this.open = false;
+    }
   }
 };
-
 </script>

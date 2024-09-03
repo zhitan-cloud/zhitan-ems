@@ -1,12 +1,13 @@
 #app {
 
   .main-container {
-    height: 100vh;
+    // height: 100vh; //打开不显示滚动条
     overflow: hidden;
     transition: margin-left .28s;
     margin-left: $sideBarWidth;
     position: relative;
-    background: rgba(235, 237, 240, 1);
+    // background: rgba(235, 237, 240, 1);
+    background: #001233;
   }
 
   .sidebar-container {
@@ -20,7 +21,13 @@
     bottom: 0;
     left: 0;
     z-index: 1001;
-    overflow: hidden;
+    // overflow: hidden;
+
+    // background: url("../image/navbar/Group.png") no-repeat;background-size: 100% 100%;     
+    // padding-left: 13px;
+    // padding-right: 31px;
+    // padding-top: 27px;
+    // margin-top: 10px;
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -28,15 +35,26 @@
     }
 
     .scrollbar-wrapper {
-      overflow-x: hidden !important;
+      // overflow-x: hidden !important; 滚动条
+      // overflow: auto;
+      height: 100%;
     }
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
 
     .el-scrollbar__bar.is-vertical {
       right: 0px;
+      width: 0;
     }
 
     .el-scrollbar {
       height: 100%;
+      background: url("../image/navbar/Group.png") no-repeat;background-size: 100% 100%;     
+      padding-left: 3px;
+      padding-right: 24px;
+      padding-top: 13px;
     }
 
     &.has-logo {
@@ -56,33 +74,38 @@
     }
 
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
     }
 
     .el-menu {
       border: none;
       height: 100%;
       width: 100% !important;
+      background-color: rgba(0, 0, 0, 0);
     }
 
     // menu hover
     .submenu-title-noDropdown,
     .el-submenu__title {
-      font-size: 16px;
+      height: 44px;
+      line-height: 44px;
       &:hover {
         background-color: $menuHover !important;
       }
     }
 
     .is-active>.el-submenu__title {
-      font-size: 16px;
       // color: rgba(11, 107, 241, 1) !important;
       font-weight: 500;
     }
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
+      height: 44px;
+      line-height: 44px;
       min-width: $sideBarWidth !important;
+      margin-left: 8px;
+      padding-left: 32px !important;
       &:hover {
         background-color: $subMenuHover !important;
       }
@@ -179,16 +202,21 @@
 .el-menu--vertical {
   &>.el-menu {
     .svg-icon {
-      margin-right: 16px;
+      margin-right: 12px;
     }
   }
 
   .nest-menu .el-submenu>.el-submenu__title,
   .el-menu-item {
+    height: 44px;
+    line-height: 44px;
     &:hover {
       // you can use $subMenuHover
       background-color: $menuHover !important;
     }
+  }
+  .is-active {
+    color: #38bcbf !important;
   }
 
   // the scroll bar appears when the subMenu is too long

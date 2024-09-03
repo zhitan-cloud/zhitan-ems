@@ -6,6 +6,7 @@
 import echarts from "echarts";
 require("echarts/theme/macarons"); // echarts theme
 import resize from "./mixins/resize";
+import { color } from "echarts/lib/export";
 
 export default {
   mixins: [resize],
@@ -24,7 +25,7 @@ export default {
     },
     height: {
       type: String,
-      default: "363px"
+      default: "300px"
     },
     chartData: {
       type: Array,
@@ -80,7 +81,10 @@ export default {
           left: this.legend == "right" ? "auto" : "center",
           top: "0",
           right: this.legend == "right" ? "40" : "auto",
-          orient: this.legend == "right" ? "vertical" : "horizontal"
+          orient: this.legend == "right" ? "vertical" : "horizontal",
+          textStyle: {
+            color: "#fff"
+          }
           // data: ["Industries", "Technology", "Forex", "Gold", "Forecasts"]
         },
         label: {

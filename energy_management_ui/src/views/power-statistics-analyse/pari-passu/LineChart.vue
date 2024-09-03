@@ -107,7 +107,10 @@ export default {
           }
         },
         legend: {
-          data: []
+          data: [],
+          textStyle: {
+            color: "#fff"
+          }
         },
         series: [
           {

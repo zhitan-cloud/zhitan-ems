@@ -67,7 +67,7 @@ export default {
           text: title,
           left: "left",
           textStyle: {
-            color: "#606266"
+            color: "#fff"
           }
         },
         xAxis: {
@@ -94,7 +94,10 @@ export default {
           }
         },
         legend: {
-          data: []
+          data: [],
+          textStyle: {
+            color: "#fff"
+          }
         },
         series: [
           {

@@ -3,7 +3,7 @@
 * Copyright (c) 2019 ruoyi
 */
 .el-table tbody tr:hover > td {
-  background-color: #CFDCF5 !important
+  background-color: rgba(5,64,149,.5) !important;
 }
 
 .el-table .el-table__header-wrapper th {
@@ -22,10 +22,7 @@
 }
 
 
-.el-table th {
-  background: #D5D5D5;
-  color: #515a6e;
-}
+
 
 /** 基础通用 **/
 .pt5 {
@@ -106,14 +103,6 @@
   padding-bottom: 5px
 }
 
-/** 表格布局 **/
-.pagination-container {
-  position: relative;
-  height: 25px;
-  margin-bottom: 10px;
-  margin-top: 15px;
-  padding: 10px 20px !important;
-}
 
 .pagination-container .el-pagination {
   right: 0;
@@ -127,6 +116,42 @@
   width: inherit;
 }
 
+.el-button{
+  background: #0083CF;
+  border-radius: 6px 6px 6px 6px;
+  color: #FFFFFF;
+  border: none;
+}
+.el-button--text {
+  background: transparent !important;
+}
+.el-button--primary{
+  background: #24CAFF;
+}
+.el-button--primary:hover{
+  background: #24CAFF;
+}
+.treeBg{
+  background: url("../image/treeBg.png") no-repeat;
+  background-size: 100% 100%;
+}
+.el-tree{
+  background: rgba(0,0,0,0);
+  color: #A3CBFF;
+}
+.el-tree-node:focus>.el-tree-node__content{
+  background-color: rgba(5, 64, 149,0.3);
+}
+
+.el-tree-node__content:hover {
+  background-color: rgba(5, 64, 149,0.3);
+}
+
+.el-collapse-item__wrap{
+  background: #001233;
+  border-bottom: none;
+}
+.el-button,
 .el-tree-node__content > .el-checkbox {
   margin-right: 8px;
 }
@@ -140,7 +165,7 @@
 }
 
 .list-group {
-  padding-left: 0px;
+  padding-left: 0;
   list-style: none;
 }
 
@@ -148,7 +173,7 @@
   border-bottom: 1px solid #e7eaec;
   border-top: 1px solid #e7eaec;
   margin-bottom: -1px;
-  padding: 11px 0px;
+  padding: 11px 0;
   font-size: 13px;
 }
 
@@ -156,14 +181,16 @@
   float: right !important;
 }
 
-.el-card__header {
-  padding: 14px 15px 7px;
-  min-height: 40px;
+.el-card{
+  border: none;
+  background-color: #061844;
+  overflow: hidden;
+  color: #fff;
 }
 
-.el-card__body {
-  padding: 27px 20px;
-}
+// .el-card__body {
+//   padding: 27px 20px;
+// }
 
 .card-box {
   padding-right: 15px;
@@ -242,14 +269,19 @@
     overflow: auto;
   }
 }
+.el-card__header{
+  border-bottom: none;
+  background: #09256B;
+}
 
 .modelnode-tree {
-  margin-top: 8px;
+  // margin-top: 8px;
 
   .custom-tree-node {
     flex: 1;
     padding-right: 8px;
     // line-height: 26px;
+    font-size: 14px;
   }
 
   .node-opt {
@@ -266,7 +298,7 @@
 .model-node-setting {
   .el-card__body {
     padding: 8px 10px 10px 10px;
-    height: calc(100vh - 220px);
+    height: calc(100vh - 270px);
     overflow: auto;
   }
 }
@@ -297,3 +329,45 @@
     margin-top: calc(50vh - 180px);
   }
 }
+.shrink-col-block {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  cursor: pointer;
+}
+
+// 美化滚动条
+::-webkit-scrollbar {
+  width: 11px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  width: 6px;
+  background: rgba(#101F1C, 0.1) ;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color:#4E6BBA;
+  background-clip: padding-box;
+  min-height: 28px;
+  -webkit-border-radius: 2em;
+  -moz-border-radius: 2em;
+  border-radius: 2em;
+  transition: background-color .3s;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(144,147,153,.3);
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #021441
+}
+::-webkit-scrollbar-corner {
+  background-color:  #061844 ;
+}
+

@@ -2,27 +2,27 @@
   <div class="logo-page">
     <div class="logo-png">
       <img
-        style="width: 208px;margin-right: 30px "
-        :src="'https://www.toray.cn/shared/images/toray_logo_ch.svg'"
+        style="width: 80px;margin-right: 30px "
+        src="@/assets/logo/logo.png"
         alt=""
       />
-      <div>综合能源管理系统</div>
+      <div>云路综合能源管理系统</div>
     </div>
     <div class="login">
-      <!-- <div class="demo-image">
-        <el-image style="width: 75%;" :src="logo"></el-image>
-      </div> -->
+      <div class="demo-image">
+        <el-image style="width: 80%;" :src="logo"></el-image>
+      </div>
       <div class="login-form">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
-          <!-- <div class="title">用户登录</div> -->
-          <div class="logo-view title">
+          <div class="title">用户登录</div>
+          <!-- <div class="logo-view title">
             <img
               style="width: 100px;margin-right: 30px "
               :src="'https://www.toray.cn/shared/images/toray_logo_ch.svg'"
               alt=""
             />
             <div>综合能源管理系统</div>
-          </div>
+          </div> -->
           <el-form-item prop="username" style="margin-bottom: 21px">
             <el-input
               v-model="loginForm.username"
@@ -178,8 +178,8 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .logo-page {
   height: 100%;
-  background-image: url("../assets/image/bg.jpg");
-  // background-image: url("../assets/image/login-background.png");
+  // background-image: url("../assets/image/bg.jpg");
+  background-image: url("../assets/image/login-background.png");
   background-size: cover;
   overflow: hidden;
   // background: ;
@@ -187,11 +187,11 @@ export default {
   // background: linear-gradient(90deg, #101d32 0%, rgba(0, 0, 0, 0.5) 100%);
 
   .logo-png {
-    font-size: 24px;
+    font-size: 28px;
     display: flex;
     align-items: center;
     font-weight: bold;
-    color: #fff;
+    color: #333;
     padding: 3.4% 0 0 74px;
     position: absolute;
   }
@@ -221,8 +221,8 @@ export default {
     border-radius: 4px;
     // box-shadow: 0 7px 14px 6px #2f4b9a;
     margin-top: 6px;
-    border: 1px solid #061844;
-    background: rgba($color: #ffffff, $alpha: 0.06);
+    // border: 1px solid #061844;
+    background: rgba($color: #437ed0, $alpha: 0.06);
 
     .logo-view {
       display: flex;
@@ -230,6 +230,13 @@ export default {
       color: #fff;
       font-size: 26px;
       font-weight: 600;
+    }
+
+    ::v-deep .el-input__inner {
+      background: rgb(255, 255, 255, 0.6) !important;
+      background-color: rgb(255, 255, 255, 0.6) !important;
+      border: 1px solid #dcdfe6 !important;
+      color: #606266 !important;
     }
 
     .el-input {

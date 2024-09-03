@@ -99,13 +99,16 @@ export default {
           }
         },
         legend: {
-          right: 0
+          right: 0,
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
           left: 10,
           right: 10,
           bottom: "10%",
-          top: 30,
+          top: 50,
           containLabel: true
         },
         xAxis: [
@@ -122,6 +125,9 @@ export default {
           {
             type: "value",
             axisTick: {
+              show: false
+            },
+            splitLine: {
               show: false
             }
           },

@@ -52,6 +52,10 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+  background: #001233;
+  .el-dialog__title{
+    color: #fff;
+  }
 }
 
 // refine element ui upload
@@ -77,3 +81,97 @@
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
 }
+
+.el-form-item__label {
+  color: #fff;
+}
+
+.el-table {
+  background: none
+}
+
+.el-table .el-table__header-wrapper th, .el-table th {
+  background-color: #054586 !important;
+  color: #fff !important;
+}
+
+.el-table tr {
+  color: #fff;
+  background-color: #021441;
+}
+
+.el-table th.is-leaf, .el-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.el-table__footer-wrapper td {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+}
+
+.el-table__header-wrapper tbody td, .el-table__footer-wrapper tbody td {
+  color: #fff;
+  background-color: #021441;
+}
+
+.el-table--group, .el-table--border {
+  border: 1px solid #366cb9;
+}
+
+.el-table--border th, .el-table--border td {
+  border-right: 1px solid #366cb9 !important;
+}
+
+.el-table--border th {
+  border-bottom: 1px solid #366cb9;
+}
+
+.el-table::before, .el-table--group::after, .el-table--border::after {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.el-table__empty-block {
+  color: #fff;
+  background-color: #021441;
+}
+
+.el-table tbody tr:hover > .is-center {
+  background-color: rgba(5, 64, 149, 0.5) !important;
+}
+
+.el-loading-mask {
+  background-color: rgba(5, 64, 149, 0.3)
+}
+
+.el-tabs--card > .el-tabs__header .el-tabs__nav {
+  border: 1px solid #366CB9;
+}
+
+.el-tabs--card > .el-tabs__header {
+  border-bottom: 1px solid #366CB9;
+}
+
+.el-table__fixed::before {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.el-card__body{
+  .el-tabs--card {
+    .el-tabs__header {
+      .el-tabs__item{
+        border-left:0;
+        color: #95c1fd;
+      }
+      .el-tabs__item.is-active {
+        color: #fff;
+        background: #24CAFF;
+        border-bottom: 0;
+        border-left: 0;
+      }
+    }
+  }
+}
+
+
+
+

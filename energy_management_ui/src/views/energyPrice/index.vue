@@ -240,6 +240,7 @@ const colorArray = ["", "#f56c6c", "#e6a23c", "#67c23a", "#909399"];
 import ruleApi from "@/api/energyPrice/price";
 import { getTimePeriod } from "@/utils/index";
 import mixins from "@/layout/mixin/getHeight";
+import moment from "moment";
 export default {
   name: "energyPrice",
   mixins: [mixins],
@@ -460,7 +461,7 @@ export default {
             name: this.form.name,
             id: this.form.id,
             remark: this.form.remark,
-            effectiveDate: this.form.effectiveDate,
+            effectiveDate: moment(this.form.effectiveDate).format("yyyy-MM-DD"),
             sharpFee: this.priceTypeList[0].price, //尖时段
             peakFee: this.priceTypeList[1].price, //峰时段
             flatFee: this.priceTypeList[2].price, //平时段

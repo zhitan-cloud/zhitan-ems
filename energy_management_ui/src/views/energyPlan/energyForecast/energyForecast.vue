@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="68px"
+    >
       <el-form-item>
         <el-radio v-model="radio" label="1">按日</el-radio>
         <el-radio v-model="radio" label="2">按月</el-radio>
@@ -11,7 +16,8 @@
             v-for="item in options"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
+            :value="item.value"
+          >
           </el-option>
         </el-select>
         <el-select v-model="values" placeholder="请选择">
@@ -19,26 +25,32 @@
             v-for="item in optionList"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
+            :value="item.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini">预测</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini"
+          >预测</el-button
+        >
         <el-button icon="el-icon-refresh" size="mini">导出</el-button>
       </el-form-item>
     </el-form>
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart/>
+    <el-row style="padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart />
     </el-row>
     <div>
       <span>统计范围：全厂</span>
-      <span style="float: right;">统计区间：{{times}}</span>
+      <span style="float: right;">统计区间：{{ times }}</span>
     </div>
-    <el-table :data="energyEenchmarkingList" @selection-change="handleSelectionChange">
-      <el-table-column prop="date" align="center"  label="日期"  width="150"/>
+    <el-table
+      :data="energyEenchmarkingList"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column prop="date" align="center" label="日期" width="150" />
       <el-table-column label="计划产量" align="center">
-        <el-table-column label="产品种类" align="center" prop="cpname"/>
+        <el-table-column label="产品种类" align="center" prop="cpname" />
         <el-table-column label="计量单位" align="center" prop="jldw" />
         <el-table-column label="计划产量" align="center" prop="jhcl" />
       </el-table-column>
@@ -52,7 +64,7 @@
 </template>
 
 <script>
-  import LineChart from './LineChart'
+import LineChart from "./LineChart";
 export default {
   components: {
     LineChart
@@ -69,69 +81,78 @@ export default {
       multiple: true,
       // 总条数
       total: 0,
-      radio: '1',
-      value: '',
-      values: '',
-      options: [{
-        value: '选项1',
-        label: '未来三天'
-      }, {
-        value: '选项2',
-        label: '未来五天'
-      }, {
-        value: '选项3',
-        label: '未来七天'
-      }],
-      optionList: [{
-        value: '选项1',
-        label: '电耗'
-      }, {
-        value: '选项2',
-        label: '水耗'
-      }],
-      // energy_benchmarking表格数据
-      energyEenchmarkingList: [{
-        "date":"2020-11-20",
-        "cpname": "煤气",
-        "jldw":"立方米",
-        "jhcl":"12212121",
-        "dian":"99",
-        "shui":"20",
-        "zq":"60",
-        "createBy": null,
-        "createTime": "",
-        "updateBy": null,
-        "updateTime": null,
-        "remark": "",
-      },
+      radio: "1",
+      value: "",
+      values: "",
+      options: [
         {
-          "date":"2020-11-20",
-          "cpname": "粗苯",
-          "jldw":"吨",
-          "jhcl":"22212",
-          "dian":"79",
-          "shui":"26",
-          "zq":"50",
-          "createBy": null,
-          "createTime": "",
-          "updateBy": null,
-          "updateTime": null,
-          "remark": "",
+          value: "选项1",
+          label: "未来三天"
         },
         {
-          "date":"2020-11-20",
-          "cpname": "焦油",
-          "jldw":"吨",
-          "jhcl":"1211212",
-          "dian":"109",
-          "shui":"30",
-          "zq":"85",
-          "createBy": null,
-          "createTime": "",
-          "updateBy": null,
-          "updateTime": null,
-          "remark": "",
-        }],
+          value: "选项2",
+          label: "未来五天"
+        },
+        {
+          value: "选项3",
+          label: "未来七天"
+        }
+      ],
+      optionList: [
+        {
+          value: "选项1",
+          label: "电耗"
+        },
+        {
+          value: "选项2",
+          label: "水耗"
+        }
+      ],
+      // energy_benchmarking表格数据
+      energyEenchmarkingList: [
+        {
+          date: "2020-11-20",
+          cpname: "煤气",
+          jldw: "立方米",
+          jhcl: "12212121",
+          dian: "99",
+          shui: "20",
+          zq: "60",
+          createBy: null,
+          createTime: "",
+          updateBy: null,
+          updateTime: null,
+          remark: ""
+        },
+        {
+          date: "2020-11-20",
+          cpname: "粗苯",
+          jldw: "吨",
+          jhcl: "22212",
+          dian: "79",
+          shui: "26",
+          zq: "50",
+          createBy: null,
+          createTime: "",
+          updateBy: null,
+          updateTime: null,
+          remark: ""
+        },
+        {
+          date: "2020-11-20",
+          cpname: "焦油",
+          jldw: "吨",
+          jhcl: "1211212",
+          dian: "109",
+          shui: "30",
+          zq: "85",
+          createBy: null,
+          createTime: "",
+          updateBy: null,
+          updateTime: null,
+          remark: ""
+        }
+      ],
       // 弹出层标题
       // 是否显示弹出层
       open: false,
@@ -146,21 +167,23 @@ export default {
         type: undefined,
         value: undefined,
         termValidity: undefined,
-        modelNode:"",
+        modelNode: ""
       },
-      times:"",
+      times: ""
     };
   },
-  created() {this.getTime()},
+  created() {
+    this.getTime();
+  },
   methods: {
-    getTime(){
-      var date = new Date()
-      var year = date.getFullYear()
-      var month = date.getMonth() + 1
-      var date = date.getDate()
-      month = month < 10 ? '0' + month : month
-      date = date < 10 ? '0' + date : date
-      this.times = year + '-' + month + '-' + date
+    getTime() {
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var date = date.getDate();
+      month = month < 10 ? "0" + month : month;
+      date = date < 10 ? "0" + date : date;
+      this.times = year + "-" + month + "-" + date;
     },
     // 取消按钮
     cancel() {
@@ -193,76 +216,76 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length!=1
-      this.multiple = !selection.length
-    },
+      this.ids = selection.map(item => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
-  .dashboard-editor-container {
-    padding: 32px;
-    background-color: rgb(240, 242, 245);
-    position: relative;
+.dashboard-editor-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
+  position: relative;
 
-    .chart-wrapper {
-      background: #fff;
-      padding: 16px 16px 0;
-      margin-bottom: 32px;
-    }
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
   }
+}
 
-  @media (max-width:1024px) {
-    .chart-wrapper {
-      padding: 8px;
-    }
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    padding: 8px;
   }
-  .live{
-    position: fixed;
-    right: 0px;
-    top:70px;
-    display: flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    width: 100px;
-    height: 60px;
-    background-color: red;
-    animation: fade 600ms infinite;
-    -webkit-animation: fade 600ms infinite;
+}
+.live {
+  position: fixed;
+  right: 0px;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 60px;
+  background-color: red;
+  animation: fade 600ms infinite;
+  -webkit-animation: fade 600ms infinite;
+}
+.live_content {
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+.live_number {
+  font-size: 32px;
+  color: white;
+  font-weight: bolder;
+}
+@keyframes fade {
+  from {
+    opacity: 1;
   }
-  .live_content{
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
+  50% {
+    opacity: 0.4;
   }
-  .live_number{
-    font-size: 32px;
-    color: white;
-    font-weight: bolder;
+  to {
+    opacity: 1;
   }
-  @keyframes fade {
-    from {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1.0;
-    }
-  }
+}
 
-  @-webkit-keyframes fade {
-    from {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1.0;
-    }
+@-webkit-keyframes fade {
+  from {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
 </style>

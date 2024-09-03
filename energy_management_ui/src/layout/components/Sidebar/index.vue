@@ -53,9 +53,15 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" scoped>
 ::v-deep .el-menu-item.is-active {
   // background: rgba(246, 250, 255, 1) !important;
-  background: linear-gradient(90deg, #4fdac9 0%, #32b5cb 100%) !important;
+  // background: linear-gradient(90deg, #4fdac9 0%, #32b5cb 100%) !important;
+  background: linear-gradient(
+    90deg,
+    #0559c8 0%,
+    rgba(5, 89, 200, 0) 97%
+  ) !important;
 }
 </style>

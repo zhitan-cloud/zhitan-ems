@@ -86,7 +86,7 @@
           fixed
           prop="indexName"
           label="指标名称"
-          min-width="180px"
+          min-width="200"
         >
           <template slot-scope="scope">
             <div style="width: 100%; text-align: left">
@@ -102,7 +102,7 @@
                 icon="el-icon-search"
                 circle
                 @click="selectChange(scope.row)"
-                style="margin-right: 8px"
+                style="margin-right: 8px;background: #999;"
               ></el-button>
               <el-tooltip
                 v-if="scope.row.indexName.length > 9"
@@ -124,7 +124,7 @@
           :key="index"
           :label="index - 1 + '时'"
           align="center"
-          min-width="50"
+          min-width="100"
         >
           <template slot-scope="scope">{{
             numFilter(scope.row[`value${index - 1}`])

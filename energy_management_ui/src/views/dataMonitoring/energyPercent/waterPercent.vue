@@ -380,7 +380,7 @@ export default {
       this.handleQuery();
     },
     setCharts() {
-      this.bodyStyle.height = window.innerHeight - 155 + "px";
+      this.bodyStyle.height = window.innerHeight - 195 + "px";
       this.bodyStyleRight = {
         ...this.bodyStyle,
         height: window.innerHeight - 100 + "px"
@@ -391,6 +391,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/styles/variables.scss";
 .dashboard-editor-container {
   margin-bottom: 16px;
   ::v-deep {
@@ -404,19 +405,24 @@ export default {
   }
   .table-wrapper {
     margin-top: 16px;
-    background: #fff;
+    // background: #fff;
   }
 }
 .table-wrapper {
-  // margin-top: 16px;
-  padding-top: 16px;
-  background: #fff;
+  padding-top: 0px;
+  background: #061844;
   .demo-tabs {
     padding: 0 16px;
   }
   ::v-deep {
     .el-card {
       border: none;
+    }
+    .el-tabs__item {
+      color: #fff;
+    }
+    .el-tabs__item.is-active {
+      color: $primary-color;
     }
   }
 }

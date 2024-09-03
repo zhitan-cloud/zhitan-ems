@@ -1,8 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="68px"
+    >
       <el-form-item label="能源类型">
-        <el-select v-model="queryParams.indexStorageId" placeholder="请选择能源品种">
+        <el-select
+          v-model="queryParams.indexStorageId"
+          placeholder="请选择能源品种"
+        >
           <el-option
             v-for="dict in indexCategoryOptions"
             :key="dict.dictValue"
@@ -17,50 +25,173 @@
         </el-radio-group>
       </el-form-item>-->
       <el-form-item label="统计时间">
-        <el-date-picker clearable size="small" style="width: 200px"
-                        v-model="queryParams.dataTime"
-                        :type="dateTypes"
-                        :value-format="valueFormat"
-                        placeholder="选择日期">
+        <el-date-picker
+          clearable
+          size="small"
+          style="width: 200px"
+          v-model="queryParams.dataTime"
+          :type="dateTypes"
+          :value-format="valueFormat"
+          placeholder="选择日期"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >查询</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
         <!--<el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>-->
       </el-form-item>
     </el-form>
-    <el-table :data="energyList" border style="width: 100%; margin-top: 20px" class="tableList" >
+    <el-table
+      :data="energyList"
+      border
+      style="width: 100%; margin-top: 20px"
+      class="tableList"
+    >
       <el-table-column label="曲线选择">
         <template slot-scope="scope">
-          <el-button icon="el-icon-search" circle @click="selectChange(scope.row.indexId)" style="font-size: 10px"></el-button>
+          <el-button
+            icon="el-icon-search"
+            circle
+            @click="selectChange(scope.row.indexId)"
+            style="font-size: 10px"
+          ></el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="indexName" align="center" label="能源名称" min-width="240px"></el-table-column>
-      <el-table-column label="1时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value1)}}</template></el-table-column>
-      <el-table-column label="2时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value2)}}</template></el-table-column>
-      <el-table-column label="3时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value3)}}</template></el-table-column>
-      <el-table-column label="4时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value4)}}</template></el-table-column>
-      <el-table-column label="5时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value5)}}</template></el-table-column>
-      <el-table-column label="6时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value6)}}</template></el-table-column>
-      <el-table-column label="7时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value7)}}</template></el-table-column>
-      <el-table-column label="8时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value8)}}</template></el-table-column>
-      <el-table-column label="9时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value9)}}</template></el-table-column>
-      <el-table-column label="10时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value10)}}</template></el-table-column>
-      <el-table-column label="11时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value11)}}</template></el-table-column>
-      <el-table-column label="12时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value12)}}</template></el-table-column>
-      <el-table-column label="13时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value13)}}</template></el-table-column>
-      <el-table-column label="14时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value14)}}</template></el-table-column>
-      <el-table-column label="15时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value15)}}</template></el-table-column>
-      <el-table-column label="16时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value16)}}</template></el-table-column>
-      <el-table-column label="17时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value17)}}</template></el-table-column>
-      <el-table-column label="18时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value18)}}</template></el-table-column>
-      <el-table-column label="19时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value19)}}</template></el-table-column>
-      <el-table-column label="10时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value20)}}</template></el-table-column>
-      <el-table-column label="21时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value21)}}</template></el-table-column>
-      <el-table-column label="22时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value22)}}</template></el-table-column>
-      <el-table-column label="23时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value23)}}</template></el-table-column>
-      <el-table-column label="24时" align="center" min-width="140px"> <template slot-scope="scope">{{numFilter(scope.row.value24)}}</template></el-table-column>
+      <el-table-column
+        prop="indexName"
+        align="center"
+        label="能源名称"
+        min-width="240px"
+      ></el-table-column>
+      <el-table-column label="1时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value1)
+        }}</template></el-table-column
+      >
+      <el-table-column label="2时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value2)
+        }}</template></el-table-column
+      >
+      <el-table-column label="3时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value3)
+        }}</template></el-table-column
+      >
+      <el-table-column label="4时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value4)
+        }}</template></el-table-column
+      >
+      <el-table-column label="5时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value5)
+        }}</template></el-table-column
+      >
+      <el-table-column label="6时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value6)
+        }}</template></el-table-column
+      >
+      <el-table-column label="7时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value7)
+        }}</template></el-table-column
+      >
+      <el-table-column label="8时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value8)
+        }}</template></el-table-column
+      >
+      <el-table-column label="9时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value9)
+        }}</template></el-table-column
+      >
+      <el-table-column label="10时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value10)
+        }}</template></el-table-column
+      >
+      <el-table-column label="11时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value11)
+        }}</template></el-table-column
+      >
+      <el-table-column label="12时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value12)
+        }}</template></el-table-column
+      >
+      <el-table-column label="13时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value13)
+        }}</template></el-table-column
+      >
+      <el-table-column label="14时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value14)
+        }}</template></el-table-column
+      >
+      <el-table-column label="15时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value15)
+        }}</template></el-table-column
+      >
+      <el-table-column label="16时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value16)
+        }}</template></el-table-column
+      >
+      <el-table-column label="17时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value17)
+        }}</template></el-table-column
+      >
+      <el-table-column label="18时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value18)
+        }}</template></el-table-column
+      >
+      <el-table-column label="19时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value19)
+        }}</template></el-table-column
+      >
+      <el-table-column label="10时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value20)
+        }}</template></el-table-column
+      >
+      <el-table-column label="21时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value21)
+        }}</template></el-table-column
+      >
+      <el-table-column label="22时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value22)
+        }}</template></el-table-column
+      >
+      <el-table-column label="23时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value23)
+        }}</template></el-table-column
+      >
+      <el-table-column label="24时" align="center" min-width="140px">
+        <template slot-scope="scope">{{
+          numFilter(scope.row.value24)
+        }}</template></el-table-column
+      >
     </el-table>
     <!--<div class="el-table el-table&#45;&#45;fit el-table&#45;&#45;scrollable-x el-table&#45;&#45;enable-row-hover el-table&#45;&#45;medium" >
       <div class="el-table__body-wrapper is-scrolling-left">
@@ -154,14 +285,18 @@
 </template>
 
 <script>
-  import {getDataList,exportList,getlistChart} from "@/api/comprehensiveStatistics/comprehensive";
-  import LineChart from './LineChart'
-  import BarChart from "./BarChart";
-  export default {
-    components: {
-      LineChart,
-      BarChart
-    },
+import {
+  getDataList,
+  exportList,
+  getlistChart
+} from "@/api/comprehensiveStatistics/comprehensive";
+import LineChart from "./LineChart";
+import BarChart from "./BarChart";
+export default {
+  components: {
+    LineChart,
+    BarChart
+  },
   data() {
     return {
       // 遮罩层
@@ -175,12 +310,12 @@
       // 总条数
       total: 0,
       checked: false,
-      dateRange:[],
-      dateTypeOptions:[],
+      dateRange: [],
+      dateTypeOptions: [],
       energyList: [],
       tableData: [],
-      tableHead:[],
-      indexCategoryOptions:[],
+      tableHead: [],
+      indexCategoryOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -191,24 +326,26 @@
         pageSize: 10,
         indexCode: undefined,
         indexId: undefined,
-        dataTime:undefined,
-        timeType:"HOUR",
-        indexType:undefined,
-        indexStorageId:undefined,
+        dataTime: undefined,
+        timeType: "HOUR",
+        indexType: undefined,
+        indexStorageId: undefined
       },
-      skinName:"",
-      dateTypes: 'date',
-      valueFormat:"yyyy-MM-dd",
-      lineChartData:{expectedData: [],actualData: []},
+      skinName: "",
+      dateTypes: "date",
+      valueFormat: "yyyy-MM-dd",
+      lineChartData: { expectedData: [], actualData: [] }
     };
   },
   created() {
     this.getDicts("report_form").then(response => {
       this.dateTypeOptions = response.data;
-      this.queryParams.timeType = this.dateTypeOptions.find(f => f.isDefault === 'Y').dictValue;
+      this.queryParams.timeType = this.dateTypeOptions.find(
+        f => f.isDefault === "Y"
+      ).dictValue;
     });
     this.getConfigKey("comprehensive").then(response => {
-      this.skinName=response.msg;
+      this.skinName = response.msg;
     });
     this.getDicts("energy_type").then(response => {
       this.indexCategoryOptions = response.data;
@@ -224,25 +361,27 @@
         /*this.tableData=response.data.tabledata;
         this.tableHead=response.data.tablehead;*/
         this.energyList = response.data;
-      })
+      });
     },
-    selectChange(data){
-      this.queryParams.indexId=data;
+    selectChange(data) {
+      this.queryParams.indexId = data;
       getlistChart(this.queryParams).then(response => {
-        let actualData=[];
-        let expectedData=[];
-        let title="";
+        let actualData = [];
+        let expectedData = [];
+        let title = "";
         response.data.forEach(item => {
           expectedData.push(this.numFilter(item.value));
-          actualData.push(item.timeCode.slice(item.timeCode.length-2,item.timeCode.length));
-          title=item.indexName;
-        })
-        this.lineChartData.actualData=actualData;
-        this.lineChartData.expectedData=expectedData;
-        this.lineChartData.title=title
+          actualData.push(
+            item.timeCode.slice(item.timeCode.length - 2, item.timeCode.length)
+          );
+          title = item.indexName;
+        });
+        this.lineChartData.actualData = actualData;
+        this.lineChartData.expectedData = expectedData;
+        this.lineChartData.title = title;
         this.$refs.LineChart.initChart(this.lineChartData);
         this.$refs.BarChart.initChart(this.lineChartData);
-      })
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -257,34 +396,36 @@
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map(item => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出综合能耗?', "警告", {
+      this.$confirm("是否确认导出综合能耗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function () {
-        return exportList(queryParams);
-      }).then(response => {
-        this.download(response.msg);
-      }).catch(function () {
-      });
+      })
+        .then(function() {
+          return exportList(queryParams);
+        })
+        .then(response => {
+          this.download(response.msg);
+        })
+        .catch(function() {});
     },
     getSummaries(param) {
-      const {columns, data} = param;
+      const { columns, data } = param;
       const sums = [];
       columns.forEach((column, index) => {
         if (index === 0) {
-          sums[index] = '';
+          sums[index] = "";
           return;
         }
         if (index === 1) {
-          sums[index] = '合计';
+          sums[index] = "合计";
           return;
         }
         const values = data.map(item => Number(item[column.property]));
@@ -298,122 +439,120 @@
             }
           }, 0);
           //sums[index];
-          sums[index] = this.numFilter(sums[index])
+          sums[index] = this.numFilter(sums[index]);
         } else {
-          sums[index] = '0';
+          sums[index] = "0";
         }
       });
       return sums;
     },
-    numFilter(value) {// 截取当前数据到小数点后的几位
-      let realVal = '';
-      if (!isNaN(value) && value !== '') {
-        realVal = parseFloat(value).toFixed(this.skinName)
+    numFilter(value) {
+      // 截取当前数据到小数点后的几位
+      let realVal = "";
+      if (!isNaN(value) && value !== "") {
+        realVal = parseFloat(value).toFixed(this.skinName);
       } else {
-        realVal = '0'
+        realVal = "0";
       }
-      return realVal
+      return realVal;
     },
     getTime() {
-      var date = new Date()
-      var year = date.getFullYear()
-      var month = date.getMonth() + 1
-      var date = date.getDate()
-      month = month < 10 ? '0' + month : month
-      date = date < 10 ? '0' + date : date
-      this.queryParams.dataTime=year + '-' + month + '-' + date
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var date = date.getDate();
+      month = month < 10 ? "0" + month : month;
+      date = date < 10 ? "0" + date : date;
+      this.queryParams.dataTime = year + "-" + month + "-" + date;
       /*let startTime = year + '-' + month + '-' + date
       let endTime = year + '-' + month + '-' + (date + 1)
       this.dateRange = [startTime, endTime]*/
     },
 
-    handleTime(date){
-      if(date=='MONTH'){
-        this.dateTypes= 'year',
-          this.valueFormat='yyyy'
-      }else if(date=='DAY'){
-        this.dateTypes= 'month',
-          this.valueFormat='yyyy-MM'
-      }else{
-        this.dateTypes= 'date',
-          this.valueFormat='yyyy-MM-dd'
+    handleTime(date) {
+      if (date == "MONTH") {
+        (this.dateTypes = "year"), (this.valueFormat = "yyyy");
+      } else if (date == "DAY") {
+        (this.dateTypes = "month"), (this.valueFormat = "yyyy-MM");
+      } else {
+        (this.dateTypes = "date"), (this.valueFormat = "yyyy-MM-dd");
       }
-    },
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
- .el-table__body{
-    border: 1px solid #000000 !important;
-  }
- .el-table th.is-leaf, .el-table td {
-   border-bottom: 1px solid #000000 !important;
-   border-right: 1px solid #000000 !important;
- }
-.tableList tr td{
-    text-align: center;
-  }
+.el-table__body {
+  border: 1px solid #000000 !important;
+}
+.el-table th.is-leaf,
+.el-table td {
+  border-bottom: 1px solid #000000 !important;
+  border-right: 1px solid #000000 !important;
+}
+.tableList tr td {
+  text-align: center;
+}
 .dashboard-editor-container {
- padding: 32px;
- background-color: rgb(240, 242, 245);
- position: relative;
+  padding: 32px;
+  // background-color: rgb(240, 242, 245);
+  position: relative;
   .chart-wrapper {
-    background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }
-  }
+}
 
-  @media (max-width:1024px) {
-    .chart-wrapper {
-      padding: 8px;
-    }
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    padding: 8px;
   }
-  .live{
-    position: fixed;
-    right: 0px;
-    top:70px;
-    display: flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    width: 100px;
-    height: 60px;
-    background-color: red;
-    animation: fade 600ms infinite;
-    -webkit-animation: fade 600ms infinite;
+}
+.live {
+  position: fixed;
+  right: 0px;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 60px;
+  background-color: red;
+  animation: fade 600ms infinite;
+  -webkit-animation: fade 600ms infinite;
+}
+.live_content {
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+.live_number {
+  font-size: 32px;
+  color: white;
+  font-weight: bolder;
+}
+@keyframes fade {
+  from {
+    opacity: 1;
   }
-  .live_content{
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
+  50% {
+    opacity: 0.4;
   }
-  .live_number{
-    font-size: 32px;
-    color: white;
-    font-weight: bolder;
+  to {
+    opacity: 1;
   }
-  @keyframes fade {
-    from {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1.0;
-    }
-  }
+}
 
-  @-webkit-keyframes fade {
-    from {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1.0;
-    }
+@-webkit-keyframes fade {
+  from {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
 </style>

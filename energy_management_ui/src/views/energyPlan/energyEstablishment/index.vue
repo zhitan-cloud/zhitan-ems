@@ -1,57 +1,82 @@
 <template>
-  <div class="app-container" style="padding: 0">
-    <el-container class="split-container">
-      <el-aside class="left-content" :width="isCollapse?'0px':'20%'">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix" style="height:32px">
-            能源消耗计划
-          </div>
-          <ModelNode ref="modelNode" @changeNode="changeNode"
-                     :modelCode="modelCode"
-                     :showOpt="false"></ModelNode>
-        </el-card>
-      </el-aside>
-      <el-container>
-        <div style="cursor:pointer;" @click="toggleCollapse">
-          <img src="@/assets/image/configureChart.png" style="width: 100%;height: 100%">
-        </div>
-        <el-main style="padding:0">
-          <energyEstablishment ref="energyEstablishment" style="padding:10px"></energyEstablishment>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div>
+    <el-row type="flex">
+      <el-col
+        :style="{ width: isCollapse ? '0' : '280px', position: 'relative' }"
+        v-show="!isCollapse"
+      >
+        <basic-container title="能源消耗计划" :bodyStyle="bodyStyle">
+          <ModelNode
+            ref="modelNode"
+            @changeNode="changeNode"
+            :modelCode="modelCode"
+            :showOpt="false"
+          ></ModelNode>
+        </basic-container>
+        <img
+          src="~@/assets/image/rectangle.png"
+          alt=""
+          class="shrink-col-block"
+          @click="toggleCollapse"
+        />
+      </el-col>
+      <ShrinkCol @toggleCollapse="toggleCollapse" v-show="isCollapse" />
+      <el-col
+        :style="{
+          width: isCollapse ? 'calc(100% - 48px)' : 'calc(100% - 280px)',
+          paddingLeft: isCollapse ? 0 : '14px'
+        }"
+      >
+        <basic-container :bodyStyle="bodyStyleRight">
+          <energyEstablishment
+            ref="energyEstablishment"
+            style="padding:10px"
+          ></energyEstablishment>
+        </basic-container>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-  import energyEstablishment from "./energyEstablishment";
-  import ModelNode from "../../basicsetting/modelNode/modelNode";
-
-  export default {
-    components: { ModelNode,energyEstablishment},
-    created() {
-      this.modelCode=this.$route.query.modelCode;
+import energyEstablishment from "./energyEstablishment";
+import ModelNode from "../../basicsetting/modelNode/modelNode";
+import mixins from "@/layout/mixin/getHeight";
+import ShrinkCol from "@/components/shrink/index.vue";
+export default {
+  components: { ModelNode, energyEstablishment, ShrinkCol },
+  mixins: [mixins],
+  created() {
+    this.modelCode = this.$route.query.modelCode;
+  },
+  data() {
+    return {
+      modelCode: undefined,
+      isCollapse: false,
+      bodyStyleRight: {}
+    };
+  },
+  methods: {
+    setCharts() {
+      this.bodyStyle.height = window.innerHeight - 185 + "px";
+      this.bodyStyleRight = {
+        ...this.bodyStyle,
+        height: window.innerHeight - 130 + "px"
+      };
     },
-    data() {
-      return {
-        modelCode:undefined,
-        isCollapse: false,
-      }
+    changeNode: function(node) {
+      this.$refs.energyEstablishment.modelNodeChange(node);
     },
-    methods: {
-      changeNode: function (node) {
-        this.$refs.energyEstablishment.modelNodeChange(node);
-      },
-      manageModel: function () {
-        this.$router.push('/model');
-      },
-      changeModel: function (item) {
-        this.$refs.modelNode.getList(item);
-      },
-      // 点击按钮，切换折叠与展开
-      toggleCollapse () {
-        this.isCollapse = !this.isCollapse
-      }
+    manageModel: function() {
+      this.$router.push("/model");
+    },
+    changeModel: function(item) {
+      this.$refs.modelNode.getList(item);
+    },
+    // 点击按钮，切换折叠与展开
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse;
     }
-  };
+  }
+};
 </script>

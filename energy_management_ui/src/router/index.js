@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-Vue.use(Router)
+Vue.use(Router);
 
 /* Layout */
-import Layout from '@/layout'
+import Layout from "@/layout";
 
 /**
  * Note: 路由配置项
@@ -25,150 +25,173 @@ import Layout from '@/layout'
  */
 
 // 公共路由
-export const constantRoutes = [{
-    path: '/redirect',
+export const constantRoutes = [
+  {
+    path: "/redirect",
     component: Layout,
     hidden: true,
-    children: [{
-      path: '/redirect/:path*',
-      component: () => import('@/views/redirect')
-    }]
+    children: [
+      {
+        path: "/redirect/:path*",
+        component: () => import("@/views/redirect")
+      }
+    ]
   },
   {
-    path: '/login',
-    component: () => import('@/views/login'),
+    path: "/login",
+    component: () => import("@/views/login"),
     hidden: true
   },
   {
-    path: '/404',
-    component: () => import('@/views/error/404'),
+    path: "/404",
+    component: () => import("@/views/error/404"),
     hidden: true
   },
   {
-    path: '/401',
-    component: () => import('@/views/error/401'),
+    path: "/401",
+    component: () => import("@/views/error/401"),
     hidden: true
   },
   {
-    path: '',
+    path: "",
     component: Layout,
-    redirect: 'index',
-    children: [{
-      path: 'index',
-      component: () => import('@/views/index'),
-      name: '首页',
-      meta: {
-        title: '首页',
-        icon: 'dashboard',
-        noCache: true,
-        affix: true
+    redirect: "index",
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/index"),
+        name: "首页",
+        meta: {
+          title: "首页",
+          icon: "dashboard",
+          noCache: true,
+          affix: true
+        }
       }
-    }]
+    ]
   },
   {
-    path: '/indexdev',
-    component: () => import('@/views/index_dev'),
-    hidden: 'true'
+    path: "/indexdev",
+    component: () => import("@/views/index"),
+    hidden: "true"
   },
   {
-    path: '/user',
+    path: "/user",
     component: Layout,
     hidden: true,
-    redirect: 'noredirect',
-    children: [{
-      path: 'profile',
-      component: () => import('@/views/system/user/profile/index'),
-      name: 'Profile',
-      meta: {
-        title: '个人中心',
-        icon: 'user'
+    redirect: "noredirect",
+    children: [
+      {
+        path: "profile",
+        component: () => import("@/views/system/user/profile/index"),
+        name: "Profile",
+        meta: {
+          title: "个人中心",
+          icon: "user"
+        }
       }
-    }]
+    ]
   },
   {
-    path: '/dict',
+    path: "/dict",
     component: Layout,
     hidden: true,
-    children: [{
-      path: 'type/data/:dictId(\\d+)',
-      component: () => import('@/views/system/dict/data'),
-      name: 'Data',
-      meta: {
-        title: '字典数据',
-        icon: ''
+    children: [
+      {
+        path: "type/data/:dictId(\\d+)",
+        component: () => import("@/views/system/dict/data"),
+        name: "Data",
+        meta: {
+          title: "字典数据",
+          icon: ""
+        }
       }
-    }]
+    ]
   },
   {
-    path: '/gen',
+    path: "/gen",
     component: Layout,
     hidden: true,
-    children: [{
-      path: 'edit',
-      component: () => import('@/views/tool/gen/editTable'),
-      name: 'GenEdit',
-      meta: {
-        title: '修改生成配置'
+    children: [
+      {
+        path: "edit",
+        component: () => import("@/views/tool/gen/editTable"),
+        name: "GenEdit",
+        meta: {
+          title: "修改生成配置"
+        }
       }
-    }]
+    ]
   },
   {
-    path: '/model',
+    path: "/model",
     component: Layout,
     hidden: true,
-    children: [{
-      path: '',
-      component: () => import('@/views/basicsetting/model/index'),
-      name: 'modelManage',
-      meta: {
-        title: '模型管理'
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/basicsetting/model/index"),
+        name: "modelManage",
+        meta: {
+          title: "模型管理"
+        }
       }
-    }]
-  }, {
-    path: '/electricityPrice',
-    component: Layout,
-    hidden: true,
-    children: [{
-      path: 'listHistory',
-      component: () => import('@/views/electricityPrice/electricity/history'),
-      name: 'electricity',
-      meta: {
-        title: '峰平谷历史记录',
-        icon: ''
-      }
-    }]
-  }, {
-    path: '/energyConsumption',
-    component: Layout,
-    hidden: true,
-    children: [{
-      path: 'listEnergyConsumption/:timeType/:beginTime/:endTime/:indexCode/:id/:titleName',
-      component: () => import('@/views/energyStatistics/energyConsumption/consumptionCost'),
-      name: 'listEnergyConsumption',
-      meta: {
-        title: '能源消费成本分时分析报表'
-      }
-    }]
+    ]
   },
   {
-    path: '/rosteringSchemeitem',
+    path: "/electricityPrice",
     component: Layout,
     hidden: true,
-    children: [{
-      path: 'list/:id',
-      component: () => import('@/views/workforce/management/schemeItem'),
-      name: 'list',
-      meta: {
-        title: '轮值方案细则'
+    children: [
+      {
+        path: "listHistory",
+        component: () => import("@/views/electricityPrice/electricity/history"),
+        name: "electricity",
+        meta: {
+          title: "峰平谷历史记录",
+          icon: ""
+        }
       }
-    }]
+    ]
+  },
+  {
+    path: "/energyConsumption",
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path:
+          "listEnergyConsumption/:timeType/:beginTime/:endTime/:indexCode/:id/:titleName",
+        component: () =>
+          import("@/views/energyStatistics/energyConsumption/consumptionCost"),
+        name: "listEnergyConsumption",
+        meta: {
+          title: "能源消费成本分时分析报表"
+        }
+      }
+    ]
+  },
+  {
+    path: "/rosteringSchemeitem",
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: "list/:id",
+        component: () => import("@/views/workforce/management/schemeItem"),
+        name: "list",
+        meta: {
+          title: "轮值方案细则"
+        }
+      }
+    ]
   }
-]
+];
 
 export default new Router({
-  mode: 'history', // 去掉url中的#
+  mode: "history", // 去掉url中的#
   scrollBehavior: () => ({
     y: 0
   }),
   routes: constantRoutes
-})
+});

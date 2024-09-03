@@ -73,7 +73,11 @@ export default {
             type: "shadow" // 'shadow' as default; can also be 'line' or 'shadow'
           }
         },
-        legend: {},
+        legend: {
+          textStyle: {
+            color: "#fff"
+          }
+        },
         grid: {
           left: "3%",
           right: "4%",

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="app-container" style="padding: 0">
     <el-container class="split-container">
       <el-aside class="left-content">
@@ -16,17 +16,54 @@
       </el-container>
     </el-container>
   </div>
+</template> -->
+<template>
+  <div>
+    <el-row type="flex">
+      <el-col
+        :style="{ width: isCollapse ? '0' : '280px', position: 'relative' }"
+        v-show="!isCollapse"
+      >
+        <basic-container title="能耗监测报警" :bodyStyle="bodyStyle">
+          <ModelNode
+            ref="modelNode"
+            @changeNode="changeNode"
+            :showOpt="false"
+          ></ModelNode>
+        </basic-container>
+        <img
+          src="~@/assets/image/rectangle.png"
+          alt=""
+          class="shrink-col-block"
+          @click="toggleCollapse"
+        />
+      </el-col>
+      <ShrinkCol @toggleCollapse="toggleCollapse" v-show="isCollapse" />
+      <el-col
+        :style="{
+          width: isCollapse ? 'calc(100% - 48px)' : 'calc(100% - 280px)',
+          paddingLeft: isCollapse ? 0 : '14px'
+        }"
+      >
+        <div>
+          <MonitorAlarmSetting ref="MonitorAlarmSetting"></MonitorAlarmSetting>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
 import MonitorAlarmSetting from "./monitorAlarmSetting";
 import ModelNode from "../../basicsetting/modelNode/modelNode";
-import {listModel} from "@/api/basicsetting/model";
+import { listModel } from "@/api/basicsetting/model";
+import mixins from "@/layout/mixin/getHeight";
 
 export default {
-  components: {MonitorAlarmSetting, ModelNode},
+  mixins: [mixins],
+  components: { MonitorAlarmSetting, ModelNode },
   created() {
-    listModel({isShow: 1}).then(response => {
+    listModel({ isShow: 1 }).then(response => {
       this.modelInfoOptions = response.data;
       if (this.modelInfoOptions.length > 0) {
         this.modelData = this.modelInfoOptions[0].modelCode;
@@ -36,18 +73,26 @@ export default {
   },
   data() {
     return {
-      modelData: '',
+      bodyStyleRight: {},
+      modelData: "",
       modelInfoOptions: []
-    }
+    };
   },
   methods: {
-    changeNode: function (node) {
+    setCharts() {
+      this.bodyStyle.height = window.innerHeight - 185 + "px";
+      this.bodyStyleRight = {
+        ...this.bodyStyle,
+        height: window.innerHeight - 130 + "px"
+      };
+    },
+    changeNode: function(node) {
       this.$refs.MonitorAlarmSetting.modelNodeChange(node);
     },
-    manageModel: function () {
-      this.$router.push('/model');
+    manageModel: function() {
+      this.$router.push("/model");
     },
-    changeModel: function (item) {
+    changeModel: function(item) {
       this.$refs.modelNode.getList(item);
     }
   }

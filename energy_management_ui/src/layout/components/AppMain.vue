@@ -10,40 +10,41 @@
 
 <script>
 export default {
-  name: 'AppMain',
+  name: "AppMain",
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews
+      return this.$store.state.tagsView.cachedViews;
     },
     key() {
-      return this.$route.path
+      return this.$route.path;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/styles/variables.scss";
 .app-main {
   /* 50= navbar  50  */
-  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - 160px - #{$tabBarHeight});
   width: 100%;
   position: relative;
   overflow: hidden;
-  padding: 12px 20px;
+  padding: 12px;
 }
 
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 
 .hasTagsView {
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
+    min-height: calc(100vh - 84px - #{$tabBarHeight});
   }
 
-  .fixed-header+.app-main {
-    padding-top: 84px;
+  .fixed-header + .app-main {
+    padding-top: 106px;
   }
 }
 </style>

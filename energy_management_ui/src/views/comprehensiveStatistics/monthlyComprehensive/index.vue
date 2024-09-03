@@ -86,7 +86,7 @@
           prop="indexName"
           align="left"
           label="指标名称"
-          width="130px"
+          min-width="200"
         >
           <template slot-scope="scope">
             <div style="width: 100%; text-align: left">
@@ -102,17 +102,17 @@
                 icon="el-icon-search"
                 circle
                 @click="selectChange(scope.row)"
-                style="margin-right: 4px"
+                style="margin-right: 4px; background: #999;"
               ></el-button>
               <el-tooltip
-                v-if="scope.row.indexName.length > 5"
+                v-if="scope.row.indexName.length > 8"
                 class="item"
                 effect="dark"
                 :content="scope.row.indexName"
                 placement="top-end"
               >
                 <span>
-                  {{ scope.row.indexName.substr(0, 5) + "..." }}
+                  {{ scope.row.indexName.substr(0, 8) + "..." }}
                 </span>
               </el-tooltip>
               <span v-else>{{ scope.row.indexName }}</span>
@@ -124,7 +124,7 @@
           :key="index"
           :label="`${index}日`"
           align="center"
-          min-width="40"
+          min-width="100"
         >
           <template slot-scope="scope">
             <span style="font-size: 12px">
@@ -369,7 +369,6 @@ export default {
   position: relative;
 
   .chart-wrapper {
-    background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }

@@ -1,55 +1,83 @@
-
 <template>
-  <div class="app-container" style="padding: 0">
-    <el-container class="split-container">
-      <el-aside class="left-content" :width="isCollapse?'0px':'20%'">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix" style="height:32px">
-            峰平谷数据统计
-          </div>
-          <ModelNode ref="modelNode" @changeNode="changeNode" :showOpt="false" :modelCode="modelCode"></ModelNode>
-        </el-card>
-      </el-aside>
-      <el-container>
-        <div style="cursor:pointer;" @click="toggleCollapse">
-          <img src="@/assets/image/configureChart.png" style="width: 100%;height: 100%">
-        </div>
-        <el-main style="padding:0">
-         <electricityIndex ref="electricityIndex" style="padding:10px"></electricityIndex>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div>
+    <el-row type="flex">
+      <el-col
+        :style="{ width: isCollapse ? '0' : '280px', position: 'relative' }"
+        v-show="!isCollapse"
+      >
+        <basic-container title="峰平谷数据统计" :bodyStyle="bodyStyle">
+          <ModelNode
+            ref="modelNode"
+            @changeNode="changeNode"
+            :showOpt="false"
+            :modelCode="modelCode"
+          ></ModelNode>
+        </basic-container>
+        <img
+          src="~@/assets/image/rectangle.png"
+          alt=""
+          class="shrink-col-block"
+          @click="toggleCollapse"
+        />
+      </el-col>
+      <ShrinkCol @toggleCollapse="toggleCollapse" v-show="isCollapse" />
+      <el-col
+        :style="{
+          width: isCollapse ? 'calc(100% - 48px)' : 'calc(100% - 280px)',
+          paddingLeft: isCollapse ? 0 : '14px'
+        }"
+      >
+        <basic-container :bodyStyle="bodyStyleRight">
+          <electricityIndexNew
+            ref="electricityIndex"
+            style="padding:10px"
+          ></electricityIndexNew>
+        </basic-container>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-  import ModelNode from "../../basicsetting/modelNode/modelNode";
-  import electricityIndex from "./electricityIndex";
-  export default {
-    components: { ModelNode,electricityIndex},
-    created() {
-      this.modelCode=this.$route.query.modelCode;
+import ModelNode from "../../basicsetting/modelNode/modelNode";
+import electricityIndexNew from "./electricityIndexNew";
+import mixins from "@/layout/mixin/getHeight";
+import ShrinkCol from "@/components/shrink/index.vue";
+
+export default {
+  components: { ModelNode, electricityIndexNew, ShrinkCol },
+  mixins: [mixins],
+  created() {
+    this.modelCode = this.$route.query.modelCode;
+  },
+  data() {
+    return {
+      bodyStyleRight: {},
+      modelCode: undefined,
+      isCollapse: false
+    };
+  },
+  methods: {
+    setCharts() {
+      this.bodyStyle.height = window.innerHeight - 185 + "px";
+      this.bodyStyleRight = {
+        ...this.bodyStyle,
+        height: window.innerHeight - 130 + "px"
+      };
     },
-    data() {
-      return {
-        modelCode:undefined,
-        isCollapse: false,
-      }
+    changeNode: function(node) {
+      this.$refs.electricityIndex.modelNodeChange(node);
     },
-    methods: {
-      changeNode: function (node) {
-        this.$refs.electricityIndex.modelNodeChange(node);
-      },
-      manageModel: function () {
-        this.$router.push('/model');
-      },
-      changeModel: function (item) {
-        this.$refs.modelNode.getList(item);
-      },
-      // 点击按钮，切换折叠与展开
-      toggleCollapse () {
-        this.isCollapse = !this.isCollapse
-      }
+    manageModel: function() {
+      this.$router.push("/model");
+    },
+    changeModel: function(item) {
+      this.$refs.modelNode.getList(item);
+    },
+    // 点击按钮，切换折叠与展开
+    toggleCollapse() {
+      this.isCollapse = !this.isCollapse;
     }
-  };
+  }
+};
 </script>

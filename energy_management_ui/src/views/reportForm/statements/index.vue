@@ -298,11 +298,7 @@ export default {
       this.handleQuery();
     },
     setCharts() {
-      this.bodyStyle.height = window.innerHeight - 155 + "px";
-      this.bodyStyleRight = {
-        ...this.bodyStyle,
-        height: window.innerHeight - 100 + "px"
-      };
+      this.bodyStyle.height = window.innerHeight - 215 + "px";
     }
   }
 };

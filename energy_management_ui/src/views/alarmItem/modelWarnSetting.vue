@@ -27,16 +27,16 @@ import {
   setDevice,
   setEnergy,
   setProduct
-} from '@/api/basicsetting/modelNode'
+} from "@/api/basicsetting/modelNode";
 import zbIndex from "./zbIndex";
 import cjdIndex from "./cjdIndex";
 
 export default {
   name: "modelWarnSetting",
-  components: {zbIndex, cjdIndex},
+  components: { zbIndex, cjdIndex },
   data() {
     return {
-      currentNode: '',
+      currentNode: "",
       deviceDialog: false,
       energyDialog: false,
       productDialog: false,
@@ -50,19 +50,20 @@ export default {
       settingProductList: [],
       settingIndexList: [],
       disabledSetting: true
-    }
+    };
   },
   methods: {
     modelNodeChange(modelNode) {
       this.settingDeviceList = [];
       this.settingIndexList = [];
-      this.disabledSetting = modelNode === undefined || modelNode === '' || modelNode === null;
+      this.disabledSetting =
+        modelNode === undefined || modelNode === "" || modelNode === null;
       this.$refs.zbIndex.setModelNode(modelNode);
       this.$refs.cjdIndex.setModelNode(modelNode);
       if (modelNode) {
         this.currentNode = modelNode;
         this.deviceLoading = true;
-        getSettingDevice(modelNode.id).then((response) => {
+        getSettingDevice(modelNode.id).then(response => {
           if (response.code === 200) {
             this.settingDeviceList = response.data;
           } else {
@@ -72,7 +73,7 @@ export default {
         });
 
         this.energyLoading = true;
-        getSettingEnergy(modelNode.id).then((response) => {
+        getSettingEnergy(modelNode.id).then(response => {
           if (response.code === 200) {
             this.settingEnergyList = response.data;
           } else {
@@ -82,7 +83,7 @@ export default {
         });
 
         this.productLoading = true;
-        getSettingProduct(modelNode.id).then((response) => {
+        getSettingProduct(modelNode.id).then(response => {
           if (response.code === 200) {
             this.settingProductList = response.data;
           } else {
@@ -92,7 +93,7 @@ export default {
         });
 
         this.indexLoading = true;
-        getSettingIndex(modelNode.id).then((response) => {
+        getSettingIndex(modelNode.id).then(response => {
           if (response.code === 200) {
             this.settingIndexList = response.data;
           } else {
@@ -107,13 +108,14 @@ export default {
     },
     showCollectIndexDialog() {
       this.$nextTick(() => {
-        this.$refs.collectIndexSetting.init(this.currentNode, this.settingIndexList);
-      })
-    },
+        this.$refs.collectIndexSetting.init(
+          this.currentNode,
+          this.settingIndexList
+        );
+      });
+    }
   }
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,10 +1,10 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
-import echarts from 'echarts'
-require('echarts/theme/macarons'); // echarts theme
+import echarts from "echarts";
+require("echarts/theme/macarons"); // echarts theme
 // import resize from './mixins/resize'
 
 export default {
@@ -12,103 +12,102 @@ export default {
   props: {
     className: {
       type: String,
-      default: 'chart'
+      default: "chart"
     },
     width: {
       type: String,
-      default: '100%'
+      default: "100%"
     },
     height: {
       type: String,
-      default: '350px'
+      default: "350px"
     },
     autoResize: {
       type: Boolean,
       default: true
     },
     chartData: {
-      type: Object,
+      type: Object
       // required: true
-    },
-
+    }
   },
   data() {
     return {
       chart: null,
-      alarmLimitName:undefined
-    }
+      alarmLimitName: undefined
+    };
   },
   watch: {
     chartData: {
       deep: true,
       handler(val) {
-        this.setOptions(val)
+        this.setOptions(val);
       }
     }
   },
   mounted() {
     this.$nextTick(() => {
-      this.initChart()
-    })
+      this.initChart();
+    });
   },
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
     this.chart.dispose();
-    this.chart = null
+    this.chart = null;
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons');
+      this.chart = echarts.init(this.$el, "macarons");
       this.setOptions(this.chartData);
     },
-    setOptions({ datas,legendArr,timeList,legendNameArr } = {}) {
+    setOptions({ datas, legendArr, timeList, legendNameArr } = {}) {
       // this.chart.clear();
-      if(datas.length>0){
+      if (datas.length > 0) {
         var yAxisDataArr = [];
         var seriesArr = [];
         var yAxisNumArr = [];
         var yAxisIndexArr = [];
-        for(let i = 0;i<datas.length;i++){
+        for (let i = 0; i < datas.length; i++) {
           //y轴
           let yAxisItem = {
-            type: 'value',
+            type: "value",
             // name:legendNameArr[i],
-            minInterval : 1,
-            boundaryGap : [ 0, 0.2 ],
+            minInterval: 1,
+            boundaryGap: [0, 0.2]
           };
-          if(i>1){
+          if (i > 1) {
             let positionKey = "position";
             let positionValue = "right";
             let offsetKey = "offset";
-            let offsetValue = 50*(i-1);
+            let offsetValue = 50 * (i - 1);
             yAxisItem[positionKey] = positionValue;
             yAxisItem[offsetKey] = offsetValue;
           }
           yAxisDataArr.push(yAxisItem);
         }
-        for(let i = 0;i<legendArr.length;i++){
-          if(""!=legendArr[i]){
+        for (let i = 0; i < legendArr.length; i++) {
+          if ("" != legendArr[i]) {
             let item = parseInt(legendArr[i].substr(1, legendArr[i].length));
             yAxisNumArr.push(item);
-            if(!yAxisIndexArr.indexOf(yAxisNumArr[i])>-1){
+            if (!yAxisIndexArr.indexOf(yAxisNumArr[i]) > -1) {
               yAxisIndexArr.push(yAxisNumArr[i]);
             }
             let seriesItem = {
-              name:legendNameArr[i],
-              type: 'line',
+              name: legendNameArr[i],
+              type: "line",
               data: datas[i],
-              yAxisIndex:yAxisIndexArr.indexOf(yAxisNumArr[i]),
+              yAxisIndex: yAxisIndexArr.indexOf(yAxisNumArr[i])
             };
             seriesArr.push(seriesItem);
-          }else {
+          } else {
             let seriesItem = {
-              name:legendNameArr[i],
-              type: 'line',
-              data: datas[i],
+              name: legendNameArr[i],
+              type: "line",
+              data: datas[i]
             };
-            if(i>0){
+            if (i > 0) {
               let key = "yAxisIndex";
               let value = i;
               seriesItem[key] = value;
@@ -125,30 +124,33 @@ export default {
             }
           },
           grid: {
-            left: '2%',
-            right: '18%',
+            left: "2%",
+            right: "18%",
             bottom: 20,
             top: 30,
             containLabel: true
           },
           tooltip: {
-            trigger: 'axis',
+            trigger: "axis",
             axisPointer: {
-              type: 'cross'
+              type: "cross"
             },
             padding: [5, 10]
           },
           yAxis: yAxisDataArr,
           legend: {
             data: legendNameArr,
+            textStyle: {
+              color: "#fff"
+            }
           },
           series: seriesArr
-        })
+        });
       }
     },
-    closeLineChar(){
+    closeLineChar() {
       this.chart.clear();
     }
   }
-}
+};
 </script>

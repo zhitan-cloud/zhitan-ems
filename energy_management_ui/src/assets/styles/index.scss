@@ -77,6 +77,10 @@ div:focus {
   display: block;
 }
 
+.flex{
+  display: flex;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -127,10 +131,6 @@ aside {
 .components-container {
   margin: 30px 50px;
   position: relative;
-}
-
-.pagination-container {
-  margin-top: 30px;
 }
 
 .text-center {
@@ -188,4 +188,63 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
+}
+
+.search-wrapper {
+  // padding-bottom: 12px;
+}
+
+.el-dialog__footer {
+  border-top: 1px solid #366cb9 ;
+}
+
+.el-dialog__header {
+  border-bottom: 1px solid #366cb9;
+}
+.el-drawer {
+  background: #061844;
+}
+.el-drawer__header {
+  color: #fff;
+}
+.el-input__inner, .el-textarea__inner, .vue-treeselect__control {
+  background: rgb(54, 108, 185, 0.2) !important;
+  background-color: rgb(54, 108, 185, 0.2) !important;
+  border: 1px solid #366cb9 !important;
+  color: #fff !important;
+}
+.vue-treeselect__input {
+  background-color: rgb(54, 108, 185, 0.2);
+  border: 1px solid #366cb9;
+  color: #fff;
+}
+.el-date-editor .el-range-input {
+  background-color: transparent;
+  color: #fff;
+}
+.el-date-editor .el-range-separator {
+  color: #fff;
+}
+.vue-treeselect__single-value {
+  color: #fff;
+}
+.el-pagination__total {
+  color: #fff;
+}
+.el-pagination__jump {
+  color: #fff;
+}
+
+aside {
+  background: transparent;
+}
+.el-tabs__item {
+  color: #fff;
+}
+.el-tabs__item.is-active {
+  color: $primary-color;
+}
+.el-collapse-item__header {
+  background-color: #061844;
+  color: #fff;
 }

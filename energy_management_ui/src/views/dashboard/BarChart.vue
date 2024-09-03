@@ -120,7 +120,10 @@ export default {
           }
         },
         legend: {
-          right: "1"
+          right: "1",
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
           left: "1",
@@ -134,7 +137,12 @@ export default {
         },
         yAxis: {
           type: "value",
-          boundaryGap: [0, 0.01]
+          boundaryGap: [0, 0.01],
+          splitLine: {
+            lineStyle: {
+              color: "rgba(32, 121, 160, 0.5)" // y轴分割线颜色
+            }
+          }
         },
         series: [
           {

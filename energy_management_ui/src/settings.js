@@ -1,5 +1,5 @@
 module.exports = {
-  title: '东丽医疗能源管理系统',
+  title: "综合能源管理",
 
   /**
    * 是否系统布局配置
@@ -14,7 +14,7 @@ module.exports = {
   /**
    * 是否固定头部
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * 是否显示logo
@@ -27,5 +27,5 @@ module.exports = {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
-  errorLog: 'production'
-}
+  errorLog: "production"
+};

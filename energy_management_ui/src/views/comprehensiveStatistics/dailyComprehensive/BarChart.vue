@@ -67,7 +67,7 @@ export default {
           text: title,
           left: "left",
           textStyle: {
-            color: "#606266"
+            color: "#fff"
           }
         },
         tooltip: {

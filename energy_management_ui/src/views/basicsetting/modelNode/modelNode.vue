@@ -424,16 +424,12 @@ export default {
     margin-top: 10px;
     height: 35px;
   }
-  // .is-current {
-  //   .el-tree-node__content {
-  //     border: 1px solid red;
-  //   }
-  // }
+
   .el-tree--highlight-current
     .el-tree-node.is-current
     > .el-tree-node__content {
-    background-color: #f7f7f7;
-    border: 1px solid #38bcbf;
+    background-color: #213d7a;
+    border: 1px solid #3d5b9b;
   }
 }
 </style>

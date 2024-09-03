@@ -1,8 +1,16 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+    <el-form
+      :model="queryParams"
+      ref="queryForm"
+      :inline="true"
+      label-width="68px"
+    >
       <el-form-item label="能源类型">
-        <el-select v-model="queryParams.indexStorageId" placeholder="请选择能源品种">
+        <el-select
+          v-model="queryParams.indexStorageId"
+          placeholder="请选择能源品种"
+        >
           <el-option
             v-for="dict in indexCategoryOptions"
             :key="dict.dictValue"
@@ -17,95 +25,69 @@
         </el-radio-group>
       </el-form-item>-->
       <el-form-item label="统计时间">
-        <el-date-picker clearable size="small" style="width: 200px"
-                        v-model="queryParams.dataTime"
-                        type="month"
-                        value-format="yyyy-MM"
-                        placeholder="选择日期">
+        <el-date-picker
+          clearable
+          size="small"
+          style="width: 200px"
+          v-model="queryParams.dataTime"
+          type="month"
+          value-format="yyyy-MM"
+          placeholder="选择日期"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          size="mini"
+          @click="handleQuery"
+          >查询</el-button
+        >
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
+          >重置</el-button
+        >
         <!--<el-button type="warning" icon="el-icon-download" size="mini" @click="handleExport">导出</el-button>-->
       </el-form-item>
     </el-form>
-    <div class="el-table el-table--fit el-table--scrollable-x el-table--enable-row-hover el-table--medium" >
-      <div class="el-table__body-wrapper is-scrolling-left">
-        <table class="el-table__body tableList" cellspacing="0" cellpadding="0" style="width: 2600px">
-          <tr v-for="item in tableHead">
-            <td style="background: rgb(240 242 245);width: 80px">曲线选择</td>
-            <td style="background: rgb(240 242 245);width: 240px">能源指标名称</td>
-            <td style="background: rgb(240 242 245);">{{item.value1}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value2}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value3}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value4}}</td>
-            <td style="background: rgb(240 242 245)">{{item.value5}}</td>
-            <td style="background: rgb(240 242 245)">{{item.value6}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value7}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value8}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value9}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value10}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value11}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value12}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value13}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value14}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value15}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value16}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value17}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value18}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value19}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value20}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value21}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value22}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value23}}</td>
-            <td style="background: rgb(240 242 245)">{{item.value24}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value25}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value26}}</td>
-            <td style="background: rgb(240 242 245);">{{item.value27}}</td>
-            <td style="background: rgb(240 242 245);" v-if="item.value29 !=null">{{item.value28}}</td>
-            <td style="background: rgb(240 242 245);" v-if="item.value29 !=null">{{item.value29}}</td>
-            <td style="background: rgb(240 242 245);" v-if="item.value30 !=null">{{item.value30}}</td>
-            <td style="background: rgb(240 242 245);" v-if="item.value31 !=null">{{item.value31}}</td>
-          </tr>
-          <tr  v-for="data in tableData">
-            <td style="width: 80px"><el-button icon="el-icon-search" circle @click="selectChange(data.indexId)" style="font-size: 10px"></el-button></td>
-            <td style="width: 240px">{{data.indexName}}</td>
-            <td>{{numFilter(data.value1)}}</td>
-            <td>{{numFilter(data.value2)}}</td>
-            <td>{{numFilter(data.value3)}}</td>
-            <td>{{numFilter(data.value4)}}</td>
-            <td>{{numFilter(data.value5)}}</td>
-            <td>{{numFilter(data.value6)}}</td>
-            <td>{{numFilter(data.value7)}}</td>
-            <td>{{numFilter(data.value8)}}</td>
-            <td>{{numFilter(data.value9)}}</td>
-            <td>{{numFilter(data.value10)}}</td>
-            <td>{{numFilter(data.value11)}}</td>
-            <td>{{numFilter(data.value12)}}</td>
-            <td>{{numFilter(data.value13)}}</td>
-            <td>{{numFilter(data.value14)}}</td>
-            <td>{{numFilter(data.value15)}}</td>
-            <td>{{numFilter(data.value16)}}</td>
-            <td>{{numFilter(data.value17)}}</td>
-            <td>{{numFilter(data.value18)}}</td>
-            <td>{{numFilter(data.value19)}}</td>
-            <td>{{numFilter(data.value20)}}</td>
-            <td>{{numFilter(data.value21)}}</td>
-            <td>{{numFilter(data.value22)}}</td>
-            <td>{{numFilter(data.value23)}}</td>
-            <td>{{numFilter(data.value24)}}</td>
-            <td>{{numFilter(data.value25)}}</td>
-            <td>{{numFilter(data.value26)}}</td>
-            <td>{{numFilter(data.value27)}}</td>
-            <td v-if="data.count>=28">{{numFilter(data.value28)}}</td>
-            <td v-if="data.count>=29">{{numFilter(data.value29)}}</td>
-            <td v-if="data.count>=30">{{numFilter(data.value30)}}</td>
-            <td v-if="data.count==31">{{numFilter(data.value31)}}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+
+    <el-table :data="tableData" border style="width: 100%;margin-top: 20px">
+      <el-table-column
+        prop="indexName"
+        align="center"
+        label="曲线选择"
+        width="110"
+      >
+        <template slot-scope="scope">
+          <el-button
+            icon="el-icon-search"
+            circle
+            @click="selectChange(scope.row.indexId)"
+            style="font-size: 10px"
+          ></el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="indexName"
+        align="center"
+        label="能源指标名称"
+        min-width="220"
+      />
+
+      <el-table-column
+        v-for="index in 31"
+        :key="index"
+        :label="`${index}日`"
+        align="center"
+        min-width="140px"
+      >
+        <template slot-scope="scope">
+          <span style="font-size: 12px">
+            {{ numFilter(scope.row[`value${index}`]) || "--" }}
+          </span>
+        </template>
+      </el-table-column>
+    </el-table>
     <el-row :gutter="32" style="margin:30px 0">
       <el-col :xs="24" :sm="24" :lg="12">
         <div class="chart-wrapper">
@@ -122,14 +104,18 @@
 </template>
 
 <script>
-  import {getDataList,exportList,getlistChart} from "@/api/comprehensiveStatistics/monthlyComprehensive/monthlyComprehensive";
-  import LineChart from './LineChart'
-  import BarChart from "./BarChart";
-  export default {
-    components: {
-      LineChart,
-      BarChart
-    },
+import {
+  getDataList,
+  exportList,
+  getlistChart
+} from "@/api/comprehensiveStatistics/monthlyComprehensive/monthlyComprehensive";
+import LineChart from "./LineChart";
+import BarChart from "./BarChart";
+export default {
+  components: {
+    LineChart,
+    BarChart
+  },
   data() {
     return {
       // 遮罩层
@@ -143,12 +129,12 @@
       // 总条数
       total: 0,
       checked: false,
-      dateRange:[],
-      dateTypeOptions:[],
+      dateRange: [],
+      dateTypeOptions: [],
       energyList: [],
       tableData: [],
-      tableHead:[],
-      indexCategoryOptions:[],
+      tableHead: [],
+      indexCategoryOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -159,13 +145,13 @@
         pageSize: 10,
         indexCode: undefined,
         indexId: undefined,
-        dataTime:undefined,
-        timeType:"DAY",
-        indexType:undefined,
-        indexStorageId:undefined,
+        dataTime: undefined,
+        timeType: "DAY",
+        indexType: undefined,
+        indexStorageId: undefined
       },
-      skinName:"",
-      lineChartData:{expectedData: [],actualData: []},
+      skinName: "",
+      lineChartData: { expectedData: [], actualData: [] }
     };
   },
   created() {
@@ -174,7 +160,7 @@
       //this.queryParams.timeType = this.dateTypeOptions.find(f => f.isDefault === 'Y').dictValue;
     });
     this.getConfigKey("comprehensive").then(response => {
-      this.skinName=response.msg;
+      this.skinName = response.msg;
     });
     this.getDicts("energy_type").then(response => {
       this.indexCategoryOptions = response.data;
@@ -187,27 +173,32 @@
     getList() {
       this.queryParams.indexCode = this.$route.query.modelCode;
       getDataList(this.queryParams).then(response => {
-        this.tableData=response.data.tabledata;
-        this.tableHead=response.data.tablehead;
-      })
+        this.tableData = response.data.tabledata;
+        this.tableHead = response.data.tablehead;
+      });
     },
-    selectChange(data){
-      this.queryParams.indexId=data;
+    selectChange(data) {
+      this.queryParams.indexId = data;
       getlistChart(this.queryParams).then(response => {
-        let actualData=[];
-        let expectedData=[];
-        let title="";
+        let actualData = [];
+        let expectedData = [];
+        let title = "";
         response.data.forEach(item => {
           expectedData.push(this.numFilter(item.value));
-          actualData.push(item.timeCode.slice(item.timeCode.length-2,item.timeCode.length)+"日");
-          title=item.indexName+"("+item.unitId+")";
-        })
-        this.lineChartData.actualData=actualData;
-        this.lineChartData.expectedData=expectedData;
-        this.lineChartData.title=title
+          actualData.push(
+            item.timeCode.slice(
+              item.timeCode.length - 2,
+              item.timeCode.length
+            ) + "日"
+          );
+          title = item.indexName + "(" + item.unitId + ")";
+        });
+        this.lineChartData.actualData = actualData;
+        this.lineChartData.expectedData = expectedData;
+        this.lineChartData.title = title;
         this.$refs.LineChart.initChart(this.lineChartData);
         this.$refs.BarChart.initChart(this.lineChartData);
-      })
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -222,145 +213,112 @@
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
+      this.ids = selection.map(item => item.id);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出综合能耗?', "警告", {
+      this.$confirm("是否确认导出综合能耗?", "警告", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function () {
-        return exportList(queryParams);
-      }).then(response => {
-        this.download(response.msg);
-      }).catch(function () {
-      });
+      })
+        .then(function() {
+          return exportList(queryParams);
+        })
+        .then(response => {
+          this.download(response.msg);
+        })
+        .catch(function() {});
     },
-    numFilter(value) {// 截取当前数据到小数点后的几位
-      let realVal = '';
-      if (!isNaN(value) && value !== '' && value !== null) {
-        realVal = parseFloat(value).toFixed(this.skinName)
+    numFilter(value) {
+      // 截取当前数据到小数点后的几位
+      let realVal = "";
+      if (!isNaN(value) && value !== "" && value !== null) {
+        realVal = parseFloat(value).toFixed(this.skinName);
       } else {
-        realVal = '0'
+        realVal = "0";
       }
-      return realVal
+      return realVal;
     },
     getTime() {
-      var date = new Date()
-      var year = date.getFullYear()
-      var month = date.getMonth() + 1
-      var date = date.getDate()
-      month = month < 10 ? '0' + month : month
-      date = date < 10 ? '0' + date : date
-      this.queryParams.dataTime=year + '-' + month
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var date = date.getDate();
+      month = month < 10 ? "0" + month : month;
+      date = date < 10 ? "0" + date : date;
+      this.queryParams.dataTime = year + "-" + month;
       /*let startTime = year + '-' + month + '-' + date
       let endTime = year + '-' + month + '-' + (date + 1)
       this.dateRange = [startTime, endTime]*/
     },
 
-    handleTime(date){
-      if(date=='MONTH'){
-        this.dateTypes= 'year',
-          this.valueFormat='yyyy'
-      }else if(date=='DAY'){
-        this.dateTypes= 'month',
-          this.valueFormat='yyyy-MM'
-      }else{
-        this.dateTypes= 'date',
-          this.valueFormat='yyyy-MM-dd'
+    handleTime(date) {
+      if (date == "MONTH") {
+        (this.dateTypes = "year"), (this.valueFormat = "yyyy");
+      } else if (date == "DAY") {
+        (this.dateTypes = "month"), (this.valueFormat = "yyyy-MM");
+      } else {
+        (this.dateTypes = "date"), (this.valueFormat = "yyyy-MM-dd");
       }
-    },
+    }
   }
 };
 </script>
 <style lang="scss" scoped>
-.tableList th.is-leaf, .tableList td{
-  border-bottom: 1px solid #000000 !important;
-  border-right: 1px solid #000000 !important;
-  text-align: center;
-  width: 150px;
-}
-.tableList{
-  border: 1px solid #000000 !important;
-}
-.tableList tr > td:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background: #fff;
-}
-.tableList tr > td:nth-child(2) {
-  position: sticky;
-  left: 80px;
-  z-index: 1;
-  background: #fff;
-}
-
-.dashboard-editor-container {
- padding: 32px;
- background-color: rgb(240, 242, 245);
- position: relative;
+@media (max-width: 1024px) {
   .chart-wrapper {
-    background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
+    padding: 8px;
   }
+}
+.live {
+  position: fixed;
+  right: 0px;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 60px;
+  background-color: red;
+  animation: fade 600ms infinite;
+  -webkit-animation: fade 600ms infinite;
+}
+.live_content {
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+}
+.live_number {
+  font-size: 32px;
+  color: white;
+  font-weight: bolder;
+}
+@keyframes fade {
+  from {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
-  @media (max-width:1024px) {
-    .chart-wrapper {
-      padding: 8px;
-    }
+@-webkit-keyframes fade {
+  from {
+    opacity: 1;
   }
-  .live{
-    position: fixed;
-    right: 0px;
-    top:70px;
-    display: flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    width: 100px;
-    height: 60px;
-    background-color: red;
-    animation: fade 600ms infinite;
-    -webkit-animation: fade 600ms infinite;
+  50% {
+    opacity: 0.4;
   }
-  .live_content{
-    font-size: 18px;
-    color: white;
-    font-weight: bold;
+  to {
+    opacity: 1;
   }
-  .live_number{
-    font-size: 32px;
-    color: white;
-    font-weight: bolder;
-  }
-  @keyframes fade {
-    from {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1.0;
-    }
-  }
-
-  @-webkit-keyframes fade {
-    from {
-      opacity: 1.0;
-    }
-    50% {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1.0;
-    }
-  }
+}
 </style>

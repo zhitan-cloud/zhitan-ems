@@ -64,10 +64,10 @@ export default {
   },
   methods: {
     setCharts() {
-      this.bodyStyle.height = window.innerHeight - 155 + "px";
+      this.bodyStyle.height = window.innerHeight - 185 + "px";
       this.bodyStyleRight = {
         ...this.bodyStyle,
-        height: window.innerHeight - 212 + "px"
+        height: window.innerHeight - 248 + "px"
       };
     },
     changeNode: function(node) {

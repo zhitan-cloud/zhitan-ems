@@ -103,7 +103,7 @@
                 icon="el-icon-search"
                 circle
                 @click="selectChange(scope.row)"
-                style="font-size: 10px"
+                style="font-size: 10px;background: #999;"
               ></el-button>
               <span>{{ scope.row.indexName }}</span>
             </div>
@@ -417,7 +417,6 @@ export default {
   position: relative;
 
   .chart-wrapper {
-    background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }

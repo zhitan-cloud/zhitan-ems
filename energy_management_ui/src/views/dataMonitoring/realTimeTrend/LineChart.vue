@@ -75,7 +75,10 @@ export default {
           }
         },
         legend: {
-          right: "1"
+          right: "1",
+          textStyle: {
+            color: "#fff"
+          }
         },
         grid: {
           left: "1",
