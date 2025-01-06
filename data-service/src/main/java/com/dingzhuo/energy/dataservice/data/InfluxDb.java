@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * @author fanxinfu
+ * @author 朱佳伟
  */
 public class InfluxDb implements RealtimeDatabase {
     private Logger logger = LogManager.getLogger(InfluxDb.class);
