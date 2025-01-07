@@ -80,4 +80,10 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectElectricityPriceDatePageTacticsAll"  resultMap="ElectricityPriceDateResult">
+        <include refid="selectElectricityPriceDateVo"/>
+        WHERE begin_date &lt; CURRENT_TIMESTAMP
+        AND end_date &gt; CURRENT_TIMESTAMP
+    </select>
 </mapper>

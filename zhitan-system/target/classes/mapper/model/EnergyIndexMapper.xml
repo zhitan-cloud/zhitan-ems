@@ -184,7 +184,7 @@
       <if test="energyId != null">#{energyId},
       </if>
     </trim>
-    
+
   </insert>
   <insert id="insertNodeIndex">
     insert into node_index (node_id, index_id) values (#{nodeId}, #{indexId});
@@ -331,7 +331,7 @@
     and ei.meter_id = me.id
     order by ei.order_num
   </select>
-  
+
   <select id="selectEnergyIndexPage" resultMap="EnergyIndexResult">
     select ni.index_id, name, code, index_type, remark, unit_id, index_category
     from energy_index ei left join node_index ni on ei.index_id = ni.index_id
@@ -346,7 +346,7 @@
       </if>
     </where>
     order by ei.order_num
-    
+
   </select>
     <select id="listIndexByMeterIds" resultType="com.zhitan.model.domain.EnergyIndex">
       select ei.index_id,
@@ -363,7 +363,7 @@
       from energy_index ei
       left join node_index ni on ei.index_id = ni.index_id
       <where>
-        
+
         <if test="nodeId != null  and nodeId != ''">and ni.node_id = #{nodeId}</if>
         <if test="meterIds != null">
           and ei.meter_id in
@@ -376,5 +376,19 @@
   <select id="getiEnergyIndexByCode" resultType="com.zhitan.model.domain.EnergyIndex">
     <include refid="selectEnergyIndexVo"/>
     where code = #{cdoe}
+  </select>
+  <select id="getIndexByCode" resultType="com.zhitan.model.domain.EnergyIndex">
+    SELECT ei.code,mi.meter_name||'_'||ei.name as name from energy_index ei
+    LEFT JOIN node_device nd on ei.meter_id =  nd.device_id
+    LEFT JOIN meter_implement  mi on mi."id" = nd.device_id
+    <where>
+        <if test="nodeId != null  and nodeId != ''">and nd.node_id  = #{nodeId}</if>
+        <if test="code != null  and code != ''">
+          and (mi.meter_name like concat('%', #{code}, '%')
+          or ei.code like concat('%', #{code}, '%')
+          or ei.name like concat('%', #{code}, '%')
+          )
+        </if>
+    </where>
   </select>
 </mapper>

@@ -101,8 +101,8 @@ token:
   expireTime: 300
 
 mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #  configuration:
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   typeAliasesPackage: com.zhitan.**.domain
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
@@ -144,7 +144,7 @@ rtdb:
   token: ==
   org: org
   bucket: bucket
-  
+
 ###################### MQTT #################################
 mqtt:
   # 服务器地址
@@ -156,7 +156,7 @@ mqtt:
   # 用户名
   username: admin
   # 密码
-  password: 111111
+  password: 1q2w3e4r.
   # 连接超时
   timeout: 30
   # 心跳检测
@@ -170,3 +170,4 @@ mqtt:
   cleanSession: false
   # 断开后重新连接
   automaticReconnect: true
+singleLoginUrl: localhost:8090/singleLogin/getInfo

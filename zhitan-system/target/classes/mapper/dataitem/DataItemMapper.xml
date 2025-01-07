@@ -136,4 +136,67 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </foreach>
             AND time_code = #{timeCode}
     </select>
+    <select id="getUpCarbonEmission" resultType="com.zhitan.carbonemission.domain.CarbonEmission">
+        SELECT
+            di.index_id,
+            di.data_time,
+            di.value,
+            ei.energy_id
+        FROM
+            data_item  di
+                JOIN energy_index ei  ON di.index_id = ei.index_id
+        WHERE
+            ei.energy_id != '' and
+            di.index_id IN ( SELECT index_id FROM node_index WHERE node_id = #{indexId})
+          AND di.data_time BETWEEN   #{beginTime}  AND  #{endTime}
+          AND di.time_type = #{timeType}
+    </select>
+    <select id="getMiddleCarbonEmission" resultType="com.zhitan.carbonemission.domain.CarbonEmission">
+        SELECT
+            di.index_id,
+            di.data_time,
+        CASE
+        WHEN di.time_type = 'MONTH' THEN
+        TO_CHAR( di.create_time, 'MM' )
+        WHEN di.time_type = 'DAY' THEN
+        TO_CHAR( di.create_time, 'DD' )
+        WHEN di.time_type = 'HOUR' THEN
+        TO_CHAR( di.data_time, 'HH' )
+        ELSE TO_CHAR( di.data_time, 'YYMMDD' )
+        END AS dataTimeStr,
+            di.value,
+            ei.energy_id,
+            di.time_type
+        FROM
+            data_item  di
+                JOIN energy_index ei  ON di.index_id = ei.index_id
+        WHERE
+            di.index_id IN ( SELECT index_id FROM node_index WHERE node_id = #{indexId})
+        <if test="emissionType !='' and emissionType !=null  and emissionType =='allType'">
+            AND ei.energy_id != ''
+        </if>
+        <if test="emissionType !='' and emissionType !=null  and emissionType !='allType'">
+            AND  ei.energy_id = #{emissionType}
+        </if>
+          AND di.data_time BETWEEN   #{beginTime}  AND  #{endTime}
+          AND di.time_type = #{timeType}
+    </select>
+    <select id="getDownCarbonEmission" resultType="com.zhitan.carbonemission.domain.CarbonEmission">
+        SELECT
+            di.index_id,
+            di.data_time,
+            di.value,
+            ei.energy_id,
+            mn.name as nodeName
+        FROM
+        model_node mn
+        LEFT JOIN node_index ni ON mn.node_id = ni.node_id
+        LEFT JOIN data_item di ON di.index_id = ni.index_id
+        LEFT JOIN energy_index ei ON di.index_id = ei.index_id
+        WHERE
+        ei.energy_id != ''
+        AND mn.parent_id = #{indexId}
+        AND di.data_time BETWEEN   #{beginTime}  AND  #{endTime}
+        AND di.time_type =  #{timeType}
+    </select>
 </mapper>
