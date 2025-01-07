@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/basic-data/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/compute-engine/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/compute-engine/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/data-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/data-monitoring/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/data-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/energy_management_server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/energy_management_server/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/parent/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-generator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-quartz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-quartz/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/zhitan-system/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.basicdata.mapper.SysEnergyMapper">
+
+    <resultMap type="SysEnergy" id="SysEnergyResult">
+        <result property="enername"    column="enername"    />
+        <result property="muid"    column="muid"    />
+        <result property="enerclassid"    column="enerclassid"    />
+        <result property="enerclassname"    column="enerclassname"    />
+        <result property="enersno"    column="enersno"    />
+        <result property="isstorage"    column="isstorage"    />
+        <result property="oprMan"    column="opr_man"    />
+        <result property="oprTime"    column="opr_time"    />
+        <result property="modMan"    column="mod_man"    />
+        <result property="modTime"    column="mod_time"    />
+        <result property="note"    column="note"    />
+        <result property="enerid"    column="enerid"    />
+        <result property="coefficient"    column="coefficient"    />
+        <result property="execdate"    column="execdate"    />
+        <result property="price"    column="price"    />
+        <result property="emissionFactors"    column="emission_factors"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSysEnergyVo">
+        select enername, muid, enerclassid, enersno, isstorage, opr_man, opr_time, mod_man, mod_time, note, enerid, coefficient, execdate, price, emission_factors, create_by, create_time, update_by, update_time, remark from sys_energy
+    </sql>
+    <select id="getenerclassname" resultType="SysEnerclass">
+        select enerclassid,enerclassname from sys_enerclass order by create_time
+    </select>
+
+    <select id="selectSysEnergyList" parameterType="SysEnergy" resultMap="SysEnergyResult">
+        <include refid="selectSysEnergyVo"/>
+        <where>
+            <if test="enername != null  and enername != ''"> and enername like concat('%', #{enername}, '%')</if>
+            <if test="muid != null  and muid != ''"> and muid = #{muid}</if>
+            <if test="enerclassid != null  and enerclassid != ''"> and enerclassid = #{enerclassid}</if>
+            <if test="enersno != null  and enersno != ''"> and enersno = #{enersno}</if>
+            <if test="isstorage != null  and isstorage != ''"> and isstorage = #{isstorage}</if>
+            <if test="oprMan != null  and oprMan != ''"> and opr_man = #{oprMan}</if>
+            <if test="oprTime != null "> and opr_time = #{oprTime}</if>
+            <if test="modMan != null  and modMan != ''"> and mod_man = #{modMan}</if>
+            <if test="modTime != null "> and mod_time = #{modTime}</if>
+            <if test="note != null  and note != ''"> and note = #{note}</if>
+            <if test="enerid != null  and enerid != ''"> and enerid = #{enerid}</if>
+            <if test="coefficient != null  and coefficient != ''"> and coefficient = #{coefficient}</if>
+            <if test="execdate != null "> and execdate = #{execdate}</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+            <if test="emissionFactors != null  and emissionFactors != ''"> and emission_factors = #{emissionFactors}</if>
+        </where>
+        order by create_time
+    </select>
+
+    <select id="selectSysEnergyById" parameterType="Integer" resultMap="SysEnergyResult">
+        <include refid="selectSysEnergyVo"/>
+        where enerid = #{enerid}
+    </select>
+
+    <insert id="insertSysEnergy" parameterType="SysEnergy">
+        insert into sys_energy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="enername != null">enername,</if>
+            <if test="muid != null">muid,</if>
+            <if test="enerclassid != null">enerclassid,</if>
+            <if test="enersno != null">enersno,</if>
+            <if test="isstorage != null">isstorage,</if>
+            <if test="oprMan != null and oprMan != ''">opr_man,</if>
+            <if test="oprTime != null">opr_time,</if>
+            <if test="modMan != null">mod_man,</if>
+            <if test="modTime != null">mod_time,</if>
+            <if test="note != null">note,</if>
+            <if test="enerid != null and enerid != ''">enerid,</if>
+            <if test="coefficient != null">coefficient,</if>
+            <if test="execdate != null">execdate,</if>
+            <if test="price != null">price,</if>
+            <if test="emissionFactors != null">emission_factors,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="enername != null">#{enername},</if>
+            <if test="muid != null">#{muid},</if>
+            <if test="enerclassid != null">#{enerclassid},</if>
+            <if test="enersno != null">#{enersno},</if>
+            <if test="isstorage != null">#{isstorage},</if>
+            <if test="oprMan != null and oprMan != ''">#{oprMan},</if>
+            <if test="oprTime != null">now(),</if>
+            <if test="modMan != null">#{modMan},</if>
+            <if test="modTime != null">now(),,</if>
+            <if test="note != null">#{note},</if>
+            <if test="enerid != null and enerid != ''">#{enerid},</if>
+            <if test="coefficient != null">#{coefficient},</if>
+            <if test="execdate != null">#{execdate},</if>
+            <if test="price != null">#{price},</if>
+            <if test="emissionFactors != null">#{emissionFactors},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysEnergy" parameterType="SysEnergy">
+        update sys_energy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="muid != null">muid = #{muid},</if>
+            <if test="enerclassid != null">enerclassid = #{enerclassid},</if>
+            <if test="enername != null">enername = #{enername},</if>
+            <if test="enersno != null">enersno = #{enersno},</if>
+            <if test="isstorage != null">isstorage = #{isstorage},</if>
+            <if test="oprMan != null and oprMan != ''">opr_man = #{oprMan},</if>
+            <if test="oprTime != null">opr_time = now(),</if>
+            <if test="modMan != null">mod_man = #{modMan},</if>
+            <if test="modTime != null">mod_time = now(),</if>
+            <if test="note != null">note = #{note},</if>
+            <if test="enerid != null and enerid != ''">enerid = #{enerid},</if>
+            <if test="coefficient != null">coefficient = #{coefficient},</if>
+            <if test="execdate != null">execdate = #{execdate},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="emissionFactors != null">emission_factors = #{emissionFactors},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where enerid = #{enerid}
+    </update>
+
+    <delete id="deleteSysEnergyById" parameterType="String">
+        delete from sys_energy where enerid = #{enerid}
+    </delete>
+
+    <delete id="deleteSysEnergyByIds" parameterType="String">
+        delete from sys_energy where enerid in
+        <foreach item="enerid" collection="array" open="(" separator="," close=")">
+            #{enerid}
+        </foreach>
+    </delete>
+
+    <select id="getEnerClassid" parameterType="String" resultType="Integer">
+        select enerclassid from sys_enerclass where enerclassname = #{enerclassname}
+    </select>
+
+    <select id="selectSameEnergyNameNum" parameterType="String" resultType="Integer">
+        select COUNT(enerid) from sys_energy where enername = #{enername}
+    </select>
+
+    <select id="selectIdByName" parameterType="String" resultType="Integer">
+        select enerid from sys_energy where enername = #{enername}
+    </select>
+
+    <select id="getPriceCountByEnerid" parameterType="SysEnergy" resultType="Integer">
+        select COUNT(objectid) from sys_price where objectid = #{enerid} and objecttype = 1 and execdate = #{execdate}
+    </select>
+
+    <insert id="insertEnergyPrice" parameterType="SysEnergy">
+        insert into sys_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            mod_time,
+            opr_time,
+            <if test="oprMan != null  and oprMan != ''">opr_man,</if>
+            <if test="modMan != null  and modMan != ''">mod_man,</if>
+            objectid,
+            objecttype,
+            price,
+            execdate,
+            <if test="note != null  and note != ''">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),
+            now(),
+            <if test="oprMan != null  and oprMan != ''">#{oprMan},</if>
+            <if test="modMan != null  and modMan != ''">#{modMan},</if>
+            <if test="enerid != null ">#{enerid},</if>
+            1,
+            #{price},
+            #{execdate},
+            <if test="note != null  and note != ''">#{pricenote},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEnergyPrice" parameterType="SysEnergy" >
+        update sys_price
+        <trim prefix="SET" suffixOverrides=",">
+            mod_time = now(),
+            <if test="modMan != null  and modMan != ''">mod_man = #{modMan},</if>
+            price = #{price},
+            execdate = #{execdate},
+            <if test="note != null  and note != ''">note = #{pricenote},</if>
+        </trim>
+    </update>
+
+    <select id="getCoefficientCountByEnerid" parameterType="Integer" resultType="Integer">
+        select COUNT(enerid) from sys_enercoefficient where enerid = #{enerid}
+    </select>
+
+    <select id="listAllEnergyType" resultType="EnergyTypeModel">
+        select enername, enersno from sys_energy
+    </select>
+
+    <insert id="insertEnergyCoefficient" parameterType="SysEnergy">
+        insert into sys_enercoefficient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            mod_time,
+            opr_time,
+            <if test="oprMan != null  and oprMan != ''">opr_man,</if>
+            <if test="modMan != null  and modMan != ''">mod_man,</if>
+            enerid,
+            coefficient,
+            coefficient2,
+            carbon_emission_coefficient,
+            execdate,
+            <if test="note != null  and note != ''">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            now(),
+            now(),
+            <if test="oprMan != null  and oprMan != ''">#{oprMan},</if>
+            <if test="modMan != null  and modMan != ''">#{modMan},</if>
+            <if test="enerid != null ">#{enerid},</if>
+            #{coefficient},
+            #{coefficient2},
+            #{carbonEmissionCoefficient},
+            #{coefficientexecdate},
+            <if test="note != null  and note != ''">#{coefficientnote},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEnergyCoefficient" parameterType="SysEnergy" >
+        update sys_enercoefficient
+        <trim prefix="SET" suffixOverrides=",">
+            mod_time = now(),
+            <if test="modMan != null  and modMan != ''">mod_man = #{modMan},</if>
+            coefficient = #{coefficient},
+            coefficient2 = #{coefficient2},
+            execdate = #{coefficientexecdate},
+            carbon_emission_coefficient = #{carbonEmissionCoefficient},
+            <if test="note != null  and note != ''">note = #{coefficientnote},</if>
+        </trim>
+        where enerid = #{enerid}
+    </update>
+
+
+    <select id="selectSysEnergyPage"  resultMap="SysEnergyResult">
+        select a.*,b.enerclassname from sys_energy a left join sys_enerclass b on a.enerclassid = b.enerclassid
+        <where>
+            <if test="sysEnergy.enername != null  and sysEnergy.enername != ''"> and a.enername like concat('%', #{sysEnergy.enername}, '%')</if>
+            <if test="sysEnergy.enerclassid != null  and sysEnergy.enerclassid != ''"> and a.enerclassid = #{sysEnergy.enerclassid}</if>
+        </where>
+        order by a.create_time
+    </select>
+</mapper>

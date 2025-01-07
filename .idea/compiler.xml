@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="zhitan-quartz" />
+        <module name="zhitan-generator" />
+        <module name="zhitan-admin" />
+        <module name="zhitan-system" />
+        <module name="zhitan-common" />
+        <module name="zhitan-framework" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="basic" target="1.8" />
+      <module name="basic-data" target="1.8" />
+      <module name="compute-engine" target="1.8" />
+      <module name="data-model" target="1.8" />
+      <module name="data-monitoring" target="1.8" />
+      <module name="data-service" target="1.8" />
+      <module name="energy-management-server" target="1.8" />
+      <module name="parent" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="basic" options="-parameters" />
+      <module name="basic-data" options="-parameters" />
+      <module name="compute-engine" options="-parameters" />
+      <module name="data-model" options="-parameters" />
+      <module name="data-monitoring" options="-parameters" />
+      <module name="data-service" options="-parameters" />
+      <module name="energy-management" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+      <module name="energy-management-server" options="-parameters" />
+      <module name="parent" options="-parameters" />
+      <module name="zhitan-admin" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+      <module name="zhitan-common" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+      <module name="zhitan-framework" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+      <module name="zhitan-generator" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+      <module name="zhitan-quartz" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+      <module name="zhitan-system" options="-bootclasspath $USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/rt.jar;$USER_HOME$/.jdks/semeru-1.8.0_432/jre/lib/jce.jar -Xlint:deprecation" />
+    </option>
+  </component>
+</project>

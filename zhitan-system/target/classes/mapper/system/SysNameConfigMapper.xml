@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.system.mapper.SysNameConfigMapper">
+
+    <resultMap type="SysNameConfig" id="SysNameConfigResult">
+        <result property="systemName"    column="system_name"    />
+        <result property="leftLogo"    column="left_logo"    />
+        <result property="copyRight"    column="copy_right"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="id"    column="id"    />
+        <result property="homeLogo"    column="home_logo"    />
+    </resultMap>
+
+    <sql id="selectSysNameConfigVo">
+        select system_name, left_logo, copy_right, create_by, create_time, update_by, update_time, remark, id, home_logo from sys_name_config
+    </sql>
+
+    <select id="selectSysNameConfigList" parameterType="SysNameConfig" resultMap="SysNameConfigResult">
+        <include refid="selectSysNameConfigVo"/>
+        <where>
+            <if test="systemName != null  and systemName != ''"> and system_name like concat('%', #{systemName}, '%')</if>
+            <if test="leftLogo != null  and leftLogo != ''"> and left_logo = #{leftLogo}</if>
+            <if test="copyRight != null  and copyRight != ''"> and copy_right = #{copyRight}</if>
+            <if test="homeLogo != null  and homeLogo != ''"> and home_logo = #{homeLogo}</if>
+        </where>
+    </select>
+
+    <select id="selectSysNameConfigBySystemName" parameterType="String" resultMap="SysNameConfigResult">
+        <include refid="selectSysNameConfigVo"/>
+        where system_name = #{systemName}
+    </select>
+
+    <insert id="insertSysNameConfig" parameterType="SysNameConfig">
+        insert into sys_name_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="systemName != null">system_name,</if>
+            <if test="leftLogo != null">left_logo,</if>
+            <if test="copyRight != null">copy_right,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="id != null and id != ''">id,</if>
+            <if test="homeLogo != null">home_logo,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="systemName != null">#{systemName},</if>
+            <if test="leftLogo != null">#{leftLogo},</if>
+            <if test="copyRight != null">#{copyRight},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="homeLogo != null">#{homeLogo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysNameConfig" parameterType="SysNameConfig">
+        update sys_name_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="leftLogo != null">left_logo = #{leftLogo},</if>
+            <if test="copyRight != null">copy_right = #{copyRight},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="id != null and id != ''">id = #{id},</if>
+            <if test="homeLogo != null">home_logo = #{homeLogo},</if>
+        </trim>
+        where system_name = #{systemName}
+    </update>
+
+    <delete id="deleteSysNameConfigBySystemName" parameterType="String">
+        delete from sys_name_config where system_name = #{systemName}
+    </delete>
+
+    <delete id="deleteSysNameConfigBySystemNames" parameterType="String">
+        delete from sys_name_config where system_name in
+        <foreach item="systemName" collection="array" open="(" separator="," close=")">
+            #{systemName}
+        </foreach>
+    </delete>
+</mapper>

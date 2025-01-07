@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.gatewaysetting.mapper.GatewaySettingMapper">
+
+    <resultMap type="GatewaySetting" id="GatewaySettingResult">
+        <result property="id"    column="id"    />
+        <result property="gatewayNum"    column="gateway_num"    />
+        <result property="gatewayName"    column="gateway_name"    />
+        <result property="specsModel"    column="specs_model"    />
+        <result property="installLocation"    column="install_location"    />
+        <result property="ipAdd"    column="ip_add"    />
+        <result property="runStatus"    column="run_status"    />
+        <result property="hbtTime"    column="hbt_time"    />
+        <result property="deviceNum"    column="device_num"    />
+        <result property="ptNum"    column="pt_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectGatewaySettingVo">
+        select id, gateway_num, gateway_name, specs_model, install_location, ip_add, run_status, hbt_time, device_num, pt_num, create_by, create_time, update_by, update_time from gateway_setting
+    </sql>
+
+    <select id="selectGatewaySettingList" parameterType="GatewaySetting" resultMap="GatewaySettingResult">
+        <include refid="selectGatewaySettingVo"/>
+        <where>
+            <if test="gatewayNum != null  and gatewayNum != ''"> and gateway_num = #{gatewayNum}</if>
+            <if test="gatewayName != null  and gatewayName != ''"> and gateway_name like concat('%', #{gatewayName}, '%')</if>
+            <if test="specsModel != null  and specsModel != ''"> and specs_model = #{specsModel}</if>
+            <if test="installLocation != null  and installLocation != ''"> and install_location = #{installLocation}</if>
+            <if test="ipAdd != null  and ipAdd != ''"> and ip_add = #{ipAdd}</if>
+            <if test="runStatus != null  and runStatus != ''"> and run_status = #{runStatus}</if>
+            <if test="hbtTime != null "> and hbt_time = #{hbtTime}</if>
+            <if test="deviceNum != null  and deviceNum != ''"> and device_num = #{deviceNum}</if>
+            <if test="ptNum != null  and ptNum != ''"> and pt_num = #{ptNum}</if>
+        </where>
+    </select>
+
+    <select id="selectGatewaySettingById" parameterType="String" resultMap="GatewaySettingResult">
+        <include refid="selectGatewaySettingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGatewaySetting" parameterType="GatewaySetting">
+        insert into gateway_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="gatewayNum != null">gateway_num,</if>
+            <if test="gatewayName != null">gateway_name,</if>
+            <if test="specsModel != null">specs_model,</if>
+            <if test="installLocation != null">install_location,</if>
+            <if test="ipAdd != null">ip_add,</if>
+            <if test="runStatus != null">run_status,</if>
+            <if test="hbtTime != null">hbt_time,</if>
+            <if test="deviceNum != null">device_num,</if>
+            <if test="ptNum != null">pt_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="gatewayNum != null">#{gatewayNum},</if>
+            <if test="gatewayName != null">#{gatewayName},</if>
+            <if test="specsModel != null">#{specsModel},</if>
+            <if test="installLocation != null">#{installLocation},</if>
+            <if test="ipAdd != null">#{ipAdd},</if>
+            <if test="runStatus != null">#{runStatus},</if>
+            <if test="hbtTime != null">#{hbtTime},</if>
+            <if test="deviceNum != null">#{deviceNum},</if>
+            <if test="ptNum != null">#{ptNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGatewaySetting" parameterType="GatewaySetting">
+        update gateway_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="gatewayNum != null">gateway_num = #{gatewayNum},</if>
+            <if test="gatewayName != null">gateway_name = #{gatewayName},</if>
+            <if test="specsModel != null">specs_model = #{specsModel},</if>
+            <if test="installLocation != null">install_location = #{installLocation},</if>
+            <if test="ipAdd != null">ip_add = #{ipAdd},</if>
+            <if test="runStatus != null">run_status = #{runStatus},</if>
+            <if test="hbtTime != null">hbt_time = #{hbtTime},</if>
+            <if test="deviceNum != null">device_num = #{deviceNum},</if>
+            <if test="ptNum != null">pt_num = #{ptNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGatewaySettingById" parameterType="String">
+        delete from gateway_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteGatewaySettingByIds" parameterType="String">
+        delete from gateway_setting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="checkOne" resultType="int" parameterType="GatewaySetting">
+        select count(1) from gateway_setting
+        where
+        gateway_num=#{gatewayNum}
+        <if test="id!=null and id !=''">
+            and id != #{id}
+        </if>
+
+    </select>
+
+    <select id="ptNum" resultType="com.zhitan.gatewaysetting.domain.GatewaySetting" parameterType="GatewaySetting">
+            select sum(device_num) device_num,sum(pt_num) pt_num from gateway_setting
+        <where>
+        <if test="gatewayNum != null  and gatewayNum != ''"> and gateway_num = #{gatewayNum}</if>
+        <if test="gatewayName != null  and gatewayName != ''"> and gateway_name like concat('%', #{gatewayName}, '%')</if>
+        <if test="specsModel != null  and specsModel != ''"> and specs_model = #{specsModel}</if>
+        <if test="installLocation != null  and installLocation != ''"> and install_location = #{installLocation}</if>
+        <if test="ipAdd != null  and ipAdd != ''"> and ip_add = #{ipAdd}</if>
+        <if test="runStatus != null  and runStatus != ''"> and run_status = #{runStatus}</if>
+        <if test="hbtTime != null "> and hbt_time = #{hbtTime}</if>
+        <if test="deviceNum != null  and deviceNum != ''"> and device_num = #{deviceNum}</if>
+        <if test="ptNum != null  and ptNum != ''"> and pt_num = #{ptNum}</if>
+    </where>
+    </select>
+
+    <update id="addNum" parameterType="GatewaySetting">
+        update gateway_setting set device_num = COALESCE(NULLIF(device_num,null),'0')+ #{deviceNum}, pt_num = COALESCE(NULLIF(pt_num,null),'0')+#{ptNum},update_time=now(),update_by=#{updateBy}
+        where id = #{id}
+    </update>
+
+    <update id="subNum" parameterType="GatewaySetting">
+        update gateway_setting set device_num =
+            CASE
+
+                WHEN COALESCE(NULLIF(device_num,null),'0')- #{deviceNum} > 0 THEN
+                    COALESCE(NULLIF(device_num,null),'0')- #{deviceNum} ELSE 0
+                END
+            , pt_num =
+                CASE
+
+                    WHEN COALESCE(NULLIF(pt_num,null),'0')-#{ptNum} > 0 THEN
+                        COALESCE(NULLIF(pt_num,null),'0')-#{ptNum} ELSE 0
+                    END,update_time=now(),update_by=#{updateBy}
+        where id = #{id}
+    </update>
+</mapper>

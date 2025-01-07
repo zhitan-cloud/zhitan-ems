@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.productoutput.mapper.ProductOutputMapper">
+
+    <resultMap type="ProductOutput" id="ProductOutputResult">
+        <result property="productOutputId"    column="product_output_id"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="timeType"    column="time_type"    />
+        <result property="dataTime"    column="data_time"    />
+        <result property="name"    column="name"    />
+        <result property="number"    column="number"    />
+        <result property="unit"    column="unit"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="productType"    column="product_type"    />
+    </resultMap>
+
+    <sql id="selectProductOutputVo">
+        select product_output_id, node_name, node_id, time_type, data_time, name, number, unit, del_flag, create_by, create_time, update_by, update_time, remark, data_type,product_type from product_output
+    </sql>
+
+    <select id="selectProductOutputList" parameterType="ProductOutput" resultMap="ProductOutputResult">
+        <include refid="selectProductOutputVo"/>
+        <where>
+            <if test="productOutputId != null  and productOutputId != ''"> and product_output_id = #{productOutputId}</if>
+            <if test="nodeId != null  and nodeId != ''"> and node_id = #{nodeId}</if>
+            <if test="nodeName != null  and nodeName != ''"> and node_name = #{nodeName}</if>
+            <if test="timeType != null  and timeType != ''"> and time_type = #{timeType}</if>
+            <if test="dataTime != null "> and data_time = #{dataTime}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="dataType != null  and dataType != ''"> and data_type = #{dataType}</if>
+            <if test="productType != null  and productType != ''"> and product_type = #{productType}</if>
+        </where>
+    </select>
+
+    <select id="selectProductOutputById" parameterType="String" resultMap="ProductOutputResult">
+        <include refid="selectProductOutputVo"/>
+        where  product_output_id = #{productOutputId}
+    </select>
+
+    <insert id="insertProductOutput" parameterType="ProductOutput">
+        insert into product_output
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productOutputId != null">product_output_id,</if>
+            <if test="nodeId != null">node_id,</if>
+            <if test="nodeName != null">node_name,</if>
+            <if test="timeType != null">time_type,</if>
+            <if test="dataTime != null">data_time,</if>
+            <if test="name != null">name,</if>
+            <if test="number != null">number,</if>
+            <if test="unit != null">unit,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="productType != null">product_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productOutputId != null">#{productOutputId},</if>
+            <if test="nodeId != null">#{nodeId},</if>
+            <if test="nodeName != null">#{nodeName},</if>
+            <if test="timeType != null">#{timeType},</if>
+            <if test="dataTime != null">#{dataTime},</if>
+            <if test="name != null">#{name},</if>
+            <if test="number != null">#{number},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="productType != null">#{productType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateProductOutput" parameterType="ProductOutput">
+        update product_output
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="timeType != null">time_type = #{timeType},</if>
+            <if test="dataTime != null">data_time = #{dataTime},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="productType != null">product_type = #{productType},</if>
+        </trim>
+        where product_output_id = #{productOutputId}
+    </update>
+
+    <delete id="deleteProductOutputById" parameterType="String">
+        delete from product_output where product_output_id = #{productOutputId}
+    </delete>
+
+    <delete id="deleteProductOutputByIds" parameterType="String">
+        delete from product_output where product_output_id in
+        <foreach item="productOutputId" collection="array" open="(" separator="," close=")">
+            #{productOutputId}
+        </foreach>
+    </delete>
+</mapper>

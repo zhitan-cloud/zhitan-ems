@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.meter.mapper.MetersMapper">
+
+    <resultMap type="MeterImplements" id="MeterImplementResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="meterName"    column="meter_name"    />
+        <result property="meterType"    column="meter_type"    />
+        <result property="modelNumber"    column="model_number"    />
+        <result property="measureRange"    column="measure_range"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="personCharge"    column="person_charge"    />
+        <result property="installactionLocation"    column="installaction_location"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="checkCycle"    column="check_cycle"    />
+        <result property="reminderCycle"    column="reminder_cycle"    />
+        <result property="meterStatus"    column="meter_status"    />
+        <result property="delFlage"    column="del_flage"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="txflage"    column="txflage"    />
+        <result property="putrunTime"    column="putrun_time"    />
+    </resultMap>
+
+
+    <sql id="selectMeterImplementVo">
+        SELECT
+            mi.meter_name
+        FROM
+            meter_implement mi
+
+    </sql>
+
+    <select id="listMeterData" resultType="com.zhitan.meter.domain.MeterImplements">
+        <include refid="selectMeterImplementVo"/>
+            WHERE
+            mi.meter_type = #{meterType}
+            GROUP BY
+            meter_name
+
+    </select>
+
+    <sql id="selectMeterConfigurationVo">
+        SELECT
+            mi."id",
+            mi.meter_name,
+            ei.index_id,
+            ei.code,
+            ei."name"
+        FROM
+            meter_implement mi
+            LEFT JOIN
+            energy_index ei
+            ON mi."id" = ei.meter_id
+
+    </sql>
+    <select id="listConfigurationData" resultType="com.zhitan.meter.domain.MeterParam" parameterType="string">
+        <include refid="selectMeterConfigurationVo"/>
+            WHERE
+                mi.meter_type = #{meterType}
+            AND ei.index_type = #{indexType}
+    </select>
+
+
+    <select id="listConfigData" resultType="com.zhitan.meter.domain.MeterConfig" parameterType="string">
+        SELECT
+            mc.id,
+            mc.table_name,
+            mc.step_min,
+            mc.step_max,
+            mc.max_value,
+            mc.min_value,
+            mc.index_type,
+            mc.table_value
+        FROM
+            meter_config mc
+        WHERE
+            mc.index_type = #{indexType}
+
+    </select>
+
+
+</mapper>

@@ -1,2 +1,0 @@
-Application Version: ${ruoyi.version}
-Application Port: ${server.port}
