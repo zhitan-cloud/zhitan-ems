@@ -19,6 +19,8 @@ import com.zhitan.model.domain.DaqTemplate;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.mapper.DaqTemplateMapper;
 import com.zhitan.model.mapper.EnergyIndexMapper;
+import com.zhitan.powerDistribution.domain.PowerDistribution;
+import com.zhitan.powerDistribution.mapper.PowerDistributionMapper;
 import com.zhitan.system.mapper.SysDictDataMapper;
 import com.zhitan.system.service.impl.SysUserServiceImpl;
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 计量器具档案维护Service业务层处理
@@ -48,6 +51,9 @@ public class MeterImplementServiceImpl implements IMeterImplementService
 
     @Autowired
     private SysDictDataMapper dictDataMapper;
+
+    @Autowired
+    private PowerDistributionMapper distributionMapper;
 
     private static final Logger log = LoggerFactory.getLogger(SysUserServiceImpl.class);
     @Autowired
@@ -343,12 +349,43 @@ public class MeterImplementServiceImpl implements IMeterImplementService
 
     @Override
     public Page<MeterImplement> selectMeterImplementPage(MeterImplement meterImplement, Long pageNum, Long pageSize) {
+        Page<MeterImplement> meterImplementPage =new Page<>();
         LambdaQueryWrapper<MeterImplement> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(meterImplement.getCode()),MeterImplement::getCode,meterImplement.getCode());
         queryWrapper.like(StringUtils.isNotEmpty(meterImplement.getMeterName()),MeterImplement::getMeterName,meterImplement.getMeterName());
         queryWrapper.eq(StringUtils.isNotEmpty(meterImplement.getMeterType()),MeterImplement::getMeterType,meterImplement.getMeterType());
         queryWrapper.orderByDesc(MeterImplement::getCreateTime);
-        final Page<MeterImplement> meterImplementPage = meterImplementMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper);
+
+//        配电室表：PowerDistribution
+        if  (StringUtils.isNotBlank(meterImplement.getInstallactionLocation())){
+            LambdaQueryWrapper<PowerDistribution> installLocationWrapper = new LambdaQueryWrapper<>();
+            installLocationWrapper.like(StringUtils.isNotEmpty(meterImplement.getInstallactionLocation()),PowerDistribution::getName,meterImplement.getInstallactionLocation());
+            List<PowerDistribution> installList=distributionMapper.selectList(installLocationWrapper);
+
+            if (!installList.isEmpty()){
+                queryWrapper.in(MeterImplement::getInstallactionLocation,installList.stream().map(PowerDistribution::getId).collect(Collectors.toList()));
+            }else{
+                return meterImplementPage;
+            }
+        }
+
+        meterImplementPage=meterImplementMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper);
+
+        if  (meterImplementPage.getTotal() > 0){
+            meterImplementPage.getRecords().forEach(v->{
+                PowerDistribution distribution=distributionMapper.selectById(v.getInstallactionLocation());
+                if (null!=distribution && StringUtils.isNotEmpty(distribution.getName())) {
+                    v.setInstallLocationName(distribution.getName());
+                }
+
+            });
+        }
+
         return meterImplementPage;
+    }
+
+    @Override
+    public List<MeterImplement> listMeterImplByInstallLocation(String installLocation) {
+        return meterImplementMapper.listMeterImplByInstallLocation(installLocation);
     }
 }

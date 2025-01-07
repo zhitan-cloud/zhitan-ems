@@ -28,14 +28,15 @@ public class HomePageController extends BaseController {
    /**
     * @description: 全厂能耗统计
     * @param timeType
-    * @return 
+    * @return
     * @author: hmj
     * @date: 2024/10/8 13:41
     */
    @GetMapping("/energyConsumptionSummation")
    public AjaxResult energyConsumptionSummation(String timeType) {
        try {
-           String modelcode = "Composite_Indicators";
+//           String modelcode = "Composite_Indicators";
+           String modelcode = "COMPREHENSIVE_CODE";
            return AjaxResult.success(homepageService.energyConsumptionSummation(timeType,modelcode));
        } catch (Exception ex) {
            logger.error("获取出错！", ex);
@@ -54,7 +55,7 @@ public class HomePageController extends BaseController {
     @GetMapping("/energyConsumptionTrend")
     public AjaxResult energyConsumptionTrend(String timeType) {
         try {
-            String modelcode = "Composite_Indicators";
+            String modelcode = "COMPREHENSIVE_CODE";
             HomeEnergyConsumptionTrendVO vo = homepageService.energyConsumptionTrend(timeType,modelcode);
 
             return AjaxResult.success(vo);
@@ -74,7 +75,7 @@ public class HomePageController extends BaseController {
     @GetMapping("/energyConsumptionRanking")
     public AjaxResult energyConsumptionRanking(String timeType) {
         try {
-            String modelcode = "Composite_Indicators";
+            String modelcode = "COMPREHENSIVE_CODE";
             List<RankingEnergyData> consumptionAnalysisVO = homepageService.energyConsumptionRanking(modelcode,timeType);
             return AjaxResult.success(consumptionAnalysisVO);
         } catch (Exception ex) {
@@ -94,7 +95,7 @@ public class HomePageController extends BaseController {
     public AjaxResult peakValley(String timeType) {
         try {
 //            String modelcode = "Composite_Indicators";
-            String modelcode = "PEAK_VALLEY";
+            String modelcode = "COMPREHENSIVE_CODE";
             List<HomePeakValleyVO> vo = homepageService.peakValley(timeType,modelcode);
             return AjaxResult.success(vo);
         } catch (Exception ex) {

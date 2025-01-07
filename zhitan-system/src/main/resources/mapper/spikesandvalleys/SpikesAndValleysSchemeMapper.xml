@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.spikesandvalleys.mapper.SpikesAndValleysSchemeMapper">
+
+    <resultMap type="SpikesAndValleysScheme" id="SpikesAndValleysSchemeResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="schemeName"    column="scheme_name"    />
+        <result property="executeTime"    column="execute_time"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectSpikesAndValleysSchemeVo">
+        select id, create_time, create_by, update_time, update_by, remark, scheme_name, execute_time, type from spikes_and_valleys_scheme
+    </sql>
+
+    <select id="selectSpikesAndValleysSchemeList" parameterType="SpikesAndValleysScheme" resultMap="SpikesAndValleysSchemeResult">
+        <include refid="selectSpikesAndValleysSchemeVo"/>
+        <where>
+            <if test="schemeName != null  and schemeName != ''"> and scheme_name like concat('%', #{schemeName}, '%')</if>
+            <if test="executeTime != null "> and execute_time = #{executeTime}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectSpikesAndValleysSchemeById" parameterType="String" resultMap="SpikesAndValleysSchemeResult">
+        <include refid="selectSpikesAndValleysSchemeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSpikesAndValleysScheme" parameterType="SpikesAndValleysScheme">
+        insert into spikes_and_valleys_scheme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="schemeName != null">scheme_name,</if>
+            <if test="executeTime != null">execute_time,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="schemeName != null">#{schemeName},</if>
+            <if test="executeTime != null">#{executeTime},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSpikesAndValleysScheme" parameterType="SpikesAndValleysScheme">
+        update spikes_and_valleys_scheme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="schemeName != null">scheme_name = #{schemeName},</if>
+            <if test="executeTime != null">execute_time = #{executeTime},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSpikesAndValleysSchemeById" parameterType="String">
+        delete from spikes_and_valleys_scheme where id = #{id}
+    </delete>
+
+    <delete id="deleteSpikesAndValleysSchemeByIds" parameterType="String">
+        delete from spikes_and_valleys_scheme where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

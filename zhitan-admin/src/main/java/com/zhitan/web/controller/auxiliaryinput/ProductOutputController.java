@@ -108,7 +108,6 @@ public class ProductOutputController extends BaseController {
     @GetMapping("/meter/list")
     public TableDataInfo meterList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
     {
-//        startPage();
         productOutput.setDataType("2");
         Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
         return getDataTable(list);
@@ -180,7 +179,6 @@ public class ProductOutputController extends BaseController {
     @GetMapping("/energyindex/list")
     public TableDataInfo energyIndexList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
     {
-        startPage();
         productOutput.setDataType("3");
         Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
         return getDataTable(list);
@@ -253,7 +251,6 @@ public class ProductOutputController extends BaseController {
 //    @GetMapping("/energyYield/list")
 //    public TableDataInfo energyYieldList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
 //    {
-////        startPage();
 //        productOutput.setDataType("5");
 //        productOutput.setTimeType("MONTH");
 //        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
@@ -347,7 +344,6 @@ public class ProductOutputController extends BaseController {
 //    @GetMapping("/energyPlanYield/list")
 //    public TableDataInfo energyPlanYieldList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
 //    {
-////        startPage();
 //        productOutput.setDataType("4");
 //        productOutput.setTimeType("MONTH");
 //        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
@@ -442,7 +438,6 @@ public class ProductOutputController extends BaseController {
 //    @GetMapping("/energySettlement/list")
 //    public TableDataInfo energySettlementList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
 //    {
-////        startPage();
 //        productOutput.setDataType("6");
 //        productOutput.setTimeType("MONTH");
 //        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);

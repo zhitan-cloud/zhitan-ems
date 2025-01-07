@@ -1,19 +1,19 @@
 package com.zhitan.framework.web.service;
 
+import java.util.Set;
+
+import com.zhitan.framework.security.context.PermissionContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import com.zhitan.common.constant.Constants;
 import com.zhitan.common.core.domain.entity.SysRole;
 import com.zhitan.common.core.domain.model.LoginUser;
 import com.zhitan.common.utils.SecurityUtils;
 import com.zhitan.common.utils.StringUtils;
-import com.zhitan.framework.security.context.PermissionContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import java.util.Set;
 
 /**
  * 首创 自定义权限实现，ss取自SpringSecurity首字母
- *
+ * 
  * @author zhitan
  */
 @Service("ss")
@@ -21,24 +21,23 @@ public class PermissionService
 {
     /**
      * 验证用户是否具备某权限
-     *
+     * 
      * @param permission 权限字符串
      * @return 用户是否具备某权限
      */
     public boolean hasPermi(String permission)
     {
-        return true;
-//        if (StringUtils.isEmpty(permission))
-//        {
-//            return false;
-//        }
-//        LoginUser loginUser = SecurityUtils.getLoginUser();
-//        if (StringUtils.isNull(loginUser) || CollectionUtils.isEmpty(loginUser.getPermissions()))
-//        {
-//            return false;
-//        }
-//        PermissionContextHolder.setContext(permission);
-//        return hasPermissions(loginUser.getPermissions(), permission);
+        if (StringUtils.isEmpty(permission))
+        {
+            return false;
+        }
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        if (StringUtils.isNull(loginUser) || CollectionUtils.isEmpty(loginUser.getPermissions()))
+        {
+            return false;
+        }
+        PermissionContextHolder.setContext(permission);
+        return hasPermissions(loginUser.getPermissions(), permission);
     }
 
     /**
@@ -83,7 +82,7 @@ public class PermissionService
 
     /**
      * 判断用户是否拥有某个角色
-     *
+     * 
      * @param role 角色字符串
      * @return 用户是否具备某角色
      */
@@ -149,7 +148,7 @@ public class PermissionService
 
     /**
      * 判断是否包含权限
-     *
+     * 
      * @param permissions 权限列表
      * @param permission 权限字符串
      * @return 用户是否具备某权限

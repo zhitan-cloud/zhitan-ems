@@ -1,20 +1,14 @@
 package com.zhitan.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.annotation.Resource;
-
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.zhitan.common.annotation.DataScope;
 import com.zhitan.common.constant.UserConstants;
 import com.zhitan.common.core.domain.entity.SysRole;
 import com.zhitan.common.core.domain.entity.SysUser;
 import com.zhitan.common.exception.ServiceException;
+import com.zhitan.common.utils.DateUtils;
 import com.zhitan.common.utils.SecurityUtils;
 import com.zhitan.common.utils.StringUtils;
 import com.zhitan.common.utils.spring.SpringUtils;
@@ -26,10 +20,15 @@ import com.zhitan.system.mapper.SysRoleMapper;
 import com.zhitan.system.mapper.SysRoleMenuMapper;
 import com.zhitan.system.mapper.SysUserRoleMapper;
 import com.zhitan.system.service.ISysRoleService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * 角色 业务层处理
- * 
+ *
  * @author zhitan
  */
 @Service
@@ -49,7 +48,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 根据条件分页查询角色数据
-     * 
+     *
      * @param role 角色信息
      * @return 角色数据集合信息
      */
@@ -62,7 +61,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 根据用户ID查询角色
-     * 
+     *
      * @param userId 用户ID
      * @return 角色列表
      */
@@ -87,7 +86,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 根据用户ID查询权限
-     * 
+     *
      * @param userId 用户ID
      * @return 权限列表
      */
@@ -108,7 +107,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 查询所有角色
-     * 
+     *
      * @return 角色列表
      */
     @Override
@@ -119,7 +118,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 根据用户ID获取角色选择框列表
-     * 
+     *
      * @param userId 用户ID
      * @return 选中角色ID列表
      */
@@ -131,7 +130,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 通过角色ID查询角色
-     * 
+     *
      * @param roleId 角色ID
      * @return 角色对象信息
      */
@@ -143,7 +142,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 校验角色名称是否唯一
-     * 
+     *
      * @param role 角色信息
      * @return 结果
      */
@@ -161,7 +160,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 校验角色权限是否唯一
-     * 
+     *
      * @param role 角色信息
      * @return 结果
      */
@@ -179,7 +178,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 校验角色是否允许操作
-     * 
+     *
      * @param role 角色信息
      */
     @Override
@@ -193,7 +192,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 校验角色是否有数据权限
-     * 
+     *
      * @param roleId 角色id
      */
     @Override
@@ -213,7 +212,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 通过角色ID查询角色使用数量
-     * 
+     *
      * @param roleId 角色ID
      * @return 结果
      */
@@ -225,7 +224,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 新增保存角色信息
-     * 
+     *
      * @param role 角色信息
      * @return 结果
      */
@@ -240,7 +239,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 修改保存角色信息
-     * 
+     *
      * @param role 角色信息
      * @return 结果
      */
@@ -257,7 +256,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 修改角色状态
-     * 
+     *
      * @param role 角色信息
      * @return 结果
      */
@@ -269,7 +268,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 修改数据权限信息
-     * 
+     *
      * @param role 角色信息
      * @return 结果
      */
@@ -287,7 +286,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 新增角色菜单信息
-     * 
+     *
      * @param role 角色对象
      */
     public int insertRoleMenu(SysRole role)
@@ -335,7 +334,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 通过角色ID删除角色
-     * 
+     *
      * @param roleId 角色ID
      * @return 结果
      */
@@ -352,7 +351,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 批量删除角色信息
-     * 
+     *
      * @param roleIds 需要删除的角色ID
      * @return 结果
      */
@@ -379,7 +378,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 取消授权用户角色
-     * 
+     *
      * @param userRole 用户和角色关联信息
      * @return 结果
      */
@@ -391,7 +390,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 批量取消授权用户角色
-     * 
+     *
      * @param roleId 角色ID
      * @param userIds 需要取消授权的用户数据ID
      * @return 结果
@@ -404,7 +403,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
 
     /**
      * 批量选择授权用户角色
-     * 
+     *
      * @param roleId 角色ID
      * @param userIds 需要授权的用户数据ID
      * @return 结果
@@ -422,5 +421,25 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
             list.add(ur);
         }
         return userRoleMapper.batchUserRole(list);
+    }
+    @Override
+    public Page<SysRole> selectRolePage(SysRole role, Long pageNum, Long pageSize) {
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotEmpty(role.getRoleName()),SysRole::getRoleName,role.getRoleName());
+        queryWrapper.like(StringUtils.isNotEmpty(role.getRoleKey()),SysRole::getRoleKey,role.getRoleKey());
+        queryWrapper.eq(StringUtils.isNotEmpty(role.getStatus()),SysRole::getStatus,role.getStatus());
+        if(role.getParams().containsKey("beginTime")) {
+            queryWrapper.between(SysRole::getCreateTime,
+                    DateUtils.parseDate(role.getParams().get("beginTime")),
+                    DateUtils.parseDate(role.getParams().get("endTime")));
+        }
+        return roleMapper.selectPage(new Page<SysRole>(pageNum,pageSize),queryWrapper);
+    }
+
+    @Override
+    public SysRole getRoleByKey(SysRole queryRole) {
+        LambdaQueryWrapper<SysRole> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysRole::getRoleKey,queryRole.getRoleKey());
+        return roleMapper.selectOne(queryWrapper);
     }
 }

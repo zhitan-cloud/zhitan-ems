@@ -42,4 +42,6 @@ public interface IPeakValleyService {
     PeakValleyHourVO segmentAnalysisHour(PeakValleyDTO dto);
 
     List<PeakValleyHourDataVO> segmentAnalysisHourExport(PeakValleyDTO dto);
+
+    PeakValleyDayVO segmentAnalysisDayCustomize(PeakValleyDTO dto);
 }

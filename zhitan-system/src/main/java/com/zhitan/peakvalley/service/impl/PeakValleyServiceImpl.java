@@ -5,6 +5,8 @@ import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.enums.ElectricityTypeEnum;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.common.utils.DateUtils;
+import com.zhitan.costmanagement.domain.vo.CostPriceRelevancyVo;
+import com.zhitan.costmanagement.mapper.CostPriceRelevancyMapper;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.peakvalley.domain.ElectricityDataItem;
@@ -35,7 +37,8 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
     private ModelNodeMapper modelNodeMapper;
     @Resource
     private PeakValleyMapper electricityDataItemMapper;
-
+    @Resource
+    CostPriceRelevancyMapper costPriceRelevancyMapper;
 
     /**
      * 查询统计数据
@@ -154,19 +157,45 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
                     String electricityType = electricityDataItem.getElectricityType();
 
                     if (ElectricityTypeEnum.SHARP.name().equals(electricityType)) {
-                        sharpFee = sharpFee.add(electricityDataItem.getCost());
+//                        sharpFee = sharpFee.add(electricityDataItem.getCost());
+
                         sharpPower = sharpPower.add(electricityDataItem.getElectricity());
                     } else if (ElectricityTypeEnum.PEAK.name().equals(electricityType)) {
-                        peakFee = peakFee.add(electricityDataItem.getCost());
+//                        peakFee = peakFee.add(electricityDataItem.getCost());
                         peakPower = peakPower.add(electricityDataItem.getElectricity());
                     } else if (ElectricityTypeEnum.FLAT.name().equals(electricityType)) {
-                        flatFee = flatFee.add(electricityDataItem.getCost());
+//                        flatFee = flatFee.add(electricityDataItem.getCost());
                         flatPower = flatPower.add(electricityDataItem.getElectricity());
                     } else {
-                        valleyFee = valleyFee.add(electricityDataItem.getCost());
+//                        valleyFee = valleyFee.add(electricityDataItem.getCost());
                         valleyPower = valleyPower.add(electricityDataItem.getElectricity());
                     }
                 }
+                //2024-11-12新增
+                CostPriceRelevancyVo voS =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(),ElectricityTypeEnum.SHARP.name());
+                if(voS!=null){
+                    sharpFee = voS.getPrice().multiply(sharpPower);
+                }
+                CostPriceRelevancyVo voP =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(),ElectricityTypeEnum.PEAK.name());
+                if(voP!=null){
+                    peakFee = voP.getPrice().multiply(peakPower);
+                }
+                CostPriceRelevancyVo voF =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(),ElectricityTypeEnum.FLAT.name());
+                if(voF!=null){
+                    flatFee = voF.getPrice().multiply(flatPower);
+                }
+                CostPriceRelevancyVo voV =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(), ElectricityTypeEnum.VALLEY.name());
+                if(voV!=null){
+                    valleyFee = voV.getPrice().multiply(valleyPower);
+                }
+//                CostPriceRelevancyVo voD =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(), ElectricityTypeEnum.DEEP.name());
+//                if(voV!=null){
+//                    DeepFee = voV.getPrice().multiply(valleyPower);
+//                }
+
+
+
+
             }
             PeakValleyDayDataVO peakAndValleyReportVO = new PeakValleyDayDataVO(startTime, sharpFee, sharpPower,
                     peakFee, peakPower, flatFee, flatPower, valleyFee, valleyPower);
@@ -199,11 +228,11 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
         AtomicReference<BigDecimal> tipCount = new AtomicReference<>(BigDecimal.ZERO);
         AtomicReference<BigDecimal> troughCount = new AtomicReference<>(BigDecimal.ZERO);
         AtomicReference<BigDecimal> peakCount = new AtomicReference<>(BigDecimal.ZERO);
-        
+
         reportVOList.stream().forEach(r->{
             PeakValleyLineChatVO costVO = new PeakValleyLineChatVO();
             PeakValleyLineChatVO powerConsumptionVO = new PeakValleyLineChatVO();
-            
+
             /**
              * 用电量
              */
@@ -243,7 +272,7 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
             peakFreeCount.set(peakFreeCount.get().add(r.getPeakFee()));
         });
 
-        peakValleyDayTotalVO.setPeakPowerCost(peakFreeCount.get().doubleValue());   
+        peakValleyDayTotalVO.setPeakPowerCost(peakFreeCount.get().doubleValue());
         peakValleyDayTotalVO.setPeakPowerConsumption(peakCount.get().doubleValue());
         peakValleyDayTotalVO.setFlatPowerCost(flatFreeCount.get().doubleValue());
         peakValleyDayTotalVO.setFlatPowerConsumption(flatCount.get().doubleValue());
@@ -277,13 +306,15 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
             peakValleyDayTotalVO.setTipPowerCostProportion(0);
             peakValleyDayTotalVO.setTroughPowerCostProportion(0);
         }
-        
-        peakValleyDayTotalVO.setTotalCost(powerTotal.doubleValue());
-        peakValleyDayTotalVO.setTotalPowerConsumption(freeTotal.doubleValue());
+
+//        peakValleyDayTotalVO.setTotalCost(powerTotal.doubleValue());
+//        peakValleyDayTotalVO.setTotalPowerConsumption(freeTotal.doubleValue());
+        peakValleyDayTotalVO.setTotalCost(freeTotal.doubleValue());
+        peakValleyDayTotalVO.setTotalPowerConsumption(powerTotal.doubleValue());
         peakValleyVO.setTotalVO(peakValleyDayTotalVO);
         peakValleyVO.setCostList(costList);
         peakValleyVO.setPowerConsumptionList(powerConsumptionList);
-        
+
         return peakValleyVO;
     }
 
@@ -324,19 +355,39 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
                     String electricityType = electricityDataItem.getElectricityType();
 
                     if (ElectricityTypeEnum.SHARP.name().equals(electricityType)) {
-                        sharpFee = sharpFee.add(electricityDataItem.getCost());
+//                        sharpFee = sharpFee.add(electricityDataItem.getCost());
                         sharpPower = sharpPower.add(electricityDataItem.getElectricity());
                     } else if (ElectricityTypeEnum.PEAK.name().equals(electricityType)) {
-                        peakFee = peakFee.add(electricityDataItem.getCost());
+//                        peakFee = peakFee.add(electricityDataItem.getCost());
                         peakPower = peakPower.add(electricityDataItem.getElectricity());
                     } else if (ElectricityTypeEnum.FLAT.name().equals(electricityType)) {
-                        flatFee = flatFee.add(electricityDataItem.getCost());
+//                        flatFee = flatFee.add(electricityDataItem.getCost());
                         flatPower = flatPower.add(electricityDataItem.getElectricity());
                     } else {
-                        valleyFee = valleyFee.add(electricityDataItem.getCost());
+//                        valleyFee = valleyFee.add(electricityDataItem.getCost());
                         valleyPower = valleyPower.add(electricityDataItem.getElectricity());
                     }
                 }
+                //2024-11-12新增
+                CostPriceRelevancyVo voS =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(),ElectricityTypeEnum.SHARP.name());
+                if(voS!=null){
+                    sharpFee = voS.getPrice().multiply(sharpPower);
+                }
+                CostPriceRelevancyVo voP =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(),ElectricityTypeEnum.PEAK.name());
+                if(voP!=null){
+                    peakFee = voP.getPrice().multiply(peakPower);
+                }
+                CostPriceRelevancyVo voF =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(),ElectricityTypeEnum.FLAT.name());
+                if(voF!=null){
+                    flatFee = voF.getPrice().multiply(flatPower);
+                }
+                CostPriceRelevancyVo voV =  costPriceRelevancyMapper.selectCostPriceRelevancyByNodeId(dto.getNodeId(), ElectricityTypeEnum.VALLEY.name());
+                if(voV!=null){
+                    valleyFee = voV.getPrice().multiply(valleyPower);
+                }
+
+
+
             }
             PeakValleyHourDataVO peakAndValleyReportVO = new PeakValleyHourDataVO(startTime, sharpFee, sharpPower,
                     peakFee, peakPower, flatFee, flatPower, valleyFee, valleyPower);
@@ -471,5 +522,10 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
         }
 
        return reportVOList;
+    }
+
+    @Override
+    public PeakValleyDayVO segmentAnalysisDayCustomize(PeakValleyDTO dto) {
+        return null;
     }
 }

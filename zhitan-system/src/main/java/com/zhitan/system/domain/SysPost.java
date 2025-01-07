@@ -1,19 +1,20 @@
 package com.zhitan.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.zhitan.common.annotation.Excel;
+import com.zhitan.common.annotation.Excel.ColumnType;
+import com.zhitan.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.zhitan.common.annotation.Excel;
-import com.zhitan.common.annotation.Excel.ColumnType;
-import com.zhitan.common.core.domain.BaseEntity;
-
 /**
  * 岗位表 sys_post
- * 
+ *
  * @author zhitan
  */
 public class SysPost extends BaseEntity
@@ -42,6 +43,7 @@ public class SysPost extends BaseEntity
     private String status;
 
     /** 用户是否存在此岗位标识 默认不存在 */
+    @TableField(exist = false)
     private boolean flag = false;
 
     public Long getPostId()
@@ -108,7 +110,7 @@ public class SysPost extends BaseEntity
     {
         this.flag = flag;
     }
-    
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)

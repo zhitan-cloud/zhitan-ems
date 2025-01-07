@@ -1,18 +1,6 @@
 package com.zhitan.web.controller.system;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import javax.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.common.annotation.Log;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
@@ -21,10 +9,17 @@ import com.zhitan.common.enums.BusinessType;
 import com.zhitan.common.utils.poi.ExcelUtil;
 import com.zhitan.system.domain.SysPost;
 import com.zhitan.system.service.ISysPostService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 岗位信息操作处理
- * 
+ *
  * @author zhitan
  */
 @RestController
@@ -39,13 +34,12 @@ public class SysPostController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysPost post)
+    public TableDataInfo list(SysPost post,Long pageNum,Long pageSize)
     {
-        startPage();
-        List<SysPost> list = postService.selectPostList(post);
+        Page<SysPost> list = postService.selectPostPage(post,pageNum,pageSize);
         return getDataTable(list);
     }
-    
+
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:post:export')")
     @PostMapping("/export")

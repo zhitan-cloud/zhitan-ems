@@ -27,4 +27,15 @@ public interface PeakValleyMapper {
      */
     List<ElectricityDataItem> getDataStatistics(@Param("indexIdSet") Set<String> indexIdSet, @Param("startTime") Date startTime,
                                                 @Param("endTime") Date endTime, @Param("timeType") String timeType);
+
+    /**
+     * 查询尖峰平谷统计数据(偏差分析)
+     *
+     * @param indexIdSet 点位id集合
+     * @param timeType   时间类型
+     * @return 结果
+     */
+    List<ElectricityDataItem> getDataStatisticsDeviationAnalysis(@Param("indexIdSet") Set<String> indexIdSet,
+                                                 @Param("timeType") String timeType);
+
 }

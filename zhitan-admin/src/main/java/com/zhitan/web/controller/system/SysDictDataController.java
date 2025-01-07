@@ -1,5 +1,6 @@
 package com.zhitan.web.controller.system;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.common.annotation.Log;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
@@ -21,7 +22,7 @@ import java.util.List;
 
 /**
  * 数据字典信息
- * 
+ *
  * @author zhitan
  */
 @RestController
@@ -36,10 +37,9 @@ public class SysDictDataController extends BaseController
 
     @PreAuthorize("@ss.hasPermi('system:dict:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysDictData dictData)
+    public TableDataInfo list(SysDictData dictData,Long pageNum, Long pageSize)
     {
-        startPage();
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
+        Page<SysDictData> list = dictDataService.selectDictDataPage(dictData,pageNum,pageSize);
         return getDataTable(list);
     }
 

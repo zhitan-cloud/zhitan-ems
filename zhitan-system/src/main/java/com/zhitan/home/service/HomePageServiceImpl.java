@@ -237,7 +237,7 @@ public class HomePageServiceImpl implements IHomePageService {
                 final List<ElectricityDataItem> electricityDataItems = electricityDataMap.get(vo.getTimeType());
                 if(null != electricityDataItems) {
                     final double sum = electricityDataItems.stream().map(ElectricityDataItem::getElectricity).mapToDouble(BigDecimal::doubleValue).sum();
-                    vo.setCount(sum);
+                    vo.setCount(format2Double(sum));
                     if(totalElectric != 0) {
                         vo.setPercentage(format2Double(sum / totalElectric * 100));
                     }
@@ -390,8 +390,8 @@ public class HomePageServiceImpl implements IHomePageService {
             }
         });
         List<String> indexIds = nodeIndexInforList.stream().filter(l -> StringUtils.isNotEmpty(l.getIndexId())).map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
-//        Date queryTime = new Date();
-        Date queryTime = DateUtil.parseDateTime("2023-03-28 00:00:00");
+        Date queryTime = new Date();
+//        Date queryTime = DateUtil.parseDateTime("2023-03-28 00:00:00");
         Date beginTime;
         Date endTime;
         String shixuTimeType;

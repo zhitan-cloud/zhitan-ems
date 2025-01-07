@@ -116,6 +116,19 @@ public class MeterImplement extends BaseEntity
     @Excel(name = "允许最大功率")
     private String maxAllowablePower;
 
+
+
+    @TableField(exist = false)
+    private String installLocationName;
+
+    public String getInstallLocationName() {
+        return installLocationName;
+    }
+
+    public void setInstallLocationName(String installLocationName) {
+        this.installLocationName = installLocationName;
+    }
+
     public String getGatewayId() {
         return gatewayId;
     }

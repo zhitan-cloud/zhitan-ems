@@ -44,7 +44,6 @@ public class GatewaySettingController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(GatewaySetting gatewaySetting,@RequestParam Long pageNum,@RequestParam Long pageSize)
     {
-//        startPage();
         Page<GatewaySetting> list = gatewaySettingService.selectGatewaySettingPage(gatewaySetting,pageNum,pageSize);
         return getDataTable(list);
     }

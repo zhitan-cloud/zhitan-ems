@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.costmanagement.mapper.CostElectricityInputMapper">
+
+    <resultMap type="CostElectricityInput" id="CostElectricityInputResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="electricityNum"    column="electricity_num"    />
+        <result property="time"    column="time"    />
+        <result property="electricityFee"    column="electricity_fee"    />
+        <result property="powerFactor"    column="power_factor"    />
+        <result property="sharpElectricity"    column="sharp_electricity"    />
+        <result property="peakElectricity"    column="peak_electricity"    />
+        <result property="flatElectricity"    column="flat_electricity"    />
+        <result property="valleyElectricity"    column="valley_electricity"    />
+    </resultMap>
+
+    <sql id="selectCostElectricityInputVo">
+        select id, type, create_time, create_by, update_time, update_by, remark, electricity_num, time,
+            electricity_fee, power_factor, sharp_electricity, peak_electricity, flat_electricity, valley_electricity
+        from cost_electricity_input
+    </sql>
+
+    <select id="selectCostElectricityInputList" parameterType="CostElectricityInput" resultMap="CostElectricityInputResult">
+        <include refid="selectCostElectricityInputVo"/>
+        <where>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="electricityNum != null  and electricityNum != ''"> and electricity_num = #{electricityNum}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="electricityFee != null  and electricityFee != ''"> and electricity_fee = #{electricityFee}</if>
+            <if test="powerFactor != null  and powerFactor != ''"> and power_factor = #{powerFactor}</if>
+            <if test="sharpElectricity != null  and sharpElectricity != ''"> and sharp_electricity = #{sharpElectricity}</if>
+            <if test="peakElectricity != null  and peakElectricity != ''"> and peak_electricity = #{peakElectricity}</if>
+            <if test="flatElectricity != null  and flatElectricity != ''"> and flat_electricity = #{flatElectricity}</if>
+            <if test="valleyElectricity != null  and valleyElectricity != ''"> and valley_electricity = #{valleyElectricity}</if>
+        </where>
+    </select>
+
+    <select id="selectCostElectricityInputById" parameterType="String" resultMap="CostElectricityInputResult">
+        <include refid="selectCostElectricityInputVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCostElectricityInput" parameterType="CostElectricityInput">
+        insert into cost_electricity_input
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="electricityNum != null">electricity_num,</if>
+            <if test="time != null">time,</if>
+            <if test="electricityFee != null">electricity_fee,</if>
+            <if test="powerFactor != null">power_factor,</if>
+            <if test="sharpElectricity != null">sharp_electricity,</if>
+            <if test="peakElectricity != null">peak_electricity,</if>
+            <if test="flatElectricity != null">flat_electricity,</if>
+            <if test="valleyElectricity != null">valley_electricity,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="electricityNum != null">#{electricityNum},</if>
+            <if test="time != null">#{time},</if>
+            <if test="electricityFee != null">#{electricityFee},</if>
+            <if test="powerFactor != null">#{powerFactor},</if>
+            <if test="sharpElectricity != null">#{sharpElectricity},</if>
+            <if test="peakElectricity != null">#{peakElectricity},</if>
+            <if test="flatElectricity != null">#{flatElectricity},</if>
+            <if test="valleyElectricity != null">#{valleyElectricity},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCostElectricityInput" parameterType="CostElectricityInput">
+        update cost_electricity_input
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="electricityNum != null">electricity_num = #{electricityNum},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="electricityFee != null">electricity_fee = #{electricityFee},</if>
+            <if test="powerFactor != null">power_factor = #{powerFactor},</if>
+            <if test="sharpElectricity != null">sharp_electricity = #{sharpElectricity},</if>
+            <if test="peakElectricity != null">peak_electricity = #{peakElectricity},</if>
+            <if test="flatElectricity != null">flat_electricity = #{flatElectricity},</if>
+            <if test="valleyElectricity != null">valley_electricity = #{valleyElectricity},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCostElectricityInputById" parameterType="String">
+        delete from cost_electricity_input where id = #{id}
+    </delete>
+
+    <delete id="deleteCostElectricityInputByIds" parameterType="String">
+        delete from cost_electricity_input where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

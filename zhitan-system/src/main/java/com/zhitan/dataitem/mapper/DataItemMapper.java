@@ -1,5 +1,6 @@
 package com.zhitan.dataitem.mapper;
 
+import com.zhitan.carbonemission.domain.CarbonEmission;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.realtimedata.domain.DataItem;
@@ -75,4 +76,38 @@ public interface DataItemMapper {
      */
     BigDecimal getDataItemValueByIndexIds(@Param("timeCode") String timeCode, @Param("indexIds") List<String> indexIds);
 
+
+    /**
+     * 根据indexId与时间范围查询碳排放数据，上半部分
+     * @param beginTime
+     * @param endTime
+     * @param timeType
+     * @param indexId
+     * @return
+     */
+    List<CarbonEmission> getUpCarbonEmission(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
+                                             @Param("timeType") String timeType, @Param("indexId") String indexId);
+
+
+    /**
+     * 根据indexId与时间范围查询碳排放数据，中间部分
+     * @param beginTime
+     * @param endTime
+     * @param timeType
+     * @param indexId
+     * @return
+     */
+    List<CarbonEmission> getMiddleCarbonEmission(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
+                                             @Param("timeType") String timeType, @Param("indexId") String indexId,@Param("emissionType") String emissionType);
+
+    /**
+     * 根据indexId与时间范围查询碳排放数据，下半部分
+     * @param beginTime
+     * @param endTime
+     * @param timeType
+     * @param indexId
+     * @return
+     */
+    List<CarbonEmission> getDownCarbonEmission(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
+                                             @Param("timeType") String timeType, @Param("indexId") String indexId);
 }

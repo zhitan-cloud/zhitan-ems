@@ -60,6 +60,7 @@ public class PeakValleyController extends BaseController {
     @ApiOperation(value = "获取尖峰平谷分时统计")
     public AjaxResult segmentAnalysisDay(PeakValleyDTO dto) {
         return AjaxResult.success(rulesService.segmentAnalysisDay(dto));
+//        return AjaxResult.success(rulesService.segmentAnalysisDayCustomize(dto));
     }
 
 

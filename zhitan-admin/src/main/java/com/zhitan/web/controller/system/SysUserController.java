@@ -1,21 +1,6 @@
 package com.zhitan.web.controller.system;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.ArrayUtils;
-import javax.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.common.annotation.Log;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
@@ -31,10 +16,20 @@ import com.zhitan.system.service.ISysDeptService;
 import com.zhitan.system.service.ISysPostService;
 import com.zhitan.system.service.ISysRoleService;
 import com.zhitan.system.service.ISysUserService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息
- * 
+ *
  * @author zhitan
  */
 @RestController
@@ -58,10 +53,9 @@ public class SysUserController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:user:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysUser user)
+    public TableDataInfo list(SysUser user, Long pageNum, Long pageSize)
     {
-        startPage();
-        List<SysUser> list = userService.selectUserList(user);
+        Page<SysUser> list = userService.selectUserPage(user,pageNum,pageSize);
         return getDataTable(list);
     }
 

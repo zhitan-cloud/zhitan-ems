@@ -86,4 +86,6 @@ public interface MeterImplementMapper extends BaseMapper<MeterImplement>
     List<MeterImplement> listMeterImplementByIds(@Param("meterIdList") List<String> meterIdList);
 
     MeterImplement selectByNodeIdIndexId(@Param("nodeId") String nodeId, @Param("indexId") String indexId);
+
+    List<MeterImplement> listMeterImplByInstallLocation(@Param("installactionLocation") String installactionLocation);
 }

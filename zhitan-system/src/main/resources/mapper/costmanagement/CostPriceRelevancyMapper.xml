@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.costmanagement.mapper.CostPriceRelevancyMapper">
+
+    <resultMap type="CostPriceRelevancy" id="CostPriceRelevancyResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="nodeId"    column="node_id"    />
+        <result property="tacticsId"    column="tactics_id"    />
+        <result property="energyType"    column="energy_type"    />
+        <result property="effectiveBeginTime"    column="effective_begin_time"    />
+        <result property="effectiveEndTime"    column="effective_end_time"    />
+    </resultMap>
+
+    <sql id="selectCostPriceRelevancyVo">
+        select id, create_time, create_by, update_time, update_by, remark, node_id, tactics_id,
+        energy_type, effective_begin_time, effective_end_time from cost_price_relevancy
+    </sql>
+
+    <select id="selectCostPriceRelevancyList" parameterType="CostPriceRelevancy" resultMap="CostPriceRelevancyResult">
+        <include refid="selectCostPriceRelevancyVo"/>
+        <where>
+            <if test="nodeId != null  and nodeId != ''"> and node_id = #{nodeId}</if>
+            <if test="tacticsId != null  and tacticsId != ''"> and tactics_id = #{tacticsId}</if>
+            <if test="energyType != null  and energyType != ''"> and energy_type = #{energyType}</if>
+            <if test="effectiveBeginTime != null "> and effective_begin_time = #{effectiveBeginTime}</if>
+            <if test="effectiveEndTime != null "> and effective_end_time = #{effectiveEndTime}</if>
+        </where>
+    </select>
+
+    <select id="selectCostPriceRelevancyById" parameterType="String" resultMap="CostPriceRelevancyResult">
+        <include refid="selectCostPriceRelevancyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCostPriceRelevancy" parameterType="CostPriceRelevancy">
+        insert into cost_price_relevancy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="nodeId != null">node_id,</if>
+            <if test="tacticsId != null">tactics_id,</if>
+            <if test="energyType != null">energy_type,</if>
+            <if test="effectiveBeginTime != null">effective_begin_time,</if>
+            <if test="effectiveEndTime != null">effective_end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="nodeId != null">#{nodeId},</if>
+            <if test="tacticsId != null">#{tacticsId},</if>
+            <if test="energyType != null">#{energyType},</if>
+            <if test="effectiveBeginTime != null">#{effectiveBeginTime},</if>
+            <if test="effectiveEndTime != null">#{effectiveEndTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCostPriceRelevancy" parameterType="CostPriceRelevancy">
+        update cost_price_relevancy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="nodeId != null">node_id = #{nodeId},</if>
+            <if test="tacticsId != null">tactics_id = #{tacticsId},</if>
+            <if test="energyType != null">energy_type = #{energyType},</if>
+            <if test="effectiveBeginTime != null">effective_begin_time = #{effectiveBeginTime},</if>
+            <if test="effectiveEndTime != null">effective_end_time = #{effectiveEndTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCostPriceRelevancyById" parameterType="String">
+        delete from cost_price_relevancy where id = #{id}
+    </delete>
+
+    <delete id="deleteCostPriceRelevancyByIds" parameterType="String">
+        delete from cost_price_relevancy where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCostPriceRelevancyByNodeId" parameterType="String" resultType="com.zhitan.costmanagement.domain.vo.CostPriceRelevancyVo">
+                 SELECT
+                 item.electricity_type AS electricityType,
+                 item.price
+                 FROM
+                 cost_price_relevancy re
+                 INNER JOIN cost_price_tactics ta ON re.tactics_id = ta.ID
+                 INNER JOIN cost_price_tactics_item item ON item.tactics_id = ta.ID
+                 WHERE
+                 re.node_id = #{nodeId}
+                 and item.electricity_type=#{elType}
+
+    </select>
+</mapper>

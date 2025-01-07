@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.spikesandvalleys.mapper.SpikesAndValleysItemMapper">
+
+    <resultMap type="SpikesAndValleysItem" id="SpikesAndValleysItemResult">
+        <result property="id"    column="id"    />
+        <result property="time"    column="time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="electrovalency"    column="electrovalency"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="schemeId"    column="scheme_id"    />
+    </resultMap>
+
+    <sql id="selectSpikesAndValleysItemVo">
+        select id, time, create_time, create_by, update_time, update_by, remark, electrovalency, start_time, end_time, scheme_id from spikes_and_valleys_item
+    </sql>
+
+    <select id="selectSpikesAndValleysItemList" parameterType="SpikesAndValleysItem" resultMap="SpikesAndValleysItemResult">
+        <include refid="selectSpikesAndValleysItemVo"/>
+        <where>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="electrovalency != null  and electrovalency != ''"> and electrovalency = #{electrovalency}</if>
+            <if test="startTime != null  and startTime != ''"> and start_time = #{startTime}</if>
+            <if test="endTime != null  and endTime != ''"> and end_time = #{endTime}</if>
+            <if test="schemeId != null  and schemeId != ''"> and scheme_id = #{schemeId}</if>
+        </where>
+    </select>
+
+    <select id="selectSpikesAndValleysItemById" parameterType="String" resultMap="SpikesAndValleysItemResult">
+        <include refid="selectSpikesAndValleysItemVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSpikesAndValleysItem" parameterType="SpikesAndValleysItem">
+        insert into spikes_and_valleys_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="time != null">time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="electrovalency != null">electrovalency,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="schemeId != null">scheme_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="time != null">#{time},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="electrovalency != null">#{electrovalency},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="schemeId != null">#{schemeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSpikesAndValleysItem" parameterType="SpikesAndValleysItem">
+        update spikes_and_valleys_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">time = #{time},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="electrovalency != null">electrovalency = #{electrovalency},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="schemeId != null">scheme_id = #{schemeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSpikesAndValleysItemById" parameterType="String">
+        delete from spikes_and_valleys_item where id = #{id}
+    </delete>
+
+    <delete id="deleteSpikesAndValleysItemByIds" parameterType="String">
+        delete from spikes_and_valleys_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

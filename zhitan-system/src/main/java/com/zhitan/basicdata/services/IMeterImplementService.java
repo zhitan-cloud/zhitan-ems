@@ -95,4 +95,6 @@ public interface IMeterImplementService
     List<MeterImplement> listMeterImplementByIds(List<String> meterIdList);
 
     Page<MeterImplement> selectMeterImplementPage(MeterImplement meterImplement, Long pageNum, Long pageSize);
+
+    List<MeterImplement> listMeterImplByInstallLocation(String id);
 }

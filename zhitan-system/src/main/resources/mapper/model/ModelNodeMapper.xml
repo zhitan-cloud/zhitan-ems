@@ -377,7 +377,7 @@
             values (#{nodeId}, #{indexId})
         </foreach>
     </insert>
-    
+
     <select id="getModelNodeIndexIdByNodeId" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
@@ -386,7 +386,7 @@
         FROM "model_node" mn
         LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
         LEFT JOIN energy_index ei on ni.index_id = ei.index_id
-        WHERE ni.node_id = #{nodeId} 
+        WHERE ni.node_id = #{nodeId}
         <if test="energyType!=null and energyType!=''">
             and ei.energy_id = #{energyType}
         </if>
@@ -404,7 +404,7 @@
     <select id="getFirstModeNodeInfo" resultType="com.zhitan.model.domain.ModelNode">
         <include refid="selectModelNodeVo"/>
         where model_code = #{modelCode}  AND parent_id is null
-        order by order_num 
+        order by order_num
     </select>
     <select id="selectIndexByNodeIds" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
         SELECT mn.node_id  nodeId,
@@ -414,10 +414,17 @@
         FROM "model_node" mn
         LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
         left join energy_index ei on ni.index_id = ei.index_id
-        WHERE mn.model_code = #{modelCode}
+        <where>
+            mn.model_code = #{modelCode}
           AND mn.node_id in
         <foreach collection="nodeIds" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
+        <if test="modelCode!=null and modelCode!='' and nodeIds.size>0">
+            and ei.index_type='STATISTIC'
+        </if>
+
+        </where>
+
     </select>
 </mapper>

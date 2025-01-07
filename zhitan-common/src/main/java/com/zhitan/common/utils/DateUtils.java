@@ -193,4 +193,28 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
     }
+
+    /**
+     *  获取指定日期额月份的天数，并转换成数组
+     * @param date 日期
+     * @return 日期数组
+     */
+    public static String[] getDays(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("日期参数不能为空");
+        }
+
+        // 将 Date 转换为 LocalDate
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int daysInMonth = localDate.lengthOfMonth();
+        String[] strings = new String[daysInMonth];
+
+        for (int i = 1; i <= daysInMonth; i++) {
+            // 使用String.format简化零填充
+            strings[i - 1] = String.format("%02d", i);
+        }
+
+        return strings;
+    }
+
 }

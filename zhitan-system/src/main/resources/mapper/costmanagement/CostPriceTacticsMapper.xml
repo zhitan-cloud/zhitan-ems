@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.costmanagement.mapper.CostPriceTacticsMapper">
+
+    <resultMap type="CostPriceTactics" id="CostPriceTacticsResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="tacticsNumber"    column="tactics_number"    />
+        <result property="tacticsName"    column="tactics_name"    />
+        <result property="energyType"    column="energy_type"    />
+    </resultMap>
+
+    <sql id="selectCostPriceTacticsVo">
+        select id, type, create_time, create_by, update_time, update_by, remark, tactics_number, tactics_name, energy_type from cost_price_tactics
+    </sql>
+
+    <select id="selectCostPriceTacticsList" parameterType="CostPriceTactics" resultMap="CostPriceTacticsResult">
+        <include refid="selectCostPriceTacticsVo"/>
+        <where>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="tacticsNumber != null  and tacticsNumber != ''"> and tactics_number = #{tacticsNumber}</if>
+            <if test="tacticsName != null  and tacticsName != ''"> and tactics_name like concat('%', #{tacticsName}, '%')</if>
+            <if test="energyType != null  and energyType != ''"> and energy_type = #{energyType}</if>
+        </where>
+    </select>
+
+    <select id="selectCostPriceTacticsById" parameterType="String" resultMap="CostPriceTacticsResult">
+        <include refid="selectCostPriceTacticsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCostPriceTactics" parameterType="CostPriceTactics">
+        insert into cost_price_tactics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tacticsNumber != null">tactics_number,</if>
+            <if test="tacticsName != null">tactics_name,</if>
+            <if test="energyType != null">energy_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tacticsNumber != null">#{tacticsNumber},</if>
+            <if test="tacticsName != null">#{tacticsName},</if>
+            <if test="energyType != null">#{energyType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCostPriceTactics" parameterType="CostPriceTactics">
+        update cost_price_tactics
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tacticsNumber != null">tactics_number = #{tacticsNumber},</if>
+            <if test="tacticsName != null">tactics_name = #{tacticsName},</if>
+            <if test="energyType != null">energy_type = #{energyType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCostPriceTacticsById" parameterType="String">
+        delete from cost_price_tactics where id = #{id}
+    </delete>
+
+    <delete id="deleteCostPriceTacticsByIds" parameterType="String">
+        delete from cost_price_tactics where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCostPriceTacticsListAll"  resultMap="CostPriceTacticsResult">
+        <include refid="selectCostPriceTacticsVo"/>
+        <where>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="tacticsNumber != null  and tacticsNumber != ''"> and tactics_number = #{tacticsNumber}</if>
+            <if test="tacticsName != null  and tacticsName != ''"> and tactics_name like concat('%', #{tacticsName}, '%')</if>
+            <if test="energyType != null  and energyType != ''"> and energy_type = #{energyType}</if>
+        </where>
+    </select>
+</mapper>

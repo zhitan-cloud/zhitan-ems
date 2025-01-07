@@ -1,21 +1,24 @@
 package com.zhitan.common.core.domain.entity;
 
-import java.util.Date;
-import java.util.List;
-import javax.validation.constraints.*;
-
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zhitan.common.annotation.Excel;
 import com.zhitan.common.annotation.Excels;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.zhitan.common.core.domain.BaseEntity;
 import com.zhitan.common.xss.Xss;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户对象 sys_user
- * 
+ *
  * @author zhitan
  */
 @TableName("sys_user")
@@ -78,19 +81,26 @@ public class SysUser extends BaseEntity
         @Excel(name = "部门名称", targetAttr = "deptName", type = Excel.Type.EXPORT),
         @Excel(name = "部门负责人", targetAttr = "leader", type = Excel.Type.EXPORT)
     })
+    @TableField(exist = false)
     private SysDept dept;
 
     /** 角色对象 */
+    @TableField(exist = false)
     private List<SysRole> roles;
 
     /** 角色组 */
+    @TableField(exist = false)
     private Long[] roleIds;
 
     /** 岗位组 */
+    @TableField(exist = false)
     private Long[] postIds;
 
     /** 角色ID */
+    @TableField(exist = false)
     private Long roleId;
+
+    private String singleUser;
 
     public SysUser()
     {
@@ -298,6 +308,14 @@ public class SysUser extends BaseEntity
     public void setRoleId(Long roleId)
     {
         this.roleId = roleId;
+    }
+
+    public String getSingleUser() {
+        return singleUser;
+    }
+
+    public void setSingleUser(String singleUser) {
+        this.singleUser = singleUser;
     }
 
     @Override

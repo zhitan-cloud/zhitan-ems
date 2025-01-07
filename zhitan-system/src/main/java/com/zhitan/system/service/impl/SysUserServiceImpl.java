@@ -1,24 +1,14 @@
 package com.zhitan.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.validation.Validator;
-
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import com.zhitan.common.annotation.DataScope;
 import com.zhitan.common.constant.UserConstants;
 import com.zhitan.common.core.domain.entity.SysRole;
 import com.zhitan.common.core.domain.entity.SysUser;
 import com.zhitan.common.exception.ServiceException;
+import com.zhitan.common.utils.DateUtils;
 import com.zhitan.common.utils.SecurityUtils;
 import com.zhitan.common.utils.StringUtils;
 import com.zhitan.common.utils.bean.BeanValidators;
@@ -26,13 +16,20 @@ import com.zhitan.common.utils.spring.SpringUtils;
 import com.zhitan.system.domain.SysPost;
 import com.zhitan.system.domain.SysUserPost;
 import com.zhitan.system.domain.SysUserRole;
-import com.zhitan.system.mapper.SysPostMapper;
-import com.zhitan.system.mapper.SysRoleMapper;
-import com.zhitan.system.mapper.SysUserMapper;
-import com.zhitan.system.mapper.SysUserPostMapper;
-import com.zhitan.system.mapper.SysUserRoleMapper;
+import com.zhitan.system.mapper.*;
 import com.zhitan.system.service.ISysConfigService;
 import com.zhitan.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import javax.annotation.Resource;
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户 业务层处理
@@ -490,5 +487,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+    @Override
+    public Page<SysUser> selectUserPage(SysUser user, Long pageNum, Long pageSize) {
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotEmpty(user.getUserName()),SysUser::getUserName,user.getUserName());
+        queryWrapper.like(StringUtils.isNotEmpty(user.getPhoneNumber()),SysUser::getPhoneNumber,user.getPhoneNumber());
+        queryWrapper.eq(StringUtils.isNotEmpty(user.getStatus()),SysUser::getStatus,user.getStatus());
+        if(user.getParams().containsKey("beginTime")) {
+            queryWrapper.between(SysUser::getCreateTime,
+                    DateUtils.parseDate(user.getParams().get("beginTime")),
+                    DateUtils.parseDate(user.getParams().get("endTime")));
+        }
+        final Page<SysUser> page = userMapper.selectPage(new Page<SysUser>(pageNum, pageSize),queryWrapper);
+        return page;
+    }
+
+    @Override
+    public Long checkThirdUserExist(SysUser user) {
+        LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SysUser::getUserName,user.getUserName());
+        return userMapper.selectCount(queryWrapper);
     }
 }

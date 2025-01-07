@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.benchmarkmanage.mapper.EnergyBenchmarkManageMapper">
+
+    <resultMap type="com.zhitan.benchmarkmanage.domain.EnergyBenchmarkManage" id="EnergyBenchmarkManageResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="type"    column="type"    />
+        <result property="grade"    column="grade"    />
+        <result property="value"    column="value"    />
+        <result property="nationalNum"    column="national_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEnergyBenchmarkManageVo">
+        select id, code, type, grade, value, national_num, create_by, create_time, update_by, update_time, remark from energy_benchmark_manage
+    </sql>
+
+    <select id="selectEnergyBenchmarkManageList" parameterType="com.zhitan.benchmarkmanage.domain.EnergyBenchmarkManage" resultMap="EnergyBenchmarkManageResult">
+        <include refid="selectEnergyBenchmarkManageVo"/>
+        <where>
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="grade != null  and grade != ''"> and grade = #{grade}</if>
+            <if test="value != null  and value != ''"> and value = #{value}</if>
+            <if test="nationalNum != null  and nationalNum != ''"> and national_num like concat('%', #{nationalNum}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectEnergyBenchmarkManageById" parameterType="String" resultMap="EnergyBenchmarkManageResult">
+        <include refid="selectEnergyBenchmarkManageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEnergyBenchmarkManage" parameterType="com.zhitan.benchmarkmanage.domain.EnergyBenchmarkManage">
+        insert into energy_benchmark_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="code != null">code,</if>
+            <if test="type != null">type,</if>
+            <if test="grade != null">grade,</if>
+            <if test="value != null">value,</if>
+            <if test="nationalNum != null">national_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="type != null">#{type},</if>
+            <if test="grade != null">#{grade},</if>
+            <if test="value != null">#{value},</if>
+            <if test="nationalNum != null">#{nationalNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnergyBenchmarkManage" parameterType="com.zhitan.benchmarkmanage.domain.EnergyBenchmarkManage">
+        update energy_benchmark_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="grade != null">grade = #{grade},</if>
+            <if test="value != null">value = #{value},</if>
+            <if test="nationalNum != null">national_num = #{nationalNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnergyBenchmarkManageById" parameterType="String">
+        delete from energy_benchmark_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteEnergyBenchmarkManageByIds" parameterType="String">
+        delete from energy_benchmark_manage where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getList" parameterType="com.zhitan.benchmarkmanage.domain.EnergyBenchmarkManage" resultMap="EnergyBenchmarkManageResult">
+        <include refid="selectEnergyBenchmarkManageVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and id != #{id}</if>
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="grade != null  and grade != ''"> and grade = #{grade}</if>
+        </where>
+    </select>
+</mapper>

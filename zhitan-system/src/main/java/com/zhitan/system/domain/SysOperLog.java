@@ -1,16 +1,17 @@
 package com.zhitan.system.domain;
 
-import java.util.Date;
-
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zhitan.common.annotation.Excel;
 import com.zhitan.common.annotation.Excel.ColumnType;
 import com.zhitan.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 操作日志记录表 oper_log
- * 
+ *
  * @author zhitan
  */
 public class SysOperLog extends BaseEntity
@@ -31,6 +32,7 @@ public class SysOperLog extends BaseEntity
     private Integer businessType;
 
     /** 业务类型数组 */
+    @TableField(exist = false)
     private Integer[] businessTypes;
 
     /** 请求方法 */

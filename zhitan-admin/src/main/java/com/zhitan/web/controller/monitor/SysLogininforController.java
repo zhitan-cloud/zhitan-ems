@@ -1,15 +1,6 @@
 package com.zhitan.web.controller.monitor;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import javax.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.common.annotation.Log;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
@@ -19,10 +10,16 @@ import com.zhitan.common.utils.poi.ExcelUtil;
 import com.zhitan.framework.web.service.SysPasswordService;
 import com.zhitan.system.domain.SysLoginInfo;
 import com.zhitan.system.service.ISysLoginInfoService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 系统访问记录
- * 
+ *
  * @author zhitan
  */
 @RestController
@@ -37,10 +34,9 @@ public class SysLogininforController extends BaseController
 
     @PreAuthorize("@ss.hasPermi('monitor:logininfor:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysLoginInfo logininfor)
+    public TableDataInfo list(SysLoginInfo logininfor,Long pageNum, Long pageSize)
     {
-        startPage();
-        List<SysLoginInfo> list = logininforService.selectLogininforList(logininfor);
+        Page<SysLoginInfo> list = logininforService.selectLogininforPage(logininfor,pageNum,pageSize);
         return getDataTable(list);
     }
 

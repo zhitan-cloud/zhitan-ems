@@ -4,9 +4,7 @@ import com.zhitan.framework.config.properties.PermitAllUrlProperties;
 import com.zhitan.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.zhitan.framework.security.handle.AuthenticationEntryPointImpl;
 import com.zhitan.framework.security.handle.LogoutSuccessHandlerImpl;
-
-import javax.annotation.Resource;
-
+import com.zhitan.framework.security.single.SingleAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,8 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * spring security配置
@@ -55,6 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Resource
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
+
+    /**
+     * token认证过滤器
+     */
+    @Resource
+    private SingleAuthenticationProvider singleAuthenticationProvider;
 
     /**
      * 跨域过滤器
@@ -143,5 +146,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.authenticationProvider(singleAuthenticationProvider);
     }
 }

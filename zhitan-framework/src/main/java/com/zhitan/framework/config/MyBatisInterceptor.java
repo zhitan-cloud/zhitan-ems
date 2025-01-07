@@ -1,6 +1,6 @@
 package com.zhitan.framework.config;
 
-import com.sun.istack.internal.NotNull;
+
 import com.zhitan.common.core.domain.model.LoginUser;
 import com.zhitan.common.utils.ReflectionUtils;
 import com.zhitan.common.utils.SecurityUtils;
@@ -13,6 +13,7 @@ import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.*;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Date;

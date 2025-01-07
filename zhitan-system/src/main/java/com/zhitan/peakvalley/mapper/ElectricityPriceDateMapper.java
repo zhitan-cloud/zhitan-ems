@@ -1,6 +1,7 @@
 package com.zhitan.peakvalley.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zhitan.costmanagement.domain.vo.ElectricityPriceDateVo;
 import com.zhitan.peakvalley.domain.ElectricityPriceDate;
 
 import java.util.List;
@@ -59,4 +60,11 @@ public interface ElectricityPriceDateMapper extends BaseMapper<ElectricityPriceD
      * @return 结果
      */
     public int deleteElectricityPriceDateByIds(String[] ids);
+
+
+    /**
+     * 单价策略列表查询（不分页）
+     *
+     */
+    List<ElectricityPriceDate> selectElectricityPriceDatePageTacticsAll();
 }

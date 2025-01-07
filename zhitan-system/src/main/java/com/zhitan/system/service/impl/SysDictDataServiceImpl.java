@@ -1,18 +1,21 @@
 package com.zhitan.system.service.impl;
 
-import java.util.List;
-import javax.annotation.Resource;
-
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.springframework.stereotype.Service;
 import com.zhitan.common.core.domain.entity.SysDictData;
 import com.zhitan.common.utils.DictUtils;
+import com.zhitan.common.utils.StringUtils;
 import com.zhitan.system.mapper.SysDictDataMapper;
 import com.zhitan.system.service.ISysDictDataService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 字典 业务层处理
- * 
+ *
  * @author zhitan
  */
 @Service
@@ -23,7 +26,7 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
 
     /**
      * 根据条件分页查询字典数据
-     * 
+     *
      * @param dictData 字典数据信息
      * @return 字典数据集合信息
      */
@@ -35,7 +38,7 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
 
     /**
      * 根据字典类型和字典键值查询字典数据信息
-     * 
+     *
      * @param dictType 字典类型
      * @param dictValue 字典键值
      * @return 字典标签
@@ -48,7 +51,7 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
 
     /**
      * 根据字典数据ID查询信息
-     * 
+     *
      * @param dictCode 字典数据ID
      * @return 字典数据
      */
@@ -60,7 +63,7 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
 
     /**
      * 批量删除字典数据信息
-     * 
+     *
      * @param dictCodes 需要删除的字典数据ID
      */
     @Override
@@ -77,7 +80,7 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
 
     /**
      * 新增保存字典数据信息
-     * 
+     *
      * @param data 字典数据信息
      * @return 结果
      */
@@ -95,7 +98,7 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
 
     /**
      * 修改保存字典数据信息
-     * 
+     *
      * @param data 字典数据信息
      * @return 结果
      */
@@ -114,5 +117,13 @@ public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper,SysDic
     @Override
     public List<SysDictData> selectDictDataByType(String dictType) {
         return dictDataMapper.selectDictDataByType(dictType);
+    }
+    @Override
+    public Page<SysDictData> selectDictDataPage(SysDictData dictData, Long pageNum, Long pageSize) {
+        LambdaQueryWrapper<SysDictData> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotEmpty(dictData.getDictLabel()),SysDictData::getDictLabel,dictData.getDictLabel());
+        queryWrapper.eq(StringUtils.isNotEmpty(dictData.getDictType()),SysDictData::getDictType,dictData.getDictType());
+        queryWrapper.eq(StringUtils.isNotEmpty(dictData.getStatus()),SysDictData::getStatus,dictData.getStatus());
+        return dictDataMapper.selectPage(new Page<>(pageNum,pageSize),queryWrapper);
     }
 }

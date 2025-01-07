@@ -1,15 +1,5 @@
 package com.zhitan.framework.web.service;
 
-import javax.annotation.Resource;
-
-import com.zhitan.framework.manager.AsyncManager;
-import com.zhitan.framework.manager.factory.AsyncFactory;
-import com.zhitan.framework.security.context.AuthenticationContextHolder;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import com.zhitan.common.constant.CacheConstants;
 import com.zhitan.common.constant.Constants;
 import com.zhitan.common.constant.UserConstants;
@@ -17,21 +7,28 @@ import com.zhitan.common.core.domain.entity.SysUser;
 import com.zhitan.common.core.domain.model.LoginUser;
 import com.zhitan.common.core.redis.RedisCache;
 import com.zhitan.common.exception.ServiceException;
-import com.zhitan.common.exception.user.BlackListException;
-import com.zhitan.common.exception.user.CaptchaException;
-import com.zhitan.common.exception.user.CaptchaExpireException;
-import com.zhitan.common.exception.user.UserNotExistsException;
-import com.zhitan.common.exception.user.UserPasswordNotMatchException;
+import com.zhitan.common.exception.user.*;
 import com.zhitan.common.utils.DateUtils;
 import com.zhitan.common.utils.MessageUtils;
 import com.zhitan.common.utils.StringUtils;
 import com.zhitan.common.utils.ip.IpUtils;
+import com.zhitan.framework.manager.AsyncManager;
+import com.zhitan.framework.manager.factory.AsyncFactory;
+import com.zhitan.framework.security.context.AuthenticationContextHolder;
+import com.zhitan.framework.security.single.SingleAuthenticationToken;
 import com.zhitan.system.service.ISysConfigService;
 import com.zhitan.system.service.ISysUserService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 登录校验方法
- * 
+ *
  * @author zhitan
  */
 @Component
@@ -45,7 +42,7 @@ public class SysLoginService
 
     @Resource
     private RedisCache redisCache;
-    
+
     @Resource
     private ISysUserService userService;
 
@@ -54,7 +51,7 @@ public class SysLoginService
 
     /**
      * 登录验证
-     * 
+     *
      * @param username 用户名
      * @param password 密码
      * @param code 验证码
@@ -102,7 +99,7 @@ public class SysLoginService
 
     /**
      * 校验验证码
-     * 
+     *
      * @param username 用户名
      * @param code 验证码
      * @param uuid 唯一标识
@@ -177,5 +174,40 @@ public class SysLoginService
         sysUser.setLoginIp(IpUtils.getIpAddr());
         sysUser.setLoginDate(DateUtils.getNowDate());
         userService.updateUserProfile(sysUser);
+    }
+
+
+    /**
+     * 登录验证
+     * @param username
+     * @return 结果
+     */
+    public String loginNoCode(String username)
+    {
+        // 用户验证
+        Authentication authentication = null;
+        try
+        {
+            authentication = authenticationManager
+                    .authenticate(new SingleAuthenticationToken(username));
+        }
+        catch (Exception e)
+        {
+            if (e instanceof BadCredentialsException)
+            {
+                AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_FAIL, MessageUtils.message("user.password.not.match")));
+                throw new UserPasswordNotMatchException();
+            }
+            else
+            {
+                AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_FAIL, e.getMessage()));
+                throw new ServiceException(e.getMessage());
+            }
+        }
+        AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success")));
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        recordLoginInfo(loginUser.getUserId());
+        // 生成token
+        return tokenService.createToken(loginUser);
     }
 }

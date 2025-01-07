@@ -59,4 +59,9 @@ public interface ElectricityPriceMapper extends BaseMapper<ElectricityPrice> {
      * @return 结果
      */
     public int deleteElectricityPriceByIds(String[] ids);
+
+
+
+
+
 }

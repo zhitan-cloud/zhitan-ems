@@ -39,7 +39,7 @@ public class GatewaySetting extends BaseEntity {
     private String installLocation;
 
     /** ip地址 */
-    @Excel(name = "ip地址")
+    @Excel(name = "IP地址")
     private String ipAdd;
 
     /** 运行状态：未知、离线、在线 */
@@ -48,7 +48,7 @@ public class GatewaySetting extends BaseEntity {
 
     /** 心跳时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "心跳时间", width = 30, dateFormat = "yyyy-MM-dd")
+//    @Excel(name = "心跳时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date hbtTime;
 
     /** 计量器具数量 */

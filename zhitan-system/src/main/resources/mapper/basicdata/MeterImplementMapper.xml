@@ -127,6 +127,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         JOIN node_index ni ON ni.node_id = nd.node_id
         where ni.node_id= #{nodeId} and index_id= #{indexId}
     </select>
+    <select id="listMeterImplByInstallLocation" resultType="com.zhitan.basicdata.domain.MeterImplement">
+        <include refid="selectMeterImplementVo"/>
+        <where>
+            installaction_location = #{installactionLocation}
+        </where>
+    </select>
 
     <insert id="insertMeterImplement" parameterType="MeterImplement">
         insert into meter_implement

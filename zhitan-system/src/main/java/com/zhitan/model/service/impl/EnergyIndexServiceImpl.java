@@ -311,17 +311,8 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
 
   @Override
   public List<EnergyIndex> getIndexByCode(String code, String nodeId) {
-    final List<MeterImplement> settingDevice = modelNodeMapper.getSettingDevice(nodeId);
-    if(CollectionUtils.isEmpty(settingDevice)){
-       return new ArrayList<>();
-    }
-    final List<String> deviceIds = settingDevice.stream().map(MeterImplement::getId).collect(Collectors.toList());
+    List<EnergyIndex> energyIndexList =  energyIndexMapper.getIndexByCode(code,nodeId);
 
-    LambdaQueryWrapper<EnergyIndex> queryWrapper = new LambdaQueryWrapper<>();
-    if(StringUtils.isNotEmpty(code)) {
-      queryWrapper.like(EnergyIndex::getCode, code).or().like(EnergyIndex::getName, code);
-    }
-    queryWrapper.in(EnergyIndex::getMeterId,deviceIds);
-    return energyIndexMapper.selectList(queryWrapper);
+    return energyIndexList;
   }
 }

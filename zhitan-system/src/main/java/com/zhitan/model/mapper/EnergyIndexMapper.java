@@ -98,4 +98,6 @@ public interface EnergyIndexMapper extends BaseMapper<EnergyIndex> {
   int insertNodeIndex(@Param("nodeId")String nodeId, @Param("indexId")String indexId);
 
   Page<EnergyIndex> selectEnergyIndexPage(@Param("page")Page<?> page, @Param("query") EnergyIndexQuery energyIndexQuery);
+
+    List<EnergyIndex> getIndexByCode(@Param("code")String code, @Param("nodeId")String nodeId);
 }

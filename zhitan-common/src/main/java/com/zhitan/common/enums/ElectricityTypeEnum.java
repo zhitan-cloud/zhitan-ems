@@ -9,7 +9,9 @@ public enum ElectricityTypeEnum {
     SHARP("尖"),
     PEAK("峰"),
     FLAT("平"),
-    VALLEY("谷");
+    VALLEY("谷"),
+    DEEP("深谷");
+
 
     private final String desc;
 

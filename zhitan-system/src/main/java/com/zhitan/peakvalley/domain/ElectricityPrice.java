@@ -46,12 +46,22 @@ public class ElectricityPrice extends BaseEntity {
     @Excel(name = "时段结束时间", width = 30, dateFormat = "HH:mm:ss")
     @NotNull(message = "时段结束时间不能为空")
     private Date stopTime;
+//    @Excel(name = "范围类型字典值cost_range_type")
+//    private String rangeType;
 
     /** 电价 */
     @Excel(name = "电价")
     @NotEmpty(message = "电价不能为空")
     private BigDecimal effecticityPrice;
-        
+
+//    public String getRangeType() {
+//        return rangeType;
+//    }
+//
+//    public void setRangeType(String rangeType) {
+//        this.rangeType = rangeType;
+//    }
+
     public void setId(String id)
     {
         this.id = id;

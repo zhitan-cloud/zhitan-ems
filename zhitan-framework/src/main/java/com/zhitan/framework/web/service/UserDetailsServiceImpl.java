@@ -1,12 +1,5 @@
 package com.zhitan.framework.web.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.annotation.Resource;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import com.zhitan.common.core.domain.entity.SysUser;
 import com.zhitan.common.core.domain.model.LoginUser;
 import com.zhitan.common.enums.UserStatus;
@@ -14,6 +7,14 @@ import com.zhitan.common.exception.ServiceException;
 import com.zhitan.common.utils.MessageUtils;
 import com.zhitan.common.utils.StringUtils;
 import com.zhitan.system.service.ISysUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 用户验证处理
@@ -27,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
     @Resource
     private ISysUserService userService;
-    
+
     @Resource
     private SysPasswordService passwordService;
 
@@ -54,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
             throw new ServiceException(MessageUtils.message("user.blocked"));
         }
 
-        passwordService.validate(user);
+//        passwordService.validate(user);
 
         return createLoginUser(user);
     }

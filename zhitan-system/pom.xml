@@ -22,7 +22,12 @@
             <groupId>com.zhitan</groupId>
             <artifactId>zhitan-common</artifactId>
         </dependency>
-
+        <!-- hutool工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.2.4</version>
+        </dependency>
     </dependencies>
 
 </project>

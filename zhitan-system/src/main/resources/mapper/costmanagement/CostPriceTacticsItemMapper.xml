@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.costmanagement.mapper.CostPriceTacticsItemMapper">
+
+    <resultMap type="CostPriceTacticsItem" id="CostPriceTacticsItemResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="rangeType"    column="range_type"    />
+        <result property="tacticsNumber"    column="tactics_number"    />
+        <result property="tacticsId"    column="tactics_id"    />
+        <result property="electricityType"    column="electricity_type"    />
+        <result property="slotsMin"    column="slots_min"    />
+        <result property="slotsMax"    column="slots_max"    />
+        <result property="price"    column="price"    />
+    </resultMap>
+
+    <sql id="selectCostPriceTacticsItemVo">
+        select id, create_time, create_by, update_time, update_by, remark, range_type, tactics_number, tactics_id, electricity_type, slots_min, slots_max, price from cost_price_tactics_item
+    </sql>
+
+    <select id="selectCostPriceTacticsItemList" parameterType="CostPriceTacticsItem" resultMap="CostPriceTacticsItemResult">
+        <include refid="selectCostPriceTacticsItemVo"/>
+        <where>
+            <if test="rangeType != null  and rangeType != ''"> and range_type = #{rangeType}</if>
+            <if test="tacticsNumber != null  and tacticsNumber != ''"> and tactics_number = #{tacticsNumber}</if>
+            <if test="tacticsId != null  and tacticsId != ''"> and tactics_id = #{tacticsId}</if>
+            <if test="electricityType != null  and electricityType != ''"> and electricity_type = #{electricityType}</if>
+            <if test="slotsMin != null  and slotsMin != ''"> and slots_min = #{slotsMin}</if>
+            <if test="slotsMax != null  and slotsMax != ''"> and slots_max = #{slotsMax}</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+        </where>
+    </select>
+
+    <select id="selectCostPriceTacticsItemById" parameterType="String" resultMap="CostPriceTacticsItemResult">
+        <include refid="selectCostPriceTacticsItemVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCostPriceTacticsItem" parameterType="CostPriceTacticsItem">
+        insert into cost_price_tactics_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="rangeType != null">range_type,</if>
+            <if test="tacticsNumber != null">tactics_number,</if>
+            <if test="tacticsId != null">tactics_id,</if>
+            <if test="electricityType != null">electricity_type,</if>
+            <if test="slotsMin != null">slots_min,</if>
+            <if test="slotsMax != null">slots_max,</if>
+            <if test="price != null">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="rangeType != null">#{rangeType},</if>
+            <if test="tacticsNumber != null">#{tacticsNumber},</if>
+            <if test="tacticsId != null">#{tacticsId},</if>
+            <if test="electricityType != null">#{electricityType},</if>
+            <if test="slotsMin != null">#{slotsMin},</if>
+            <if test="slotsMax != null">#{slotsMax},</if>
+            <if test="price != null">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCostPriceTacticsItem" parameterType="CostPriceTacticsItem">
+        update cost_price_tactics_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="rangeType != null">range_type = #{rangeType},</if>
+            <if test="tacticsNumber != null">tactics_number = #{tacticsNumber},</if>
+            <if test="tacticsId != null">tactics_id = #{tacticsId},</if>
+            <if test="electricityType != null">electricity_type = #{electricityType},</if>
+            <if test="slotsMin != null">slots_min = #{slotsMin},</if>
+            <if test="slotsMax != null">slots_max = #{slotsMax},</if>
+            <if test="price != null">price = #{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCostPriceTacticsItemById" parameterType="String">
+        delete from cost_price_tactics_item where id = #{id}
+    </delete>
+
+    <delete id="deleteCostPriceTacticsItemByIds" parameterType="String">
+        delete from cost_price_tactics_item where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

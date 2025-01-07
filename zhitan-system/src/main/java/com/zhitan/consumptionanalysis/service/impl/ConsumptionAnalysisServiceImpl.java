@@ -402,7 +402,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
-        final Map<String, Object> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
+        final Map<String, BigDecimal> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
         final Map<String, String> energyNameMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno,SysEnergy::getEnername));
         final Map<String, String> indexIdEnergyIdMap = new HashMap<>();
         nodeIndexInforList.forEach(n->{
@@ -528,7 +528,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                     final String indexId = dataItem.getIndexId();
                     final String energyId = indexIdEnergyIdMap.get(indexId);
                     
-                    final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+                    final BigDecimal coefficient = energyCoefficientMap.get(energyId);
                     if(coefficient == null){
                         throw new RuntimeException("能源类型" + energyId + "没有配置折标系数，无法计算");
                     }
@@ -549,7 +549,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                     final String indexId = dataItem.getIndexId();
                     final String energyId = indexIdEnergyIdMap.get(indexId);
 
-                    final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+                    final BigDecimal coefficient = energyCoefficientMap.get(energyId);
                     if(coefficient == null){
                         throw new RuntimeException("能源类型" + energyId + "没有配置折标系数，无法计算");
                     }
@@ -613,7 +613,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         indexDataItemMap.forEach((indexId,value)->{
             final String energyId = indexIdEnergyIdMap.get(indexId);
 
-            final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+            final BigDecimal coefficient = energyCoefficientMap.get(energyId);
             if(coefficient == null){
                 throw new RuntimeException("能源类型" + energyId + "没有配置折标系数，无法计算");
             }
@@ -722,7 +722,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
-        final Map<String, Object> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
+        final Map<String, BigDecimal> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
         final Map<String, String> indexIdEnergyIdMap = new HashMap<>();
         nodeIndexInforList.forEach(n->{
             final String indexId = n.getIndexId();
@@ -775,7 +775,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                     final String indexId = dataItem.getIndexId();
                     final String energyId = indexIdEnergyIdMap.get(indexId);
 
-                    final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+                    final BigDecimal coefficient = energyCoefficientMap.get(energyId);
                     if(coefficient == null){
                         throw new RuntimeException("能源类型" + energyId + "没有配置折标系数，无法计算");
                     }
@@ -811,7 +811,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         indexDataItemMap.forEach((indexId,value)->{
             final String energyId = indexIdEnergyIdMap.get(indexId);
 
-            final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+            final BigDecimal coefficient = energyCoefficientMap.get(energyId);
             if(coefficient == null){
                 throw new RuntimeException("能源类型" + energyId + "没有配置折标系数，无法计算");
             }
@@ -854,7 +854,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
         //能源编号和能源折标系数
-        final Map<String, Object> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
+        final Map<String, BigDecimal> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
         //index和能源
         final Map<String, String> indexIdEnergyIdMap = new HashMap<>();
         nodeIndexInforList.forEach(n->{
@@ -899,7 +899,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
             indexIdList.forEach(indexId->{
                 final List<DataItem> dataItems = dataItemMap.get(indexId);
                 final String energyId = indexIdEnergyIdMap.get(indexId);
-                final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+                final BigDecimal coefficient = energyCoefficientMap.get(energyId);
                 
                 if(CollectionUtils.isNotEmpty(dataItems) ){
                     BigDecimal sum = BigDecimal.valueOf(dataItems.stream()
@@ -999,7 +999,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
-        final Map<String, Object> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
+        final Map<String, BigDecimal> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
         final Map<String, String> indexIdEnergyIdMap = new HashMap<>();
         nodeIndexInforList.forEach(n->{
             final String indexId = n.getIndexId();
@@ -1063,7 +1063,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                     final String indexId = dataItem.getIndexId();
                     final String energyId = indexIdEnergyIdMap.get(indexId);
 
-                    final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
+                    final BigDecimal coefficient = energyCoefficientMap.get(energyId);
                     if(coefficient == null){
                         throw new RuntimeException("能源类型" + energyId + "没有配置折标系数，无法计算");
                     }

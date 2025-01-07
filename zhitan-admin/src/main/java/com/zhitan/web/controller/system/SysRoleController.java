@@ -1,18 +1,6 @@
 package com.zhitan.web.controller.system;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import javax.annotation.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.common.annotation.Log;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
@@ -30,10 +18,17 @@ import com.zhitan.system.domain.SysUserRole;
 import com.zhitan.system.service.ISysDeptService;
 import com.zhitan.system.service.ISysRoleService;
 import com.zhitan.system.service.ISysUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 角色信息
- * 
+ *
  * @author zhitan
  */
 @RestController
@@ -57,10 +52,9 @@ public class SysRoleController extends BaseController
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysRole role)
+    public TableDataInfo list(SysRole role, Long pageNum, Long pageSize)
     {
-        startPage();
-        List<SysRole> list = roleService.selectRoleList(role);
+        Page<SysRole> list = roleService.selectRolePage(role, pageNum, pageSize);
         return getDataTable(list);
     }
 
@@ -125,7 +119,7 @@ public class SysRoleController extends BaseController
             return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(getUsername());
-        
+
         if (roleService.updateRole(role) > 0)
         {
             // 更新缓存用户权限
@@ -208,7 +202,6 @@ public class SysRoleController extends BaseController
     @GetMapping("/authUser/unallocatedList")
     public TableDataInfo unallocatedList(SysUser user)
     {
-        startPage();
         List<SysUser> list = userService.selectUnallocatedList(user);
         return getDataTable(list);
     }
