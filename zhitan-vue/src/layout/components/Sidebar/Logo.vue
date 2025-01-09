@@ -1,6 +1,9 @@
 <template>
-  <div class="sidebar-logo-container" :class="{ 'collapse': collapse }"
-       :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div
+    class="sidebar-logo-container"
+    :class="{ collapse: collapse }"
+    :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }"
+  >
     <!-- <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
@@ -11,33 +14,35 @@
         <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }}</h1>
       </router-link>
     </transition> -->
-    <!-- <div class="logo">
-      <img v-if=" sideTheme === 'theme-dark'" :src="logo" class="sidebar-logo" />
+    <div class="logo">
+      <img v-if="sideTheme === 'theme-dark'" :src="logo" class="sidebar-logo" />
       <img v-else :src="logo2" class="sidebar-logo" />
-    </div> -->
+    </div>
 
-    <div class="name" v-if="!collapse" :style="{color: sideTheme === 'theme-dark' ? '#fff' : '#487FEE'}">{{ title }}</div>
+    <div class="name" v-if="!collapse" :style="{ color: sideTheme === 'theme-dark' ? '#fff' : '#487FEE' }">
+      {{ title }}
+    </div>
   </div>
 </template>
 
 <script setup>
-// import Cookies from 'js-cookie'
-import variables from '@/assets/styles/variables.module.scss'
-import logo from '@/assets/logo/logo-2.png'
-import logo2 from '@/assets/logo/logo-3.png'
-import useSettingsStore from '@/store/modules/settings'
-import { color } from 'echarts';
-// const systemInfo = JSON.parse(sessionStorage.getItem('SystemInfo'))
+import Cookies from "js-cookie"
+import variables from "@/assets/styles/variables.module.scss"
+import logo from "@/assets/logo/logo-2.png"
+import logo2 from "@/assets/logo/logo-3.png"
+import useSettingsStore from "@/store/modules/settings"
+import { color } from "echarts"
+const systemInfo = JSON.parse(Cookies.get("SystemInfo"))
 defineProps({
   collapse: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 
-const title = import.meta.env.VITE_APP_TITLE;
-const settingsStore = useSettingsStore();
-const sideTheme = computed(() => settingsStore.sideTheme);
+const title = import.meta.env.VITE_APP_TITLE
+const settingsStore = useSettingsStore()
+const sideTheme = computed(() => settingsStore.sideTheme)
 </script>
 
 <style lang="scss" scoped>
@@ -72,7 +77,7 @@ const sideTheme = computed(() => settingsStore.sideTheme);
     }
   }
   .name {
-    width: 100%;
+    width: 150px;
     margin-top: 2px;
     margin-left: 6px;
     font-family: OPPOSans, OPPOSans;
