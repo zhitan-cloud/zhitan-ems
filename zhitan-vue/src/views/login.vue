@@ -1,11 +1,12 @@
 <template>
   <div class="login">
-    <div
-      class="login-logo"
+    <!-- <div
+      class="login-logo-bg"
       v-if="systemInfo && systemInfo.homeLogo"
       :style="{ backgroundImage: 'url(' + systemInfo.homeLogo + ')', backgroundSize: '100% 100%' }"
-    ></div>
-    <div class="login-font" v-else>能源系统</div>
+    ></div> -->
+    <img v-if="systemInfo && systemInfo.homeLogo" :src="systemInfo.homeLogo" alt="" class="login-logo-img" />
+    <div class="login-font" v-else>{{ systemInfo.systemName || "能源管理系统" }}</div>
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
       <!-- <h3 class="title">充电桩后台管理系统</h3> -->
       <el-form-item prop="username">
@@ -58,7 +59,8 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2021-2024 ZhiTanCloud All Rights Reserved.</span>
+      <!-- <span>Copyright © 2021-2024 ZhiTanCloud All Rights Reserved.</span> -->
+      <span>{{ systemInfo.copyRight || "Copyright © 2017-2024 ZhiTanCloud All Rights Reserved." }}</span>
     </div>
   </div>
 </template>
@@ -73,9 +75,8 @@ const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
-const systemInfo = JSON.parse(Cookies.get("SystemInfo"))
+const systemInfo = JSON.parse(Cookies.get("SystemInfo") || "{}")
 
-console.log(systemInfo)
 const loginForm = ref({
   username: "admin",
   password: "admin123",
@@ -249,7 +250,7 @@ getCookie()
   padding-left: 12px;
 }
 
-.login-logo {
+.login-logo-bg {
   width: 514px;
   height: 177px;
   // background-image: url('@/assets/images/login-logo.png');
@@ -258,6 +259,15 @@ getCookie()
   left: 50%;
   top: 22%;
   transform: translate(-50%, -50%);
+}
+.login-logo-img {
+  // width: 100%;
+  // height: 100%;
+  // transform: translate(-50%, -50%);
+  max-height: 200px;
+  margin: 0 auto;
+  position: absolute;
+  top: 17%;
 }
 
 .login-font {

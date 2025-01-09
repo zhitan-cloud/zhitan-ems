@@ -14,9 +14,9 @@
         <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }}</h1>
       </router-link>
     </transition> -->
-    <div class="logo">
-      <img v-if="sideTheme === 'theme-dark'" :src="logo" class="sidebar-logo" />
-      <img v-else :src="logo2" class="sidebar-logo" />
+    <div class="logo" v-if="systemInfo && systemInfo.leftLogo">
+      <img v-if="sideTheme === 'theme-dark'" :src="systemInfo.leftLogo" class="sidebar-logo" />
+      <img v-else :src="systemInfo.leftLogo" class="sidebar-logo" />
     </div>
 
     <div class="name" v-if="!collapse" :style="{ color: sideTheme === 'theme-dark' ? '#fff' : '#487FEE' }">
@@ -40,7 +40,7 @@ defineProps({
   },
 })
 
-const title = import.meta.env.VITE_APP_TITLE
+const title = systemInfo.systemName || import.meta.env.VITE_APP_TITLE
 const settingsStore = useSettingsStore()
 const sideTheme = computed(() => settingsStore.sideTheme)
 </script>
@@ -68,8 +68,8 @@ const sideTheme = computed(() => settingsStore.sideTheme)
   margin-top: 24px;
   margin-bottom: 15px;
   .logo {
-    width: 87px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     margin-left: 13px;
     .sidebar-logo {
       width: 100%;
