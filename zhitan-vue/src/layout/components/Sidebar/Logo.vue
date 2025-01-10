@@ -77,12 +77,12 @@ const sideTheme = computed(() => settingsStore.sideTheme)
     }
   }
   .name {
-    width: 150px;
+    width: 210px;
     margin-top: 2px;
     margin-left: 6px;
     font-family: OPPOSans, OPPOSans;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 20px;
     color: #ffffff;
   }
 
