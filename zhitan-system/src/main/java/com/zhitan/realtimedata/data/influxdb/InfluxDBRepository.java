@@ -148,6 +148,7 @@ public class InfluxDBRepository {
         fluxSql.append("from(bucket: \"").append(config.getBucket()).append("\")")
                 .append(timeRange).append("|> filter(fn: (r) => r[\"_measurement\"] == \"")
                 .append("meilin\")");
+        fluxSql.append("|> filter(fn: (r) => r[\"_field\"] == \"value\")");
         if (!tagCodes.isEmpty()) {
             fluxSql.append("|> filter(fn: (r) => r[\"tag\"] =~ /");
             List<String> filter = new ArrayList<>(tagCodes);
