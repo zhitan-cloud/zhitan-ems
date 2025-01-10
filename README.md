@@ -19,8 +19,7 @@
 
 - guestUser/guestUser  
 
-演示地址：https://demo-ems.zhitancloud.com/ 
-文档地址：（待完成） 
+演示地址：https://demo-ems.zhitancloud.com/  
 
 #### 代码结构（待完成）   
 
