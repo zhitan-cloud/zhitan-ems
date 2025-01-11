@@ -5,22 +5,22 @@
 	<a href="https://gitee.com/y_project/RuoYi/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
-#### 介绍
+## 介绍
 通过物联网技术，采集企业水、电、气、热等能耗数据，帮企业建立能源管理体系，找到跑冒滴漏，从而为企业节能提供依据。
 进一步为企业实现碳跟踪、碳盘查、碳交易、谈汇报的全生命过程。 为中国碳达峰-碳中和做出贡献。
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
 已同步更新到github仓库：https://github.com/Andy-Yin/zhitan-ems
 
-#### 框架：
+## 框架：
 
-基于SpringBoot的若依框架 易读易懂、界面简洁美观。
-关系数据库：mysql 或者 postgredb
-时序数据库：influxdb 2.7+
-中间件：redis，mq
+基于SpringBoot的若依框架 易读易懂、界面简洁美观。   
+关系数据库：mysql 或者 postgredb   
+时序数据库：influxdb 2.7+  
+中间件：redis，mq  
 VUE版本：VUE 3
 
-#### 数据驱动的计算模型和业务模型配置
+## 数据驱动的计算模型和业务模型配置
 支持动态点位配置、数据模型、业务模型等。 
 
 ## 在线体验
@@ -29,9 +29,10 @@ VUE版本：VUE 3
 
 演示地址：https://demo-ems.zhitancloud.com/  
 
-#### 亮点功能
+## 亮点功能
 ![输入图片说明](readme/亮点功能.png)
-#### 功能列表
+
+## 功能列表
 1.  首页看板
 2.  实时数据监测  
     2.1.  实时数据查看  
@@ -70,7 +71,7 @@ VUE版本：VUE 3
 19. 基础数据管理（字典、能源类型等）
 20. 系统管理（用户、角色、权限等）
 
-#### UI展示（平台分深色和浅色两种风格切换）
+## UI展示（平台分深色和浅色两种风格切换）
 
     登录页面
 ![输入图片说明](readme/img/1-登录页.png)
@@ -99,12 +100,12 @@ VUE版本：VUE 3
     区域能耗-深色 
 ![输入图片说明](readme/img/5-2-区域能耗分析-深色.png)
 
-#### 业务架构
+## 业务架构
 ![输入图片说明](readme/业务架构.png)
-#### 技术架构
+## 技术架构
 ![输入图片说明](readme/技术架构.png)
 
-#### 参与贡献
+## 参与贡献
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
