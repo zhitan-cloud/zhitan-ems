@@ -1,16 +1,22 @@
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">企业能源管理平台</h1>
 <h4 align="center">基于SpringBoot和若依框架开发</h4>
-
+<p align="center">
+    <a href='https://gitee.com/ustcyc/zhitan-ems/stargazers'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
+	<a href="https://gitee.com/y_project/RuoYi/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
+</p>
 
 #### 介绍
 通过物联网技术，采集企业水、电、气、热等能耗数据，帮企业建立能源管理体系，找到跑冒滴漏，从而为企业节能提供依据。
 进一步为企业实现碳跟踪、碳盘查、碳交易、谈汇报的全生命过程。 为中国碳达峰-碳中和做出贡献。
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
-框架：基于SpringBoot的若依框架 易读易懂、界面简洁美观。
-关系数据库：influxdb 2.X
-时序数据库：mysql 或者 postgredb
+#### 框架：
+
+基于SpringBoot的若依框架 易读易懂、界面简洁美观。
+关系数据库：mysql 或者 postgredb
+时序数据库：influxdb 2.7+
 中间件：redis，mq
+VUE版本：VUE 3
 
 #### 数据驱动的计算模型和业务模型配置
 支持动态点位配置、数据模型、业务模型等。 
@@ -23,7 +29,7 @@
 
 #### 亮点功能
 ![输入图片说明](readme/亮点功能.png)
-#### 功能规划
+#### 功能列表
 1.  首页看板
 2.  实时数据监测  
     2.1.  实时数据查看  
@@ -93,7 +99,7 @@
 
 #### 业务架构
 ![输入图片说明](readme/业务架构.png)
-#### 技术架构【未来规划】
+#### 技术架构
 ![输入图片说明](readme/技术架构.png)
 
 #### 参与贡献
