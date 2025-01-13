@@ -2,8 +2,13 @@
   <div class="header">
     <slot></slot>
     <div class="btn-list" v-if="props.showBtn">
-      <div class="btn-list-item" :class="{ active: timeType == dict.value }" v-for="dict in props.period"
-        :key="dict.value" @click="handleClick(dict.value)">
+      <div
+        class="btn-list-item"
+        :class="{ active: timeType == dict.value }"
+        v-for="dict in props.period"
+        :key="dict.value"
+        @click="handleClick(dict.value)"
+      >
         {{ dict.label }}
       </div>
     </div>
@@ -11,17 +16,17 @@
 </template>
 
 <script setup>
-const emit = defineEmits();
-const props = defineProps(["showBtn", "period", "active"]);
+const emit = defineEmits()
+const props = defineProps(["showBtn", "period", "active"])
 const data = reactive({
-  timeType: 'DAY',
-});
-const { timeType } = toRefs(data);
-handleClick(timeType.value);
+  timeType: "DAY",
+})
+const { timeType } = toRefs(data)
+handleClick(timeType.value)
 
 function handleClick(value) {
-  timeType.value = value;
-  emit("handleClick", timeType.value, props.active);
+  timeType.value = value
+  emit("handleClick", timeType.value, props.active)
 }
 </script>
 
@@ -29,10 +34,10 @@ function handleClick(value) {
 .themeDark {
   .header {
     // width: 88px;
-    height: 29px;
+    height: 26px;
     font-family: OPPOSans, OPPOSans;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
     color: #fffefe;
     line-height: 29px;
     text-align: left;
@@ -76,10 +81,10 @@ function handleClick(value) {
 .themeLight {
   .header {
     // width: 88px;
-    height: 29px;
+    height: 26px;
     font-family: OPPOSans, OPPOSans;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
     color: #000;
     line-height: 29px;
     text-align: left;
@@ -116,6 +121,7 @@ function handleClick(value) {
         background: #1d6aff;
         color: #fff;
       }
-    } }
+    }
+  }
 }
 </style>

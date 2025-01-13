@@ -5,8 +5,9 @@
 
       .page-container-left {
         width: 280px;
-        min-height: calc(100vh - 120px);
+        min-height: calc(100vh - 148px);
         border-right: 1px solid #1a235d;
+        background: #1F1C49;
 
         .tree {
           height: calc(100vh - 170px);
@@ -14,6 +15,7 @@
           overflow-y: auto;
         }
       }
+      
 
       .page-container-right {
         flex: 1;
@@ -30,10 +32,15 @@
       padding: 18px 0 0 15px;
     }
 
+    .table-bg-style {
+      .theme-dark-mt20 {
+        margin-top: 20px;
+      }
+    }
+
     .tree {
       // padding: 20px;
-      margin-top: 25px;
-      // margin-left: 20px;
+      margin-top: 2px;
       overflow: hidden;
     }
   }
@@ -76,6 +83,9 @@
 
       .page-container-left {
         width: 280px;
+        min-height: calc(100vh - 148px);
+        border-right: 1px solid #fff;
+        background: #f1f4fa;
 
         // border-right: 1px solid #1a235d;
         .tree {
@@ -100,11 +110,15 @@
       // border: 1px solid #000000;
       padding: 18px 0 0 15px;
     }
+    .table-bg-style {
+      background-color: #fff;
+      padding-top: 12px;
+      margin-top: 12px;
+    }
 
     .tree {
       // padding: 20px;
-      margin-top: 25px;
-      // margin-left: 20px;
+      margin-top: 2px;
       overflow: hidden;
     }
   }

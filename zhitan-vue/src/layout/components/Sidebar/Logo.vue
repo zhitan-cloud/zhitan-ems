@@ -19,7 +19,7 @@
       <img v-else :src="systemInfo.leftLogo" class="sidebar-logo" />
     </div>
 
-    <div class="name" v-if="!collapse" :style="{ color: sideTheme === 'theme-dark' ? '#fff' : '#487FEE' }">
+    <div class="name" v-if="!collapse" :style="{ color: sideTheme === 'theme-dark' ? '#fff' : '#333' }">
       {{ title }}
     </div>
   </div>
@@ -58,27 +58,27 @@ const sideTheme = computed(() => settingsStore.sideTheme)
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
+  height: 70px;
+  line-height: 70px;
+  background: #1a235d;
   text-align: center;
   overflow: hidden;
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-top: 24px;
-  margin-bottom: 15px;
+  // margin-top: 24px;
+  // margin-bottom: 15px;
   .logo {
     width: 40px;
     height: 40px;
-    margin-left: 13px;
+    margin-left: 10px;
     .sidebar-logo {
       width: 100%;
       height: 100%;
     }
   }
   .name {
-    width: 210px;
-    margin-top: 2px;
+    // width: 210px;
     margin-left: 6px;
     font-family: OPPOSans, OPPOSans;
     font-weight: bold;
