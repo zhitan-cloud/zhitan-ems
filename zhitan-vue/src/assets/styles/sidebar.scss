@@ -2,7 +2,8 @@
   #app {
     .el-menu-item.is-active {
       background: #3271eb !important;
-      border-radius: 30px 30px 30px 30px !important;
+      // border-radius: 30px 30px 30px 30px !important;
+      color: #fff;
     }
 
     .el-scrollbar {
@@ -10,9 +11,6 @@
       margin: 0 auto;
     }
 
-    // .is-active .menu-title {
-    //   color: #fff !important;
-    // }
 
     .main-container {
       height: 100%;
@@ -39,7 +37,6 @@
       overflow: hidden;
       -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-
       font-family: OPPOSans, OPPOSans;
       font-weight: 500;
       font-size: 18px;
@@ -86,7 +83,7 @@
       .el-menu {
         border: none;
         height: 100%;
-        width: 95%;
+        // width: 95%;
         margin: 0 auto;
       }
 
@@ -94,7 +91,7 @@
       .menu-title {
         overflow: hidden !important;
         font-weight: 400 !important;
-        font-size: 18px !important;
+        font-size: 16px !important;
       }
 
       // @media (min-width: 1440px) {
@@ -141,18 +138,18 @@
 
         &:hover {
           background-color: rgba(0, 0, 0, 0.06) !important;
-          border-radius: 30px 30px 30px 30px !important;
+          // border-radius: 30px 30px 30px 30px !important;
         }
       }
 
       // 子级item
       & .theme-dark .nest-menu .el-sub-menu > .el-sub-menu__title,
       & .theme-dark .el-sub-menu .el-menu-item {
-        border-radius: 30px 30px 30px 30px !important;
+        // border-radius: 30px 30px 30px 30px !important;
 
         &:hover {
           background-color: $base-sub-menu-hover !important;
-          border-radius: 30px 30px 30px 30px !important;
+          // border-radius: 30px 30px 30px 30px !important;
         }
       }
     }
@@ -286,7 +283,7 @@
   #app {
     .el-menu-item.is-active {
       background: #e0eafc !important;
-      border-radius: 30px 30px 30px 30px !important;
+      // border-radius: 30px 30px 30px 30px !important;
     }
 
     .el-scrollbar {
@@ -358,19 +355,19 @@
         display: inline-block;
         width: 100%;
         overflow: hidden;
-        border-radius: 30px;
+        // border-radius: 30px;
       }
 
       .svg-icon {
         margin-right: 16px;
-        font-size: 18px;
+        font-size: 16px;
         color: #C3C3C3;
       }
 
       .el-menu {
         border: none;
         height: 100%;
-        width: 95%;
+        // width: 95%;
         margin: 0 auto;
       }
 
@@ -378,7 +375,7 @@
       .menu-title {
         overflow: hidden !important;
         font-weight: 400 !important;
-        font-size: 18px !important;
+        font-size: 16px !important;
       }
 
       // @media (min-width: 1440px) {
@@ -425,7 +422,7 @@
 
         &:hover {
           background-color: #E0EAFC !important;
-          border-radius: 30px 30px 30px 30px !important;
+          // border-radius: 30px 30px 30px 30px !important;
         }
       }
 
@@ -433,11 +430,11 @@
       & .theme-dark .nest-menu .el-sub-menu > .el-sub-menu__title,
       & .theme-dark .el-sub-menu .el-menu-item {
         background-color: #E0EAFC !important;
-        border-radius: 30px 30px 30px 30px !important;
+        // border-radius: 30px 30px 30px 30px !important;
 
         &:hover {
           background-color: #E0EAFC !important;
-          border-radius: 30px 30px 30px 30px !important;
+          // border-radius: 30px 30px 30px 30px !important;
         }
       }
     }
