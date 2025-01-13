@@ -1,27 +1,13 @@
 <template>
-  <div class="page">
-    <CardHeader
-      :showBtn="true"
-      :active="'0'"
-      :period="period"
-      @handleClick="handleTimeType"
-    >
+  <div class="page" style="padding-left: 8px; padding-top: 8px">
+    <CardHeader :showBtn="true" :active="'0'" :period="period" @handleClick="handleTimeType">
       <span>
         全厂能耗统计
-        <el-button @click="dialogVisible = true" v-if="list.length > 1">
-          查看更多
-        </el-button>
+        <el-button @click="dialogVisible = true" v-if="list.length > 1"> 查看更多 </el-button>
       </span>
     </CardHeader>
-    <template
-      v-for="(row, rowIndex) in list"
-      :key="rowIndex"
-      v-loading="loading02"
-    >
-      <div
-        class="card-list"
-        v-if="settingsStore.sideTheme == 'theme-dark' && rowIndex == 0"
-      >
+    <template v-for="(row, rowIndex) in list" :key="rowIndex" v-loading="loading02">
+      <div class="card-list" v-if="settingsStore.sideTheme == 'theme-dark' && rowIndex == 0">
         <template v-for="(item, index) in row" :key="index">
           <div
             class="card-list-item"
@@ -30,10 +16,7 @@
             }"
           >
             <div class="item-top">
-              <div
-                class="top-icon"
-                :style="{ backgroundImage: 'url(' + bgList[index].icon + ')' }"
-              />
+              <div class="top-icon" :style="{ backgroundImage: 'url(' + bgList[index].icon + ')' }" />
               <div class="top-right">
                 <div class="right-name">
                   {{ item.energyName }}
@@ -48,11 +31,7 @@
               <div class="bottom-left">
                 <span>
                   同比: {{ Math.abs(item.tongbi) }}
-                  <el-icon
-                    :color="
-                      item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''
-                    "
-                  >
+                  <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
                     <Top v-if="item.tongbi > 0" />
                     <Bottom v-if="item.tongbi < 0" />
                   </el-icon>
@@ -61,11 +40,7 @@
               <div class="bottom-right">
                 <span
                   >环比: {{ Math.abs(item.huanbi) }}
-                  <el-icon
-                    :color="
-                      item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''
-                    "
-                  >
+                  <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
                     <Top v-if="item.huanbi > 0" />
                     <Bottom v-if="item.huanbi < 0" />
                   </el-icon>
@@ -75,23 +50,11 @@
           </div>
         </template>
       </div>
-      <div
-        class="card-list"
-        v-if="settingsStore.sideTheme != 'theme-dark' && rowIndex == 0"
-      >
-        <template
-          v-for="(item, index) in row"
-          :key="index"
-          v-show="rowIndex == 0"
-        >
-          <div
-            class="card-list-item"
-          >
+      <div class="card-list" v-if="settingsStore.sideTheme != 'theme-dark' && rowIndex == 0">
+        <template v-for="(item, index) in row" :key="index" v-show="rowIndex == 0">
+          <div class="card-list-item">
             <div class="item-top">
-              <div
-                class="top-icon"
-                :style="{ backgroundImage: 'url(' + bgList[index].icon2 + ')' }"
-              />
+              <div class="top-icon" :style="{ backgroundImage: 'url(' + bgList[index].icon2 + ')' }" />
               <div class="top-right">
                 <div class="right-name">
                   {{ item.energyName }}
@@ -106,11 +69,7 @@
               <div class="bottom-left">
                 <span>
                   同比: {{ Math.abs(item.tongbi) }}
-                  <el-icon
-                    :color="
-                      item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''
-                    "
-                  >
+                  <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
                     <Top v-if="item.tongbi > 0" />
                     <Bottom v-if="item.tongbi < 0" />
                   </el-icon>
@@ -119,11 +78,7 @@
               <div class="bottom-right">
                 <span
                   >环比: {{ Math.abs(item.huanbi) }}
-                  <el-icon
-                    :color="
-                      item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''
-                    "
-                  >
+                  <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
                     <Top v-if="item.huanbi > 0" />
                     <Bottom v-if="item.huanbi < 0" />
                   </el-icon>
@@ -140,17 +95,13 @@
       <el-row :gutter="9" style="margin-bottom: 27px">
         <el-col :span="12">
           <el-card>
-            <CardHeader :period="period" @handleClick="handleTimeType">
-              能耗趋势
-            </CardHeader>
+            <CardHeader :period="period" @handleClick="handleTimeType"> 能耗趋势 </CardHeader>
             <div id="Chart1" class="chart" v-loading="loading1" />
           </el-card>
         </el-col>
         <el-col :span="12">
           <el-card>
-            <CardHeader :period="period" @handleClick="handleTimeType">
-              全厂能耗占比
-            </CardHeader>
+            <CardHeader :period="period" @handleClick="handleTimeType"> 全厂能耗占比 </CardHeader>
             <div id="Chart2" class="chart" v-loading="loading02" />
           </el-card>
         </el-col>
@@ -158,13 +109,8 @@
       <el-row :gutter="9">
         <el-col :span="12">
           <el-card>
-            <CardHeader
-              :showBtn="true"
-              :period="period"
-              :active="'3'"
-              @handleClick="handleTimeType"
-            >
-              厂区能耗排名TOP{{ listEnergyConsumptionRankingLength }}
+            <CardHeader :showBtn="true" :period="period" :active="'3'" @handleClick="handleTimeType">
+              厂区能耗排名TOP{{ listEnergyConsumptionRankingLength || "" }}
             </CardHeader>
             <div class="top-header">
               <div class="header-left">
@@ -173,22 +119,12 @@
               </div>
               <div class="header-right">能耗量(tce)</div>
             </div>
-            <div
-              id="Chart3"
-              class="chart"
-              v-loading="loading3"
-              style="height: 254px"
-            />
+            <div id="Chart3" class="chart" v-loading="loading3" style="height: 254px" />
           </el-card>
         </el-col>
         <el-col :span="12">
           <el-card>
-            <CardHeader
-              :showBtn="true"
-              :period="period"
-              :active="'4'"
-              @handleClick="handleTimeType"
-            >
+            <CardHeader :showBtn="true" :period="period" :active="'4'" @handleClick="handleTimeType">
               尖峰平谷占比
             </CardHeader>
             <div id="Chart4" class="chart" v-loading="loading4" />
@@ -196,7 +132,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-dialog v-model="dialogVisible" title="查看全厂能耗统计" width="80%" v-if='dialogVisible'>
+    <el-dialog v-model="dialogVisible" title="查看全厂能耗统计" width="80%" v-if="dialogVisible">
       <template v-for="(row, rowIndex) in list" :key="rowIndex">
         <div class="card-list" v-if="settingsStore.sideTheme == 'theme-dark'">
           <template v-for="(item, index) in row" :key="index">
@@ -227,11 +163,7 @@
                 <div class="bottom-left">
                   <span>
                     同比: {{ Math.abs(item.tongbi) }}
-                    <el-icon
-                      :color="
-                        item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''
-                      "
-                    >
+                    <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
                       <Top v-if="item.tongbi > 0" />
                       <Bottom v-if="item.tongbi < 0" />
                     </el-icon>
@@ -240,11 +172,7 @@
                 <div class="bottom-right">
                   <span
                     >环比: {{ Math.abs(item.huanbi) }}
-                    <el-icon
-                      :color="
-                        item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''
-                      "
-                    >
+                    <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
                       <Top v-if="item.huanbi > 0" />
                       <Bottom v-if="item.huanbi < 0" />
                     </el-icon>
@@ -255,14 +183,8 @@
           </template>
         </div>
         <div class="card-list" v-if="settingsStore.sideTheme != 'theme-dark'">
-          <template
-            v-for="(item, index) in row"
-            :key="index"
-            v-show="rowIndex == 0"
-          >
-            <div
-              class="card-list-item"
-            >
+          <template v-for="(item, index) in row" :key="index" v-show="rowIndex == 0">
+            <div class="card-list-item">
               <div class="item-top">
                 <div
                   class="top-icon"
@@ -284,11 +206,7 @@
                 <div class="bottom-left">
                   <span>
                     同比: {{ Math.abs(item.tongbi) }}
-                    <el-icon
-                      :color="
-                        item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''
-                      "
-                    >
+                    <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
                       <Top v-if="item.tongbi > 0" />
                       <Bottom v-if="item.tongbi < 0" />
                     </el-icon>
@@ -297,11 +215,7 @@
                 <div class="bottom-right">
                   <span
                     >环比: {{ Math.abs(item.huanbi) }}
-                    <el-icon
-                      :color="
-                        item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''
-                      "
-                    >
+                    <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
                       <Top v-if="item.huanbi > 0" />
                       <Bottom v-if="item.huanbi < 0" />
                     </el-icon>
@@ -317,43 +231,43 @@
   </div>
 </template>
 <script setup name="Index">
-import * as echarts from "echarts";
-import CardHeader from "@/components/CardHeader/CardHeader.vue";
+import * as echarts from "echarts"
+import CardHeader from "@/components/CardHeader/CardHeader.vue"
 import {
   listEnergyConsumptionSummation,
   listEnergyConsumptionTrend,
   listEnergyConsumptionRanking,
   listPeakValley,
-} from "@/api/home";
-const { proxy } = getCurrentInstance();
-const { period } = proxy.useDict("period");
-import useSettingsStore from "@/store/modules/settings";
-const settingsStore = useSettingsStore();
+} from "@/api/home"
+const { proxy } = getCurrentInstance()
+const { period } = proxy.useDict("period")
+import useSettingsStore from "@/store/modules/settings"
+const settingsStore = useSettingsStore()
 watch(
   () => settingsStore.sideTheme,
   (val) => {
-    getListEnergyConsumptionSummation();
-    getListEnergyConsumptionTrend();
-    getListEnergyConsumptionRanking();
-    getListPeakValley();
+    getListEnergyConsumptionSummation()
+    getListEnergyConsumptionTrend()
+    getListEnergyConsumptionRanking()
+    getListPeakValley()
   }
-);
-import index_card_1 from "@/assets/images/home/index-card-1.png";
-import index_card_2 from "@/assets/images/home/index-card-2.png";
-import index_card_3 from "@/assets/images/home/index-card-3.png";
-import index_card_4 from "@/assets/images/home/index-card-4.png";
-import index_card_5 from "@/assets/images/home/index-card-5.png";
-import card_icon_1 from "@/assets/images/home/card-icon-1.png";
-import card_icon_2 from "@/assets/images/home/card-icon-2.png";
-import card_icon_3 from "@/assets/images/home/card-icon-3.png";
-import card_icon_4 from "@/assets/images/home/card-icon-4.png";
-import card_icon_5 from "@/assets/images/home/card-icon-5.png";
-import card_icon2_1 from "@/assets/images/home/card-icon2-1.png";
-import card_icon2_2 from "@/assets/images/home/card-icon2-2.png";
-import card_icon2_3 from "@/assets/images/home/card-icon2-3.png";
-import card_icon2_4 from "@/assets/images/home/card-icon2-4.png";
-import card_icon2_5 from "@/assets/images/home/card-icon2-5.png";
-import { fa } from "element-plus/es/locales.mjs";
+)
+import index_card_1 from "@/assets/images/home/index-card-1.png"
+import index_card_2 from "@/assets/images/home/index-card-2.png"
+import index_card_3 from "@/assets/images/home/index-card-3.png"
+import index_card_4 from "@/assets/images/home/index-card-4.png"
+import index_card_5 from "@/assets/images/home/index-card-5.png"
+import card_icon_1 from "@/assets/images/home/card-icon-1.png"
+import card_icon_2 from "@/assets/images/home/card-icon-2.png"
+import card_icon_3 from "@/assets/images/home/card-icon-3.png"
+import card_icon_4 from "@/assets/images/home/card-icon-4.png"
+import card_icon_5 from "@/assets/images/home/card-icon-5.png"
+import card_icon2_1 from "@/assets/images/home/card-icon2-1.png"
+import card_icon2_2 from "@/assets/images/home/card-icon2-2.png"
+import card_icon2_3 from "@/assets/images/home/card-icon2-3.png"
+import card_icon2_4 from "@/assets/images/home/card-icon2-4.png"
+import card_icon2_5 from "@/assets/images/home/card-icon2-5.png"
+import { fa } from "element-plus/es/locales.mjs"
 const bgList = ref([
   {
     bg: index_card_1,
@@ -380,14 +294,14 @@ const bgList = ref([
     icon: card_icon_5,
     icon2: card_icon2_5,
   },
-]);
-const list = ref([[{}, {}, {}, {}, {}]]);
-const listEnergyConsumptionRankingLength = ref(0);
-const dialogVisible = ref(false);
-const loading02 = ref(false);
-const loading1 = ref(false);
-const loading3 = ref(false);
-const loading4 = ref(false);
+])
+const list = ref([[{}, {}, {}, {}, {}]])
+const listEnergyConsumptionRankingLength = ref(0)
+const dialogVisible = ref(false)
+const loading02 = ref(false)
+const loading1 = ref(false)
+const loading3 = ref(false)
+const loading4 = ref(false)
 const data = reactive({
   queryParams: {
     nodeId: null,
@@ -395,54 +309,54 @@ const data = reactive({
     dataTime: null,
     nodeName: null,
   },
-});
-const { queryParams } = toRefs(data);
+})
+const { queryParams } = toRefs(data)
 function handleTimeType(item, type) {
-  queryParams.value.timeType = item;
-  queryParams.value.type = type;
-  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD");
+  queryParams.value.timeType = item
+  queryParams.value.type = type
+  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
   if (type == 0) {
-    getListEnergyConsumptionSummation();
-    getListEnergyConsumptionTrend();
+    getListEnergyConsumptionSummation()
+    getListEnergyConsumptionTrend()
   } else if (type == 3) {
-    getListEnergyConsumptionRanking();
+    getListEnergyConsumptionRanking()
   } else if (type == 4) {
-    getListPeakValley();
+    getListPeakValley()
   }
 }
-let myChart1 = null;
-let myChart2 = null;
-let myChart3 = null;
-let myChart4 = null;
+let myChart1 = null
+let myChart2 = null
+let myChart3 = null
+let myChart4 = null
 onMounted(() => {
-  myChart1 = echarts.init(document.getElementById("Chart1"));
-  myChart2 = echarts.init(document.getElementById("Chart2"));
-  myChart3 = echarts.init(document.getElementById("Chart3"));
-  myChart4 = echarts.init(document.getElementById("Chart4"));
-});
+  myChart1 = echarts.init(document.getElementById("Chart1"))
+  myChart2 = echarts.init(document.getElementById("Chart2"))
+  myChart3 = echarts.init(document.getElementById("Chart3"))
+  myChart4 = echarts.init(document.getElementById("Chart4"))
+})
 // 首页-全厂能耗统计/全厂能耗占比-列表
 function getListEnergyConsumptionSummation() {
-  loading02.value = true;
-  list.value = [];
+  loading02.value = true
+  list.value = []
   listEnergyConsumptionSummation(
     proxy.addDateRange({
       ...queryParams.value,
     })
   ).then((res) => {
-    loading02.value = false;
+    loading02.value = false
     if (!!res.code && res.code == 200) {
-      let total = 0;
-      let seriesData = [];
+      let total = 0
+      let seriesData = []
       if (!!res.data && res.data.length > 0) {
         res.data.map((item, index) => {
-          total += Number(item.tonCount);
-          item.name = item.energyName;
-          item.value = Number(item.tonCount).toFixed(2);
+          total += Number(item.tonCount)
+          item.name = item.energyName
+          item.value = Number(item.tonCount).toFixed(2)
           if (index % 5 === 0) {
-            list.value.push(res.data.slice(index, index + 5));
+            list.value.push(res.data.slice(index, index + 5))
           }
-        });
-        seriesData = res.data;
+        })
+        seriesData = res.data
       }
       setTimeout(() => {
         myChart2.setOption({
@@ -471,40 +385,30 @@ function getListEnergyConsumptionSummation() {
               verticalAlign: "middle",
               rich: {
                 name: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
                 value: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
                 rate: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
               },
             },
             data: seriesData,
             formatter: (name) => {
-              let target, percent, energyUnit;
+              let target, percent, energyUnit
               for (let i = 0; i < seriesData.length; i++) {
                 if (seriesData[i].name === name) {
-                  target = seriesData[i].value;
-                  energyUnit = seriesData[i].energyUnit;
-                  percent =
-                    total != 0 ? ((target / total) * 100).toFixed(2) : 0;
+                  target = seriesData[i].value
+                  energyUnit = seriesData[i].energyUnit
+                  percent = total != 0 ? ((target / total) * 100).toFixed(2) : 0
                 }
               }
-              return `{name|${name}(${energyUnit})  }{value| ${target}} {rate| ${percent}%}`;
+              return `{name|${name}(${energyUnit})  }{value| ${target}} {rate| ${percent}%}`
             },
           },
           series: [
@@ -516,8 +420,7 @@ function getListEnergyConsumptionSummation() {
               label: {
                 show: false,
                 fontSize: 11,
-                color:
-                  settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
               },
               labelLine: {
                 show: false,
@@ -526,44 +429,40 @@ function getListEnergyConsumptionSummation() {
               data: seriesData,
             },
           ],
-        });
-      }, 100);
+        })
+      }, 100)
       window.addEventListener(
         "resize",
         () => {
-          myChart2.resize();
+          myChart2.resize()
         },
         { passive: true }
-      );
+      )
     }
-  });
+  })
 }
 // 首页-全厂能耗趋势-列表
 function getListEnergyConsumptionTrend() {
-  loading1.value = true;
+  loading1.value = true
   listEnergyConsumptionTrend(
     proxy.addDateRange({
       ...queryParams.value,
     })
   ).then((res) => {
-    loading1.value = false;
+    loading1.value = false
     if (!!res.code && res.code == 200) {
-      let xdata = [];
-      let series = [];
+      let xdata = []
+      let series = []
       if (!!res.data.xdata) {
         res.data.xdata.map((item) => {
           xdata.push(
             proxy
               .dayjs(item)
               .format(
-                queryParams.value.timeType == "YEAR"
-                  ? "MM月"
-                  : queryParams.value.timeType == "MONTH"
-                  ? "DD日"
-                  : "HH时"
+                queryParams.value.timeType == "YEAR" ? "MM月" : queryParams.value.timeType == "MONTH" ? "DD日" : "HH时"
               )
-          );
-        });
+          )
+        })
       }
       if (!!res.data.legend && !!res.data.ydata) {
         series = res.data.legend.map((item, index) => {
@@ -573,8 +472,8 @@ function getListEnergyConsumptionTrend() {
             stack: "total",
             barWidth: "16",
             data: !!res.data.ydata ? res.data.ydata[index] : [],
-          };
-        });
+          }
+        })
       }
       setTimeout(() => {
         myChart1.setOption({
@@ -590,8 +489,7 @@ function getListEnergyConsumptionTrend() {
             itemWidth: 14,
             itemHeight: 10,
             textStyle: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
             },
           },
           grid: {
@@ -609,10 +507,7 @@ function getListEnergyConsumptionTrend() {
             axisLine: {
               show: true,
               lineStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               },
             },
             axisTick: {
@@ -625,8 +520,7 @@ function getListEnergyConsumptionTrend() {
               show: false,
             },
             axisLabel: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               fontSize: 14,
               padding: [5, 0, 0, 0],
               //   formatter: '{value} ml'
@@ -638,10 +532,7 @@ function getListEnergyConsumptionTrend() {
               type: "value",
               name: "tce",
               nameTextStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
                 padding: [0, 0, 5, 0],
               },
@@ -652,10 +543,7 @@ function getListEnergyConsumptionTrend() {
                 show: true,
                 lineStyle: {
                   type: "dashed",
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 },
               },
               axisTick: {
@@ -665,52 +553,47 @@ function getListEnergyConsumptionTrend() {
                 show: false,
               },
               axisLabel: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
               },
             },
           ],
           series,
-        });
-      }, 100);
+        })
+      }, 100)
     }
-  });
+  })
   window.addEventListener(
     "resize",
     () => {
-      myChart1.resize();
+      myChart1.resize()
     },
     { passive: true }
-  );
+  )
 }
 // 首页-科室能耗排名TOP-列表
 function getListEnergyConsumptionRanking() {
-  loading3.value = true;
+  loading3.value = true
   let opt = {
     index: 0,
-  };
+  }
   listEnergyConsumptionRanking(
     proxy.addDateRange({
       ...queryParams.value,
     })
   ).then((res) => {
-    loading3.value = false;
-    let nodeName = [];
-    let energyConsumption = [];
-    let maxenergyConsumption = [];
-    
+    loading3.value = false
+    let nodeName = []
+    let energyConsumption = []
+    let maxenergyConsumption = []
+
     if (!!res.data) {
       res.data.map((item, index) => {
-        nodeName.push(item.nodeName);
-        energyConsumption.push(
-          !!item.energyConsumption ? item.energyConsumption : 0
-        );
-        maxenergyConsumption[index] = res.data[0].energyConsumption;
-      });
-      listEnergyConsumptionRankingLength.value = res.data.length;
+        nodeName.push(item.nodeName)
+        energyConsumption.push(!!item.energyConsumption ? item.energyConsumption : 0)
+        maxenergyConsumption[index] = res.data[0].energyConsumption
+      })
+      listEnergyConsumptionRankingLength.value = res.data.length
     }
     setTimeout(() => {
       myChart3.setOption({
@@ -727,7 +610,7 @@ function getListEnergyConsumptionRanking() {
             type: "none",
           },
           formatter: function (params) {
-            return params[0].name + " : " + params[0].value;
+            return params[0].name + " : " + params[0].value
           },
         },
         xAxis: {
@@ -749,38 +632,17 @@ function getListEnergyConsumptionRanking() {
             },
             axisLabel: {
               interval: 0,
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
               fontSize: 14,
               formatter: function (value, index) {
                 if (index == 0) {
-                  return (
-                    "{idx0|" +
-                    (1 + index + opt.index) +
-                    "}{title|" +
-                    value +
-                    "}"
-                  );
+                  return "{idx0|" + (1 + index + opt.index) + "}{title|" + value + "}"
                 } else if (index == 1) {
-                  return (
-                    "{idx1|" +
-                    (1 + index + opt.index) +
-                    "}{title|" +
-                    value +
-                    "}"
-                  );
+                  return "{idx1|" + (1 + index + opt.index) + "}{title|" + value + "}"
                 } else if (index == 2) {
-                  return (
-                    "{idx2|" +
-                    (1 + index + opt.index) +
-                    "}{title|" +
-                    value +
-                    "}"
-                  );
+                  return "{idx2|" + (1 + index + opt.index) + "}{title|" + value + "}"
                 } else {
-                  return (
-                    "{idx|" + (1 + index + opt.index) + "}{title|" + value + "}"
-                  );
+                  return "{idx|" + (1 + index + opt.index) + "}{title|" + value + "}"
                 }
               },
               rich: {
@@ -822,8 +684,7 @@ function getListEnergyConsumptionRanking() {
             axisLine: "none",
             show: true,
             axisLabel: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
               fontSize: "12",
             },
             data: energyConsumption,
@@ -863,48 +724,41 @@ function getListEnergyConsumptionRanking() {
             data: energyConsumption,
           },
         ],
-      });
-    }, 100);
+      })
+    }, 100)
     window.addEventListener(
       "resize",
       () => {
-        myChart3.resize();
+        myChart3.resize()
       },
       { passive: true }
-    );
-  });
+    )
+  })
 }
 // 首页-尖峰平谷占比-列表
 function getListPeakValley() {
-  loading4.value = true;
+  loading4.value = true
   listPeakValley(
     proxy.addDateRange({
       ...queryParams.value,
     })
   ).then((res) => {
-    loading4.value = false;
+    loading4.value = false
     if (!!res.code && res.code == 200) {
-      let total = 0;
-      let seriesData = [];
+      let total = 0
+      let seriesData = []
       if (!!res.data && res.data.length > 0) {
         res.data.map((item, index) => {
-          total += Number(item.count);
+          total += Number(item.count)
           seriesData.push({
             name: item.timeName,
             value: Number(item.count).toFixed(2),
-          });
-        });
+          })
+        })
       }
       setTimeout(() => {
         myChart4.setOption({
-          color: [
-            "#8B33FF",
-            "#00DBFF",
-            "#002ADB",
-            "#5C92F7",
-            "#76D2F1",
-            "#8FADF9",
-          ],
+          color: ["#8B33FF", "#00DBFF", "#002ADB", "#5C92F7", "#76D2F1", "#8FADF9"],
           grid: {
             top: "20%",
             left: "15%",
@@ -929,39 +783,29 @@ function getListPeakValley() {
               verticalAlign: "middle",
               rich: {
                 name: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
                 value: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
                 rate: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
               },
             },
             data: seriesData,
             formatter: (name) => {
-              let target, percent;
+              let target, percent
               for (let i = 0; i < seriesData.length; i++) {
                 if (seriesData[i].name === name) {
-                  target = seriesData[i].value;
-                  percent =
-                    total != 0 ? ((target / total) * 100).toFixed(2) : 0;
+                  target = seriesData[i].value
+                  percent = total != 0 ? ((target / total) * 100).toFixed(2) : 0
                 }
               }
-              return `{name|${name}(kWh)  }{value| ${target}} {rate| ${percent}%}`;
+              return `{name|${name}(kWh)  }{value| ${target}} {rate| ${percent}%}`
             },
           },
           series: [
@@ -973,8 +817,7 @@ function getListPeakValley() {
               avoidLabelOverlap: false,
               label: {
                 fontSize: 11,
-                color:
-                  settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
               },
               labelLine: {
                 show: true,
@@ -999,17 +842,17 @@ function getListPeakValley() {
               data: seriesData,
             },
           ],
-        });
-      }, 100);
+        })
+      }, 100)
       window.addEventListener(
         "resize",
         () => {
-          myChart4.resize();
+          myChart4.resize()
         },
         { passive: true }
-      );
+      )
     }
-  });
+  })
 }
 </script>
 <style scoped lang="scss">

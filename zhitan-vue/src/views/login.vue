@@ -76,6 +76,7 @@ const route = useRoute()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 const systemInfo = JSON.parse(Cookies.get("SystemInfo") || "{}")
+console.log(systemInfo)
 
 const loginForm = ref({
   username: "admin",

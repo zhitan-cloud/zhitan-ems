@@ -1,7 +1,12 @@
 <template>
   <div class="navbar">
     <div class="navbar-left">
-      <hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+      <hamburger
+        id="hamburger-container"
+        :is-active="appStore.sidebar.opened"
+        class="hamburger-container"
+        @toggleClick="toggleSideBar"
+      />
       <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!settingsStore.topNav" />
       <top-nav id="topmenu-container" class="topmenu-container" v-if="settingsStore.topNav" />
     </div>
@@ -31,7 +36,7 @@
               <el-dropdown-item command="toggleTheme">
                 <span>风格切换</span>
               </el-dropdown-item>
-<!--               
+              <!--               
               <el-dropdown-item command="setLayout" v-if="settingsStore.showSettings">
                 <span>布局设置</span>
               </el-dropdown-item> -->
@@ -47,31 +52,29 @@
 </template>
 
 <script setup>
-import { ElMessageBox } from 'element-plus'
-import Breadcrumb from '@/components/Breadcrumb'
-import TopNav from '@/components/TopNav'
-import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import HeaderSearch from '@/components/HeaderSearch'
-import useAppStore from '@/store/modules/app'
-import useUserStore from '@/store/modules/user'
-import useSettingsStore from '@/store/modules/settings'
-
+import { ElMessageBox } from "element-plus"
+import Breadcrumb from "@/components/Breadcrumb"
+import TopNav from "@/components/TopNav"
+import Hamburger from "@/components/Hamburger"
+import Screenfull from "@/components/Screenfull"
+import SizeSelect from "@/components/SizeSelect"
+import HeaderSearch from "@/components/HeaderSearch"
+import useAppStore from "@/store/modules/app"
+import useUserStore from "@/store/modules/user"
+import useSettingsStore from "@/store/modules/settings"
 
 const appStore = useAppStore()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 
 function toggleTheme() {
-  if (settingsStore.sideTheme == 'theme-dark') {
-    settingsStore.sideTheme = 'theme-light'
-    document.querySelector('body').className = 'themeLight';
+  if (settingsStore.sideTheme == "theme-dark") {
+    settingsStore.sideTheme = "theme-light"
+    document.querySelector("body").className = "themeLight"
   } else {
-    settingsStore.sideTheme = 'theme-dark'
-    document.querySelector('body').className = 'themeDark';
+    settingsStore.sideTheme = "theme-dark"
+    document.querySelector("body").className = "themeDark"
   }
-
 }
 
 function toggleSideBar() {
@@ -81,44 +84,46 @@ function toggleSideBar() {
 function handleCommand(command) {
   switch (command) {
     case "toggleTheme":
-      toggleTheme();
-      break;
+      toggleTheme()
+      break
     case "setLayout":
-      setLayout();
-      break;
+      setLayout()
+      break
     case "logout":
-      logout();
-      break;
+      logout()
+      break
     default:
-      break;
+      break
   }
 }
 
 function logout() {
-  ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    userStore.logOut().then(() => {
-      location.href = '/index';
+  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      userStore.logOut().then(() => {
+        location.href = "/index"
+      })
     })
-  }).catch(() => { });
+    .catch(() => {})
 }
 
-const emits = defineEmits(['setLayout'])
+const emits = defineEmits(["setLayout"])
 function setLayout() {
-  emits('setLayout');
+  emits("setLayout")
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .themeDark {
   .navbar {
     height: 70px;
     background: #1a235d;
     border-radius: 0px 0px 0px 0px;
-    border: 1px solid #000000;
+    border-bottom: 2px solid #110f2e;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -208,14 +213,13 @@ function setLayout() {
       }
     }
   }
-  
 }
 .themeLight {
   .navbar {
     height: 70px;
-    background: #FEFEFE;
+    background: #fefefe;
     border-radius: 0px 0px 0px 0px;
-    border: 1px solid#f7f8fa;
+    border-bottom: 2px solid#f7f8fa;
     display: flex;
     justify-content: space-between;
     align-items: center;

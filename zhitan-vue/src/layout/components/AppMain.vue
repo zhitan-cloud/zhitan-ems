@@ -13,7 +13,7 @@
 
 <script setup>
 import iframeToggle from "./IframeToggle/index"
-import useTagsViewStore from '@/store/modules/tagsView'
+import useTagsViewStore from "@/store/modules/tagsView"
 
 const tagsViewStore = useTagsViewStore()
 </script>
@@ -27,21 +27,22 @@ const tagsViewStore = useTagsViewStore()
     position: relative;
     overflow: hidden;
     background: #110f2e;
+    padding: 14px 0 0 14px;
   }
 
   .fixed-header + .app-main {
-    padding-top: 50px;
+    padding-top: 82px;
   }
 
   .hasTagsView {
     .app-main {
-      /* 84 = navbar + tags-view = 50 + 34 */
-      min-height: calc(100vh - 120px);
+      /* 84 = navbar + tags-view + padding = 70 + 56 + 14 */
+      min-height: calc(100vh - 125px);
       // padding: 20px;
     }
 
     .fixed-header + .app-main {
-      padding-top: 84px;
+      padding-top: 130px;
     }
   }
 }
@@ -53,23 +54,23 @@ const tagsViewStore = useTagsViewStore()
     width: 100%;
     position: relative;
     overflow: hidden;
-    background: #F7F8FA;
+    background: #f7f8fa;
+    padding: 14px 0 0 14px;
   }
 
   .fixed-header + .app-main {
-    padding-top: 50px;
+    padding-top: 82px;
   }
 
   .hasTagsView {
     .app-main {
-      /* 84 = navbar + tags-view = 50 + 34 */
-      // 70+50
-      min-height: calc(100vh - 120px);
+      /* 84 = navbar + tags-view + padding = 70 + 56 + 14 */
+      min-height: calc(100vh - 125px);
       // padding: 20px;
     }
 
     .fixed-header + .app-main {
-      padding-top: 84px;
+      padding-top: 130px;
     }
   }
 }
@@ -97,4 +98,3 @@ const tagsViewStore = useTagsViewStore()
   border-radius: 3px;
 }
 </style>
-
