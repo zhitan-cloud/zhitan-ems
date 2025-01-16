@@ -42,7 +42,7 @@ public class SysEnerclassController extends BaseController
     /**
      * 查询所有能源品种设置列表
      */
-    @PreAuthorize("@ss.hasPermi('enerInfoManage:enerclass:list')")
+//    @PreAuthorize("@ss.hasPermi('enerInfoManage:enerclass:list')")
     @GetMapping("/list")
     public AjaxResult list(SysEnerclass sysEnerclass)
     {
