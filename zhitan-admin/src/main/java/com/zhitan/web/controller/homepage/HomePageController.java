@@ -43,8 +43,6 @@ public class HomePageController extends BaseController {
 
     /**
      * @description: 能耗趋势
-     * @param timeType
-     * @return
      * @author: hmj
      * @date: 2024/10/8 13:41
      */
@@ -63,8 +61,6 @@ public class HomePageController extends BaseController {
 
     /**
      * @description: 科室能耗排名
-     * @param timeType
-     * @return
      * @author: hmj
      * @date: 2024/10/8 13:41
      */
@@ -82,8 +78,6 @@ public class HomePageController extends BaseController {
 
     /**
      * @description: 峰平谷占比
-     * @param timeType
-     * @return
      * @author: hmj
      * @date: 2024/10/8 13:41
      */
