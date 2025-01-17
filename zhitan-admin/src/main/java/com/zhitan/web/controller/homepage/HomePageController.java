@@ -25,17 +25,13 @@ public class HomePageController extends BaseController {
 
     @Autowired
     public IHomePageService homepageService;
+
    /**
-    * @description: 全厂能耗统计
-    * @param timeType
-    * @return
-    * @author: hmj
-    * @date: 2024/10/8 13:41
+    * &#064;description:  全厂能耗统计
     */
    @GetMapping("/energyConsumptionSummation")
    public AjaxResult energyConsumptionSummation(String timeType) {
        try {
-//           String modelcode = "Composite_Indicators";
            String modelcode = "COMPREHENSIVE_CODE";
            return AjaxResult.success(homepageService.energyConsumptionSummation(timeType,modelcode));
        } catch (Exception ex) {
