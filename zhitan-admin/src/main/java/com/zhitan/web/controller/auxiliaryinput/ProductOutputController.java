@@ -34,10 +34,9 @@ public class ProductOutputController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:prodoutput:list')")
     @GetMapping("/productoutput/list")
-    public TableDataInfo list(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
-    {
+    public TableDataInfo list(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize) {
         productOutput.setDataType("1");
-        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
+        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput, pageNum, pageSize);
         return getDataTable(list);
     }
 
@@ -47,8 +46,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:prodoutput:export')")
     @Log(title = "产品产量录入", businessType = BusinessType.EXPORT)
     @PostMapping("/productoutput/export")
-    public void export(HttpServletResponse response, ProductOutput productOutput)
-    {
+    public void export(HttpServletResponse response, ProductOutput productOutput) {
         productOutput.setDataType("1");
         List<ProductOutput> list = auxiliaryInputService.selectProductOutputList(productOutput);
         ExcelUtil<ProductOutput> util = new ExcelUtil<ProductOutput>(ProductOutput.class);
@@ -60,8 +58,7 @@ public class ProductOutputController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:prodoutput:query')")
     @GetMapping(value = "/productoutput/{productOutputId}")
-    public AjaxResult getInfo(@PathVariable("productOutputId") String productOutputId)
-    {
+    public AjaxResult getInfo(@PathVariable("productOutputId") String productOutputId) {
         return success(auxiliaryInputService.selectProductOutputById(productOutputId));
     }
 
@@ -71,8 +68,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:prodoutput:add')")
     @Log(title = "产品产量录入", businessType = BusinessType.INSERT)
     @PostMapping(value = "/productoutput")
-    public AjaxResult add(@RequestBody ProductOutput productOutput)
-    {
+    public AjaxResult add(@RequestBody ProductOutput productOutput) {
         productOutput.setProductOutputId(UUID.randomUUID().toString());
         productOutput.setDataType("1");
         return toAjax(auxiliaryInputService.insertProductOutput(productOutput));
@@ -84,8 +80,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:prodoutput:edit')")
     @Log(title = "产品产量录入", businessType = BusinessType.UPDATE)
     @PutMapping(value = "/productoutput")
-    public AjaxResult edit(@RequestBody ProductOutput productOutput)
-    {
+    public AjaxResult edit(@RequestBody ProductOutput productOutput) {
         return toAjax(auxiliaryInputService.updateProductOutput(productOutput));
     }
 
@@ -95,8 +90,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:prodoutput:remove')")
     @Log(title = "产品产量录入", businessType = BusinessType.DELETE)
     @DeleteMapping("/productoutput/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
+    public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(auxiliaryInputService.deleteProductOutputByIds(ids));
     }
 
@@ -106,10 +100,9 @@ public class ProductOutputController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:meter:list')")
     @GetMapping("/meter/list")
-    public TableDataInfo meterList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
-    {
+    public TableDataInfo meterList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize) {
         productOutput.setDataType("2");
-        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
+        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput, pageNum, pageSize);
         return getDataTable(list);
     }
 
@@ -119,8 +112,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:meter:export')")
     @Log(title = "能源仪表录入", businessType = BusinessType.EXPORT)
     @PostMapping("/meter/export")
-    public void meterExport(HttpServletResponse response, ProductOutput productOutput)
-    {
+    public void meterExport(HttpServletResponse response, ProductOutput productOutput) {
         productOutput.setDataType("2");
         List<ProductOutput> list = auxiliaryInputService.selectProductOutputList(productOutput);
         ExcelUtil<ProductOutput> util = new ExcelUtil<ProductOutput>(ProductOutput.class);
@@ -132,8 +124,7 @@ public class ProductOutputController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:meter:query')")
     @GetMapping(value = "/meter/{productOutputId}")
-    public AjaxResult meterGetInfo(@PathVariable("productOutputId") String productOutputId)
-    {
+    public AjaxResult meterGetInfo(@PathVariable("productOutputId") String productOutputId) {
         return success(auxiliaryInputService.selectProductOutputById(productOutputId));
     }
 
@@ -143,8 +134,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:meter:add')")
     @Log(title = "能源仪表录入", businessType = BusinessType.INSERT)
     @PostMapping(value = "/meter")
-    public AjaxResult meterAdd(@RequestBody ProductOutput productOutput)
-    {
+    public AjaxResult meterAdd(@RequestBody ProductOutput productOutput) {
         productOutput.setProductOutputId(UUID.randomUUID().toString());
         productOutput.setDataType("2");
         return toAjax(auxiliaryInputService.insertProductOutput(productOutput));
@@ -156,8 +146,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:meter:edit')")
     @Log(title = "能源仪表录入", businessType = BusinessType.UPDATE)
     @PutMapping(value = "/meter")
-    public AjaxResult meterEdit(@RequestBody ProductOutput productOutput)
-    {
+    public AjaxResult meterEdit(@RequestBody ProductOutput productOutput) {
         return toAjax(auxiliaryInputService.updateProductOutput(productOutput));
     }
 
@@ -167,8 +156,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:meter:remove')")
     @Log(title = "能源仪表录入", businessType = BusinessType.DELETE)
     @DeleteMapping("/meter/{ids}")
-    public AjaxResult meterRemove(@PathVariable String[] ids)
-    {
+    public AjaxResult meterRemove(@PathVariable String[] ids) {
         return toAjax(auxiliaryInputService.deleteProductOutputByIds(ids));
     }
 
@@ -177,10 +165,9 @@ public class ProductOutputController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:energyindex:list')")
     @GetMapping("/energyindex/list")
-    public TableDataInfo energyIndexList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize)
-    {
+    public TableDataInfo energyIndexList(ProductOutput productOutput, @RequestParam Long pageNum, @RequestParam Long pageSize) {
         productOutput.setDataType("3");
-        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput,pageNum,pageSize);
+        Page<ProductOutput> list = auxiliaryInputService.selectProductOutputPage(productOutput, pageNum, pageSize);
         return getDataTable(list);
     }
 
@@ -190,8 +177,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:energyindex:export')")
     @Log(title = "能源指标录入", businessType = BusinessType.EXPORT)
     @PostMapping("/energyindex/export")
-    public void energyIndexExport(HttpServletResponse response, ProductOutput productOutput)
-    {
+    public void energyIndexExport(HttpServletResponse response, ProductOutput productOutput) {
         productOutput.setDataType("3");
         List<ProductOutput> list = auxiliaryInputService.selectProductOutputList(productOutput);
         ExcelUtil<ProductOutput> util = new ExcelUtil<ProductOutput>(ProductOutput.class);
@@ -203,8 +189,7 @@ public class ProductOutputController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('system:energyindex:query')")
     @GetMapping(value = "/energyindex/{productOutputId}")
-    public AjaxResult energyIndexGetInfo(@PathVariable("productOutputId") String productOutputId)
-    {
+    public AjaxResult energyIndexGetInfo(@PathVariable("productOutputId") String productOutputId) {
         return success(auxiliaryInputService.selectProductOutputById(productOutputId));
     }
 
@@ -214,8 +199,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:energyindex:add')")
     @Log(title = "能源指标录入", businessType = BusinessType.INSERT)
     @PostMapping(value = "/energyindex")
-    public AjaxResult energyIndexAdd(@RequestBody ProductOutput productOutput)
-    {
+    public AjaxResult energyIndexAdd(@RequestBody ProductOutput productOutput) {
         productOutput.setProductOutputId(UUID.randomUUID().toString());
         productOutput.setDataType("3");
         return toAjax(auxiliaryInputService.insertProductOutput(productOutput));
@@ -227,8 +211,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:energyindex:edit')")
     @Log(title = "能源指标录入", businessType = BusinessType.UPDATE)
     @PutMapping(value = "/energyindex")
-    public AjaxResult energyIndexEdit(@RequestBody ProductOutput productOutput)
-    {
+    public AjaxResult energyIndexEdit(@RequestBody ProductOutput productOutput) {
         return toAjax(auxiliaryInputService.updateProductOutput(productOutput));
     }
 
@@ -238,8 +221,7 @@ public class ProductOutputController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:energyindex:remove')")
     @Log(title = "能源指标录入", businessType = BusinessType.DELETE)
     @DeleteMapping("/energyindex/{ids}")
-    public AjaxResult energyIndexRemove(@PathVariable String[] ids)
-    {
+    public AjaxResult energyIndexRemove(@PathVariable String[] ids) {
         return toAjax(auxiliaryInputService.deleteProductOutputByIds(ids));
     }
 
