@@ -26,19 +26,19 @@ public class HomePageController extends BaseController {
     @Autowired
     public IHomePageService homepageService;
 
-   /**
-    * &#064;description:  全厂能耗统计
-    */
-   @GetMapping("/energyConsumptionSummation")
-   public AjaxResult energyConsumptionSummation(String timeType) {
-       try {
-           String modelcode = "COMPREHENSIVE_CODE";
-           return AjaxResult.success(homepageService.energyConsumptionSummation(timeType,modelcode));
-       } catch (Exception ex) {
-           logger.error("获取出错！", ex);
-           return AjaxResult.error("获取出错!");
-       }
-   }
+    /**
+     * &#064;description:  全厂能耗统计
+     */
+    @GetMapping("/energyConsumptionSummation")
+    public AjaxResult energyConsumptionSummation(String timeType) {
+        try {
+            String modelcode = "COMPREHENSIVE_CODE";
+            return AjaxResult.success(homepageService.energyConsumptionSummation(timeType, modelcode));
+        } catch (Exception ex) {
+            logger.error("获取出错！", ex);
+            return AjaxResult.error("获取出错!");
+        }
+    }
 
 
     /**
@@ -50,7 +50,7 @@ public class HomePageController extends BaseController {
     public AjaxResult energyConsumptionTrend(String timeType) {
         try {
             String modelcode = "COMPREHENSIVE_CODE";
-            HomeEnergyConsumptionTrendVO vo = homepageService.energyConsumptionTrend(timeType,modelcode);
+            HomeEnergyConsumptionTrendVO vo = homepageService.energyConsumptionTrend(timeType, modelcode);
 
             return AjaxResult.success(vo);
         } catch (Exception ex) {
@@ -68,7 +68,7 @@ public class HomePageController extends BaseController {
     public AjaxResult energyConsumptionRanking(String timeType) {
         try {
             String modelcode = "COMPREHENSIVE_CODE";
-            List<RankingEnergyData> consumptionAnalysisVO = homepageService.energyConsumptionRanking(modelcode,timeType);
+            List<RankingEnergyData> consumptionAnalysisVO = homepageService.energyConsumptionRanking(modelcode, timeType);
             return AjaxResult.success(consumptionAnalysisVO);
         } catch (Exception ex) {
             logger.error("获取出错！", ex);
@@ -84,9 +84,8 @@ public class HomePageController extends BaseController {
     @GetMapping("/peakValley")
     public AjaxResult peakValley(String timeType) {
         try {
-//            String modelcode = "Composite_Indicators";
             String modelcode = "COMPREHENSIVE_CODE";
-            List<HomePeakValleyVO> vo = homepageService.peakValley(timeType,modelcode);
+            List<HomePeakValleyVO> vo = homepageService.peakValley(timeType, modelcode);
             return AjaxResult.success(vo);
         } catch (Exception ex) {
             logger.error("获取出错！", ex);
