@@ -3,10 +3,10 @@
     <div class="form-card">
       <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="120px">
         <el-form-item label="标题">
-          <el-input v-model="queryParams.title" placeholder="请输入标题" />
+          <el-input v-model="queryParams.title" placeholder="请输入标题" clearable/>
         </el-form-item>
         <el-form-item label="能源类型">
-              <el-select v-model="queryParams.type" placeholder="请选择能源类型" style="width: 100%">
+              <el-select v-model="queryParams.type" placeholder="请选择能源类型" style="width: 100%" clearable>
                   <el-option v-for="dict in types" :key="dict.value"
                       :label="dict.label" :value="dict.value" />
               </el-select>
@@ -65,7 +65,7 @@ let total = ref(0)
 let tableData = ref([])
 let queryParams = ref({
   title: "",
-  type:0,
+  type:null,
   pageNum: 1,
   pageSize: 10,
 })
@@ -110,7 +110,7 @@ function handleQuery() {
 function resetQuery() {
   queryParams.value = {
     title: "",
-    type:0 ,
+    type:null,
     pageNum: 1,
     pageSize: 10,
   }

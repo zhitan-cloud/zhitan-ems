@@ -40,7 +40,6 @@
 
 <script setup>
 import { getToken } from "@/utils/auth";
-
 const props = defineProps({
   modelValue: [String, Object, Array],
   // 数量限制

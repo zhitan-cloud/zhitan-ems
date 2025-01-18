@@ -34,7 +34,7 @@ export function knowledgeBaseInfo(params) {
 export function knowledgeBaseEdit(data) {
     return request({
         url: '/knowledgeBase/edit',
-        method: 'put',
+        method: 'post',
         data
     })
 }
