@@ -1,5 +1,8 @@
 package com.zhitan.knowledgeBase.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 /**
@@ -11,6 +14,7 @@ public class KnowledgeBasePageVO {
     /**
      * id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 标题
@@ -31,5 +35,6 @@ public class KnowledgeBasePageVO {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String createTime;
 }
