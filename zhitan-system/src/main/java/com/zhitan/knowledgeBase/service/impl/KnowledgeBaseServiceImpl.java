@@ -48,12 +48,14 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         // 分页查询
         Page<KnowledgeBase> knowledgeBasePage = baseMapper.selectPage(new Page<>(pageDTO.getPageNum(), pageDTO.getPageSize()),
                 Wrappers.<KnowledgeBase>lambdaQuery()
+                        .select(KnowledgeBase::getId, KnowledgeBase::getTitle, KnowledgeBase::getType,
+                                KnowledgeBase::getContent, KnowledgeBase::getCreateTime)
                         .like(ObjectUtils.isNotEmpty(pageDTO.getTitle()), KnowledgeBase::getTitle, pageDTO.getTitle())
                         .eq(ObjectUtils.isNotEmpty(pageDTO.getType()), KnowledgeBase::getType, pageDTO.getType())
                         .eq(KnowledgeBase::getDelFlag, false).orderByDesc(KnowledgeBase::getCreateTime));
 
         List<KnowledgeBase> records = knowledgeBasePage.getRecords();
-        if (records.isEmpty()){
+        if (records.isEmpty()) {
             return voPage;
         }
         // 数据转换
@@ -75,12 +77,12 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
         // 查询数据
         KnowledgeBase knowledgeBase = baseMapper.selectById(id);
-        if (knowledgeBase != null){
+        if (knowledgeBase != null) {
             // 数据转换
             BeanUtil.copyProperties(knowledgeBase, vo);
             vo.setUrl(fileMapper.selectList(Wrappers.<KnowledgeBaseFile>lambdaQuery()
-                    .select(KnowledgeBaseFile::getUrl)
-                    .eq(KnowledgeBaseFile::getKnowledgeBaseId, id))
+                            .select(KnowledgeBaseFile::getUrl)
+                            .eq(KnowledgeBaseFile::getKnowledgeBaseId, id))
                     .stream().map(KnowledgeBaseFile::getUrl).collect(Collectors.toList()));
         }
         return vo;
@@ -97,8 +99,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         baseMapper.insert(knowledgeBase);
 
         // 插入文件
-        if (ObjectUtils.isNotEmpty(addDTO.getUrl())){
-            addDTO.getUrl().forEach(url->{
+        if (ObjectUtils.isNotEmpty(addDTO.getUrl())) {
+            addDTO.getUrl().forEach(url -> {
                 KnowledgeBaseFile file = new KnowledgeBaseFile();
                 file.setKnowledgeBaseId(knowledgeBase.getId());
                 file.setUrl(url);
@@ -114,7 +116,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     public void edit(KnowledgeBaseEditDTO editDTO) {
         // 查询数据
         KnowledgeBase knowledgeBase = baseMapper.selectById(editDTO.getId());
-        if (ObjectUtils.isEmpty(knowledgeBase)){
+        if (ObjectUtils.isEmpty(knowledgeBase)) {
             throw new ServiceException(MessageConstant.KNOWLEDGE_BASE_NOT_EXIST);
         }
         // 更新数据
@@ -126,8 +128,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                 .eq(KnowledgeBaseFile::getKnowledgeBaseId, knowledgeBase.getId()));
 
         // 插入文件
-        if (ObjectUtils.isNotEmpty(editDTO.getUrl())){
-            editDTO.getUrl().forEach(url->{
+        if (ObjectUtils.isNotEmpty(editDTO.getUrl())) {
+            editDTO.getUrl().forEach(url -> {
                 KnowledgeBaseFile file = new KnowledgeBaseFile();
                 file.setKnowledgeBaseId(knowledgeBase.getId());
                 file.setUrl(url);
@@ -143,7 +145,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     public void delete(Long id) {
         // 查询数据
         KnowledgeBase knowledgeBase = baseMapper.selectById(id);
-        if (ObjectUtils.isEmpty(knowledgeBase)){
+        if (ObjectUtils.isEmpty(knowledgeBase)) {
             throw new ServiceException(MessageConstant.KNOWLEDGE_BASE_NOT_EXIST);
         }
         // 删除数据
