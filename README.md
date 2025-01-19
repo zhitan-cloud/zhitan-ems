@@ -30,7 +30,7 @@ VUE版本：VUE 3
 
 ## 在线体验
 
-- guestUser/guestUser  
+- guestUser/guest@123456
 
 演示地址：https://demo-ems.zhitancloud.com/  
 
