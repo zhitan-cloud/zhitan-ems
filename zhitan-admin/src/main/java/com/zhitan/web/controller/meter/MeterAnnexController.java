@@ -29,27 +29,26 @@ import java.util.List;
 
 /**
  * 计量器具档案附件Controller
- * 
+ *
  * @author zhaowei
  * @date 2020-02-14
  */
 @RestController
 @RequestMapping("/meter/annex")
-public class MeterAnnexController extends BaseController
-{
+public class MeterAnnexController extends BaseController {
     @Autowired
     private IMeterAnnexService meterAnnexService;
     @Autowired
     private TokenService tokenService;
 
     private static final Logger log = LoggerFactory.getLogger(MeterAnnexController.class);
+
     /**
      * 查询计量器具档案附件列表
      */
     @PreAuthorize("@ss.hasPermi('meter:annex:list')")
     @GetMapping("/list")
-    public TableDataInfo list(MeterAnnex meterAnnex)
-    {
+    public TableDataInfo list(MeterAnnex meterAnnex) {
         startPage();
         List<MeterAnnex> list = meterAnnexService.selectMeterAnnexList(meterAnnex);
         return getDataTable(list);
@@ -61,8 +60,7 @@ public class MeterAnnexController extends BaseController
     @PreAuthorize("@ss.hasPermi('meter:annex:export')")
     @Log(title = "计量器具档案附件", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(MeterAnnex meterAnnex)
-    {
+    public AjaxResult export(MeterAnnex meterAnnex) {
         List<MeterAnnex> list = meterAnnexService.selectMeterAnnexList(meterAnnex);
         ExcelUtil<MeterAnnex> util = new ExcelUtil<MeterAnnex>(MeterAnnex.class);
         return util.exportExcel(list, "annex");
@@ -73,8 +71,7 @@ public class MeterAnnexController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('meter:annex:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") String id) {
         return AjaxResult.success(meterAnnexService.selectMeterAnnexById(id));
     }
 
@@ -84,8 +81,7 @@ public class MeterAnnexController extends BaseController
     @PreAuthorize("@ss.hasPermi('meter:annex:add')")
     @Log(title = "计量器具档案附件", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody MeterAnnex meterAnnex)
-    {
+    public AjaxResult add(@RequestBody MeterAnnex meterAnnex) {
         return toAjax(meterAnnexService.insertMeterAnnex(meterAnnex));
     }
 
@@ -95,8 +91,7 @@ public class MeterAnnexController extends BaseController
     @PreAuthorize("@ss.hasPermi('meter:annex:edit')")
     @Log(title = "计量器具档案附件", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody MeterAnnex meterAnnex)
-    {
+    public AjaxResult edit(@RequestBody MeterAnnex meterAnnex) {
         return toAjax(meterAnnexService.updateMeterAnnex(meterAnnex));
     }
 
@@ -105,9 +100,8 @@ public class MeterAnnexController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('meter:annex:remove')")
     @Log(title = "计量器具档案附件", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(meterAnnexService.deleteMeterAnnexByIds(ids));
     }
 
@@ -115,15 +109,13 @@ public class MeterAnnexController extends BaseController
      * 通用指定文件下载请求
      *
      * @param showFileName 下载展示文件名称
-//     * @param filePath 下载文件绝对路径 带 文件真实名字及路径
-     * @param delete 是否删除/
+     *                     //     * @param filePath 下载文件绝对路径 带 文件真实名字及路径
+     * @param delete       是否删除/
      */
     @PreAuthorize("@ss.hasPermi('meter:annex:assignDownload')")
     @PostMapping("/assignDownload")
-    public void fileAssignDownload(String showFileName, String filePath,Boolean delete, HttpServletResponse response, HttpServletRequest request)
-    {
-        try
-        {
+    public void fileAssignDownload(String showFileName, String filePath, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
+        try {
             response.setCharacterEncoding("utf-8");
             response.setContentType("multipart/form-data");
             response.setHeader("Content-Disposition",
@@ -134,19 +126,16 @@ public class MeterAnnexController extends BaseController
 //                FileUtils.deleteFile(filePath);
 //            }
             log.error("下载成功", "aa");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("下载文件失败", e);
         }
     }
+
     @Log(title = "计量器具档案附件上传", businessType = BusinessType.IMPORT)
     @PreAuthorize("@ss.hasPermi('meter:annex:fileImport')")
     @PostMapping("/fileImport")
-    public AjaxResult importData(MultipartFile file, String implementId) throws Exception
-    {
-        if (!file.isEmpty())
-        {
+    public AjaxResult importData(MultipartFile file, String implementId) throws Exception {
+        if (!file.isEmpty()) {
             LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
             //获取配置的文件上传路径
             String uploadPathDir = BaseConfig.getUploadPath();
@@ -169,8 +158,7 @@ public class MeterAnnexController extends BaseController
             meterAnnex.setFileSuffix(fileSuffix);
             meterAnnex.setImplementId(implementId);
             meterAnnex.setCreateBy(loginUser.getUsername());
-            if (this.meterAnnexService.insertMeterAnnex(meterAnnex)>0)
-            {
+            if (this.meterAnnexService.insertMeterAnnex(meterAnnex) > 0) {
                 return AjaxResult.success("附件上传完成");
             }
         }

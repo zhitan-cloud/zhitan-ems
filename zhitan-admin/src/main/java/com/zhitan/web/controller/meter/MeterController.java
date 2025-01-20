@@ -37,14 +37,12 @@ public class MeterController extends BaseController {
     private IMetersService iMeterservice;
 
 
-
-
     @ApiOperation("获取计量表数据")
     @GetMapping("/listMeterData")
-    public R<List<MeterImplements>> listMeterData(@RequestParam String meterType){
+    public R<List<MeterImplements>> listMeterData(@RequestParam String meterType) {
         log.info("开始获取计量表数据......");
         List<MeterImplements> meterImplementList = iMeterservice.listMeterData(meterType);
-        if (meterImplementList != null || meterImplementList .size() > 0) {
+        if (meterImplementList != null || meterImplementList.size() > 0) {
             return R.ok(meterImplementList);
         } else {
             return R.fail("获取计量表数据失败");
@@ -56,8 +54,8 @@ public class MeterController extends BaseController {
     public R<List<MeterParam>> listConfigurationData(@RequestParam String meterType, @RequestParam String indexType) {
 
         log.info("开始获取点位配置信息......");
-        List<MeterParam> meterParams = iMeterservice.listConfigurationData(meterType,indexType);
-        if (meterParams != null || meterParams .size() > 0) {
+        List<MeterParam> meterParams = iMeterservice.listConfigurationData(meterType, indexType);
+        if (meterParams != null || meterParams.size() > 0) {
             return (R.ok(meterParams));
         } else {
             return R.fail("获取点位配置信息失败");
@@ -82,12 +80,11 @@ public class MeterController extends BaseController {
 
     @ApiOperation("新增保存配置数据")
     @GetMapping("/addConfigurationData")
-    public R<T> addConfigurationData(){
+    public R<T> addConfigurationData() {
         log.info("执行新增保存配置数据......");
 
         return R.ok();
     }
-
 
 
 }
