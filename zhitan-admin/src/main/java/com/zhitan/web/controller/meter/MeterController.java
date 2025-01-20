@@ -81,8 +81,6 @@ public class MeterController extends BaseController {
     @ApiOperation("新增保存配置数据")
     @GetMapping("/addConfigurationData")
     public R<T> addConfigurationData() {
-        log.info("执行新增保存配置数据......");
-
         return R.ok();
     }
 
