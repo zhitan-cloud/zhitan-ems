@@ -1,5 +1,7 @@
 package com.zhitan.knowledgeBase.domain.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -17,6 +19,7 @@ public class KnowledgeBaseDetailVO {
      * id
      */
     @ApiModelProperty(value = "id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 标题
