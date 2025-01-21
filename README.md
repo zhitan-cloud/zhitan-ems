@@ -11,9 +11,6 @@
 进一步为企业实现碳跟踪、碳盘查、碳交易、谈汇报的全生命过程。 为中国碳达峰-碳中和做出贡献。
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
-支持个人和企业免费使用。商用实施咨询请联系：
-![输入图片说明](readme/img/image.png)
-
 
 墙内仓库地址（码云）：https://gitee.com/ustcyc/zhitan-ems
 已同步更新到github仓库：https://github.com/Andy-Yin/zhitan-ems
@@ -116,6 +113,10 @@ VUE版本：VUE 3
 ## 技术架构
 ![输入图片说明](readme/技术架构-1.png)
 ![输入图片说明](readme/技术架构.png)
+
+支持个人和企业免费使用。商用实施咨询请联系：
+
+![输入图片说明](readme/img/image.png)
 
 ## 参与贡献
 
