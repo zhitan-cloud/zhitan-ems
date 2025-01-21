@@ -24,9 +24,8 @@ export function knowledgeBaseAdd(data) {
 // 查详情
 export function knowledgeBaseInfo(params) {
     return request({
-        url: `/knowledgeBase/detail/${params.id}`,
-        method: 'get',
-        params
+        url: "/knowledgeBase/detail?id="+params,
+        method: 'get'
     })
 }
 
