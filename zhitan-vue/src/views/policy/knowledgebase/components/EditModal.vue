@@ -14,9 +14,12 @@
             <el-form-item label="内容" prop="content">
                 <el-input v-model="form.content" placeholder="请输入内容" />
             </el-form-item>
-            <!-- <el-form-item label="附件" prop="url">
-                <FileUpload></FileUpload>
-            </el-form-item> -->
+            <el-form-item label="附件" prop="url">
+                <FileUpload 
+                :modelValue="fileList"
+                 @update:modelValue="val => fileList = val"
+                ></FileUpload>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="text-right">
             <el-button type="primary" @click="submitForm" :loading="loading">确 定</el-button>
@@ -40,6 +43,7 @@ let form = ref({
     type: null,
     url:[]
 })
+let fileList=ref([])
 let emit = defineEmits(['getList'])
 const formRules = {
     title: [{ required: true, trigger: "blur", message: "请输入标题" }],
@@ -51,6 +55,10 @@ function submitForm() {
     proxy.$refs.queryRef.validate(valid => {
         if (valid) {
             loading.value = true;
+            form.value.url=[]
+             for(let i=0;i<fileList.value.length;i++){
+                form.value.url.push(fileList.value[i].url)
+             }
             let obj = form.value.id ? knowledgeBaseEdit(form.value) : knowledgeBaseAdd(form.value)
             obj.then((res) => {
                 if (res.code == 200) {
@@ -74,9 +82,26 @@ function submitForm() {
 
 
 function handleOpen(row) {
+    debugger
+    fileList.value=[]
     if (row && row.id) {
         title.value = "编辑知识库"
         form.value = JSON.parse(JSON.stringify(row))
+        let fileItem={
+            name:'',
+            url:''
+        }
+        let files=[]
+        if(row.url && row.url.length){
+            for(let i=0;i<row.url.length;i++){
+                fileItem.url=row.url[i]
+                fileItem.name=row.url[i]
+                console.log(fileItem)
+                files.push(JSON.parse(JSON.stringify(fileItem)) )
+            }
+            fileList.value=files
+            console.log(fileList.value)
+        }
     } else {
         title.value = "添加知识库"
     }
