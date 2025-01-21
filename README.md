@@ -115,9 +115,14 @@ VUE版本：VUE 3
 ![输入图片说明](readme/技术架构-1.png)
 ![输入图片说明](readme/技术架构.png)
 
-支持个人和企业免费使用。商用实施咨询请联系：
+## 沟通交流
 
-![输入图片说明](readme/img/image.png)
+扫码添加微信交流，加微信请备注：ems。
+
+<p align="center">
+  <img src="readme/img/image.png" width=50% height=50%>
+</p>
+
 
 ## 参与贡献
 
