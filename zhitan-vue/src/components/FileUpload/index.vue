@@ -55,7 +55,7 @@ const props = defineProps({
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
     type: Array,
-    default: () => ["doc", "xls", "ppt", "txt", "pdf"],
+    default: () => ["doc", "xls", "ppt", "txt", "pdf","docx"],
   },
   // 是否显示提示
   isShowTip: {
@@ -147,7 +147,7 @@ function handleUploadSuccess(res, file) {
 // 删除文件
 function handleDelete(index) {
   fileList.value.splice(index, 1);
-  emit("update:modelValue", listToString(fileList.value));
+  emit("update:modelValue", fileList.value);
 }
 
 // 上传结束处理
@@ -156,7 +156,8 @@ function uploadedSuccessfully() {
     fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
     uploadList.value = [];
     number.value = 0;
-    emit("update:modelValue", listToString(fileList.value));
+    console.log(fileList.value)
+    emit("update:modelValue", fileList.value);
     proxy.$modal.closeLoading();
   }
 }

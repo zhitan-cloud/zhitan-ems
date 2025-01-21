@@ -52,7 +52,7 @@
 
 <script setup>
  import EditModal from "./components/EditModal.vue"
-import { knowledgeBaseList, knowledgeBaseDel } from "@/api/policy/knowledgeBase"
+import { knowledgeBaseList, knowledgeBaseDel,knowledgeBaseInfo } from "@/api/policy/knowledgeBase"
 let { proxy } = getCurrentInstance()
 const types = ref([
   { label: "电", value: 0 },
@@ -85,7 +85,14 @@ getList()
 let EditModalRef = ref("")
 function handleAdd(row) {
   if (EditModalRef.value) {
-    EditModalRef.value.handleOpen(row)
+    if(row.id){
+      knowledgeBaseInfo(row.id).then((res) => {
+        EditModalRef.value.handleOpen(res.data)
+      })
+    }else{
+      EditModalRef.value.handleOpen(row)
+    }
+   
   }
 }
 
