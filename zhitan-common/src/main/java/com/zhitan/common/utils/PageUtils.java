@@ -41,4 +41,15 @@ public class PageUtils extends PageHelper
         
         return new Page(pageNum,pageSize);
     }
+
+    public static <T> Page<T> getPageInfo() {
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        return new Page<>(pageDomain.getPageNum(), pageDomain.getPageSize());
+    }
+
+    public static <R> Page<R> getPageInfo(Class<R> R) {
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        return new Page<R>(pageDomain.getPageNum(), pageDomain.getPageSize());
+    }
+
 }
