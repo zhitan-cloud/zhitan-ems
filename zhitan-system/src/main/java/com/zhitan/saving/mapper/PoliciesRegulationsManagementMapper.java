@@ -17,7 +17,6 @@ import org.apache.ibatis.annotations.Param;
  * @date 2024-12-26
  */
 @Mapper
-@DataSource(value = DataSourceType.MASTER)
 public interface PoliciesRegulationsManagementMapper extends BaseMapper<PoliciesRegulationsManagement> {
 
 

@@ -30,7 +30,7 @@ public class PoliciesRegulationsDTO {
      * 政策类型
      */
     @NotNull(message = "请选择政策类型")
-    private Integer type;
+    private String type;
 
     /**
      * 印发部门

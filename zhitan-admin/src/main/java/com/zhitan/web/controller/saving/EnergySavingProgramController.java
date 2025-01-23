@@ -11,6 +11,7 @@ import com.zhitan.saving.domain.vo.EnergySavingProgramVO;
 import com.zhitan.saving.service.IEnergySavingProgramService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,6 +36,7 @@ public class EnergySavingProgramController extends BaseController {
      * 列表
      */
     @GetMapping("/page")
+    @PreAuthorize("@ss.hasPermi('energySavingProject:list')")
     @ApiOperation(value = "分页列表")
     public TableDataInfo list(EnergySavingProgram energySavingProgram) {
         Page<EnergySavingProgramVO> list = energySavingProgramService.selectEnergySavingProgramList(energySavingProgram);
@@ -48,6 +50,7 @@ public class EnergySavingProgramController extends BaseController {
      * 详细信息
      */
     @ApiOperation(value = "查询详情")
+    @PreAuthorize("@ss.hasPermi('energySavingProject')")
     @GetMapping(value = "getById")
     public AjaxResult getInfo(@RequestParam("id") Long id) {
         return success(energySavingProgramService.selectEnergySavingProgramById(id));

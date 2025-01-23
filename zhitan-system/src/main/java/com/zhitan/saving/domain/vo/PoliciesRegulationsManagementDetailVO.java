@@ -33,7 +33,7 @@ public class PoliciesRegulationsManagementDetailVO {
      * 政策类型
      */
     @Excel(name = "政策类型")
-    private Integer type;
+    private String type;
 
     /**
      * 印发部门
