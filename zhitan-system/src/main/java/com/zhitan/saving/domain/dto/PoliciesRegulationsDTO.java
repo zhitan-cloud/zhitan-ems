@@ -50,7 +50,7 @@ public class PoliciesRegulationsDTO {
      * 文件地址
      */
     @NotBlank(message = "请上传文件")
-    private String address;
+    private String url;
 
 
 
