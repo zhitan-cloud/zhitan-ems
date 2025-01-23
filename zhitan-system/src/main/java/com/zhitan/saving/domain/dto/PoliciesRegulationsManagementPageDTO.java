@@ -14,7 +14,7 @@ public class PoliciesRegulationsManagementPageDTO {
     /**
      * 类型
      */
-    private Integer type;
+    private String type;
 
     /**
      * 标题

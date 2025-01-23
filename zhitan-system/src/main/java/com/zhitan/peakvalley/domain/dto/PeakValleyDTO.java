@@ -1,6 +1,7 @@
 package com.zhitan.peakvalley.domain.dto;
 
 import com.zhitan.common.enums.TimeType;
+import com.zhitan.common.utils.StringUtils;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -49,17 +50,19 @@ public class PeakValleyDTO {
 
 
     public String getTimeType() {
-
+        String result = TimeType.DAY.name();
         switch (TimeType.valueOf(this.timeType)) {
             case HOUR:
             case DAY:
-                return TimeType.HOUR.name();
-            case MONTH:
-                return TimeType.DAY.name();
+                result= TimeType.HOUR.name();
+                break;
             case YEAR:
-                return TimeType.MONTH.name();
+                result= TimeType.MONTH.name();
+                break;
+            case MONTH:
             default:
-                return TimeType.DAY.name();
+                break;
         }
+        return result;
     }
 }

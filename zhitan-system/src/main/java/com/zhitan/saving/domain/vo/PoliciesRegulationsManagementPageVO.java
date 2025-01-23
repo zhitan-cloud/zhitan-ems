@@ -36,6 +36,12 @@ public class PoliciesRegulationsManagementPageVO {
     private String type;
 
     /**
+     * 政策类型名称
+     */
+    private String typeName;
+
+
+    /**
      * 印发部门
      */
     @Excel(name = "印发部门")

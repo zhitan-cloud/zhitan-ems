@@ -36,7 +36,7 @@ public class PoliciesRegulationsManagement extends BaseEntity {
      * 政策类型
      */
     @Excel(name = "政策类型")
-    private Integer type;
+    private String type;
 
     /**
      * 印发部门
@@ -55,7 +55,7 @@ public class PoliciesRegulationsManagement extends BaseEntity {
      * 文件地址
      */
     @Excel(name = "文件地址")
-    private String address;
+    private String url;
 
     /**
      * 删除标志（0：正常；1：删除）
