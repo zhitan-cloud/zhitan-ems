@@ -19,7 +19,7 @@
 ## 框架：
 
 基于SpringBoot的若依框架 易读易懂、界面简洁美观。支持深色&浅色两种风格切换（演示系统右上角）   
-关系数据库：mysql 或者 postgredb   
+关系数据库：mysql 或者 postgresql   
 时序数据库：influxdb 2.7+  
 中间件：redis，mq  
 VUE版本：VUE 3
