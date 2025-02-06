@@ -36,7 +36,7 @@ public class SysEnergyController extends BaseController
     /**
      * 查询enerclassname能源类型名称下拉框
      */
-    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:getenerclassname')")
+    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:list')")
     @GetMapping("/getenerclassname")
     public AjaxResult list()
     {
@@ -82,7 +82,7 @@ public class SysEnergyController extends BaseController
     /**
      * 获取energy详细信息
      */
-    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:query')")
+    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:list')")
     @GetMapping(value = "/{enerid}")
     public AjaxResult getInfo(@PathVariable("enerid") Integer enerid)
     {
@@ -147,7 +147,7 @@ public class SysEnergyController extends BaseController
     /**
      * 保存能源单价设置
      */
-    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:updateEnergyPrice')")
+    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:edit')")
     @Log(title = "energy", businessType = BusinessType.UPDATE)
     @PutMapping("/updateEnergyPrice")
     public AjaxResult updateEnergyPrice(@RequestBody(required = false) SysEnergy sysEnergy) throws ParseException {
@@ -173,7 +173,7 @@ public class SysEnergyController extends BaseController
     /**
      * 保存能源折标系数设置
      */
-    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:updateEnergyCoefficient')")
+    @PreAuthorize("@ss.hasPermi('enerInfoManage:energy:edit')")
     @Log(title = "energy", businessType = BusinessType.UPDATE)
     @PutMapping("/updateEnergyCoefficient")
     public AjaxResult updateEnergyCoefficient(@RequestBody(required = false) SysEnergy sysEnergy) throws ParseException {

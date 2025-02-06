@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.saving.mapper.PoliciesRegulationsManagementMapper">
+    <select id="getPageList" resultType="com.zhitan.saving.domain.vo.PoliciesRegulationsManagementPageVO">
+        select
+        prm.id,
+        prm.title,
+        prm.type,
+        prm.dept,
+        prm.issuing_time,
+        prm.url,
+        sdd.dict_label as typeName
+        from policies_regulations_management AS prm
+        left join sys_dict_data AS sdd on prm.type = sdd.dict_value
+        <where>
+            prm.del_flag = 0
+            <if test="dto.type != null">
+                and prm.type = #{dto.type}
+            </if>
+            <if test="dto.title != null and dto.title != ''">
+                and prm.title like concat('%',#{dto.title},'%')
+            </if>
+        </where>
+        order by prm.issuing_time desc
+    </select>
+
+</mapper>
