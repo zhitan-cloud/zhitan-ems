@@ -1,6 +1,5 @@
-<p align="center">
-	<img src="https://gitee.com/ustcyc/zhitan-ems/blob/master/readme/logo-chinese.png" alt="logo">
-</p>
+![输入图片说明](readme/logo-chinese.png)
+
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <h4 align="center">基于SpringBoot和若依框架开发</h4>
 <p align="center">
