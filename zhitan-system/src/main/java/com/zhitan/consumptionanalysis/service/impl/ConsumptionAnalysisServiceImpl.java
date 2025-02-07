@@ -397,8 +397,8 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
 //        if (CollectionUtils.isEmpty(nodeIndexInforList)) {
 //            return consumptionAnalysisVO;
 //        }
-
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        //修改过滤统计点位
+        final List<String> eneryIdList = nodeIndexInforList.stream().filter(x->x.getIndexType().equals("STATISTIC")).map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
