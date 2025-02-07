@@ -1,7 +1,6 @@
 <div align="center">
     <img src="readme/logo-chinese.png" alt="输入图片说明" height="150" width="150">
 </div>
-
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <h4 align="center">基于SpringBoot和若依框架开发</h4>
 <p align="center">
