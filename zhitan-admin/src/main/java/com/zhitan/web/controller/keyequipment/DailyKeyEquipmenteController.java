@@ -76,7 +76,6 @@ public class DailyKeyEquipmenteController extends BaseController {
         };
         startPage();
         List<DailyKeyEquipment> list = dailykeyEquipment.getdailyKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
-        //return AjaxResult.success(list);
         return getDataTable(list);
     }
 
@@ -107,7 +106,6 @@ public class DailyKeyEquipmenteController extends BaseController {
 
     /**
      * 重点能耗设备
-     * @return
      */
     @GetMapping("/getPointFacility")
     @ApiOperation(value = "查询重点设备列表")
