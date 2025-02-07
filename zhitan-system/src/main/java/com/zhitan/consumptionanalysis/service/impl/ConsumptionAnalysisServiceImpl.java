@@ -398,7 +398,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
 //        }
         //修改过滤统计点位
         nodeIndexInforList = nodeIndexInforList.stream().filter(x -> "STATISTIC".equals(x.getIndexType())).collect(Collectors.toList());
-        final List<String> eneryIdList = nodeIndexInforList.stream().filter(x -> "STATISTIC".equals(x.getIndexType())).map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -720,7 +720,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
 //            return consumptionAnalysisVO;
 //        }
         nodeIndexInforList = nodeIndexInforList.stream().filter(x -> "STATISTIC".equals(x.getIndexType())).collect(Collectors.toList());
-        final List<String> eneryIdList = nodeIndexInforList.stream().filter(x -> "STATISTIC".equals(x.getIndexType())).map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
