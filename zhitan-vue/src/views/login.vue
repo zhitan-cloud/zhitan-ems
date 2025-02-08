@@ -1,67 +1,83 @@
 <template>
   <div class="login">
-    <!-- <div
-      class="login-logo-bg"
-      v-if="systemInfo && systemInfo.homeLogo"
-      :style="{ backgroundImage: 'url(' + systemInfo.homeLogo + ')', backgroundSize: '100% 100%' }"
-    ></div> -->
-    <img v-if="systemInfo && systemInfo.homeLogo" :src="systemInfo.homeLogo" alt="" class="login-logo-img" />
-    <div class="login-font" v-else>{{ systemInfo.systemName || "能源管理系统" }}</div>
-    <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
-      <!-- <h3 class="title">充电桩后台管理系统</h3> -->
-      <el-form-item prop="username">
-        <el-input v-model="loginForm.username" type="text" size="large" auto-complete="off" placeholder="账号">
-          <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          size="large"
-          auto-complete="off"
-          placeholder="密码"
-          show-password
-          @keyup.enter="handleLogin"
-        >
-          <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input
-          v-model="loginForm.code"
-          size="large"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter="handleLogin"
-        >
-          <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template>
-        </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img" />
+    <!-- <img v-if="systemInfo && systemInfo.homeLogo" :src="systemInfo.homeLogo" alt="" class="login-logo-img" />
+    <div class="login-font" v-else>{{ systemInfo.systemName || "能源管理系统" }}</div> -->
+    <!-- 左上角logo -->
+    <div>
+      <img v-if="systemInfo && systemInfo.homeLogo" :src="systemInfo.homeLogo" alt="" class="login-logo-img" />
+    </div>
+
+    <!-- 中间部分form -->
+    <div class="middle-view">
+      <div class="left-wrapper">
+        <div class="login-font">{{ systemInfo.systemName || "" }}</div>
+        <img src="@/assets/images/font01.png" alt="" style="width: 406px" />
+        <img src="@/assets/images/img_logo.png" alt="" style="width: 200px; margin-top: 20px" />
+      </div>
+      <div class="right-wrapper">
+        <div class="header">
+          <span>账号登录</span>
         </div>
-      </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin: 0px 0px 25px 0px">记住密码</el-checkbox>
-      <el-form-item style="width: 100%">
-        <el-button
-          :loading="loading"
-          size="large"
-          type="primary"
-          style="width: 100%"
-          color="#626aef"
-          :dark="isDark"
-          @click.prevent="handleLogin"
-        >
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
-        </el-button>
-      </el-form-item>
-    </el-form>
+        <div class="bottom-block"></div>
+        <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form" :label-position="'top'">
+          <el-form-item prop="username" label="账号">
+            <el-input v-model="loginForm.username" type="text" size="large" auto-complete="off" placeholder="账号">
+              <!-- <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template> -->
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password" label="密码">
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              size="large"
+              auto-complete="off"
+              placeholder="密码"
+              show-password
+              @keyup.enter="handleLogin"
+            >
+              <!-- <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template> -->
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="code" v-if="captchaEnabled" label="验证码">
+            <el-input
+              v-model="loginForm.code"
+              size="large"
+              auto-complete="off"
+              placeholder="验证码"
+              style="width: 266px"
+              @keyup.enter="handleLogin"
+            >
+              <!-- <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template> -->
+            </el-input>
+            <div class="login-code">
+              <img :src="codeUrl" @click="getCode" class="login-code-img" />
+            </div>
+          </el-form-item>
+          <el-checkbox v-model="loginForm.rememberMe" style="margin: 0px 0px 25px 0px">记住密码</el-checkbox>
+          <el-form-item style="width: 100%">
+            <el-button
+              :loading="loading"
+              size="large"
+              type="primary"
+              style="width: 100%"
+              color="#626aef"
+              :dark="isDark"
+              @click.prevent="handleLogin"
+              class="submit-btn"
+            >
+              <span v-if="!loading">登 录</span>
+              <span v-else>登 录 中...</span>
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+
     <!--  底部  -->
     <div class="el-login-footer">
-      <!-- <span>Copyright © 2021-2024 ZhiTanCloud All Rights Reserved.</span> -->
-      <span>{{ systemInfo.copyRight || "Copyright © 2017-2024 ZhiTanCloud All Rights Reserved." }}</span>
+      <span>{{
+        systemInfo.copyRight || "Copyright © 2017-" + new Date().getFullYear() + " ZhiTanCloud All Rights Reserved."
+      }}</span>
     </div>
   </div>
 </template>
@@ -76,12 +92,20 @@ const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
-const systemInfo = JSON.parse(Cookies.get("SystemInfo") || "{}")
+const systemInfo1 = JSON.parse(Cookies.get("SystemInfo") || "{}")
+const systemInfo = {
+  ...systemInfo1,
+  homeLogo: systemInfo1.homeLogo
+    ? systemInfo1.homeLogo.includes("http")
+      ? systemInfo1.homeLogo
+      : "https://demo-ems.zhitancloud.com" + systemInfo1.homeLogo
+    : "",
+}
 console.log(systemInfo)
 
 const loginForm = ref({
-  username: "admin",
-  password: "admin123",
+  username: "guestUser",
+  password: "guest@123456",
   rememberMe: false,
   code: "",
   uuid: "",
@@ -178,29 +202,93 @@ getCookie()
   display: flex;
   align-items: center;
   height: 100%;
-  background-image: url("@/assets/images/login-bg.jpg");
-  background-size: 100% 100%;
+  background-image: url("@/assets/images/login-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
   flex-direction: column;
   position: relative;
   min-width: 700px;
   min-height: 700px;
 }
 
-.title {
-  margin: 0px auto 30px auto;
-  text-align: center;
-  color: #707070;
+.middle-view {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  width: 1200px;
+  .left-wrapper {
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+  }
+  .login-font {
+    font-size: 34px;
+    font-weight: 700;
+    color: #d5f8ff;
+    margin-bottom: 12px;
+  }
+}
+
+.right-wrapper {
+  border-radius: 23px;
+  background: #ffffff;
+  width: 480px;
+  position: relative;
+  .header {
+    height: 70px;
+    line-height: 70px;
+    border-bottom: 1px solid #f1f1f1;
+    color: #3b3b3b;
+    font-size: 22px;
+    margin-bottom: 22px;
+    span {
+      display: inline-block;
+      height: 70px;
+      line-height: 70px;
+      border-bottom: 6px solid #3a83fc;
+      margin-left: 50px;
+    }
+  }
+}
+
+:deep(.el-input__wrapper) {
+  background-color: #f7f8fa !important;
+  border: none;
+}
+:deep(.el-input__inner) {
+  color: #3b3b3b;
+}
+:deep(.el-form-item__label) {
+  color: #3b3b3b !important;
+}
+:deep(.el-checkbox__label) {
+  color: #2e2e2e;
+}
+
+.bottom-block {
+  height: 140px;
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  left: 5%;
+  bottom: -20px;
+  border-radius: 20px;
 }
 
 .login-form {
-  position: absolute;
-  left: 50%;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  border-radius: 6px;
-  // background: #ffffff;
-  width: 400px;
-  padding: 25px 25px 5px 25px;
+  padding: 0 50px 30px;
+
+  .submit-btn {
+    width: 382px;
+    height: 54px;
+    background: #3a83fc;
+    border-radius: 3px;
+    font-size: 20px;
+    box-shadow: 1px 2px 5px #3a83fc;
+    border: none;
+    border-radius: 6px;
+  }
 
   .el-input {
     height: 40px;
@@ -224,7 +312,7 @@ getCookie()
 }
 
 .login-code {
-  width: 33%;
+  // width: 120px;
   height: 40px;
   float: right;
 
@@ -232,54 +320,29 @@ getCookie()
     cursor: pointer;
     vertical-align: middle;
   }
+  .login-code-img {
+    height: 40px;
+    // padding-left: 12px;
+  }
 }
 
+.login-logo-img {
+  max-height: 100px;
+  margin: 0 auto;
+  position: absolute;
+  top: 35px;
+  left: 65px;
+}
 .el-login-footer {
-  height: 40px;
-  line-height: 40px;
+  height: 60px;
+  line-height: 60px;
   position: fixed;
   bottom: 0;
   width: 100%;
   text-align: center;
   color: #fff;
   font-family: Arial;
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 1px;
-}
-
-.login-code-img {
-  height: 40px;
-  padding-left: 12px;
-}
-
-.login-logo-bg {
-  width: 514px;
-  height: 177px;
-  // background-image: url('@/assets/images/login-logo.png');
-  // background-size: 100% 100%;
-  position: absolute;
-  left: 50%;
-  top: 22%;
-  transform: translate(-50%, -50%);
-}
-.login-logo-img {
-  // width: 100%;
-  // height: 100%;
-  // transform: translate(-50%, -50%);
-  max-height: 200px;
-  margin: 0 auto;
-  position: absolute;
-  top: 17%;
-}
-
-.login-font {
-  font-size: 50px;
-  color: #fff;
-  top: 32%;
-  position: absolute;
-  left: 50%;
-  width: 514px;
-  text-align: center;
-  transform: translate(-50%, -50%);
 }
 </style>

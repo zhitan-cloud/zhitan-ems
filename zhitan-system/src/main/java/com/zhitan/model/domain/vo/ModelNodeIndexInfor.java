@@ -32,6 +32,8 @@ public class ModelNodeIndexInfor extends BaseEntity {
    */
   private String energyId;
 
+  private String indexType;
+
   public String getNodeId() {
     return nodeId;
   }
@@ -62,5 +64,13 @@ public class ModelNodeIndexInfor extends BaseEntity {
 
   public void setEnergyId(String energyId) {
     this.energyId = energyId;
+  }
+
+  public String getIndexType() {
+    return indexType;
+  }
+
+  public void setIndexType(String indexType) {
+    this.indexType = indexType;
   }
 }
