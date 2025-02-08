@@ -77,4 +77,15 @@ public interface IDataItemService {
      * @return
      */
     BigDecimal getDataItemValueByIndexIds(String timeCode, List<String> indexIds);
+
+    /**
+     * 根据indexId与时间范围查询小时的dataitem信息
+     *
+     * @param beginTime 开始时间
+     * @param endTime   截止时间
+     * @param timeType  时间类型
+     * @param indexIds  点位集合
+     * @return
+     */
+    List<DataItem> getDataItemHourInforByIndexIds(Date beginTime, Date endTime, String timeType, List<String> indexIds);
 }
