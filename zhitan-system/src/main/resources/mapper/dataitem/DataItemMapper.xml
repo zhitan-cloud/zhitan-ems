@@ -199,4 +199,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND di.data_time BETWEEN   #{beginTime}  AND  #{endTime}
         AND di.time_type =  #{timeType}
     </select>
+
+    <select id="getDataItemHourInforByIndexIds" resultType="com.zhitan.realtimedata.domain.DataItem">
+        SELECT
+        index_id indexId,
+        data_time dataTime,
+        "value"
+        FROM
+        "data_item"
+        WHERE
+        index_id IN
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+        AND ( begin_time BETWEEN #{beginTime} AND #{endTime} )
+        AND time_type = #{timeType}
+    </select>
 </mapper>
