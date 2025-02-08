@@ -4,6 +4,7 @@ import com.zhitan.basicSetup.mapper.SysEquipmentfileMapper;
 import com.zhitan.basicSetup.service.ISysEquipmentfileService;
 import com.zhitan.realtimedata.domain.SysEquipmentFile;
 import com.zhitan.realtimedata.domain.SysSvgInfo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,16 @@ public class SysEquipmentfileServiceImpl implements ISysEquipmentfileService {
 
   @Override
   public void saveEquipmentFile(SysEquipmentFile sysEquipmentfile) {
-    equipmentfileMapper.saveEquipmentFile(sysEquipmentfile);
+    SysEquipmentFile sysEquipmentFile = equipmentfileMapper.selectById(sysEquipmentfile.getNodeId());
+    if (ObjectUtils.isNotEmpty(sysEquipmentFile)){
+      sysEquipmentFile.setFilePath(sysEquipmentfile.getFilePath());
+      equipmentfileMapper.updateById(sysEquipmentFile);
+    }else {
+      SysEquipmentFile equipmentFile = new SysEquipmentFile();
+      equipmentFile.setFilePath(sysEquipmentfile.getFilePath());
+      equipmentFile.setNodeId(sysEquipmentfile.getNodeId());
+      equipmentfileMapper.insert(equipmentFile);
+    }
   }
 
   @Override

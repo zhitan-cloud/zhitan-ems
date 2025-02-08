@@ -1,5 +1,6 @@
 package com.zhitan.basicSetup.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhitan.realtimedata.domain.SysEquipmentFile;
 import com.zhitan.realtimedata.domain.SysSvgInfo;
 import org.apache.ibatis.annotations.Param;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author sys
  * @date 2020-02-24
  */
-public interface SysEquipmentfileMapper {
+public interface SysEquipmentfileMapper extends BaseMapper<SysEquipmentFile> {
 
   void saveEquipmentFile(SysEquipmentFile sysEquipmentfile);
 

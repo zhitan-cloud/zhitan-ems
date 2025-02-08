@@ -10,6 +10,7 @@ import com.zhitan.common.utils.file.FileUploadUtils;
 import com.zhitan.common.utils.uuid.UUID;
 import com.zhitan.realtimedata.domain.SysEquipmentFile;
 import com.zhitan.realtimedata.domain.SysSvgInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,7 @@ import java.util.List;
  * @author sys
  * @date 2020-02-24
  */
+@Slf4j
 @RestController
 @RequestMapping("/basicSetup/equipmentfile")
 public class SysEquipmentfileController extends BaseController {
@@ -60,6 +62,7 @@ public class SysEquipmentfileController extends BaseController {
       sysEquipmentfileService.saveEquipmentFile(sysEquipmentfile);
       return AjaxResult.success();
     } catch (Exception ex) {
+      log.error("组态图更新失败", ex);
       return AjaxResult.error();
     }
   }
@@ -82,7 +85,7 @@ public class SysEquipmentfileController extends BaseController {
       SysEquipmentFile sysEquipmentfile = sysEquipmentfileService.getConfigure(nodeId);
       return AjaxResult.success(sysEquipmentfile);
     } catch (Exception ex) {
-      return AjaxResult.error("保存失败！");
+      return AjaxResult.error("查询失败！");
     }
   }
 }
