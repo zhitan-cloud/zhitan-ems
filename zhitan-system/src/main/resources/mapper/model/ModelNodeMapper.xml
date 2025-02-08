@@ -382,7 +382,8 @@
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
                ni.index_id indexId,
-               ei.energy_id energyId
+               ei.energy_id energyId,
+               ei.index_type indexType
         FROM "model_node" mn
         LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
         LEFT JOIN energy_index ei on ni.index_id = ei.index_id
