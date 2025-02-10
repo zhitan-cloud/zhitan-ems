@@ -2,6 +2,7 @@ package com.zhitan.realtimedata.service;
 
 
 import com.zhitan.common.enums.CollectionModes;
+import com.zhitan.common.enums.RetrievalModes;
 import com.zhitan.realtimedata.domain.TagValue;
 
 import java.util.Date;
@@ -105,4 +106,17 @@ public interface RealtimeDatabaseService {
      * @param tagValues 测点历史时刻数据
      */
     void insertData(List<TagValue> tagValues);
+
+    /**
+     * 获取一段时间内测点的历史数据.
+     *
+     * @param tagCode        测点编号
+     * @param beginTime      开始时间
+     * @param endTime        结束时间
+     * @param retrievalModes 查询数据方式
+     * @param pointCount     测点得到的数据个数
+     * @return 测点历史数据
+     */
+    List<TagValue> retrieve(String tagCode, Date beginTime, Date endTime,
+                            RetrievalModes retrievalModes, int pointCount);
 }

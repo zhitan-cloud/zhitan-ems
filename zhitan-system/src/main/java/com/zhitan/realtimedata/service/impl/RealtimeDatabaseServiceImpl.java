@@ -2,6 +2,8 @@ package com.zhitan.realtimedata.service.impl;
 
 import com.google.common.collect.Lists;
 import com.zhitan.common.enums.CollectionModes;
+import com.zhitan.common.enums.RetrievalModes;
+import com.zhitan.realtimedata.data.RealtimeDatabaseManager;
 import com.zhitan.realtimedata.data.influxdb.InfluxDBRepository;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
@@ -20,8 +22,11 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
 
     private final InfluxDBRepository repository;
 
-    public RealtimeDatabaseServiceImpl(InfluxDBRepository repository) {
+    private final RealtimeDatabaseManager realtimeDatabaseManager;
+
+    public RealtimeDatabaseServiceImpl(InfluxDBRepository repository, RealtimeDatabaseManager realtimeDatabaseManager) {
         this.repository = repository;
+        this.realtimeDatabaseManager = realtimeDatabaseManager;
     }
 
     /**
@@ -146,4 +151,9 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
         repository.store(tagValues);
     }
 
+    @Override
+    public List<TagValue> retrieve(String tagCode, Date beginTime, Date endTime,
+                                   RetrievalModes retrievalModes, int pointCount) {
+        return realtimeDatabaseManager.retrieve(tagCode, beginTime, endTime, retrievalModes, pointCount);
+    }
 }
