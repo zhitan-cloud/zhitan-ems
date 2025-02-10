@@ -13,9 +13,14 @@
       :headers="headers"
       class="upload-file-uploader"
       ref="fileUpload"
+      :drag="draggable"
     >
       <!-- 上传按钮 -->
-      <el-button type="primary">选取文件</el-button>
+      <el-button v-if="!draggable" type="primary">选取文件</el-button>
+      <div v-else>
+        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </div>
     </el-upload>
     <!-- 上传提示 -->
     <div class="el-upload__tip" v-if="showTip">
@@ -65,6 +70,11 @@ const props = defineProps({
   isShowTip: {
     type: Boolean,
     default: true,
+  },
+  // 是否拖拽上传
+  draggable: {
+    type: Boolean,
+    default: false,
   },
 })
 

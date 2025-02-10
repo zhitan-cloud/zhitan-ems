@@ -11,8 +11,8 @@
     <div class="middle-view">
       <div class="left-wrapper">
         <div class="login-font">{{ systemInfo.systemName || "" }}</div>
-        <img src="@/assets/images/font01.png" alt="" style="width: 406px" />
-        <img src="@/assets/images/img_logo.png" alt="" style="width: 200px; margin-top: 20px" />
+        <img src="@/assets/images/font01.png" alt="" style="width: 380px" />
+        <img src="@/assets/images/img_logo.png" alt="" style="width: 180px; margin-top: 20px" />
       </div>
       <div class="right-wrapper">
         <div class="header">
@@ -44,7 +44,7 @@
               size="large"
               auto-complete="off"
               placeholder="验证码"
-              style="width: 266px"
+              style="width: 230px"
               @keyup.enter="handleLogin"
             >
               <!-- <template #prefix><svg-icon icon-class="validCode" class="el-input__icon input-icon" /></template> -->
@@ -202,7 +202,7 @@ getCookie()
   display: flex;
   align-items: center;
   height: 100%;
-  background-image: url("@/assets/images/login-background.png");
+  background-image: url("@/assets/images/login-background.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   flex-direction: column;
@@ -223,31 +223,31 @@ getCookie()
     flex-direction: column;
   }
   .login-font {
-    font-size: 34px;
+    font-size: 32px;
     font-weight: 700;
     color: #d5f8ff;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 }
 
 .right-wrapper {
   border-radius: 23px;
   background: #ffffff;
-  width: 480px;
+  width: 410px;
   position: relative;
   .header {
-    height: 70px;
-    line-height: 70px;
+    height: 56px;
+    line-height: 56px;
     border-bottom: 1px solid #f1f1f1;
     color: #3b3b3b;
-    font-size: 22px;
+    font-size: 18px;
     margin-bottom: 22px;
     span {
       display: inline-block;
-      height: 70px;
-      line-height: 70px;
-      border-bottom: 6px solid #3a83fc;
-      margin-left: 50px;
+      height: 56px;
+      line-height: 62px;
+      border-bottom: 4px solid #3a83fc;
+      margin-left: 32px;
     }
   }
 }
@@ -277,14 +277,14 @@ getCookie()
 }
 
 .login-form {
-  padding: 0 50px 30px;
+  padding: 0 32px 20px;
 
   .submit-btn {
-    width: 382px;
-    height: 54px;
+    width: 360px;
+    height: 44px;
     background: #3a83fc;
     border-radius: 3px;
-    font-size: 20px;
+    font-size: 18px;
     box-shadow: 1px 2px 5px #3a83fc;
     border: none;
     border-radius: 6px;
@@ -342,7 +342,7 @@ getCookie()
   text-align: center;
   color: #fff;
   font-family: Arial;
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: 1px;
 }
 </style>
