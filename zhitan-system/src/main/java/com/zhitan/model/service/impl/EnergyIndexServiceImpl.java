@@ -84,7 +84,6 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
     /**
      * 查询指标信息列表
      *
-     * @param energyIndex 指标信息
      * @return 指标信息
      */
     @Override
@@ -350,5 +349,19 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
                 .eq(EnergyIndex::getNodeId, nodeId)
                 .eq(EnergyIndex::getMeterId, meterId)
                 .like(EnergyIndex::getCode, indexCode));
+    }
+
+    /**
+     * 根据用能单元id和设备id，以及点位编码获取点位
+     *
+     * @param nodeId  节点id
+     * @param meterId 设备id
+     * @return
+     */
+    @Override
+    public List<EnergyIndex> listDeviceIndex(String nodeId, String meterId) {
+        return energyIndexMapper.selectList(Wrappers.<EnergyIndex>lambdaQuery()
+                .eq(EnergyIndex::getNodeId, nodeId)
+                .eq(EnergyIndex::getMeterId, meterId));
     }
 }
