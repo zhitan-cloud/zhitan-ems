@@ -20,6 +20,14 @@
 
 已同步更新到github仓库：https://github.com/Andy-Yin/zhitan-ems
 
+
+## 在线体验
+
+- guestUser/guest@123456
+
+演示地址：https://demo-ems.zhitancloud.com/  
+
+
 ## 框架：
 
 基于SpringBoot的若依框架 易读易懂、界面简洁美观。支持深色&浅色两种风格切换（演示系统右上角）   
@@ -38,11 +46,6 @@ VUE版本：VUE 3
 4.  复杂项目底层代码&数据结构完全不需要变化，可快速交付实施。
 5.  已完成标准化的网关&电表等采集设备对接，快速为客户软硬件一体化交付。
 
-## 在线体验
-
-- guestUser/guest@123456
-
-演示地址：https://demo-ems.zhitancloud.com/  
 
 ## 亮点功能
 ![输入图片说明](readme/亮点功能.png)
