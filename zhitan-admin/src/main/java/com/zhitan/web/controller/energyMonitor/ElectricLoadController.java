@@ -1,9 +1,14 @@
 package com.zhitan.web.controller.energyMonitor;
 
 import com.zhitan.common.annotation.Log;
+import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
+import com.zhitan.energyMonitor.domain.EnergyUnitToDevice;
+import com.zhitan.energyMonitor.domain.vo.ListElectricLoadVO;
+import com.zhitan.energyMonitor.service.IElectricLoadService;
 import com.zhitan.energyMonitor.service.IEnergyUnitToDeviceService;
+import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.service.IEnergyIndexService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,8 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ElectricLoadController extends BaseController {
     @Autowired
     private IEnergyUnitToDeviceService energyUnitToDeviceService;
-//    @Autowired
-//    private IElectricLoadService electricLoadService;
+    @Autowired
+    private IElectricLoadService electricLoadService;
     @Autowired
     private IEnergyIndexService energyIndexService;
 
@@ -48,11 +53,11 @@ public class ElectricLoadController extends BaseController {
                            @RequestParam(name = "meterId") String meterId,
                            @RequestParam(name = "timeType") String timeType,
                            @RequestParam(name = "timeCode") String timeCode) {
-//        EnergyIndex energyIndex = energyIndexService.getDeviceIndexByCode(energyUnitId, meterId, CommonConst.TAG_CODE_ZYGGL);
-//
-//        EnergyUnitToDevice energyUnitToDevice = energyUnitToDeviceService.getEnergyUnitToDeviceById(energyUnitId, meterId);
-//        ListElectricLoadVO lsvo = electricLoadService.list(timeType, timeCode, energyIndex, energyUnitToDevice);
-        return AjaxResult.success(null);
+        EnergyIndex energyIndex = energyIndexService.getDeviceIndexByCode(energyUnitId, meterId, CommonConst.TAG_CODE_ZYGGL);
+
+        EnergyUnitToDevice energyUnitToDevice = energyUnitToDeviceService.getEnergyUnitToDeviceById(energyUnitId, meterId);
+        ListElectricLoadVO vo = electricLoadService.list(timeType, timeCode, energyIndex, energyUnitToDevice);
+        return AjaxResult.success(vo);
     }
 
 }

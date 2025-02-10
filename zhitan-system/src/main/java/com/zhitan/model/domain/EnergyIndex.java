@@ -81,12 +81,40 @@ public class EnergyIndex extends BaseEntity {
 
   @ApiModelProperty(value = "")
   private String equipment;
+
   @ApiModelProperty(value = "id")
   private String energyId;
+
+  /**
+   * 用能单元id
+   */
+  private String energyUnitId;
+
+  /**
+   * 单元到设备的id
+   */
+  private String energyUnitToDeviceId;
 
   @Transient
   @TableField(exist = false)
   private  String meterName;
+
+  public String getEnergyUnitId() {
+    return energyUnitId;
+  }
+
+  public String getEnergyUnitToDeviceId() {
+    return energyUnitToDeviceId;
+  }
+
+  public void setEnergyUnitId(String energyUnitId) {
+    this.energyUnitId = energyUnitId;
+  }
+
+  public void setEnergyUnitToDeviceId(String energyUnitToDeviceId) {
+    this.energyUnitToDeviceId = energyUnitToDeviceId;
+  }
+
   public void setIndexId(String indexId) {
     this.indexId = indexId;
   }

@@ -116,4 +116,14 @@ public interface IEnergyIndexService  {
                                       String name,Long pageNum, Long pageSize);
 
   List<EnergyIndex> getIndexByCode(String code,String nodeId);
+
+  /**
+   * 根据用能单元id和设备id，以及点位编码获取点位
+   *
+   * @param energyUnitId 用能单元id
+   * @param meterId      设备id
+   * @param indexCode    点位编码或者点位编码的一部分
+   * @return
+   */
+  EnergyIndex getDeviceIndexByCode(String energyUnitId, String meterId, String indexCode);
 }

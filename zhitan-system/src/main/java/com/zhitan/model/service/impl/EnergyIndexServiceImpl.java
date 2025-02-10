@@ -1,6 +1,7 @@
 package com.zhitan.model.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.services.IMeterImplementService;
@@ -17,6 +18,7 @@ import com.zhitan.model.service.IDaqTemplateService;
 import com.zhitan.model.service.IEnergyIndexService;
 import com.zhitan.model.service.IModelNodeService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -314,5 +316,39 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
     List<EnergyIndex> energyIndexList =  energyIndexMapper.getIndexByCode(code,nodeId);
 
     return energyIndexList;
+  }
+
+  /**
+   * 根据用能单元id和设备id，以及点位编码获取点位
+   *
+   * @param energyUnitId 用能单元id
+   * @param meterId      设备id
+   * @param indexCode    点位编码或者点位编码的一部分
+   * @return
+   */
+  @Override
+  public EnergyIndex getDeviceIndexByCode(String energyUnitId, String meterId, String indexCode) {
+
+    List<EnergyIndex> energyIndexList = listDeviceIndexByCode(energyUnitId, meterId, indexCode);
+    EnergyIndex energyIndex = energyIndexList.stream().findFirst().orElse(null);
+    if (ObjectUtils.isEmpty(energyIndex)) {
+      energyIndex = new EnergyIndex();
+    }
+    return energyIndex;
+  }
+
+  /**
+   * 根据用能单元id和设备id，以及点位编码获取点位
+   *
+   * @param energyUnitId 用能单元id
+   * @param meterId      设备id
+   * @param indexCode    点位编码或者点位编码的一部分
+   * @return
+   */
+  public List<EnergyIndex> listDeviceIndexByCode(String energyUnitId, String meterId, String indexCode) {
+    return energyIndexMapper.selectList(Wrappers.<EnergyIndex>lambdaQuery()
+            .eq(EnergyIndex::getEnergyUnitId, energyUnitId)
+            .eq(EnergyIndex::getEnergyUnitToDeviceId, meterId)
+            .like(EnergyIndex::getCode, indexCode));
   }
 }
