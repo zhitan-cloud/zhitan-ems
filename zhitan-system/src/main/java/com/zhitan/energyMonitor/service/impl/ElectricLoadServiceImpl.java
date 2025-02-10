@@ -1,7 +1,8 @@
 package com.zhitan.energyMonitor.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zhitan.basicdata.domain.MeterImplement;
+import com.zhitan.basicdata.mapper.MeterImplementMapper;
 import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.constant.TimeTypeConst;
 import com.zhitan.common.enums.CollectionModes;
@@ -10,12 +11,9 @@ import com.zhitan.common.utils.ChartUtils;
 import com.zhitan.common.utils.DateTimeUtil;
 import com.zhitan.common.utils.DoubleUtil;
 import com.zhitan.common.utils.StringUtil;
-import com.zhitan.energyMonitor.domain.ElectricLoadEntity;
-import com.zhitan.energyMonitor.domain.EnergyUnitToDevice;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadDetail;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadItem;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadVO;
-import com.zhitan.energyMonitor.mapper.ElectricLoadMapper;
 import com.zhitan.energyMonitor.service.IElectricLoadService;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.realtimedata.domain.TagValue;
@@ -26,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,12 +36,14 @@ import java.util.List;
  * @Version: V1.0
  */
 @Service
-public class ElectricLoadServiceImpl extends ServiceImpl<ElectricLoadMapper, ElectricLoadEntity> implements IElectricLoadService {
+public class ElectricLoadServiceImpl implements IElectricLoadService {
     @Autowired
     private RealtimeDatabaseService realtimeDatabaseService;
+    @Resource
+    private MeterImplementMapper meterImplementMapper;
 
     @Override
-    public ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex, EnergyUnitToDevice energyUnitToDevice) {
+    public ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex) {
         ListElectricLoadVO vo = new ListElectricLoadVO();
         List<ListElectricLoadItem> itemList = new ArrayList<>();
         vo.setItemList(itemList);
@@ -54,16 +55,19 @@ public class ElectricLoadServiceImpl extends ServiceImpl<ElectricLoadMapper, Ele
         detail.setAvg(CommonConst.DOUBLE_MINUS_SIGN);
         detail.setRate(CommonConst.DOUBLE_MINUS_SIGN);
         vo.setDetail(detail);
-        if (ObjectUtil.isEmpty(energyIndex) || ObjectUtil.isEmpty(energyUnitToDevice)) {
+
+        MeterImplement meterImplement = meterImplementMapper.selectById(energyIndex.getMeterId());
+
+        if (ObjectUtil.isEmpty(meterImplement)) {
             return vo;
         }
         List<Date> dateList = new ArrayList<>();
         ChartUtils.generateDateList(timeType, timeCode, dateList);
         // 因为influxdb没有按照月分组取数据，只能按照日期循环取数据
         if (TimeTypeConst.TIME_TYPE_YEAR.equals(timeType)) {
-            getYearData(timeType, dateList, energyIndex, energyUnitToDevice, detail, itemList);
+            getYearData(timeType, dateList, energyIndex, meterImplement.getMeterName(), itemList);
         } else {
-            getDayAndMonthData(timeType, timeCode, energyIndex, energyUnitToDevice, detail, itemList);
+            getDayAndMonthData(timeType, timeCode, energyIndex, meterImplement.getMeterName(), itemList);
         }
         if (!StringUtil.isEmptyOrNull(energyIndex.getCode())) {
             Date start = ChartUtils.getDateTime(timeType, timeCode);
@@ -113,15 +117,8 @@ public class ElectricLoadServiceImpl extends ServiceImpl<ElectricLoadMapper, Ele
 
     /**
      * 获取月和天数据,因为influxdb可以按照分。时。天分组取数，不可以按照月分组取数，所以分成两个方法来写
-     *
-     * @param timeType
-     * @param timeCode
-     * @param energyIndex
-     * @param energyUnitToDevice
-     * @param detail
-     * @param itemList
      */
-    private void getDayAndMonthData(String timeType, String timeCode, EnergyIndex energyIndex, EnergyUnitToDevice energyUnitToDevice, ListElectricLoadDetail detail, List<ListElectricLoadItem> itemList) {
+    private void getDayAndMonthData(String timeType, String timeCode, EnergyIndex energyIndex, String meterName, List<ListElectricLoadItem> itemList) {
         String tagCodes = energyIndex.getCode();
         List<TagValue> maxList = new ArrayList<>();
         List<TagValue> minList = new ArrayList<>();
@@ -165,7 +162,7 @@ public class ElectricLoadServiceImpl extends ServiceImpl<ElectricLoadMapper, Ele
         for (Date date : dateList) {
             ListElectricLoadItem temp = new ListElectricLoadItem();
             temp.setTimeCode(ChartUtils.getTimeCode(timeType, date));
-            temp.setName(ObjectUtils.isNotEmpty(energyUnitToDevice) ? energyUnitToDevice.getName() : "");
+            temp.setName(ObjectUtils.isNotEmpty(meterName) ? meterName : "");
             temp.setMax(CommonConst.DOUBLE_MINUS_SIGN);
             temp.setMin(CommonConst.DOUBLE_MINUS_SIGN);
             temp.setAvg(CommonConst.DOUBLE_MINUS_SIGN);
@@ -219,15 +216,8 @@ public class ElectricLoadServiceImpl extends ServiceImpl<ElectricLoadMapper, Ele
 
     /**
      * 获取年数据
-     *
-     * @param timeType
-     * @param dateList
-     * @param energyIndex
-     * @param energyUnitToDevice
-     * @param detail
-     * @param itemList
      */
-    private void getYearData(String timeType, List<Date> dateList, EnergyIndex energyIndex, EnergyUnitToDevice energyUnitToDevice, ListElectricLoadDetail detail, List<ListElectricLoadItem> itemList) {
+    private void getYearData(String timeType, List<Date> dateList, EnergyIndex energyIndex, String meterName, List<ListElectricLoadItem> itemList) {
         String tagCode = StringUtil.ifEmptyOrNullReturnValue(energyIndex.getCode());
         for (Date date : dateList) {
             ListElectricLoadItem temp = new ListElectricLoadItem();
@@ -253,7 +243,7 @@ public class ElectricLoadServiceImpl extends ServiceImpl<ElectricLoadMapper, Ele
 
             temp.setTimeCode(ChartUtils.getTimeCode(timeType, date));
             temp.setTimeCodeChart(ChartUtils.getTimeCodeChart(timeType, date));
-            temp.setName(StringUtil.ifEmptyOrNullReturnValue(energyUnitToDevice.getName()));
+            temp.setName(StringUtil.ifEmptyOrNullReturnValue(meterName));
             temp.setRate(CommonConst.DOUBLE_MINUS_SIGN);
             temp.setValue(CommonConst.DOUBLE_MINUS_SIGN);
             if (!temp.getMax().equals(CommonConst.DOUBLE_MINUS_SIGN) && Double.parseDouble(temp.getMax()) != CommonConst.DIGIT_DOUBLE_0) {

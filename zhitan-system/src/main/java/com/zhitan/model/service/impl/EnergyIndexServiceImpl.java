@@ -321,15 +321,15 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
   /**
    * 根据用能单元id和设备id，以及点位编码获取点位
    *
-   * @param energyUnitId 用能单元id
+   * @param nodeId 节点id
    * @param meterId      设备id
    * @param indexCode    点位编码或者点位编码的一部分
    * @return
    */
   @Override
-  public EnergyIndex getDeviceIndexByCode(String energyUnitId, String meterId, String indexCode) {
+  public EnergyIndex getDeviceIndexByCode(String nodeId, String meterId, String indexCode) {
 
-    List<EnergyIndex> energyIndexList = listDeviceIndexByCode(energyUnitId, meterId, indexCode);
+    List<EnergyIndex> energyIndexList = listDeviceIndexByCode(nodeId, meterId, indexCode);
     EnergyIndex energyIndex = energyIndexList.stream().findFirst().orElse(null);
     if (ObjectUtils.isEmpty(energyIndex)) {
       energyIndex = new EnergyIndex();
@@ -347,8 +347,8 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
    */
   public List<EnergyIndex> listDeviceIndexByCode(String energyUnitId, String meterId, String indexCode) {
     return energyIndexMapper.selectList(Wrappers.<EnergyIndex>lambdaQuery()
-            .eq(EnergyIndex::getEnergyUnitId, energyUnitId)
-            .eq(EnergyIndex::getEnergyUnitToDeviceId, meterId)
+            .eq(EnergyIndex::getNodeId, energyUnitId)
+            .eq(EnergyIndex::getMeterId, meterId)
             .like(EnergyIndex::getCode, indexCode));
   }
 }
