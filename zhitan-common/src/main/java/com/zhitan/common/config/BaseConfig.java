@@ -119,4 +119,8 @@ public class BaseConfig
     {
         return getProfile() + "/upload";
     }
+
+    public static String getConfigurePath() {
+        return getProfile() + "/configure";
+    }
 }

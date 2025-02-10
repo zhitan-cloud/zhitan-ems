@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.dataitem.mapper.DataItemMapper">
-    <resultMap type="StagseDataEntry" id="stagseDataEntryResult">
+    <resultMap type="com.zhitan.dataitem.domain.StagseDataEntry" id="stagseDataEntryResult">
         <result property="code" column="code"/>
         <result property="name" column="name"/>
         <result property="indexId" column="index_id"/>
@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="dataTime" column="data_time"/>
     </resultMap>
 
-    <select id="getSettingIndex" parameterType="StagseDataEntry" resultMap="stagseDataEntryResult">
+    <select id="getSettingIndex" parameterType="com.zhitan.dataitem.domain.StagseDataEntry" resultMap="stagseDataEntryResult">
 
         SELECT
         ei.index_id,
@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         and si.time_type = #{timeType}
         AND si.calc_type = #{calcType}
    </select>
-    <select id="getSettingEdit" parameterType="StagseDataEntry" resultMap="stagseDataEntryResult">
+    <select id="getSettingEdit" parameterType="com.zhitan.dataitem.domain.StagseDataEntry" resultMap="stagseDataEntryResult">
         SELECT
             ei.index_id,
             code,
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             AND data_time &gt;= #{beginTime}
             AND data_time &lt;= #{endTime}
     </select>
-    <select id="stagseDataByCode" parameterType="StagseDataEntry" resultMap="stagseDataEntryResult">
+    <select id="stagseDataByCode" parameterType="com.zhitan.dataitem.domain.StagseDataEntry" resultMap="stagseDataEntryResult">
         SELECT
             ei.index_id,
             code,
@@ -198,5 +198,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND mn.parent_id = #{indexId}
         AND di.data_time BETWEEN   #{beginTime}  AND  #{endTime}
         AND di.time_type =  #{timeType}
+    </select>
+
+    <select id="getDataItemHourInforByIndexIds" resultType="com.zhitan.realtimedata.domain.DataItem">
+        SELECT
+        index_id indexId,
+        data_time dataTime,
+        "value"
+        FROM
+        "data_item"
+        WHERE
+        index_id IN
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+        AND ( begin_time BETWEEN #{beginTime} AND #{endTime} )
+        AND time_type = #{timeType}
     </select>
 </mapper>
