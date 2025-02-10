@@ -4,6 +4,8 @@ package com.zhitan.dataitem.service;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.realtimedata.domain.DataItem;
+import com.zhitan.statisticalAnalysis.domain.dto.FlowChartsDTO;
+import com.zhitan.statisticalAnalysis.domain.vo.FlowChartsVO;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -88,4 +90,12 @@ public interface IDataItemService {
      * @return
      */
     List<DataItem> getDataItemHourInforByIndexIds(Date beginTime, Date endTime, String timeType, List<String> indexIds);
+
+    /**
+     * 获取能流图形分析
+     *
+     * @param dto 请求参数
+     * @return 结果
+     */
+    FlowChartsVO getFlowCharts(FlowChartsDTO dto);
 }
