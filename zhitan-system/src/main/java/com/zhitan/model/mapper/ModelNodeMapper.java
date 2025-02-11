@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.domain.SysEnergy;
 import com.zhitan.basicdata.domain.SysProduct;
+import com.zhitan.common.enums.TimeType;
+import com.zhitan.dataitem.domain.vo.NodeIndexValueVO;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -196,4 +199,20 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
     ModelNode getFirstModeNodeInfo(String modelCode);
 
     List<ModelNodeIndexInfor> selectIndexByNodeIds(@Param("modelCode") String modelCode,@Param("nodeIds") List<String> nodeIds);
+
+    /**
+     * 根据父节点id和能源类型查询点位下的累积量
+     */
+    List<NodeIndexValueVO> getDataItemByParentNodeId(@Param("parentId") String parentId,
+                                                     @Param("energyType") String energyType,
+                                                     @Param("timeType") TimeType timeType,
+                                                     @Param("dateTimeMap") Map<String, LocalDateTime> dateTimeMap);
+
+    /**
+     * 根据节点id和能源类型查询点位下的累积量
+     */
+    List<NodeIndexValueVO> getDataItemByNodeId(@Param("nodeId") String nodeId,
+                                                     @Param("energyType") String energyType,
+                                                     @Param("timeType") TimeType timeType,
+                                                     @Param("dateTimeMap") Map<String, LocalDateTime> dateTimeMap);
 }

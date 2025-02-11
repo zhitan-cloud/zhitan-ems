@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.model.mapper.NodeIndexMapper">
+
+    <resultMap type="com.zhitan.model.domain.NodeIndex" id="NodeIndexMap">
+        <result property="nodeId" column="node_id" jdbcType="VARCHAR"/>
+        <result property="indexId" column="index_id" jdbcType="VARCHAR"/>
+    </resultMap>
+</mapper>
+

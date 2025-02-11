@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2020-03-25
  */
 public interface DailyComprehensiveMapper {
-    public List<DailyComprehensive> getDailyComprehensiveList(@Param("nodeId") String nodeId,
+    List<DailyComprehensive> getDailyComprehensiveList(@Param("nodeId") String nodeId,
                                                               @Param("dataList") List<DailyComprehensive> dataList,
                                                               @Param("beginTime") Date beginTime,
                                                               @Param("endTime") Date endTime,

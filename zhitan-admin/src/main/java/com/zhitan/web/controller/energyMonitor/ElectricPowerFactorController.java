@@ -4,8 +4,7 @@ import com.zhitan.common.annotation.Log;
 import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
-import com.zhitan.energyMonitor.domain.vo.ListElectricLoadVO;
-import com.zhitan.energyMonitor.service.IElectricLoadService;
+import com.zhitan.energyMonitor.service.IElectricPowerFactorService;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.service.IEnergyIndexService;
 import io.swagger.annotations.Api;
@@ -18,40 +17,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Description: 负荷分析
+ * @Description: 功率因数
  * @Author: yxw
  * @Date: 2022-04-24
  * @Version: V1.2
  */
-@Api(tags = "负荷分析")
+@Api(tags = "功率因数")
 @RestController
-@RequestMapping("/loadAnalysis")
+@RequestMapping("/powerFactorAnalysis")
 @Slf4j
-public class ElectricLoadController extends BaseController {
+public class ElectricPowerFactorController extends BaseController {
+
     @Autowired
-    private IElectricLoadService electricLoadService;
+    private IElectricPowerFactorService electricPowerFactorService;
+
     @Autowired
     private IEnergyIndexService energyIndexService;
 
     /**
-     * 根据电表id获取负荷分析数据
+     * 根据电表id获取功率因数数据
      *
-     * @param nodeId   用能单元id
+     * @param nodeId   节点id
      * @param meterId  电表id
-     * @param timeType 时间类型 DAY/MONTH/YEAR
-     * @param timeCode 时间值 与时间类型对应：2022-03-21/2022-03/2022
+     * @param timeCode 时间值 与时间类型对应：2022-03-21
      */
-    @Log(title = "根据电表id获取负荷分析数据")
-    @ApiOperation(value = "根据电表id获取负荷分析数据", notes = "根据电表id获取负荷分析数据")
+    @Log(title = "根据电表id获取功率因数数据")
+    @ApiOperation(value = "根据电表id获取功率因数数据", notes = "根据电表id获取功率因数数据")
     @GetMapping(value = "/detail")
     public AjaxResult list(@RequestParam(name = "nodeId") String nodeId,
                            @RequestParam(name = "meterId") String meterId,
-                           @RequestParam(name = "timeType") String timeType,
                            @RequestParam(name = "timeCode") String timeCode) {
-        EnergyIndex energyIndex = energyIndexService.getDeviceIndexByCode(nodeId, meterId, CommonConst.TAG_CODE_ZYGGL);
+        EnergyIndex energyIndex = energyIndexService.getDeviceIndexByCode(nodeId, meterId, CommonConst.TAG_CODE_GLYS);
 
-        ListElectricLoadVO vo = electricLoadService.list(timeType, timeCode, energyIndex);
-        return AjaxResult.success(vo);
+        return AjaxResult.success(electricPowerFactorService.list(timeCode, energyIndex));
     }
 
 }
