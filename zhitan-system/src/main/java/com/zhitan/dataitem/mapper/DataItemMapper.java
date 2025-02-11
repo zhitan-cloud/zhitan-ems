@@ -1,5 +1,6 @@
 package com.zhitan.dataitem.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhitan.carbonemission.domain.CarbonEmission;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.StagseDataEntry;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author sys
  * @date 2020-03-25
  */
-public interface DataItemMapper {
+public interface DataItemMapper extends BaseMapper<DataItem> {
     /**
      * 阶段数据录入
      *

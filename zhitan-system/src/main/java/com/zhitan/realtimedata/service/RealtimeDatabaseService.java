@@ -2,6 +2,7 @@ package com.zhitan.realtimedata.service;
 
 
 import com.zhitan.common.enums.CollectionModes;
+import com.zhitan.common.enums.GroupTimeType;
 import com.zhitan.common.enums.RetrievalModes;
 import com.zhitan.realtimedata.domain.TagValue;
 
@@ -92,6 +93,18 @@ public interface RealtimeDatabaseService {
      */
     List<TagValue> statistics(List<String> tagCodes, Date beginTime, Date endTime,
                               CollectionModes collectionModes);
+
+    /**
+     * 获取测点在一段时间内按照某一时间周期的统计数据.
+     *
+     * @param tagCodes  测点编号集合
+     * @param beginTime 开始时间
+     * @param endTime   结束时间,包括结束时间
+     * @param modes 统计类型
+     * @param timeType  分组时间周期（分、时、天）
+     * @return 测点统计结果
+     */
+    List<TagValue> statistics(String tagCodes, Date beginTime, Date endTime, CollectionModes modes, GroupTimeType timeType);
 
     /**
      * 存储测点的实时数据.

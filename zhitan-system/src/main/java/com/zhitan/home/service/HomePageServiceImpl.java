@@ -66,10 +66,13 @@ public class HomePageServiceImpl implements IHomePageService {
     @Override
     public List<HomeEnergyStatisticsVO> energyConsumptionSummation(String timeType, String modelcode) {
         Date currentTime = new Date();
-//        Date currentTime = DateUtil.parseDateTime("2023-04-11 00:00:00");
 
         DateTime tongbiTime = DateUtil.offsetMonth(currentTime, -12);
         DateTime huanbiTime = DateUtil.offsetMonth(currentTime, -1);
+        if(TimeType.DAY.name().equals( timeType)){
+            huanbiTime = DateUtil.offsetDay(currentTime, -1);
+        }
+
         final List<HomeEnergyStatisticsVO> current = getEnergyTotalByTime(timeType, modelcode, currentTime);
         final List<HomeEnergyStatisticsVO> tongbi = getEnergyTotalByTime(timeType, modelcode, tongbiTime);
         final List<HomeEnergyStatisticsVO> huanbi = getEnergyTotalByTime(timeType, modelcode, huanbiTime);

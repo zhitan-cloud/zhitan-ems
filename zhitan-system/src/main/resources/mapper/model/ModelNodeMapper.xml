@@ -89,9 +89,9 @@
             resultType="com.zhitan.model.domain.EnergyIndex">
         select ei.index_id as indexId, code, name, index_type as indexType
         from energy_index ei
-                 left join node_index ni on ei.index_id = ni.index_id
+        left join node_index ni on ei.index_id = ni.index_id
         where ni.node_id = #{nodeId}
-          and ei.index_type = #{indexType}
+        and ei.index_type = #{indexType}
         <if test="code != null  and code != ''">
             and code like concat('%', #{code}, '%')
         </if>
@@ -332,11 +332,12 @@
                node_category nodeCategory
         FROM "model_node"
         WHERE model_code = #{indexCode}
-          AND parent_id IS NULL LIMIT 1;
+          AND parent_id IS NULL
+        LIMIT 1;
     </select>
     <select id="selectIndexByModelCodeAndNodeId"
             resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
-        SELECT mn.node_id nodeId,
+        SELECT mn.node_id  nodeId,
                mn."name",
                ni.index_id indexId
         FROM model_node mn
@@ -347,15 +348,15 @@
 
     <select id="getSettingDeviceIndex" resultType="com.zhitan.basicdata.domain.MeterImplement">
         SELECT distinct
-               m."id",
-               m.code,
-               m.meter_name AS meterName,
-               m.meter_type    meterType,
-               m.wire_diameter    wireDiameter,
-               m.max_allowable_power    maxAllowablePower
+        m."id",
+        m.code,
+        m.meter_name AS meterName,
+        m.meter_type meterType,
+        m.wire_diameter wireDiameter,
+        m.max_allowable_power maxAllowablePower
         FROM meter_implement m
-                 LEFT JOIN energy_index ei ON ei.meter_id = m."id"
-                 LEFT JOIN node_index ni ON ni.index_id = ei.index_id
+        LEFT JOIN energy_index ei ON ei.meter_id = m."id"
+        LEFT JOIN node_index ni ON ni.index_id = ei.index_id
         WHERE ni.node_id = #{nodeId}
         <if test="energyType!=null and energyType!=''">
             AND M.energy_type = #{energyType}
@@ -365,11 +366,12 @@
     <delete id="delIndexNodeIdAndIndexType">
         delete
         from node_index
-        where node_id = #{nodeId} and index_id in (
-            select ni.index_id
-            from node_index ni left join energy_index ei on ni.index_id = ei.index_id
-            where node_id = #{nodeId} and ei.index_type = #{indexType}
-        );
+        where node_id = #{nodeId}
+          and index_id in (select ni.index_id
+                           from node_index ni
+                                    left join energy_index ei on ni.index_id = ei.index_id
+                           where node_id = #{nodeId}
+                             and ei.index_type = #{indexType});
     </delete>
     <insert id="setIndexAndNodeId">
         <foreach collection="indexIds" item="indexId" separator=";">
@@ -379,11 +381,11 @@
     </insert>
 
     <select id="getModelNodeIndexIdByNodeId" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
-        SELECT mn.node_id  nodeId,
-               mn."name"   "name",
-               ni.index_id indexId,
-               ei.energy_id energyId,
-               ei.index_type indexType
+        SELECT mn.node_id nodeId,
+        mn."name" "name",
+        ni.index_id indexId,
+        ei.energy_id energyId,
+        ei.index_type indexType
         FROM "model_node" mn
         LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
         LEFT JOIN energy_index ei on ni.index_id = ei.index_id
@@ -400,16 +402,17 @@
         FROM "model_node" mn
                  LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
                  left join energy_index ei on ni.index_id = ei.index_id
-        WHERE mn.parent_id = #{parentId} and ei.index_type = 'STATISTIC'
+        WHERE mn.parent_id = #{parentId}
+          and ei.index_type = 'STATISTIC'
     </select>
     <select id="getFirstModeNodeInfo" resultType="com.zhitan.model.domain.ModelNode">
         <include refid="selectModelNodeVo"/>
-        where model_code = #{modelCode}  AND parent_id is null
+        where model_code = #{modelCode} AND parent_id is null
         order by order_num
     </select>
     <select id="selectIndexByNodeIds" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
-        SELECT mn.node_id  nodeId,
-        mn."name"   "name",
+        SELECT mn.node_id nodeId,
+        mn."name" "name",
         ni.index_id indexId,
         ei.energy_id
         FROM "model_node" mn
@@ -417,15 +420,49 @@
         left join energy_index ei on ni.index_id = ei.index_id
         <where>
             mn.model_code = #{modelCode}
-          AND mn.node_id in
-        <foreach collection="nodeIds" index="index" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        <if test="modelCode!=null and modelCode!='' and nodeIds.size>0">
-            and ei.index_type='STATISTIC'
-        </if>
+            AND mn.node_id in
+            <foreach collection="nodeIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            <if test="modelCode!=null and modelCode!='' and nodeIds.size>0">
+                and ei.index_type='STATISTIC'
+            </if>
 
         </where>
 
+    </select>
+
+    <select id="getDataItemByParentNodeId" resultType="com.zhitan.dataitem.domain.vo.NodeIndexValueVO">
+        SELECT mn.node_id  nodeId,
+               mn."name"   nodeName,
+               di.index_id indexId,
+               di."value"  value
+        FROM model_node mn
+                 LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
+                 LEFT JOIN "energy_index" ei ON ei.index_id = ni.index_id
+                 LEFT JOIN "data_item" di ON ei.index_id = di.index_id
+        WHERE mn.parent_id = #{parentId}
+          AND ei.energy_id = #{energyType}
+          AND ei.index_type = 'STATISTIC'
+          AND di.time_type = #{timeType.name}
+          AND di.data_time >= #{dateTimeMap.startTime}
+          AND di.data_time &lt;= #{dateTimeMap.endTime}
+    </select>
+
+    <select id="getDataItemByNodeId" resultType="com.zhitan.dataitem.domain.vo.NodeIndexValueVO">
+        SELECT mn.node_id  nodeId,
+               mn."name"   nodeName,
+               di.index_id indexId,
+               di."value"  value
+        FROM "model_node" mn
+                 LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
+                 LEFT JOIN "energy_index" ei ON ei.index_id = ni.index_id
+                 LEFT JOIN "data_item" di ON ei.index_id = di.index_id
+        WHERE mn.node_id = #{nodeId}
+          AND ei.energy_id = #{energyType}
+          AND ei.index_type = 'STATISTIC'
+          AND di.time_type = #{timeType.name}
+          AND di.data_time >= #{dateTimeMap.startTime}
+          AND di.data_time &lt;= #{dateTimeMap.endTime}
     </select>
 </mapper>

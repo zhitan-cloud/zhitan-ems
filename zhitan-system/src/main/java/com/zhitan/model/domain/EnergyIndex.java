@@ -75,18 +75,21 @@ public class EnergyIndex extends BaseEntity {
 
   @ApiModelProperty(value = "表计id")
   private String meterId;
+
   @ApiModelProperty(value = "顺序号")
   @Excel(name = "顺序号")
   private int orderNum;
 
   @ApiModelProperty(value = "")
   private String equipment;
+
   @ApiModelProperty(value = "id")
   private String energyId;
 
   @Transient
   @TableField(exist = false)
   private  String meterName;
+
   public void setIndexId(String indexId) {
     this.indexId = indexId;
   }
