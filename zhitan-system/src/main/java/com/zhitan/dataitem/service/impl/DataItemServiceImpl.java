@@ -158,18 +158,13 @@ public class DataItemServiceImpl implements IDataItemService {
         if(ObjectUtils.isEmpty(modelNodes)){
             throw new RuntimeException("未查询到模型信息");
         }
-        Optional<ModelNode> modelNodeInfo = modelNodes.stream().findFirst();
-        String nodeId = modelNodeInfo.map(ModelNode::getNodeId).toString();
+        ModelNode modelNode = modelNodes.stream().findFirst().get();
+        String nodeId = modelNode.getNodeId();
         dto.setNodeId(nodeId);
         String energyType = dto.getEnergyType();
         LocalDate queryTime = dto.getQueryTime();
         TimeType timeType = dto.getTimeType();
 
-        // 获取节点信息
-        ModelNode modelNode = modelNodeMapper.selectModelNodeById(nodeId);
-        if (ObjectUtils.isEmpty(modelNode)) {
-            return flowChartsVO;
-        }
         // 获取查询时间
         Map<String, LocalDateTime> dateTimeMap = getDataItemByIndexId(timeType, queryTime);
 
