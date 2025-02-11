@@ -379,7 +379,7 @@ function getListEnergyConsumptionSummation() {
             right: "5%",
             itemWidth: 14,
             itemHeight: 14,
-            itemGap: 60,
+            itemGap: 16,
             textStyle: {
               align: "left",
               verticalAlign: "middle",
@@ -777,7 +777,7 @@ function getListPeakValley() {
             right: "10%",
             itemWidth: 14,
             itemHeight: 14,
-            itemGap: 50,
+            itemGap: 16,
             textStyle: {
               align: "left",
               verticalAlign: "middle",
