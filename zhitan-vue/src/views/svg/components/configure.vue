@@ -131,7 +131,7 @@ function fileUploadChange(val) {
     form.value.svgType = "COLLECT"
     updateEquipmentfile(form.value).then((result) => {
       if (result.code === 200) {
-        filePath.value = response.msg
+        filePath.value = val[0].fullUrl
         tags.value = []
         getSvg()
       } else {
@@ -139,7 +139,7 @@ function fileUploadChange(val) {
       }
     })
   } else {
-    proxy.$modal.msgError(response.msg)
+    proxy.$modal.msgError(result.msg)
   }
 }
 

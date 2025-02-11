@@ -312,6 +312,10 @@
       // tr:hover > td {
       // 	background-color: #141E4A;
       // }
+
+      .el-table-fixed-column--left {
+        background-color: #110f2e !important;
+      }
     }
   }
 
@@ -858,6 +862,9 @@
       // tr:hover > td {
       // 	background-color: #141E4A;
       // }
+      .el-table-fixed-column--left {
+        background-color: #fff;
+      }
     }
   }
 
