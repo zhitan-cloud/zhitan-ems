@@ -1,5 +1,6 @@
 package com.zhitan.web.controller.comprehensivestatistics;
 
+import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.annotation.Log;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
@@ -51,20 +52,24 @@ public class YearComprehensiveController extends BaseController {
                 return AjaxResult.success("暂无数据");
             }
             List<YearComperhensive> dataList = new ArrayList<>();
+
+            dataItem.setBeginTime(DateUtil.beginOfYear(dataItem.getDataTime()));
+            dataItem.setEndTime(DateUtil.endOfYear(dataItem.getDataTime()));
+
             DateFormat df = new SimpleDateFormat("yyyy");
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String aa= df.format(dataItem.getBeginTime());
-            String bb="";
+            String aa = df.format(dataItem.getDataTime());
+            String bb = "";
             int i = 1;
             while (i <= 12) {
-                if(i>9){
-                    bb=aa+"-"+i+"-01 00:00:00";
+                if(i > 9){
+                    bb = aa + "-" + i + "-01 00:00:00";
                 }else{
-                    bb=aa+"-0"+i+"-01 00:00:00";
+                    bb = aa + "-0" + i + "-01 00:00:00";
                 }
                 YearComperhensive report = new YearComperhensive();
                 report.setDataTime(sf.parse(bb));
-                report.setValue("value"+i);
+                report.setValue("value" + i);
                 dataList.add(report);
                 i++;
             }
