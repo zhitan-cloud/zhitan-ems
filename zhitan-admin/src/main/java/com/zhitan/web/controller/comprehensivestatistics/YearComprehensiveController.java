@@ -88,6 +88,10 @@ public class YearComprehensiveController extends BaseController {
     @GetMapping("/listChart")
     @ApiOperation(value = "获取综合指标分析图表（年）数据")
     public AjaxResult listChart(DataItem dataItem){
+
+        dataItem.setBeginTime(DateUtil.beginOfYear(dataItem.getDataTime()));
+        dataItem.setEndTime(DateUtil.endOfYear(dataItem.getDataTime()));
+
         List<YearComperhensive> list = yearComprehensive.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
         return AjaxResult.success(list);
     }

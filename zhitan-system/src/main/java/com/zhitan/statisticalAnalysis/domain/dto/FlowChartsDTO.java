@@ -44,9 +44,12 @@ public class FlowChartsDTO {
     /**
      * 节点id
      */
-    @NotBlank(message = "节点id不能为空")
     @ApiModelProperty(value = "节点id")
     private String nodeId;
+
+    @NotBlank(message = "模型编码不能为空")
+    @ApiModelProperty(value = "模型编码")
+    private String modelCode;
 
     public TimeType getTimeType() {
         if (ObjectUtils.isEmpty(timeType)) {

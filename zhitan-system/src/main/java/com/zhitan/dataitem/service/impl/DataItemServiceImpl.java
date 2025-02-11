@@ -1,5 +1,7 @@
 package com.zhitan.dataitem.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.dataitem.domain.vo.NodeIndexValueVO;
@@ -149,7 +151,16 @@ public class DataItemServiceImpl implements IDataItemService {
     public FlowChartsVO getFlowCharts(FlowChartsDTO dto) {
         FlowChartsVO flowChartsVO = new FlowChartsVO();
         // 父节点id
-        String nodeId = dto.getNodeId();
+        LambdaQueryWrapper<ModelNode> wrapper = Wrappers.<ModelNode>lambdaQuery()
+                .eq(ModelNode::getModelCode, dto.getModelCode())
+                .isNull(ModelNode::getParentId);
+        List<ModelNode> modelNodes = modelNodeMapper.selectList(wrapper);
+        if(ObjectUtils.isEmpty(modelNodes)){
+            throw new RuntimeException("未查询到模型信息");
+        }
+        Optional<ModelNode> modelNodeInfo = modelNodes.stream().findFirst();
+        String nodeId = modelNodeInfo.map(ModelNode::getNodeId).toString();
+        dto.setNodeId(nodeId);
         String energyType = dto.getEnergyType();
         LocalDate queryTime = dto.getQueryTime();
         TimeType timeType = dto.getTimeType();
