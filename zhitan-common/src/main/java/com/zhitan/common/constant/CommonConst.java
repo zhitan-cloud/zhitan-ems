@@ -887,7 +887,7 @@ public class CommonConst {
     /**
      * 总功率因数 点位模板code
      */
-    public static final String TAG_CODE_GLYS = "PowerFactor_Total";
+    public static final String TAG_CODE_GLYS = "PowFactorT";
     /**
      * 电流
      */
@@ -935,27 +935,27 @@ public class CommonConst {
     /**
      * A相电流
      */
-    public static final String TAG_CODE_CURRENT_A = "Current_A";
+    public static final String TAG_CODE_CURRENT_A = "CurrentA";
     /**
      * B相电流
      */
-    public static final String TAG_CODE_CURRENT_B = "Current_B";
+    public static final String TAG_CODE_CURRENT_B = "CurrentB";
     /**
      * C相电流
      */
-    public static final String TAG_CODE_CURRENT_C = "Current_C";
+    public static final String TAG_CODE_CURRENT_C = "CurrentC";
     /**
      * A相电压
      */
-    public static final String TAG_CODE_VOLTAGE_A = "Voltage_A";
+    public static final String TAG_CODE_VOLTAGE_A = "VoltageA";
     /**
      * B相电压
      */
-    public static final String TAG_CODE_VOLTAGE_B = "Voltage_B";
+    public static final String TAG_CODE_VOLTAGE_B = "VoltageB";
     /**
      * C相电压
      */
-    public static final String TAG_CODE_VOLTAGE_C = "Voltage_C";
+    public static final String TAG_CODE_VOLTAGE_C = "VoltageC";
     /**
      * A相功率因数
      */
