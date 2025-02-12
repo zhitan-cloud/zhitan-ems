@@ -127,6 +127,7 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
         List<TagValue> minList = new ArrayList<>();
         List<TagValue> avgList = new ArrayList<>();
         if (TimeTypeConst.TIME_TYPE_DAY.equals(timeType)) {
+
         } else {
             String tempTimeCode = StringUtil.ifEmptyOrNullReturnValue(timeCode).replace(CommonConst.SINGLE_MINUS_SIGN, CommonConst.EMPTY);
             Date start = DateTimeUtil.toDateTime(tempTimeCode, DateTimeUtil.COMMON_PATTERN_MONTH);
@@ -233,13 +234,13 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
                 TagValue rt3 = realtimeDatabaseService.statistics(code, date, endTime, CollectionModes.max);
                 TagValue rt4 = realtimeDatabaseService.statistics(code, date, endTime, CollectionModes.min);
                 TagValue rt2 = realtimeDatabaseService.statistics(code, date, endTime, CollectionModes.mean);
-                if (ObjectUtils.isNotEmpty(rt2.getValue())) {
+                if (ObjectUtils.isNotEmpty(rt2)) {
                     temp.setAvg(String.valueOf(DoubleUtil.formatDouble(rt2.getValue())));
                 }
-                if (ObjectUtils.isNotEmpty(rt3.getValue())) {
+                if (ObjectUtils.isNotEmpty(rt3)) {
                     temp.setMax(String.valueOf(DoubleUtil.formatDouble(rt3.getValue())));
                 }
-                if (ObjectUtils.isNotEmpty(rt4.getValue())) {
+                if (ObjectUtils.isNotEmpty(rt4)) {
                     temp.setMin(String.valueOf(DoubleUtil.formatDouble(rt4.getValue())));
                 }
             }

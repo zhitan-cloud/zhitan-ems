@@ -115,7 +115,7 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
     @Override
     public TagValue statistics(String tagCode, Date beginTime, Date endTime, CollectionModes collectionModes) {
         List<TagValue> tagValues = repository.statistics(Collections.singletonList(tagCode), beginTime, endTime, collectionModes);
-        return CollectionUtils.isEmpty(tagValues) ? tagValues.get(0) : null;
+        return CollectionUtils.isNotEmpty(tagValues) ? tagValues.get(0) : null;
     }
 
     /**
