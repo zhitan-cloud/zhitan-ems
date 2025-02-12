@@ -74,7 +74,7 @@ public class YearComprehensiveController extends BaseController {
                 i++;
             }
             List<YearComperhensive> list = yearComprehensive.getYearComprehensiveList(modelNode.getNodeId(),
-                    dataList,dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+                    dataList,dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
             return AjaxResult.success(list);
         } catch (Exception ex) {
             logger.error("获取出错！", ex);
@@ -92,7 +92,7 @@ public class YearComprehensiveController extends BaseController {
         dataItem.setBeginTime(DateUtil.beginOfYear(dataItem.getDataTime()));
         dataItem.setEndTime(DateUtil.endOfYear(dataItem.getDataTime()));
 
-        List<YearComperhensive> list = yearComprehensive.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<YearComperhensive> list = yearComprehensive.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
 
@@ -127,7 +127,7 @@ public class YearComprehensiveController extends BaseController {
                 i++;
             }
             List<YearComperhensive> list = yearComprehensive.getYearComprehensiveList(modelNode.getNodeId(),
-                    dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+                    dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
             if(CollectionUtils.isNotEmpty(list)){
                 list.forEach(this::valueRep);
             }

@@ -17,8 +17,8 @@ public class DataItem implements Serializable {
 
   @ApiModelProperty(value = "指标id")
   private String indexId;
-  @ApiModelProperty(value = "指标库id")
-  private String indexStorageId;
+  @ApiModelProperty(value = "能源品种")
+  private String energyType;
   @ApiModelProperty(value = "指标code")
   private String indexCode;
   @ApiModelProperty(value = "指标名称")
@@ -54,12 +54,12 @@ public class DataItem implements Serializable {
     this.indexId = indexId;
   }
 
-  public String getIndexStorageId() {
-    return indexStorageId;
+  public String getEnergyType() {
+    return energyType;
   }
 
-  public void setIndexStorageId(String indexStorageId) {
-    this.indexStorageId = indexStorageId;
+  public void setEnergyType(String energyType) {
+    this.energyType = energyType;
   }
 
   public String getIndexCode() {
