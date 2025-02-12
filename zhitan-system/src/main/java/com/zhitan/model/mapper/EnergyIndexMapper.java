@@ -99,5 +99,7 @@ public interface EnergyIndexMapper extends BaseMapper<EnergyIndex> {
 
   Page<EnergyIndex> selectEnergyIndexPage(@Param("page")Page<?> page, @Param("query") EnergyIndexQuery energyIndexQuery);
 
-    List<EnergyIndex> getIndexByCode(@Param("code")String code, @Param("nodeId")String nodeId);
+  List<EnergyIndex> getIndexByCode(@Param("code")String code, @Param("nodeId")String nodeId);
+
+  List<EnergyIndex> getIndexByMeterIdIndexCode(@Param("meterId") String meterId, @Param("indexCode") String indexCode, @Param("nodeId") String nodeId);
 }

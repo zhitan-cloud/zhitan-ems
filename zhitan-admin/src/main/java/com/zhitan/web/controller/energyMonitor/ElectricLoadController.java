@@ -53,7 +53,7 @@ public class ElectricLoadController extends BaseController {
                            @RequestParam(name = "timeCode") String timeCode) {
         EnergyIndex energyIndex = energyIndexService.getDeviceIndexByCode(nodeId, meterId, CommonConst.TAG_CODE_ZYGGL);
 
-        ListElectricLoadVO vo = electricLoadService.list(timeType, timeCode, energyIndex);
+        ListElectricLoadVO vo = electricLoadService.list(timeType, timeCode, energyIndex, meterId);
         return AjaxResult.success(vo);
     }
 

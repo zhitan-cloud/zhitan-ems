@@ -17,7 +17,7 @@ public interface IElectricLoadService {
     /**
      * 获取负荷分析数据
      */
-    ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex);
+    ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex, String meterId);
 
     /**
      * 获取节点下所有电表

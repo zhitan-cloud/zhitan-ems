@@ -46,7 +46,7 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
     private MeterImplementMapper meterImplementMapper;
 
     @Override
-    public ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex) {
+    public ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex, String meterId) {
         ListElectricLoadVO vo = new ListElectricLoadVO();
         List<ListElectricLoadItem> itemList = new ArrayList<>();
         vo.setItemList(itemList);
@@ -59,7 +59,7 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
         detail.setRate(CommonConst.DOUBLE_MINUS_SIGN);
         vo.setDetail(detail);
 
-        MeterImplement meterImplement = meterImplementMapper.selectById(energyIndex.getMeterId());
+        MeterImplement meterImplement = meterImplementMapper.selectById(meterId);
 
         if (ObjectUtil.isEmpty(meterImplement)) {
             return vo;

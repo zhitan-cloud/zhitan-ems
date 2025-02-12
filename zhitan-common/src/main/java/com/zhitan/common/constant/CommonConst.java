@@ -867,7 +867,7 @@ public class CommonConst {
     /**
      * 总有功功率点位模板code
      */
-    public static final String TAG_CODE_ZYGGL = "\\_ActivePower_Total";
+    public static final String TAG_CODE_ZYGGL = "ActivePow";
     /**
      * 总有功功率点位模板code
      */
