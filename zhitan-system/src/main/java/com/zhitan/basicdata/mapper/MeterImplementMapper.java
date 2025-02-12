@@ -88,4 +88,12 @@ public interface MeterImplementMapper extends BaseMapper<MeterImplement>
     MeterImplement selectByNodeIdIndexId(@Param("nodeId") String nodeId, @Param("indexId") String indexId);
 
     List<MeterImplement> listMeterImplByInstallLocation(@Param("installactionLocation") String installactionLocation);
+
+    /**
+     * 根据节点id查询计量器具信息
+     *
+     * @param nodeId
+     * @return
+     */
+    List<MeterImplement> selectByNodeId(@Param("nodeId") String nodeId);
 }

@@ -6,11 +6,12 @@ import com.google.common.collect.Lists;
 import com.zhitan.common.enums.CollectionModes;
 import com.zhitan.common.enums.GroupTimeType;
 import com.zhitan.common.enums.RetrievalModes;
-import com.zhitan.realtimedata.data.RealtimeDatabaseManager;
 import com.zhitan.realtimedata.data.influxdb.InfluxDBRepository;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,11 +24,10 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
 
     private final InfluxDBRepository repository;
 
-    private final RealtimeDatabaseManager realtimeDatabaseManager;
 
-    public RealtimeDatabaseServiceImpl(InfluxDBRepository repository, RealtimeDatabaseManager realtimeDatabaseManager) {
+    public RealtimeDatabaseServiceImpl(InfluxDBRepository repository
+    ) {
         this.repository = repository;
-        this.realtimeDatabaseManager = realtimeDatabaseManager;
     }
 
     /**
@@ -115,7 +115,7 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
     @Override
     public TagValue statistics(String tagCode, Date beginTime, Date endTime, CollectionModes collectionModes) {
         List<TagValue> tagValues = repository.statistics(Collections.singletonList(tagCode), beginTime, endTime, collectionModes);
-        return CollectionUtils.isEmpty(tagValues) ? tagValues.get(0) : null;
+        return CollectionUtils.isNotEmpty(tagValues) ? tagValues.get(0) : null;
     }
 
     /**
@@ -169,6 +169,15 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
     @Override
     public List<TagValue> retrieve(String tagCode, Date beginTime, Date endTime,
                                    RetrievalModes retrievalModes, int pointCount) {
-        return realtimeDatabaseManager.retrieve(tagCode, beginTime, endTime, retrievalModes, pointCount);
+        repository.getHistoryData(Collections.singletonList(tagCode), beginTime, endTime, pointCount);
+        pointCount = retrievalModes == RetrievalModes.Full ? 200 : pointCount;
+        int span =
+                Seconds.secondsBetween(new DateTime(beginTime), new DateTime(endTime)).getSeconds();
+        int interval = span / pointCount;
+        List<String> tagCodes = new ArrayList<>();
+        tagCodes.add(tagCode);
+        List<TagValue> historyData = repository.getHistoryData(tagCodes, beginTime, endTime, interval);
+        return historyData;
+//        return realtimeDatabaseManager.retrieve(tagCode, beginTime, endTime, retrievalModes, pointCount);
     }
 }

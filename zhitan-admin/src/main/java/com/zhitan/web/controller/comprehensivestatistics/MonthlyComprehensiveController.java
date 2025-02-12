@@ -82,7 +82,7 @@ public class MonthlyComprehensiveController extends BaseController {
                 return AjaxResult.success(reportList);
             }
             List<MonthlyComprehensive> list = monthlyComprehensive.getMonthlyComprehensiveList(modelNode.getNodeId(),
-                    dataList, dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(), dataItem.getIndexStorageId());
+                    dataList, dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(), dataItem.getEnergyType());
             int count = Integer.parseInt(getLastDayOfMonth(aa).substring(getLastDayOfMonth(aa).length() - 2));
             list.forEach(monthlyReport -> monthlyReport.setCount(count));
             reportList.setTabledata(list);
@@ -107,7 +107,7 @@ public class MonthlyComprehensiveController extends BaseController {
         dataItem.setBeginTime(sf.parse(beginTime));
         String endTime=aa+"-"+Integer.valueOf(getLastDayOfMonth(aa).substring(getLastDayOfMonth(aa).length()-2))+" 00:00:00";
         dataItem.setEndTime(sf.parse(endTime));
-        List<MonthlyComprehensive> list = monthlyComprehensive.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<MonthlyComprehensive> list = monthlyComprehensive.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
     public static String getLastDayOfMonth(String yearMonth) {
@@ -171,7 +171,7 @@ public class MonthlyComprehensiveController extends BaseController {
                 return AjaxResult.success(reportList);
             }
             List<MonthlyComprehensive> list = monthlyComprehensive.getMonthlyComprehensiveList(modelNode.getNodeId(), dataList,
-                    dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(), dataItem.getIndexStorageId());
+                    dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(), dataItem.getEnergyType());
             int count = Integer.parseInt(getLastDayOfMonth(aa).substring(getLastDayOfMonth(aa).length() - 2));
             list.forEach(monthlyReport -> monthlyReport.setCount(count));
             if (CollectionUtils.isNotEmpty(list)) {
