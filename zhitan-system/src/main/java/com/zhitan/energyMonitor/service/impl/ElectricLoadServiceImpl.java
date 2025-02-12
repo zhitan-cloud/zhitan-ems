@@ -14,7 +14,9 @@ import com.zhitan.common.utils.StringUtil;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadDetail;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadItem;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadVO;
+import com.zhitan.energyMonitor.domain.vo.ListElectricityMeterVO;
 import com.zhitan.energyMonitor.service.IElectricLoadService;
+import com.zhitan.knowledgeBase.domain.enums.EnergyTypeEnum;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
@@ -28,6 +30,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description: sensor_alarm_item
@@ -255,4 +258,20 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
     }
 
 
+    /**
+     * 获取电表列表
+     */
+    @Override
+    public List<ListElectricityMeterVO> listElectricMeter(String nodeId) {
+        List<MeterImplement> meterImplements = meterImplementMapper.selectByNodeId(nodeId);
+        meterImplements = meterImplements.stream().filter(x -> "electric".equals(x.getEnergyType())).collect(Collectors.toList());
+        List<ListElectricityMeterVO> list = new ArrayList<>();
+        for (MeterImplement meterImplement : meterImplements) {
+            ListElectricityMeterVO vo = new ListElectricityMeterVO();
+            vo.setCode(meterImplement.getId());
+            vo.setLabel(meterImplement.getMeterName());
+            list.add(vo);
+        }
+        return list;
+    }
 }

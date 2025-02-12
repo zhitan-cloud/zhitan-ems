@@ -5,6 +5,7 @@ import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadVO;
+import com.zhitan.energyMonitor.domain.vo.ListElectricityMeterVO;
 import com.zhitan.energyMonitor.service.IElectricLoadService;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.service.IEnergyIndexService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Description: 负荷分析
@@ -51,6 +54,14 @@ public class ElectricLoadController extends BaseController {
         EnergyIndex energyIndex = energyIndexService.getDeviceIndexByCode(nodeId, meterId, CommonConst.TAG_CODE_ZYGGL);
 
         ListElectricLoadVO vo = electricLoadService.list(timeType, timeCode, energyIndex);
+        return AjaxResult.success(vo);
+    }
+
+    @Log(title = "获取节点下所有电表")
+    @ApiOperation(value = "获取节点下所有电表", notes = "获取节点下所有电表")
+    @GetMapping(value = "/listElectricMeter")
+    public AjaxResult listElectricMeter(@RequestParam(name = "nodeId") String nodeId) {
+        List<ListElectricityMeterVO> vo = electricLoadService.listElectricMeter(nodeId);
         return AjaxResult.success(vo);
     }
 
