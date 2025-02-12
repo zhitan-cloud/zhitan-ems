@@ -49,4 +49,30 @@
 
         AND time_type = #{timeType}
     </select>
+    <select id="getCostTrends"
+            resultType="com.zhitan.peakvalley.domain.ElectricityDataItem">
+        SELECT
+        di.index_code,
+        di.time_code,
+        di.electricity_type,
+        di.data_time,
+        di.electricity,
+        di.cost,
+        di.time_type,
+        di.price,
+        di.remark
+        FROM
+        "electricity_data_item" di
+        JOIN energy_index ei  ON di.index_id = ei.index_id
+        WHERE
+        di.index_id IN ( SELECT index_id FROM node_index WHERE node_id = #{indexId})
+        <if test="emissionType !='' and emissionType !=null  and emissionType =='allType'">
+            AND ei.energy_id != ''
+        </if>
+        <if test="emissionType !='' and emissionType !=null  and emissionType !='allType'">
+            AND  ei.energy_id = #{emissionType}
+        </if>
+        AND (di.data_time BETWEEN #{beginTime} AND #{endTime})
+        AND di.time_type = #{timeType}
+    </select>
 </mapper>
