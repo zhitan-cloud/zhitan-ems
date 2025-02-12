@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
 import com.zhitan.common.core.page.TableDataInfo;
-import com.zhitan.comprehensivestatistics.domain.YearComperhensive;
 import com.zhitan.keyequipment.domain.YearKeyEquipment;
 import com.zhitan.keyequipment.service.IYearKeyEquipmentService;
 import com.zhitan.model.domain.EnergyIndex;
@@ -77,7 +76,7 @@ public class YearKeyEquipmentController extends BaseController {
             i++;
         }
         startPage();
-        List<YearKeyEquipment> list = yearKeyEquipmentService.getYearKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<YearKeyEquipment> list = yearKeyEquipmentService.getYearKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return getDataTable(list);
     }
 
@@ -85,7 +84,7 @@ public class YearKeyEquipmentController extends BaseController {
     @ApiOperation(value = "重点设备能耗统计（年）图表")
     public AjaxResult listChart(DataItem dataItem){
 
-        List<YearKeyEquipment> list = yearKeyEquipmentService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<YearKeyEquipment> list = yearKeyEquipmentService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
 }

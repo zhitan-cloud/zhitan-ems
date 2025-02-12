@@ -391,4 +391,21 @@
         </if>
     </where>
   </select>
+  <select id="getIndexByMeterIdIndexCode" resultType="com.zhitan.model.domain.EnergyIndex">
+    SELECT ei.code,mi.meter_name||'_'||ei.name as name from energy_index ei
+    LEFT JOIN node_device nd on ei.meter_id =  nd.device_id
+    LEFT JOIN meter_implement  mi on mi."id" = nd.device_id
+    <where>
+        <if test="nodeId != null  and nodeId != ''">and nd.node_id  = #{nodeId}</if>
+        <if test="indexCode != null  and indexCode != ''">
+          and (mi.meter_name like concat('%', #{indexCode}, '%')
+          or ei.code like concat('%', #{indexCode}, '%')
+          or ei.name like concat('%', #{indexCode}, '%')
+          )
+        </if>
+        <if test="meterId != null  and meterId != ''">
+          and ei.meter_id = #{meterId}
+        </if>
+    </where>
+  </select>
 </mapper>

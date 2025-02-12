@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.basicdata.mapper.MeterImplementMapper">
 
-    <resultMap type="MeterImplement" id="MeterImplementResult">
+    <resultMap type="com.zhitan.basicdata.domain.MeterImplement" id="MeterImplementResult">
         <result property="id"    column="id"    />
         <result property="code"    column="code"    />
         <result property="meterName"    column="meter_name"    />
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="gatewayId"    column="gateway_id"    />
         <result property="gatewayName"    column="gateway_name"    />
     </resultMap>
-    <resultMap type="MeterImplementExcel" id="MeterImplementResultExcel">
+    <resultMap type="com.zhitan.basicdata.domain.MeterImplementExcel" id="MeterImplementResultExcel">
         <result property="id"    column="id"    />
         <result property="code"    column="code"    />
         <result property="meterName"    column="meter_name"    />
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id,energy_type, code, meter_name, meter_type, model_number, measure_range, manufacturer, person_charge, installaction_location, start_time, check_cycle, reminder_cycle, meter_status, del_flage, remark, putrun_time,create_time, create_by, update_time, update_by,(start_time+check_cycle-reminder_cycle)&lt;=current_date as txflage,wire_diameter,max_allowable_power,gateway_id,gateway_name from meter_implement
     </sql>
 
-    <select id="selectMeterImplementList" parameterType="MeterImplement" resultMap="MeterImplementResult">
+    <select id="selectMeterImplementList" parameterType="com.zhitan.basicdata.domain.MeterImplement" resultMap="MeterImplementResult">
         <include refid="selectMeterImplementVo"/>
         <where>
             del_flage='N'
@@ -73,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by code
     </select>
 
-    <select id="exectMeterImplementList" parameterType="MeterImplement" resultMap="MeterImplementResultExcel">
+    <select id="exectMeterImplementList" parameterType="com.zhitan.basicdata.domain.MeterImplement" resultMap="MeterImplementResultExcel">
         select id,energy_type, code, meter_name, fun_getDiceData('sys_device_type',meter_status) as meter_type, model_number, measure_range, manufacturer,
         person_charge, installaction_location, to_char(start_time,'YYYY-MM-DD') start_time, check_cycle, reminder_cycle, fun_getDiceData('meter_status',meter_status) as meter_status,
         del_flage, remark, create_time, create_by, update_time, update_by,wire_diameter,max_allowable_power,gateway_name
@@ -95,7 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
-    <select id="selectMeterImplementByCode" parameterType="MeterImplement" resultMap="MeterImplementResult">
+    <select id="selectMeterImplementByCode" parameterType="com.zhitan.basicdata.domain.MeterImplement" resultMap="MeterImplementResult">
         <include refid="selectMeterImplementVo"/>
         where code = #{code}
         <if test="id != null  and id != ''"> and id != #{id} or id is null</if>
@@ -133,8 +133,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             installaction_location = #{installactionLocation}
         </where>
     </select>
+    <select id="selectByNodeId" resultType="com.zhitan.basicdata.domain.MeterImplement">
+        <include refid="selectMeterImplementVo"/>
+        mi
+        left join node_device nd on mi.id = nd.device_id
+        where
+            mi.del_flage = 'N'
+            AND nd.node_id = #{nodeId}
+    </select>
 
-    <insert id="insertMeterImplement" parameterType="MeterImplement">
+    <insert id="insertMeterImplement" parameterType="com.zhitan.basicdata.domain.MeterImplement">
         insert into meter_implement
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">id,</if>
@@ -192,7 +200,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateMeterImplement" parameterType="MeterImplement">
+    <update id="updateMeterImplement" parameterType="com.zhitan.basicdata.domain.MeterImplement">
         update meter_implement
         <trim prefix="SET" suffixOverrides=",">
             <if test="code != null  and code != ''">code = #{code},</if>

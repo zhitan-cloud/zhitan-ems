@@ -14,7 +14,9 @@ import com.zhitan.common.utils.StringUtil;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadDetail;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadItem;
 import com.zhitan.energyMonitor.domain.vo.ListElectricLoadVO;
+import com.zhitan.energyMonitor.domain.vo.ListElectricityMeterVO;
 import com.zhitan.energyMonitor.service.IElectricLoadService;
+import com.zhitan.knowledgeBase.domain.enums.EnergyTypeEnum;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
@@ -28,6 +30,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description: sensor_alarm_item
@@ -43,7 +46,7 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
     private MeterImplementMapper meterImplementMapper;
 
     @Override
-    public ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex) {
+    public ListElectricLoadVO list(String timeType, String timeCode, EnergyIndex energyIndex, String meterId) {
         ListElectricLoadVO vo = new ListElectricLoadVO();
         List<ListElectricLoadItem> itemList = new ArrayList<>();
         vo.setItemList(itemList);
@@ -56,7 +59,7 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
         detail.setRate(CommonConst.DOUBLE_MINUS_SIGN);
         vo.setDetail(detail);
 
-        MeterImplement meterImplement = meterImplementMapper.selectById(energyIndex.getMeterId());
+        MeterImplement meterImplement = meterImplementMapper.selectById(meterId);
 
         if (ObjectUtil.isEmpty(meterImplement)) {
             return vo;
@@ -124,6 +127,7 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
         List<TagValue> minList = new ArrayList<>();
         List<TagValue> avgList = new ArrayList<>();
         if (TimeTypeConst.TIME_TYPE_DAY.equals(timeType)) {
+
         } else {
             String tempTimeCode = StringUtil.ifEmptyOrNullReturnValue(timeCode).replace(CommonConst.SINGLE_MINUS_SIGN, CommonConst.EMPTY);
             Date start = DateTimeUtil.toDateTime(tempTimeCode, DateTimeUtil.COMMON_PATTERN_MONTH);
@@ -230,13 +234,13 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
                 TagValue rt3 = realtimeDatabaseService.statistics(code, date, endTime, CollectionModes.max);
                 TagValue rt4 = realtimeDatabaseService.statistics(code, date, endTime, CollectionModes.min);
                 TagValue rt2 = realtimeDatabaseService.statistics(code, date, endTime, CollectionModes.mean);
-                if (ObjectUtils.isNotEmpty(rt2.getValue())) {
+                if (ObjectUtils.isNotEmpty(rt2)) {
                     temp.setAvg(String.valueOf(DoubleUtil.formatDouble(rt2.getValue())));
                 }
-                if (ObjectUtils.isNotEmpty(rt3.getValue())) {
+                if (ObjectUtils.isNotEmpty(rt3)) {
                     temp.setMax(String.valueOf(DoubleUtil.formatDouble(rt3.getValue())));
                 }
-                if (ObjectUtils.isNotEmpty(rt4.getValue())) {
+                if (ObjectUtils.isNotEmpty(rt4)) {
                     temp.setMin(String.valueOf(DoubleUtil.formatDouble(rt4.getValue())));
                 }
             }
@@ -255,4 +259,20 @@ public class ElectricLoadServiceImpl implements IElectricLoadService {
     }
 
 
+    /**
+     * 获取电表列表
+     */
+    @Override
+    public List<ListElectricityMeterVO> listElectricMeter(String nodeId) {
+        List<MeterImplement> meterImplements = meterImplementMapper.selectByNodeId(nodeId);
+        meterImplements = meterImplements.stream().filter(x -> "electric".equals(x.getEnergyType())).collect(Collectors.toList());
+        List<ListElectricityMeterVO> list = new ArrayList<>();
+        for (MeterImplement meterImplement : meterImplements) {
+            ListElectricityMeterVO vo = new ListElectricityMeterVO();
+            vo.setCode(meterImplement.getId());
+            vo.setLabel(meterImplement.getMeterName());
+            list.add(vo);
+        }
+        return list;
+    }
 }
