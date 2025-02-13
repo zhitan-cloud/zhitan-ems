@@ -64,6 +64,12 @@
                           {
                             name: item.costLabel,
                             data: item.costValueList,
+                            markPoint: {
+                              data: [
+                                { type: 'max', name: 'Max' },
+                                { type: 'min', name: 'Min' },
+                              ],
+                            },
                           },
                         ],
                       }"
@@ -87,6 +93,12 @@
                             name: item.accumulationLabel,
                             color: '#19be6b',
                             data: item.accumulationValueList,
+                            markPoint: {
+                              data: [
+                                { type: 'max', name: 'Max' },
+                                { type: 'min', name: 'Min' },
+                              ],
+                            },
                           },
                         ],
                       }"
