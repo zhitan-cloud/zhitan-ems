@@ -36,7 +36,7 @@ public class EnergySavingProgramController extends BaseController {
      * 列表
      */
     @GetMapping("/page")
-    @PreAuthorize("@ss.hasPermi('energySavingProject:list')")
+    @PreAuthorize("@ss.hasPermi('energySavingProject:Project:list')")
     @ApiOperation(value = "分页列表")
     public TableDataInfo list(EnergySavingProgram energySavingProgram) {
         Page<EnergySavingProgramVO> list = energySavingProgramService.selectEnergySavingProgramList(energySavingProgram);
@@ -50,7 +50,6 @@ public class EnergySavingProgramController extends BaseController {
      * 详细信息
      */
     @ApiOperation(value = "查询详情")
-    @PreAuthorize("@ss.hasPermi('energySavingProject')")
     @GetMapping(value = "getById")
     public AjaxResult getInfo(@RequestParam("id") Long id) {
         return success(energySavingProgramService.selectEnergySavingProgramById(id));
@@ -61,6 +60,7 @@ public class EnergySavingProgramController extends BaseController {
      * 节能项目管理
      */
     @ApiOperation(value = "新增")
+    @PreAuthorize("@ss.hasPermi('energySavingProject:Project:add')")
     @PostMapping("add")
     public AjaxResult add(  @RequestBody EnergySavingProgramDTO dto) {
         return energySavingProgramService.insertEnergySavingProgram(dto);
@@ -71,6 +71,7 @@ public class EnergySavingProgramController extends BaseController {
      * 节能项目管理
      */
     @ApiOperation(value = "更新")
+    @PreAuthorize("@ss.hasPermi('energySavingProject:Project:edit')")
     @PostMapping("edit")
     public AjaxResult edit(@RequestBody EnergySavingProgramDTO dto) {
         return energySavingProgramService.updateEnergySavingProgram(dto);
@@ -81,6 +82,7 @@ public class EnergySavingProgramController extends BaseController {
      * 节能项目管理
      */
     @DeleteMapping("del/{id}")
+    @PreAuthorize("@ss.hasPermi('energySavingProject:Project:del')")
     @ApiOperation(value = "删除")
     public AjaxResult remove(@PathVariable  Long id) {
         return energySavingProgramService.deleteEnergySavingProgramById(id);
