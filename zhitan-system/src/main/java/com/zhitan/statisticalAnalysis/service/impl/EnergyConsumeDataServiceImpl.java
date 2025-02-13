@@ -126,14 +126,15 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
                                                                CostTrendEnergyTypeItem item) {
         BigDecimal costValue = BigDecimal.ZERO;
         BigDecimal accumulationValue = BigDecimal.ZERO;
+        //电：只有HOUR数据有效；其他能源类型：HOUR、DAY有数据
         switch (sysEnergyInfo.getEnersno()) {
             case "electric":
-                List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getDataStatistics(nodeIndices.stream().map(NodeIndex::getIndexId).collect(Collectors.toSet()), bsTime, endTime, timeType);
+                List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getDataStatistics(nodeIndices.stream().map(NodeIndex::getIndexId).collect(Collectors.toSet()), bsTime, endTime, TimeTypeConst.TIME_TYPE_HOUR);
                 costValue = electricityDataItems.stream().map(ElectricityDataItem::getCost).reduce(BigDecimal.ZERO, BigDecimal::add);
                 accumulationValue = electricityDataItems.stream().map(ElectricityDataItem::getElectricity).reduce(BigDecimal.ZERO, BigDecimal::add);
                 break;
             default:
-                accumulationValue = dataItemMapper.getDataItemTimeRangeValueByNodeId(bsTime, endTime, timeType, nodeId, sysEnergyInfo.getEnersno());
+                accumulationValue = dataItemMapper.getDataItemTimeRangeValueByNodeId(bsTime, endTime, TimeTypeConst.TIME_TYPE_DAY, nodeId, sysEnergyInfo.getEnersno());
                 costValue = accumulationValue.multiply(sysEnergyInfo.getPrice());
                 break;
         }
@@ -175,13 +176,15 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
 
         // 能耗信息
         List<EnergyConsumeTrendDetailItem> itemList = new ArrayList<>();
-        List<EnergyConsumeVO> energyConsumeVOList = new ArrayList<>();
         Date startTime = DateTimeUtil.getTime(timeType, timeCode);
         Date endTime = DateTimeUtil.getEndTimeByType(timeType, startTime);
+        //电：只有HOUR数据有效；其他能源类型：HOUR、DAY有数据
+        String queryTimeType = TimeTypeConst.TIME_TYPE_HOUR;
         for (SysEnergy sysEnergyInfo : sysEnergies) {
+            List<EnergyConsumeVO> energyConsumeVOList = new ArrayList<>();
             switch (sysEnergyInfo.getEnersno()) {
                 case "electric":
-                    List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getCostTrends(startTime, endTime, timeType, nodeId, sysEnergyInfo.getEnersno());
+                    List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getCostTrends(startTime, endTime, queryTimeType, nodeId, sysEnergyInfo.getEnersno());
                     if (!electricityDataItems.isEmpty()) {
                         electricityDataItems.forEach(electricityDataItem -> {
                             EnergyConsumeVO temp = new EnergyConsumeVO();
@@ -193,7 +196,10 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
                     }
                     break;
                 default:
-                    List<CarbonEmission> dataItems = dataItemMapper.getMiddleCarbonEmission(startTime, endTime, timeType, nodeId, sysEnergyInfo.getEnersno());
+                    if (timeType.equals(TimeTypeConst.TIME_TYPE_MONTH) || timeType.equals(TimeTypeConst.TIME_TYPE_YEAR)) {
+                        queryTimeType = TimeTypeConst.TIME_TYPE_DAY;
+                    }
+                    List<CarbonEmission> dataItems = dataItemMapper.getMiddleCarbonEmission(startTime, endTime, queryTimeType, nodeId, sysEnergyInfo.getEnersno());
                     if (!dataItems.isEmpty()) {
                         dataItems.forEach(electricityDataItem -> {
                             EnergyConsumeVO temp = new EnergyConsumeVO();
@@ -263,7 +269,7 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
                 }
                 break;
             case TimeTypeConst.TIME_TYPE_YEAR:
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+                SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.COMMON_PATTERN_TO_MONTH_ZH);
                 energyConsumeVOMap = dataItems.stream().collect(Collectors.groupingBy(li -> formatter.format(li.getDataTime())));
                 for (int i = 0; i < CommonConst.DIGIT_12; i++) {
                     Date newDate = DateUtil.offsetMonth(bsTime, i);
@@ -285,6 +291,7 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
 
     /**
      * 计算费用和用量
+     *
      * @param energyConsumeVOMap
      * @param formatDate
      * @param costValueList
