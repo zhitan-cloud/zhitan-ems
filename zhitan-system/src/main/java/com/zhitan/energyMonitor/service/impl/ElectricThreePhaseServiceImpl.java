@@ -54,9 +54,7 @@ public class ElectricThreePhaseServiceImpl implements IElectricThreePhaseService
     @Override
     public ElectricThreePhaseVO list(String timeType, String timeCode, List<EnergyIndex> energyIndexList, String requestType, String meterId) {
         ElectricThreePhaseVO vo = new ElectricThreePhaseVO();
-        if (ObjectUtil.isEmpty(energyIndexList)) {
-            return vo;
-        }
+
         // 获取电压不平衡数据
         if (CommonConst.STR_NUMBER_0.equals(requestType)) {
             energyIndexList = energyIndexList.stream()
@@ -70,9 +68,13 @@ public class ElectricThreePhaseServiceImpl implements IElectricThreePhaseService
                             || StringUtil.ifEmptyOrNullReturnValue(x.getCode()).trim().endsWith(CommonConst.TAG_CODE_CURRENT_C))
                     .collect(Collectors.toList());
         }
+        if (ObjectUtil.isEmpty(energyIndexList)) {
+            return vo;
+        }
         List<String> tagCodeList = energyIndexList.stream().map(EnergyIndex::getCode).collect(Collectors.toList());
-        tagCodeList.add(CommonConst.STR_NUMBER_MINUS_ONE);
-        String tagCodes = String.join(StrUtil.COMMA, tagCodeList);
+        if(ObjectUtil.isEmpty(tagCodeList)){
+            tagCodeList.add(CommonConst.STR_NUMBER_MINUS_ONE);
+        }
 
         Date start = ChartUtils.getDateTime(timeType, timeCode);
         Date end = getEndTime(timeType, start);
@@ -82,7 +84,7 @@ public class ElectricThreePhaseServiceImpl implements IElectricThreePhaseService
         long millis = new Duration(begin, finish).getMillis();
         int pointCount = IntegerUtil.toInt(millis / CommonConst.DIGIT_3600 / CommonConst.DIGIT_1000);
 
-        List<TagValue> tagValueList = realtimeDatabaseService.retrieve(tagCodes, start, end, pointCount);
+        List<TagValue> tagValueList = realtimeDatabaseService.retrieve(tagCodeList, start, end, pointCount);
         List<ElectricThreePhaseItem> itemList = new ArrayList<>();
         List<Date> dateList = new ArrayList<>();
         ChartUtils.generateDateList(timeType, timeCode, dateList);
@@ -281,10 +283,14 @@ public class ElectricThreePhaseServiceImpl implements IElectricThreePhaseService
      */
     private void listDayData(Date date, List<TagValue> tagValueList, ElectricThreePhaseItem temp, ElectricThreePhaseTempModel tempModel) {
         Date endTime = DateTimeUtil.addHours(date, CommonConst.DIGIT_1);
-        List<TagValue> currentTagValueList = tagValueList.stream().filter(x -> DateTimeUtil.compareDateDiff(date, x.getDataTime()) <= 0 && DateTimeUtil.compareDateDiff(endTime, x.getDataTime()) > 0).collect(Collectors.toList());
-        List<TagValue> currentATagValueList = currentTagValueList.stream().filter(x -> StringUtil.ifEmptyOrNullReturnValue(x.getTagCode()).trim().endsWith("_A")).collect(Collectors.toList());
-        List<TagValue> currentBTagValueList = currentTagValueList.stream().filter(x -> StringUtil.ifEmptyOrNullReturnValue(x.getTagCode()).trim().endsWith("_B")).collect(Collectors.toList());
-        List<TagValue> currentCTagValueList = currentTagValueList.stream().filter(x -> StringUtil.ifEmptyOrNullReturnValue(x.getTagCode()).trim().endsWith("_C")).collect(Collectors.toList());
+        List<TagValue> currentTagValueList = tagValueList.stream()
+                .filter(x -> DateTimeUtil.compareDateDiff(date, x.getDataTime()) <= 0 && DateTimeUtil.compareDateDiff(endTime, x.getDataTime()) > 0).collect(Collectors.toList());
+        List<TagValue> currentATagValueList = currentTagValueList.stream()
+                .filter(x -> StringUtil.ifEmptyOrNullReturnValue(x.getTagCode()).trim().endsWith(CommonConst.A_PHASE)).collect(Collectors.toList());
+        List<TagValue> currentBTagValueList = currentTagValueList.stream()
+                .filter(x -> StringUtil.ifEmptyOrNullReturnValue(x.getTagCode()).trim().endsWith(CommonConst.B_PHASE)).collect(Collectors.toList());
+        List<TagValue> currentCTagValueList = currentTagValueList.stream()
+                .filter(x -> StringUtil.ifEmptyOrNullReturnValue(x.getTagCode()).trim().endsWith(CommonConst.C_PHASE)).collect(Collectors.toList());
         TagValue tagValueA = currentATagValueList.stream().filter(x -> DateTimeUtil.compareDateDiff(date, x.getDataTime()) == 0).findAny().orElse(null);
         TagValue tagValueB = currentBTagValueList.stream().filter(x -> DateTimeUtil.compareDateDiff(date, x.getDataTime()) == 0).findAny().orElse(null);
         TagValue tagValueC = currentCTagValueList.stream().filter(x -> DateTimeUtil.compareDateDiff(date, x.getDataTime()) == 0).findAny().orElse(null);

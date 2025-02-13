@@ -10,6 +10,7 @@ import com.zhitan.model.domain.ModelInfo;
 import com.zhitan.model.domain.vo.PointDataVO;
 import com.zhitan.model.service.IEnergyIndexService;
 import com.zhitan.model.service.IModelInfoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author fanxinfu
  * @date 2020-02-17
  */
+@Api(tags = "模型相关")
 @RestController
 @RequestMapping("/basicsetting/model")
 public class ModelInfoController extends BaseController {

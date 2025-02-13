@@ -24,6 +24,20 @@ public class ChartUtils {
     public static void generateDateList(String timeType, String timeCode, List<Date> dateList) {
         Date now = new Date();
         switch (timeType) {
+            case TimeTypeConst.TIME_TYPE_HOUR:
+                if (!timeCode.contains(CommonConst.SINGLE_MINUS_SIGN)) {
+                    timeCode = DateTimeUtil.toDateTimeStr(timeCode, DateTimeUtil.COMMON_PATTERN_HOUR, DateTimeUtil.COMMON_PATTERN_TO_HOUR);
+                }
+                int minute = 59;
+                for (int i =  CommonConst.DIGIT_0; i <= minute; i++) {
+                    String tempCode = timeCode + ":0" + i;
+                    if(i>9){
+                        tempCode = timeCode + ":" + i;
+                    }
+                    Date tempD = DateTimeUtil.toDateTime(tempCode, DateTimeUtil.COMMON_PATTERN_END_WITH_MINUTE);
+                    dateList.add(tempD);
+                }
+                break;
             case TimeTypeConst.TIME_TYPE_DAY:
                 if (!timeCode.contains(CommonConst.SINGLE_MINUS_SIGN)) {
                     timeCode = DateTimeUtil.toDateTimeStr(timeCode, DateTimeUtil.COMMON_PATTERN_DAY, DateTimeUtil.COMMON_PATTERN_TO_DAY);
