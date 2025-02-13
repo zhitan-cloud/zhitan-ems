@@ -287,7 +287,6 @@ function getList() {
 
         // chart
         let chartData = {}
-        chartData.title = "三相不平衡分析"
         if (queryParams.value.timeType !== "DAY") {
           chartData = {
             title: "三相不平衡分析",
