@@ -19,8 +19,8 @@
                   <el-date-picker
                     v-model="queryParams.dataTime"
                     :type="queryParams.timeType == 'DAY' ? 'date' : 'datetime'"
-                    :format="queryParams.timeType == 'DAY' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'"
-                    :value-format="queryParams.timeType == 'DAY' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:mm:ss'"
+                    :format="queryParams.timeType == 'DAY' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:00:00'"
+                    :value-format="queryParams.timeType == 'DAY' ? 'YYYY-MM-DD' : 'YYYY-MM-DD HH:00:00'"
                     placeholder="时间"
                     style="width: 100%"
                   />
@@ -118,18 +118,18 @@ function handleNodeClick(data) {
   queryParams.value.nodeId = data.id
   queryParams.value.nodeName = data.label
   setTimeout(() => {
-    handleTimeType(period.value[0].value)
+    handleTimeType(queryParams.value.timeType)
   }, 200)
 }
 function handleTimeType(e) {
   queryParams.value.timeType = e
-  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss")
+  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD HH:00:00")
   getElectricityMeter({ modelId: queryParams.value.nodeId })
 }
 
 function changeTimeType(e) {
   console.log(e)
-  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss")
+  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD HH:00:00")
   getElectricityMeter({ modelId: queryParams.value.nodeId })
 }
 const LineChartRef = ref()
@@ -185,7 +185,6 @@ function resetQuery() {
   proxy.resetForm("queryRef")
   queryParams.value.timeType = null
   queryParams.value.dataTime = null
-  handleTimeType(period.value[0].value)
   handleQuery()
 }
 // 碳排放管理-碳排放量核算-导出
