@@ -8,42 +8,40 @@
         <div class="form-card">
           <el-form :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item label="期间" prop="timeType">
-              <el-select v-model="queryParams.timeType" placeholder="期间" clearable style="width: 120px"
-                @change="handleTimeType">
+              <el-select
+                v-model="queryParams.timeType"
+                placeholder="期间"
+                clearable
+                style="width: 120px"
+                @change="handleTimeType"
+              >
                 <el-option v-for="dict in period" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item label="时间">
-              <el-date-picker v-model="queryParams.dataTime" :type="queryParams.timeType == 'YEAR'
-                ? 'year'
-                : queryParams.timeType == 'MONTH'
-                  ? 'month'
-                  : 'date'
-                " :format="queryParams.timeType == 'YEAR'
-                  ? 'YYYY'
-                  : queryParams.timeType == 'MONTH'
-                    ? 'YYYY-MM'
-                    : 'YYYY-MM-DD'
-                  " value-format="YYYY-MM-DD" placeholder="时间" style="width: 100%" />
+              <el-date-picker
+                v-model="queryParams.dataTime"
+                :type="queryParams.timeType == 'YEAR' ? 'year' : queryParams.timeType == 'MONTH' ? 'month' : 'date'"
+                :format="
+                  queryParams.timeType == 'YEAR' ? 'YYYY' : queryParams.timeType == 'MONTH' ? 'YYYY-MM' : 'YYYY-MM-DD'
+                "
+                value-format="YYYY-MM-DD"
+                placeholder="时间"
+                style="width: 100%"
+              />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="Search" @click="handleQuery">
-                搜索
-              </el-button>
+              <el-button type="primary" icon="Search" @click="handleQuery"> 搜索 </el-button>
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="Download" @click="handleExport">
-                导出
-              </el-button>
+              <el-button type="primary" icon="Download" @click="handleExport"> 导出 </el-button>
             </el-form-item>
           </el-form>
         </div>
-        <div style="
-            height: calc(100vh - 220px) !important;
-            max-height: calc(100vh - 220px) !important;
-            overflow-y: auto;
-          ">
+        <div
+          style="height: calc(100vh - 220px) !important; max-height: calc(100vh - 220px) !important; overflow-y: auto"
+        >
           <div class="card-list" v-if="listTop.length > 1">
             <el-button @click="dialogVisible = true"> 查看更多 </el-button>
           </div>
@@ -52,9 +50,12 @@
               <template v-for="(item, index) in row" :key="index">
                 <div class="card-list-item">
                   <div class="item-top">
-                    <div class="top-icon" :style="{
-                      backgroundImage: 'url(' + bgList[index].icon + ')',
-                    }" />
+                    <div
+                      class="top-icon"
+                      :style="{
+                        backgroundImage: 'url(' + bgList[index].icon + ')',
+                      }"
+                    />
                     <div class="top-right">
                       {{ item.allEneryType }}
                     </div>
@@ -69,12 +70,10 @@
                     <div class="bottom-left">同比</div>
                     <div class="bottom-right" :style="{ color: bgList[index].color }">
                       {{ Math.abs(item.yoyEnery) }}%
-                      <el-icon v-if="!!item.yoyEnery" :color="item.yoyEnery > 0
-                        ? 'green'
-                        : item.yoyEnery < 0
-                          ? 'red'
-                          : ''
-                        ">
+                      <el-icon
+                        v-if="!!item.yoyEnery"
+                        :color="item.yoyEnery > 0 ? 'green' : item.yoyEnery < 0 ? 'red' : ''"
+                      >
                         <Top v-if="item.yoyEnery > 0" />
                         <Bottom v-if="item.yoyEnery < 0" />
                       </el-icon>
@@ -84,25 +83,23 @@
               </template>
             </div>
           </template>
-          <BaseCard :title="queryParams.nodeName +
-            '-碳排放量同环比(' +
-            queryParams.dataTime +
-            ')'
-            ">
+          <BaseCard :title="queryParams.nodeName + '-碳排放量同环比(' + queryParams.dataTime + ')'">
             <div class="chart-box" v-loading="loading">
               <div id="Chart1" />
             </div>
           </BaseCard>
-          <BaseCard :title="queryParams.nodeName +
-            '-碳排放量统计分析表(' +
-            queryParams.dataTime +
-            ')'
-            ">
+          <BaseCard :title="queryParams.nodeName + '-碳排放量统计分析表(' + queryParams.dataTime + ')'">
             <div class="table-box">
               <el-table :data="listBottom" v-loading="loading">
                 <el-table-column label="时间" align="center" key="xaxis" prop="xaxis" :show-overflow-tooltip="true" />
-                <el-table-column label="破排放量(tCO₂e)
-                  " align="center" key="yaxis" prop="yaxis" :show-overflow-tooltip="true" />
+                <el-table-column
+                  label="破排放量(tCO₂e)
+                  "
+                  align="center"
+                  key="yaxis"
+                  prop="yaxis"
+                  :show-overflow-tooltip="true"
+                />
                 <el-table-column label="同比" align="center" key="yoy" prop="yoy" :show-overflow-tooltip="true" />
                 <el-table-column label="环比" align="center" key="qoq" prop="qoq" :show-overflow-tooltip="true" />
               </el-table>
@@ -117,9 +114,12 @@
           <template v-for="(item, index) in row" :key="index">
             <div class="card-list-item">
               <div class="item-top">
-                <div class="top-icon" :style="{
-                  backgroundImage: 'url(' + bgList[index].icon + ')',
-                }" />
+                <div
+                  class="top-icon"
+                  :style="{
+                    backgroundImage: 'url(' + bgList[index].icon + ')',
+                  }"
+                />
                 <div class="top-right">
                   {{ item.allEneryType }}
                 </div>
@@ -134,12 +134,7 @@
                 <div class="bottom-left">同比</div>
                 <div class="bottom-right" :style="{ color: bgList[index].color }">
                   {{ Math.abs(item.yoyEnery) }}%
-                  <el-icon v-if="!!item.yoyEnery" :color="item.yoyEnery > 0
-                    ? 'green'
-                    : item.yoyEnery < 0
-                      ? 'red'
-                      : ''
-                    ">
+                  <el-icon v-if="!!item.yoyEnery" :color="item.yoyEnery > 0 ? 'green' : item.yoyEnery < 0 ? 'red' : ''">
                     <Top v-if="item.yoyEnery > 0" />
                     <Bottom v-if="item.yoyEnery < 0" />
                   </el-icon>
@@ -153,29 +148,26 @@
   </div>
 </template>
 <script setup name="carbonEmission">
-import {
-  listUpCarbonemission,
-  listMiddleCarbonemission,
-} from "@/api/carbonemission/carbonemission";
-import * as echarts from "echarts";
-const { proxy } = getCurrentInstance();
-import { useRoute } from "vue-router";
-const { period } = proxy.useDict("period");
-import useSettingsStore from "@/store/modules/settings";
-const settingsStore = useSettingsStore();
+import { listUpCarbonemission, listMiddleCarbonemission } from "@/api/carbonemission/carbonemission"
+import * as echarts from "echarts"
+const { proxy } = getCurrentInstance()
+import { useRoute } from "vue-router"
+const { period } = proxy.useDict("period")
+import useSettingsStore from "@/store/modules/settings"
+const settingsStore = useSettingsStore()
 watch(
   () => settingsStore.sideTheme,
   (val) => {
-    getList();
+    getList()
   }
-);
-const loading = ref(false);
-const dialogVisible = ref(false);
-import icon1 from "@/assets/images/period/icon1.png";
-import icon2 from "@/assets/images/period/icon2.png";
-import icon3 from "@/assets/images/period/icon3.png";
-import icon4 from "@/assets/images/period/icon4.png";
-import icon5 from "@/assets/images/period/icon5.png";
+)
+const loading = ref(false)
+const dialogVisible = ref(false)
+import icon1 from "@/assets/images/period/icon1.png"
+import icon2 from "@/assets/images/period/icon2.png"
+import icon3 from "@/assets/images/period/icon3.png"
+import icon4 from "@/assets/images/period/icon4.png"
+import icon5 from "@/assets/images/period/icon5.png"
 const bgList = ref([
   {
     icon: icon1,
@@ -197,9 +189,9 @@ const bgList = ref([
     icon: icon5,
     color: "#78e801",
   },
-]);
-const listTop = ref([]);
-const listBottom = ref([]);
+])
+const listTop = ref([])
+const listBottom = ref([])
 const data = reactive({
   queryParams: {
     nodeId: null,
@@ -208,23 +200,23 @@ const data = reactive({
     dataTime: null,
   },
   query: { ...useRoute().query },
-});
-const { queryParams, query } = toRefs(data);
+})
+const { queryParams, query } = toRefs(data)
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  queryParams.value.nodeId = data.id;
-  queryParams.value.nodeName = data.label;
-  handleTimeType(period.value[0].value);
-  handleQuery();
+  queryParams.value.nodeId = data.id
+  queryParams.value.nodeName = data.label
+  handleTimeType(period.value[0].value)
+  handleQuery()
 }
 function handleTimeType(e) {
-  queryParams.value.timeType = e;
-  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD");
+  queryParams.value.timeType = e
+  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
 }
 // 碳排放管理-碳排放量核算-列表
 function getList() {
-  loading.value = true;
-  listTop.value = [];
+  loading.value = true
+  listTop.value = []
   listUpCarbonemission(
     proxy.addDateRange({
       ...queryParams.value,
@@ -233,15 +225,15 @@ function getList() {
   ).then((res) => {
     res.data.upData.map((item, index) => {
       if (index % 5 === 0) {
-        listTop.value.push(res.data.upData.slice(index, index + 5));
+        listTop.value.push(res.data.upData.slice(index, index + 5))
       }
-    });
-  });
+    })
+  })
   // 在初始化之前，先dispose旧的实例
   if (echarts.getInstanceByDom(document.getElementById("Chart1"))) {
-    echarts.dispose(document.getElementById("Chart1"));
+    echarts.dispose(document.getElementById("Chart1"))
   }
-  const myChart1 = echarts.init(document.getElementById("Chart1"));
+  const myChart1 = echarts.init(document.getElementById("Chart1"))
   listMiddleCarbonemission(
     proxy.addDateRange({
       emissionType: "allType",
@@ -250,19 +242,19 @@ function getList() {
     })
   ).then((res) => {
     if (!!res.code && res.code == 200) {
-      loading.value = false;
-      let xaxis = [];
-      let yaxis = [];
-      let yoy = [];
-      let qoq = [];
+      loading.value = false
+      let xaxis = []
+      let yaxis = []
+      let yoy = []
+      let qoq = []
       if (!!res.data) {
         res.data.map((item) => {
-          xaxis.push(item.xaxis);
-          yaxis.push(!!item.yaxis ? item.yaxis : 0);
-          yoy.push(!!item.yoy ? item.yoy : 0);
-          qoq.push(!!item.qoq ? item.qoq : 0);
-        });
-        listBottom.value = res.data;
+          xaxis.push(item.xaxis)
+          yaxis.push(!!item.yaxis ? item.yaxis : 0)
+          yoy.push(!!item.yoy ? item.yoy : 0)
+          qoq.push(!!item.qoq ? item.qoq : 0)
+        })
+        listBottom.value = res.data
       }
       setTimeout(() => {
         myChart1.setOption({
@@ -273,10 +265,7 @@ function getList() {
               type: "shadow",
               textStyle: {
                 fontSize: 14,
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               },
             },
           },
@@ -292,8 +281,7 @@ function getList() {
             itemWidth: 14,
             itemHeight: 10,
             textStyle: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
             },
           },
           xAxis: {
@@ -304,10 +292,7 @@ function getList() {
             axisLine: {
               show: true,
               lineStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               },
             },
             axisTick: {
@@ -320,8 +305,7 @@ function getList() {
               show: false,
             },
             axisLabel: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               fontSize: 14,
               padding: [5, 0, 0, 0],
               //   formatter: '{value} ml'
@@ -333,10 +317,7 @@ function getList() {
               name: "tCO₂e",
               type: "value",
               nameTextStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
                 padding: [0, 0, 5, 0],
               },
@@ -347,10 +328,7 @@ function getList() {
                 show: true,
                 lineStyle: {
                   type: "dashed",
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 },
               },
               axisTick: {
@@ -360,10 +338,7 @@ function getList() {
                 show: false,
               },
               axisLabel: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
               },
             },
@@ -372,10 +347,7 @@ function getList() {
               name: "%",
               alignTicks: true,
               nameTextStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
                 padding: [0, 0, 5, 0],
               },
@@ -389,20 +361,14 @@ function getList() {
                 show: true,
                 lineStyle: {
                   type: "dashed",
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 },
               },
               splitArea: {
                 show: false,
               },
               axisLabel: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
               },
             },
@@ -411,7 +377,7 @@ function getList() {
             {
               name: "碳排放量",
               type: "bar",
-              barWidth: "27",
+              barWidth: "12",
               itemStyle: {
                 borderRadius: [15, 15, 0, 0],
               },
@@ -438,29 +404,29 @@ function getList() {
               data: qoq,
             },
           ],
-        });
-      }, 100);
+        })
+      }, 100)
       window.addEventListener(
         "resize",
         () => {
-          myChart1.resize();
+          myChart1.resize()
         },
         { passive: true }
-      );
+      )
     }
-  });
+  })
 }
 // 碳排放管理-碳排放量核算-搜索
 function handleQuery() {
-  getList();
+  getList()
 }
 // 碳排放管理-碳排放量核算-重置
 function resetQuery() {
-  proxy.resetForm("queryRef");
-  queryParams.value.timeType = null;
-  queryParams.value.dataTime = null;
-  handleTimeType(period.value[0].value);
-  handleQuery();
+  proxy.resetForm("queryRef")
+  queryParams.value.timeType = null
+  queryParams.value.dataTime = null
+  handleTimeType(period.value[0].value)
+  handleQuery()
 }
 // 碳排放管理-碳排放量核算-导出
 function handleExport() {
@@ -472,7 +438,7 @@ function handleExport() {
       ...query.value,
     },
     `${queryParams.value.nodeName}-碳排放量核算_${new Date().getTime()}.xlsx`
-  );
+  )
 }
 </script>
 <style scoped lang="scss">

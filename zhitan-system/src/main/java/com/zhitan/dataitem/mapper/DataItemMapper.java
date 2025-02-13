@@ -123,4 +123,16 @@ public interface DataItemMapper extends BaseMapper<DataItem> {
      */
     List<DataItem> getDataItemHourInforByIndexIds(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
                                                   @Param("timeType") String timeType, @Param("indexIds") List<String> indexIds);
+
+    /**
+     * 查询能源类型非电的用量
+     * @param beginTime
+     * @param endTime
+     * @param timeType 时间类型
+     * @param nodeId 节点Id
+     * @param energyType 能源类型
+     * @return
+     */
+    BigDecimal getDataItemTimeRangeValueByNodeId(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
+                                            @Param("timeType") String timeType, @Param("nodeId") String nodeId, @Param("energyType") String energyType);
 }
