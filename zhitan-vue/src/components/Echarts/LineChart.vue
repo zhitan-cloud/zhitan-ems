@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-box">
+  <div class="chart-item">
     <div id="ChartDom" style="width: 100%; height: 100%"></div>
   </div>
 </template>
@@ -14,6 +14,10 @@ const props = defineProps({
   chartData: {
     type: Object,
     default: () => {},
+  },
+  chartType: {
+    type: String,
+    default: "line", // bar
   },
 })
 
@@ -36,14 +40,29 @@ onMounted(() => {
 })
 
 function initChart(value) {
+  console.log("initChart", props.chartData)
+  if (!props.chartData.xAxis) {
+    return
+  }
   const chartDom = document.getElementById("ChartDom")
   if (echarts.getInstanceByDom(chartDom)) {
     echarts.dispose(chartDom)
   }
   const myChart = echarts.init(chartDom)
+  // 处理多系列数据
+  const series = props.chartData.series.map((item) => ({
+    name: item.name,
+    type: props.chartType, // 根据传入类型渲染
+    data: item.data,
+    barWidth: "16",
+    itemStyle: {
+      borderRadius: [15, 15, 0, 0],
+    },
+    smooth: true, // 启用平滑曲线
+  }))
   let option = {
     title: {
-      text: props.chartData.title,
+      // text: props.chartData.title,
       left: "40",
       textStyle: {
         color: "#2979ff",
@@ -57,7 +76,9 @@ function initChart(value) {
       },
     },
     legend: {
+      data: props.chartData.series.map((item) => item.name), // 图例数据
       icon: "rect",
+      right: 40,
       itemWidth: 14,
       itemHeight: 10,
       textStyle: {
@@ -66,7 +87,7 @@ function initChart(value) {
     },
     grid: {
       top: "40",
-      left: "50",
+      left: "40",
       right: "40",
       bottom: "20",
       containLabel: true,
@@ -97,7 +118,7 @@ function initChart(value) {
         padding: [5, 0, 0, 0],
         //   formatter: '{value} ml'
       },
-      data: props.chartData.xData,
+      data: props.chartData.xAxis,
     },
     yAxis: [
       {
@@ -129,28 +150,7 @@ function initChart(value) {
         },
       },
     ],
-    series: [
-      {
-        name: props.chartData.title,
-        type: "bar",
-        barWidth: "16",
-        // tooltip: {
-        //   valueFormatter: function (value) {
-        //     return value + "tce"
-        //   },
-        // },
-        itemStyle: {
-          borderRadius: [15, 15, 0, 0],
-        },
-        data: props.chartData.yData,
-        markPoint: {
-          data: [
-            { type: "max", name: "Max" },
-            { type: "min", name: "Min" },
-          ],
-        },
-      },
-    ],
+    series: series,
   }
   setTimeout(() => {
     myChart.setOption(option)
@@ -167,11 +167,10 @@ function initChart(value) {
 </script>
 
 <style lang="scss" scoped>
-.chart-box {
+.chart-item {
   width: 100%;
-  height: 400px;
-  border: 1px solid #eaeaea;
-  margin-top: 20px;
+  height: 360px !important;
+  margin-top: 0px;
   padding-top: 20px;
 }
 </style>

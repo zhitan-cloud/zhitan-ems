@@ -20,10 +20,11 @@
               <div class="top-right">
                 <div class="right-name">
                   {{ item.energyName }}
+                  <span v-if="item.energyUnit" class="unit">({{ item.energyUnit }})</span>
                 </div>
                 <div class="right-value">
                   <span> {{ item.count }}</span>
-                  <span class="unit">{{ item.energyUnit }}</span>
+                  <!-- <span class="unit">{{ item.energyUnit }}</span> -->
                 </div>
               </div>
             </div>
@@ -889,18 +890,23 @@ function getListPeakValley() {
           display: flex;
 
           .top-icon {
-            width: 69px;
-            height: 69px;
+            width: 50px;
+            height: 50px;
             background-size: 100% 100%;
           }
 
           .top-right {
-            margin-left: 16px;
+            margin-left: 12px;
 
             .right-name {
               font-weight: bold;
               font-size: 16px;
               font-family: OPPOSans-Bold;
+              .unit {
+                margin-left: 2px;
+                font-size: 16px;
+                font-weight: normal;
+              }
             }
 
             .right-value {
