@@ -16,6 +16,7 @@ import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.service.IEnergyIndexService;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +30,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 设备启停实时监测Controller
+ * 历史数据趋势Controller
  *
  * @author sys
  * @date 2020-03-30
  */
+@Api(tags = "历史数据趋势")
 @RestController
 @RequestMapping("/dataMonitoring/historyDataTrend")
 public class HistoryDataTrendController extends BaseController {
