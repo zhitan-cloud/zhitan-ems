@@ -4,10 +4,15 @@ import cn.hutool.core.date.DateUtil;
 import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.services.IMeterImplementService;
 import com.zhitan.common.annotation.Log;
+import com.zhitan.common.constant.CommonConst;
+import com.zhitan.common.constant.TimeTypeConst;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
 import com.zhitan.common.enums.BusinessType;
 import com.zhitan.common.enums.RetrievalModes;
+import com.zhitan.common.enums.TimeType;
+import com.zhitan.common.utils.ChartUtils;
+import com.zhitan.common.utils.DateTimeUtil;
 import com.zhitan.common.utils.poi.ExcelUtil;
 import com.zhitan.history.domain.dto.HistoricalDataDTO;
 import com.zhitan.history.domain.vo.HistoricalDataExcel;
@@ -18,6 +23,7 @@ import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,9 +69,6 @@ public class HistoryDataTrendController extends BaseController {
     public AjaxResult getSettingIndex(EnergyIndex energyIndex) {
         try {
             List<EnergyIndex> infoList = energyIndexService.selectEnergyIndexList(energyIndex);
-//            List<String> codeList= infoList.stream().map(EnergyIndex::getCode).collect(Collectors.toList());
-//            List<TagValue> valList = realtimeDatabaseService.retrieve(codeList);
-//            List resultList = new ArrayList();
             return AjaxResult.success(infoList);
         } catch (Exception ex) {
             logger.error("获取关联采集指标出错！", ex);
@@ -82,68 +85,44 @@ public class HistoryDataTrendController extends BaseController {
             if (ObjectUtils.isEmpty(energyIndex)) {
                 return AjaxResult.error("未找到点位信息");
             }
-            Date beginTime = dto.getDataTime();
-            Date endTime;
-            // 查询条数
-            int count = 1440;
-            if ("DAY".equals(dto.getTimeType())) {
-                endTime = DateUtil.endOfDay(beginTime);
+            List<Date> dateList = new ArrayList<>();
+            if (TimeType.DAY.name().equals(dto.getTimeType())) {
+                String timeCode = DateTimeUtil.getDateTime(dto.getDataTime(), DateTimeUtil.COMMON_PATTERN_TO_DAY);
+                ChartUtils.generateDateList(TimeTypeConst.TIME_TYPE_DAY, timeCode, dateList);
+            } else if (TimeType.HOUR.name().equals(dto.getTimeType())) {
+                String timeCode = DateTimeUtil.getDateTime(dto.getDataTime(), DateTimeUtil.COMMON_PATTERN_TO_HOUR);
+                ChartUtils.generateDateList(TimeTypeConst.TIME_TYPE_HOUR, timeCode, dateList);
             } else {
-                count = 3600;
-                endTime = DateUtil.offsetSecond(DateUtil.offsetHour(beginTime, 1), -1);
+                return AjaxResult.error("时间间隔类型不正确");
             }
             // 查询计量器具
-            MeterImplement info = meterImplementService.selectMeterImplementById(energyIndex.getMeterId());
-            List<TagValue> tagValueList = realtimeDatabaseService.retrieve(energyIndex.getCode(), beginTime, endTime,
-                    RetrievalModes.BestFit, count);
+            MeterImplement meterInfo = meterImplementService.selectMeterImplementById(energyIndex.getMeterId());
+            if (ObjectUtils.isEmpty(meterInfo)) {
+                return AjaxResult.error("未找到计量器具信息");
+            }
             List<HistoricalDataVO> voList = new ArrayList<>();
-            Date date = DateUtil.date();
-            for (int i = 0; i < count + 1; i++) {
+            for (Date date : dateList) {
+                List<TagValue> tagValues = new ArrayList<>();
+                if(TimeType.DAY.name().equals(dto.getTimeType())){
+                    Date beginTime = date;
+                    Date endTime = DateUtil.offsetHour(DateUtil.offsetMinute(date, CommonConst.DIGIT_MINUS_1), CommonConst.DIGIT_1);
+                    tagValues = realtimeDatabaseService.retrieve(energyIndex.getCode(), beginTime,endTime,CommonConst.DIGIT_1);
+                }
+                if(TimeType.HOUR.name().equals(dto.getTimeType())){
+                    Date beginTime = date;
+                    Date endTime = DateUtil.offsetMinute(DateUtil.offsetSecond(date, CommonConst.DIGIT_MINUS_1), CommonConst.DIGIT_1);
+                    tagValues = realtimeDatabaseService.retrieve(energyIndex.getCode(), beginTime,endTime,CommonConst.DIGIT_1);
+                }
+
                 HistoricalDataVO vo = new HistoricalDataVO();
+                vo.setDataTime(DateUtil.formatDateTime(date));
                 vo.setIndexId(energyIndex.getIndexId());
-                String indexName = energyIndex.getName();
-                if (ObjectUtils.isNotEmpty(info)) {
-                    indexName = info.getInstallactionLocation() + "_" + info.getMeterName() + "_" + indexName;
+                vo.setIndexName(meterInfo.getInstallactionLocation() + "_" + meterInfo.getMeterName() + "_" + energyIndex.getName());
+                vo.setValue(CommonConst.DOUBLE_MINUS_SIGN);
+                if(ObjectUtils.isNotEmpty(tagValues)){
+                    vo.setValue(tagValues.get(0).getValue().toString());
                 }
-                vo.setIndexName(indexName);
-                // 取值
-                String value = "--";
-                String usedValue = "--";
-                if (beginTime.getTime() <= date.getTime()) {
-                    try {
-                        TagValue tagValue = tagValueList.get(i);
-                        BigDecimal cumulative = BigDecimal.valueOf(tagValue.getValue());
 
-                        if ("SWWSDJ_SD".equals(energyIndex.getCode()) || "SWWSDJ_WD".equals(energyIndex.getCode())) {
-                            cumulative = cumulative.multiply(BigDecimal.valueOf(0.1));
-                        }
-                        if (i > 0) {
-                            TagValue previousTagValue = tagValueList.get(i - 1);
-                            BigDecimal previousValue = BigDecimal.ZERO;
-                            if (ObjectUtils.isNotEmpty(previousTagValue.getValue())) {
-                                previousValue = BigDecimal.valueOf(previousTagValue.getValue());
-                            }
-                            if ("SWWSDJ_SD".equals(energyIndex.getCode()) || "SWWSDJ_WD".equals(energyIndex.getCode())) {
-                                previousValue = previousValue.multiply(BigDecimal.valueOf(0.1));
-
-                            }
-                            usedValue = String.valueOf(cumulative.subtract(previousValue).setScale(2, RoundingMode.HALF_UP));
-                        }
-
-                        value = String.valueOf(cumulative.setScale(2, RoundingMode.HALF_UP));
-                    } catch (Exception ignored) {
-                    }
-                }
-                // 时间
-                String timeName = DateUtil.formatDateTime(beginTime);
-                vo.setDataTime(timeName);
-                if ("DAY".equals(dto.getTimeType())) {
-                    beginTime = DateUtil.offsetMinute(beginTime, 1);
-                } else {
-                    beginTime = DateUtil.offsetSecond(beginTime, 1);
-                }
-                vo.setUsedValue(String.valueOf(usedValue));
-                vo.setValue(String.valueOf(value));
                 voList.add(vo);
             }
             return AjaxResult.success(voList);
