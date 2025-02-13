@@ -555,16 +555,21 @@ function resetQuery() {
     display: flex;
     justify-content: space-between;
     padding: 18px;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
 
     .card-list-item {
-      width: 19%;
-      height: 187px;
+      flex-shrink: 0;
+      width: 230px;
+      height: 188px;
       background: #223386;
       border-radius: 5px 5px 5px 5px;
       border: 1px solid #4868b7;
       background-size: 100% 100%;
       box-sizing: border-box;
       padding: 10px 18px 13px 16px;
+      margin-right: 12px;
 
       .item-top {
         display: flex;
