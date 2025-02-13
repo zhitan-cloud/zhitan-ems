@@ -1,6 +1,6 @@
 <template>
   <div class="chart-item">
-    <div id="ChartDom" style="width: 100%; height: 100%"></div>
+    <div :id="domId" style="width: 100%; height: 100%"></div>
   </div>
 </template>
 
@@ -18,6 +18,10 @@ const props = defineProps({
   chartType: {
     type: String,
     default: "line", // bar
+  },
+  domId: {
+    type: String,
+    default: "ChartDom",
   },
 })
 
@@ -44,13 +48,14 @@ function initChart(value) {
   if (!props.chartData.xAxis) {
     return
   }
-  const chartDom = document.getElementById("ChartDom")
+  const chartDom = document.getElementById(props.domId)
   if (echarts.getInstanceByDom(chartDom)) {
     echarts.dispose(chartDom)
   }
   const myChart = echarts.init(chartDom)
   // 处理多系列数据
   const series = props.chartData.series.map((item) => ({
+    ...item,
     name: item.name,
     type: props.chartType, // 根据传入类型渲染
     data: item.data,
@@ -60,6 +65,7 @@ function initChart(value) {
     },
     smooth: true, // 启用平滑曲线
   }))
+  console.log("initChart", series)
   let option = {
     title: {
       // text: props.chartData.title,
