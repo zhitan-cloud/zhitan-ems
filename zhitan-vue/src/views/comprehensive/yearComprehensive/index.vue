@@ -69,7 +69,7 @@
             </template>
           </el-table-column>
           <el-table-column v-for="index in 12" :key="index" :label="index + '月'" align="center" min-width="100">
-            <template #default="scope">{{ numFilter(scope.row[`value${index - 1}`]) }}</template>
+            <template #default="scope">{{ numFilter(scope.row[`value${index}`]) }}</template>
           </el-table-column>
         </el-table>
 

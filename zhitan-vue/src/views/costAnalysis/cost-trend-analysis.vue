@@ -1,114 +1,110 @@
 <template>
   <div class="page">
-    <div class="page-container">
-      <div class="page-container-right">
-        <div>
-          <div class="form-card">
-            <el-form :model="queryParams" ref="queryRef" :inline="true">
-              <el-form-item label="期间" prop="timeType">
-                <el-select
-                  v-model="queryParams.timeType"
-                  placeholder="期间"
-                  clearable
-                  style="width: 120px"
-                  @change="handleTimeType"
-                >
-                  <el-option v-for="dict in period" :key="dict.value" :label="dict.label" :value="dict.value" />
-                </el-select>
-              </el-form-item>
-              <el-form-item label="时间" prop="dataTime">
-                <el-date-picker
-                  v-model="queryParams.dataTime"
-                  :type="queryParams.timeType == 'YEAR' ? 'year' : queryParams.timeType == 'MONTH' ? 'month' : 'date'"
-                  :format="
-                    queryParams.timeType == 'YEAR' ? 'YYYY' : queryParams.timeType == 'MONTH' ? 'YYYY-MM' : 'YYYY-MM-DD'
-                  "
-                  value-format="YYYY-MM-DD"
-                  placeholder="时间"
-                  style="width: 100%"
-                />
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" icon="Search" @click="handleQuery"> 搜索 </el-button>
-              </el-form-item>
-              <!-- <el-form-item>
+    <div>
+      <div class="form-card">
+        <el-form :model="queryParams" ref="queryRef" :inline="true">
+          <el-form-item label="期间" prop="timeType">
+            <el-select
+              v-model="queryParams.timeType"
+              placeholder="期间"
+              clearable
+              style="width: 120px"
+              @change="handleTimeType"
+            >
+              <el-option v-for="dict in period" :key="dict.value" :label="dict.label" :value="dict.value" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="时间" prop="dataTime">
+            <el-date-picker
+              v-model="queryParams.dataTime"
+              :type="queryParams.timeType == 'YEAR' ? 'year' : queryParams.timeType == 'MONTH' ? 'month' : 'date'"
+              :format="
+                queryParams.timeType == 'YEAR' ? 'YYYY' : queryParams.timeType == 'MONTH' ? 'YYYY-MM' : 'YYYY-MM-DD'
+              "
+              value-format="YYYY-MM-DD"
+              placeholder="时间"
+              style="width: 100%"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="Search" @click="handleQuery"> 搜索 </el-button>
+          </el-form-item>
+          <!-- <el-form-item>
               <el-button type="primary" icon="Download" @click="handleExport"> 导出 </el-button>
             </el-form-item> -->
-            </el-form>
-          </div>
-          <div style="margin-top: 16px">
-            <div class="" style="padding: 0 16px">
-              <el-table :data="tableData" v-loading="loading">
-                <el-table-column label="时间" prop="dateCode" align="center" width="120" />
-                <el-table-column label="总费用(元)" prop="total" align="center" width="120" />
-                <el-table-column :label="col.energyName" v-for="(col, index) in columns" :key="index" align="center">
-                  <el-table-column :prop="'energyTotal' + col.energyType" label="消耗量" width="120" align="center" />
-                  <el-table-column :prop="'costTotal' + col.energyType" label="费用（元）" width="120" align="center" />
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-          <div class="charts-view" v-loading="loading">
-            <el-row :gutter="2" class="" v-for="item in chartDataList" :key="item.energyType">
-              <el-col :span="12">
-                <BaseCard :title="item.costLabel + '(元)'">
-                  <div class="">
-                    <LineChart
-                      :ref="'LineChartCostRef' + item.energyType"
-                      :domId="'costDom_' + item.energyType"
-                      :chartData="{
-                        title: item.costLabel,
-                        chartType: 'line',
-                        xAxis: item.costKeyList,
-                        series: [
-                          {
-                            name: item.costLabel,
-                            data: item.costValueList,
-                            markPoint: {
-                              data: [
-                                { type: 'max', name: 'Max' },
-                                { type: 'min', name: 'Min' },
-                              ],
-                            },
-                          },
-                        ],
-                      }"
-                    />
-                  </div>
-                </BaseCard>
-              </el-col>
-              <el-col :span="12">
-                <BaseCard :title="item.accumulationLabel + '(' + item.energyUnit + ')'">
-                  <div class="">
-                    <LineChart
-                      :ref="'LineChartaccumulationRef' + item.energyType"
-                      :domId="'accumulationDom_' + item.energyType"
-                      :chartType="'bar'"
-                      :chartData="{
-                        title: item.accumulationLabel,
-                        chartType: 'bar',
-                        xAxis: item.accumulationKeyList,
-                        series: [
-                          {
-                            name: item.accumulationLabel,
-                            color: '#19be6b',
-                            data: item.accumulationValueList,
-                            markPoint: {
-                              data: [
-                                { type: 'max', name: 'Max' },
-                                { type: 'min', name: 'Min' },
-                              ],
-                            },
-                          },
-                        ],
-                      }"
-                    />
-                  </div>
-                </BaseCard>
-              </el-col>
-            </el-row>
-          </div>
+        </el-form>
+      </div>
+      <div class="table-bg-style">
+        <div class="table-box theme-dark-mt20" style="">
+          <el-table :data="tableData" v-loading="loading">
+            <el-table-column label="时间" prop="dateCode" align="center" width="160" />
+            <el-table-column label="总费用(元)" prop="total" align="center" width="120" />
+            <el-table-column :label="col.energyName" v-for="(col, index) in columns" :key="index" align="center">
+              <el-table-column :prop="'energyTotal' + col.energyType" label="消耗量" min-width="120" align="center" />
+              <el-table-column :prop="'costTotal' + col.energyType" label="费用（元）" min-width="120" align="center" />
+            </el-table-column>
+          </el-table>
         </div>
+      </div>
+      <div class="charts-view" v-loading="loading">
+        <el-row :gutter="2" class="" v-for="item in chartDataList" :key="item.energyType">
+          <el-col :span="12">
+            <BaseCard :title="item.costLabel + '(元)'">
+              <div class="">
+                <LineChart
+                  :ref="'LineChartCostRef' + item.energyType"
+                  :domId="'costDom_' + item.energyType"
+                  :chartData="{
+                    title: item.costLabel,
+                    chartType: 'line',
+                    xAxis: item.costKeyList,
+                    series: [
+                      {
+                        name: item.costLabel,
+                        data: item.costValueList,
+                        markPoint: {
+                          data: [
+                            { type: 'max', name: 'Max' },
+                            { type: 'min', name: 'Min' },
+                          ],
+                        },
+                      },
+                    ],
+                  }"
+                />
+              </div>
+            </BaseCard>
+          </el-col>
+          <el-col :span="12">
+            <BaseCard :title="item.accumulationLabel + '(' + item.energyUnit + ')'">
+              <div class="">
+                <LineChart
+                  :ref="'LineChartaccumulationRef' + item.energyType"
+                  :domId="'accumulationDom_' + item.energyType"
+                  :chartType="'bar'"
+                  :chartData="{
+                    title: item.accumulationLabel,
+                    chartType: 'bar',
+                    xAxis: item.accumulationKeyList,
+                    series: [
+                      {
+                        name: item.accumulationLabel,
+                        color: '#19be6b',
+                        data: item.accumulationValueList,
+                        markPoint: {
+                          data: [
+                            { type: 'max', name: 'Max' },
+                            { type: 'min', name: 'Min' },
+                          ],
+                        },
+                      },
+                    ],
+                  }"
+                />
+              </div>
+            </BaseCard>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
@@ -260,10 +256,27 @@ onMounted(() => {
 <style scoped lang="scss">
 @import "@/assets/styles/page.scss";
 
-.themeDark {
-}
+.table-box {
+  margin-top: 0;
+  :deep .el-table--border .el-table__inner-wrapper:after {
+    height: 0;
+  }
 
-.themeLight {
+  :deep .el-table--border:after {
+    width: 0;
+  }
+
+  :deep .el-table--border:before {
+    width: 0;
+  }
+
+  :deep .el-table__border-left-patch {
+    background: transparent;
+  }
+
+  :deep .el-table--border .el-table__cell {
+    border-right: none;
+  }
 }
 
 .charts-view {
