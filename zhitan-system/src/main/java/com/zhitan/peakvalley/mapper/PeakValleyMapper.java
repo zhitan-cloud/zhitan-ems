@@ -43,11 +43,11 @@ public interface PeakValleyMapper {
      * @param beginTime
      * @param endTime
      * @param timeType 时间类型
-     * @param indexId 节点Id
-     * @param emissionType 能源类型
+     * @param nodeId 节点Id
+     * @param energyType 能源类型
      * @return
      */
     List<ElectricityDataItem> getCostTrends(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
-                                                 @Param("timeType") String timeType, @Param("indexId") String indexId,@Param("emissionType") String emissionType);
+                                                 @Param("timeType") String timeType, @Param("nodeId") String nodeId,@Param("energyType") String energyType);
 
 }

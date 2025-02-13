@@ -1,5 +1,6 @@
 package com.zhitan.statisticalAnalysis.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -41,6 +42,20 @@ public class EnergyConsumeTrendDetailItem {
      */
     @ApiModelProperty(value = "费用标签")
     private String costLabel;
+
+    /**
+     * 累积量
+     */
+    @ApiModelProperty(value = "累积量")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigDecimal accumulation;
+
+    /**
+     * 费用
+     */
+    @ApiModelProperty(value = "费用")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private BigDecimal cost;
 
     /**
      * 累积量key集合

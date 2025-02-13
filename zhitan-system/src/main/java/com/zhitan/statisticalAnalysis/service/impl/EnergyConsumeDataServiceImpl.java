@@ -7,6 +7,7 @@ import com.zhitan.basicdata.mapper.SysEnergyMapper;
 import com.zhitan.carbonemission.domain.CarbonEmission;
 import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.constant.TimeTypeConst;
+import com.zhitan.common.utils.StringUtils;
 import com.zhitan.dataitem.mapper.DataItemMapper;
 import com.zhitan.model.domain.ModelNode;
 import com.zhitan.model.domain.NodeIndex;
@@ -58,12 +59,13 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
                                                    String modelCode) {
         //能源类型信息
         SysEnergy sysEnergy = new SysEnergy();
-        sysEnergy.setEnersno(energyType);
+        if (StringUtils.isNotEmpty(energyType)) {
+            sysEnergy.setEnersno(energyType);
+        }
         List<SysEnergy> sysEnergies = sysEnergyMapper.selectSysEnergyList(sysEnergy);
         if (sysEnergies.isEmpty()) {
             throw new RuntimeException("未查询到能源信息");
         }
-        SysEnergy sysEnergyInfo = sysEnergies.stream().findFirst().get();
         //节点信息
         List<ModelNode> modelNodes = modelNodeMapper.selectList(Wrappers.<ModelNode>lambdaQuery().eq(ModelNode::getModelCode, modelCode)
                 .isNull(ModelNode::getParentId));
@@ -78,22 +80,24 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
             throw new RuntimeException("未查询到点位信息");
         }
 
-        // 遍历用能单元获取表格中的数据
-        List<EnergyCostTrendItem> trendItemList = new ArrayList<>();
-        EnergyCostTrendItem energyCostTrendItem = new EnergyCostTrendItem();
-        energyCostTrendItem.setDateCode(timeCode);
         // 总费用
         BigDecimal totalCost = BigDecimal.ZERO;
         // 遍历能源类型
         List<CostTrendEnergyTypeItem> itemList = new ArrayList<>();
-        CostTrendEnergyTypeItem item = new CostTrendEnergyTypeItem();
-        item.setEnergyType(sysEnergyInfo.getEnersno());
-        item.setEnergyName(sysEnergyInfo.getEnername());
-        // 处理时间
-        Date bsTime = DateTimeUtil.getTime(timeType, timeCode);
-        Date endTime = DateTimeUtil.getEndTimeByType(timeType, bsTime);
-        totalCost = getEnergyUnitCostTrendAnalysisValueInfo(timeType, bsTime, endTime, totalCost, nodeIndices, sysEnergyInfo.getEnersno(), item);
-        itemList.add(item);
+        for (SysEnergy sysEnergyInfo : sysEnergies) {
+            CostTrendEnergyTypeItem item = new CostTrendEnergyTypeItem();
+            item.setEnergyType(sysEnergyInfo.getEnersno());
+            item.setEnergyName(sysEnergyInfo.getEnername());
+            // 处理时间
+            Date bsTime = DateTimeUtil.getTime(timeType, timeCode);
+            Date endTime = DateTimeUtil.getEndTimeByType(timeType, bsTime);
+            totalCost = getEnergyUnitCostTrendAnalysisValueInfo(timeType, bsTime, endTime, totalCost, nodeIndices, modelNodeInfo.getNodeId(), sysEnergyInfo, item);
+            itemList.add(item);
+        }
+        // 遍历用能单元获取表格中的数据
+        List<EnergyCostTrendItem> trendItemList = new ArrayList<>();
+        EnergyCostTrendItem energyCostTrendItem = new EnergyCostTrendItem();
+        energyCostTrendItem.setDateCode(timeCode);
         energyCostTrendItem.setTotal(totalCost.setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP));
         energyCostTrendItem.setItemList(itemList);
         trendItemList.add(energyCostTrendItem);
@@ -107,28 +111,30 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
     /**
      * 获取用能单元成本趋势分析累积量、费用信息
      *
-     * @param timeType    时间类型
-     * @param bsTime      开始时间
-     * @param endTime     结束时间
-     * @param totalCost   总费用
-     * @param nodeIndices 节点id集合
-     * @param energyType  能源类型
-     * @param item        返回对象
+     * @param timeType      时间类型
+     * @param bsTime        开始时间
+     * @param endTime       结束时间
+     * @param totalCost     总费用
+     * @param nodeIndices   节点点位集合
+     * @param nodeId        节点id
+     * @param sysEnergyInfo 能源类型信息
+     * @param item          返回对象
      * @return
      */
     private BigDecimal getEnergyUnitCostTrendAnalysisValueInfo(String timeType, Date bsTime, Date endTime, BigDecimal totalCost,
-                                                                List<NodeIndex> nodeIndices, String energyType,
-                                                                CostTrendEnergyTypeItem item) {
-        BigDecimal costValue;
+                                                               List<NodeIndex> nodeIndices, String nodeId, SysEnergy sysEnergyInfo,
+                                                               CostTrendEnergyTypeItem item) {
+        BigDecimal costValue = BigDecimal.ZERO;
         BigDecimal accumulationValue = BigDecimal.ZERO;
-        switch (energyType) {
+        switch (sysEnergyInfo.getEnersno()) {
             case "electric":
                 List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getDataStatistics(nodeIndices.stream().map(NodeIndex::getIndexId).collect(Collectors.toSet()), bsTime, endTime, timeType);
                 costValue = electricityDataItems.stream().map(ElectricityDataItem::getCost).reduce(BigDecimal.ZERO, BigDecimal::add);
                 accumulationValue = electricityDataItems.stream().map(ElectricityDataItem::getElectricity).reduce(BigDecimal.ZERO, BigDecimal::add);
                 break;
             default:
-                costValue = dataItemMapper.getDataItemTimeRangeValueByIndexIds(bsTime, endTime, timeType, nodeIndices.stream().map(NodeIndex::getIndexId).collect(Collectors.toList()));
+                accumulationValue = dataItemMapper.getDataItemTimeRangeValueByNodeId(bsTime, endTime, timeType, nodeId, sysEnergyInfo.getEnersno());
+                costValue = accumulationValue.multiply(sysEnergyInfo.getPrice());
                 break;
         }
         costValue = costValue.setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
@@ -151,12 +157,13 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
     public List<EnergyConsumeTrendDetailItem> listEnergyCostTrendDetail(String timeCode, String timeType, String modelCode, String energyType) {
         //能源类型信息
         SysEnergy sysEnergy = new SysEnergy();
-        sysEnergy.setEnersno(energyType);
+        if (StringUtils.isNotEmpty(energyType)) {
+            sysEnergy.setEnersno(energyType);
+        }
         List<SysEnergy> sysEnergies = sysEnergyMapper.selectSysEnergyList(sysEnergy);
         if (sysEnergies.isEmpty()) {
             throw new RuntimeException("未查询到能源信息");
         }
-        SysEnergy sysEnergyInfo = sysEnergies.stream().findFirst().get();
 
         //节点信息
         List<ModelNode> modelNodes = modelNodeMapper.selectList(Wrappers.<ModelNode>lambdaQuery().eq(ModelNode::getModelCode, modelCode)
@@ -167,46 +174,53 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
         String nodeId = modelNodes.stream().findFirst().get().getNodeId();
 
         // 能耗信息
+        List<EnergyConsumeTrendDetailItem> itemList = new ArrayList<>();
         List<EnergyConsumeVO> energyConsumeVOList = new ArrayList<>();
         Date startTime = DateTimeUtil.getTime(timeType, timeCode);
         Date endTime = DateTimeUtil.getEndTimeByType(timeType, startTime);
-        switch (sysEnergyInfo.getEnersno()) {
-            case "electric":
-                List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getCostTrends(startTime, endTime, timeType, nodeId, energyType);
-                if (!electricityDataItems.isEmpty()) {
-                    electricityDataItems.forEach(electricityDataItem -> {
-                        EnergyConsumeVO temp = new EnergyConsumeVO();
-                        temp.setDataTime(electricityDataItem.getDataTime());
-                        temp.setCostValue(electricityDataItem.getCost());
-                        temp.setAccumulationValue(electricityDataItem.getElectricity());
-                        energyConsumeVOList.add(temp);
-                    });
-                }
-                break;
-            default:
-                List<CarbonEmission> dataItems = dataItemMapper.getMiddleCarbonEmission(startTime, endTime, timeType, nodeId, energyType);
-                if (!dataItems.isEmpty()) {
-                    dataItems.forEach(electricityDataItem -> {
-                        EnergyConsumeVO temp = new EnergyConsumeVO();
-                        temp.setDataTime(electricityDataItem.getDataTime());
-                        temp.setCostValue(new BigDecimal(electricityDataItem.getValue()));
-                        temp.setAccumulationValue(new BigDecimal(electricityDataItem.getValue()).multiply(sysEnergyInfo.getPrice()));
-                        energyConsumeVOList.add(temp);
-                    });
-                }
-                break;
+        for (SysEnergy sysEnergyInfo : sysEnergies) {
+            switch (sysEnergyInfo.getEnersno()) {
+                case "electric":
+                    List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getCostTrends(startTime, endTime, timeType, nodeId, sysEnergyInfo.getEnersno());
+                    if (!electricityDataItems.isEmpty()) {
+                        electricityDataItems.forEach(electricityDataItem -> {
+                            EnergyConsumeVO temp = new EnergyConsumeVO();
+                            temp.setDataTime(electricityDataItem.getDataTime());
+                            temp.setCostValue(electricityDataItem.getCost());
+                            temp.setAccumulationValue(electricityDataItem.getElectricity());
+                            energyConsumeVOList.add(temp);
+                        });
+                    }
+                    break;
+                default:
+                    List<CarbonEmission> dataItems = dataItemMapper.getMiddleCarbonEmission(startTime, endTime, timeType, nodeId, sysEnergyInfo.getEnersno());
+                    if (!dataItems.isEmpty()) {
+                        dataItems.forEach(electricityDataItem -> {
+                            EnergyConsumeVO temp = new EnergyConsumeVO();
+                            temp.setDataTime(electricityDataItem.getDataTime());
+                            temp.setCostValue(new BigDecimal(electricityDataItem.getValue()));
+                            temp.setAccumulationValue(new BigDecimal(electricityDataItem.getValue()).multiply(sysEnergyInfo.getPrice()));
+                            energyConsumeVOList.add(temp);
+                        });
+                    }
+                    break;
+            }
+            BigDecimal cost = energyConsumeVOList.stream().map(EnergyConsumeVO::getCostValue)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
+            BigDecimal accumulation = energyConsumeVOList.stream().map(EnergyConsumeVO::getAccumulationValue)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
+            // 组装统计图信息
+            EnergyConsumeTrendDetailItem item = new EnergyConsumeTrendDetailItem();
+            item.setEnergyType(sysEnergyInfo.getEnersno());
+            item.setEnergyUnit(sysEnergyInfo.getMuid());
+            item.setCostLabel(sysEnergyInfo.getEnername() + "费");
+            item.setAccumulationLabel(sysEnergyInfo.getEnername() + "用量");
+            item.setCost(cost);
+            item.setAccumulation(accumulation);
+            // 组装图表信息
+            getTrendAnalysisCharInfoByEnergyType(startTime, timeType, energyConsumeVOList, item);
+            itemList.add(item);
         }
-
-        // 组装统计图信息
-        EnergyConsumeTrendDetailItem item = new EnergyConsumeTrendDetailItem();
-        item.setEnergyType(energyType);
-        item.setCostLabel(sysEnergyInfo.getEnername() + "费");
-        item.setAccumulationLabel(sysEnergyInfo.getEnername() + "用量");
-        // 组装图表信息
-        getTrendAnalysisCharInfoByEnergyType(startTime, timeType, energyConsumeVOList, item);
-
-        List<EnergyConsumeTrendDetailItem> itemList = new ArrayList<>();
-        itemList.add(item);
         return itemList;
     }
 
@@ -219,14 +233,14 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
      * @param item      返回对象
      */
     private void getTrendAnalysisCharInfoByEnergyType(Date bsTime, String timeType,
-                                                       List<EnergyConsumeVO> dataItems, EnergyConsumeTrendDetailItem item) {
+                                                      List<EnergyConsumeVO> dataItems, EnergyConsumeTrendDetailItem item) {
         List<String> costKeyList = new ArrayList<>();
         List<String> accumulationKeyList = new ArrayList<>();
         List<BigDecimal> costValueList = new ArrayList<>();
         List<BigDecimal> accumulationValueList = new ArrayList<>();
         Map<String, List<EnergyConsumeVO>> energyConsumeVOMap;
         //按时间类型组织返回数据
-        switch (timeType){
+        switch (timeType) {
             case TimeTypeConst.TIME_TYPE_DAY:
                 energyConsumeVOMap = dataItems.stream().collect(Collectors.groupingBy(li -> DateUtil.formatDateTime(li.getDataTime())));
                 for (int i = 0; i < CommonConst.DIGIT_24; i++) {

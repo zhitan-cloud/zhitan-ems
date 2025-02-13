@@ -65,12 +65,12 @@
         "electricity_data_item" di
         JOIN energy_index ei  ON di.index_id = ei.index_id
         WHERE
-        di.index_id IN ( SELECT index_id FROM node_index WHERE node_id = #{indexId})
-        <if test="emissionType !='' and emissionType !=null  and emissionType =='allType'">
+        di.index_id IN ( SELECT index_id FROM node_index WHERE node_id = #{nodeId})
+        <if test="energyType !='' and energyType !=null  and energyType =='allType'">
             AND ei.energy_id != ''
         </if>
-        <if test="emissionType !='' and emissionType !=null  and emissionType !='allType'">
-            AND  ei.energy_id = #{emissionType}
+        <if test="energyType !='' and energyType !=null  and energyType !='allType'">
+            AND  ei.energy_id = #{energyType}
         </if>
         AND (di.data_time BETWEEN #{beginTime} AND #{endTime})
         AND di.time_type = #{timeType}

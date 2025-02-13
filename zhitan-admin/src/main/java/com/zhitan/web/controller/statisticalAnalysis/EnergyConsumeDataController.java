@@ -41,7 +41,7 @@ public class EnergyConsumeDataController {
                                           @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                           @RequestParam(name = "timeCode") String timeCode,
                                           @RequestParam(name = "timeType") String timeType,
-                                          @RequestParam(name = "energyType") String energyType,
+                                          @RequestParam(name = "energyType",required = false) String energyType,
                                           @RequestParam(name = "modelCode") String modelCode) {
         return AjaxResult.success(energyConsumeDataService.listEnergyCostTrend(pageNo, pageSize, timeCode, timeType,energyType,
                 modelCode));
@@ -62,7 +62,7 @@ public class EnergyConsumeDataController {
     public AjaxResult listEnergyCostTrendDetail(@RequestParam(name = "timeCode") String timeCode,
                                                                                 @RequestParam(name = "timeType") String timeType,
                                                                                 @RequestParam(name = "modelCode") String modelCode,
-                                                                                @RequestParam("energyType") String energyType) {
+                                                                                @RequestParam(name = "energyType",required = false) String energyType) {
         return AjaxResult.success(energyConsumeDataService.listEnergyCostTrendDetail(timeCode, timeType, modelCode, energyType));
     }
 
