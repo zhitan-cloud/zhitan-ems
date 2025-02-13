@@ -358,8 +358,7 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
      */
     @Override
     public List<EnergyIndex> listDeviceIndex(String nodeId, String meterId) {
-        return energyIndexMapper.selectList(Wrappers.<EnergyIndex>lambdaQuery()
-                .eq(EnergyIndex::getNodeId, nodeId)
-                .eq(EnergyIndex::getMeterId, meterId));
+        List<EnergyIndex> energyIndexList = energyIndexMapper.getIndexByMeterIdIndexCode(meterId,null,nodeId);
+        return energyIndexList;
     }
 }

@@ -891,15 +891,15 @@ public class CommonConst {
     /**
      * 电流
      */
-    public static final String TAG_CODE_CURRENT = "Current_";
+    public static final String TAG_CODE_CURRENT = "Current";
     /**
      * 电压
      */
-    public static final String TAG_CODE_VOLTAGE = "Voltage_";
+    public static final String TAG_CODE_VOLTAGE = "Voltage";
     /**
      * 功率因数
      */
-    public static final String TAG_CODE_FACTOR = "PowerFactor_";
+    public static final String TAG_CODE_FACTOR = "PowerFactor";
     /**
      * 功率因数
      */
