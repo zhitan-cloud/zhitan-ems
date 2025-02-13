@@ -37,6 +37,7 @@ public class ChartUtils {
                     Date tempD = DateTimeUtil.toDateTime(tempCode, DateTimeUtil.COMMON_PATTERN_END_WITH_MINUTE);
                     dateList.add(tempD);
                 }
+                break;
             case TimeTypeConst.TIME_TYPE_DAY:
                 if (!timeCode.contains(CommonConst.SINGLE_MINUS_SIGN)) {
                     timeCode = DateTimeUtil.toDateTimeStr(timeCode, DateTimeUtil.COMMON_PATTERN_DAY, DateTimeUtil.COMMON_PATTERN_TO_DAY);
