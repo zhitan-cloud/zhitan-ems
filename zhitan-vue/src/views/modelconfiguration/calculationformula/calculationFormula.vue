@@ -9,28 +9,33 @@
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
+        <!-- <el-form-item style="float: right">
+          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
+        </el-form-item> -->
       </el-form>
     </div>
-    <div class="table-box">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="funcName" label="函数名" show-overflow-tooltip align="center"> </el-table-column>
-        <el-table-column prop="funcText" label="函数文本" show-overflow-tooltip align="center"> </el-table-column>
-        <el-table-column prop="info" label="介绍" show-overflow-tooltip align="center"> </el-table-column>
-        <!-- <el-table-column prop="prop" label="操作" width="150" align="center">
+    <div class="table-bg-style">
+      <div class="table-box">
+        <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="funcName" label="函数名" show-overflow-tooltip align="center"> </el-table-column>
+          <el-table-column prop="funcText" label="函数文本" show-overflow-tooltip align="center"> </el-table-column>
+          <el-table-column prop="info" label="介绍" show-overflow-tooltip align="center"> </el-table-column>
+          <!-- <el-table-column prop="prop" label="操作" width="150" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="Delete" @click="handleDel(scope.row)">
                             删除
                         </el-button>
                     </template>
                 </el-table-column> -->
-      </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
+        </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
+        />
+      </div>
     </div>
   </div>
 </template>

@@ -11,14 +11,13 @@
         <el-form-item label="测点数量:" class="header-box">
           <span class="count">{{ ptNum || 0 }}</span>
         </el-form-item>
+        <div class="mb20 ml20 mr20" style="float: right">
+          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
+          <el-button type="primary" icon="Download" @click="handleExport">导出</el-button>
+        </div>
       </el-form>
     </div>
     <div class="table-bg-style">
-      <div class="theme-dark-mt20 mb20 ml20">
-        <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
-        <el-button type="primary" icon="Download" @click="handleExport">导出</el-button>
-      </div>
-
       <div class="table-box">
         <el-table :data="tableData" v-loading="loading">
           <el-table-column prop="gatewayNum" label="网关编号" show-overflow-tooltip align="center" />

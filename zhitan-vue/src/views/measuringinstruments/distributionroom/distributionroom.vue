@@ -12,12 +12,12 @@
           <el-button type="primary" icon="Search" @click="handleQuery"> 搜索 </el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
+        <el-form-item style="float: right">
+          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="table-bg-style">
-      <div class="ml20 mb20 theme-dark-mt20">
-        <el-button type="primary" icon="Plus" @click="handleAdd">新增</el-button>
-      </div>
       <div class="table-box">
         <el-table v-loading="loading" :data="energyTypeList">
           <el-table-column label="编号" align="center" key="code" prop="code" :show-overflow-tooltip="true" />
