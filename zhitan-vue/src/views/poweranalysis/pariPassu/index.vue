@@ -562,7 +562,7 @@ function handleQuery() {
 // 能耗对比分析-重置
 function resetQuery() {
   proxy.resetForm("queryRef");
-  handleTimeType(period.value[0].value);
+  handleTimeType(period.value[1].value);
   queryParams.value.energyType = energyTypeList.value[0].enersno;
   queryParams.value.enername = energyTypeList.value[0].enername;
   queryParams.value.muid = energyTypeList.value[0].muid;

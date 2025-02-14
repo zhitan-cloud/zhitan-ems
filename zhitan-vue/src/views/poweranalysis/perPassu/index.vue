@@ -160,7 +160,7 @@ function handleAnalysisType(analysisType) {
   queryParams.value.analysisType = analysisType;
   getList();
 }
-// 能耗对比分析-科室能耗分析-列表
+// 能耗对比分析-列表
 function getList() {
   loading.value = true;
   // 在初始化之前，先dispose旧的实例
@@ -555,21 +555,21 @@ function getList() {
   //   }
   // });
 }
-// 能耗对比分析-科室能耗分析-搜索
+// 能耗对比分析-搜索
 function handleQuery() {
   getList();
 }
-// 能耗对比分析-科室能耗分析-重置
+// 能耗对比分析-重置
 function resetQuery() {
   proxy.resetForm("queryRef");
-  handleTimeType(period.value[0].value);
+  handleTimeType(period.value[1].value);
   queryParams.value.energyType = energyTypeList.value[0].enersno;
   queryParams.value.enername = energyTypeList.value[0].enername;
   queryParams.value.muid = energyTypeList.value[0].muid;
   queryParams.value.analysisType = "YOY";
   handleQuery();
 }
-// 能耗对比分析-科室能耗分析-导出
+// 能耗对比分析-导出
 function handleExport() {
   proxy.download(
     "consumptionanalysis/energyExport",
