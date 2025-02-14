@@ -74,7 +74,8 @@ function initChart(value) {
         color: "#2979ff",
       },
     },
-    color: ["#2979ff", "#19be6b", "#ff9900", "#fa3534"],
+    color: ["#4dadf8", "#19be6b", "#ff9900", "#3d8a32", "#e8463a", "#ff4e3f"],
+    // color: ["#2979ff", "#19be6b", "#ff9900", "#fa3534"],
     tooltip: {
       trigger: "axis",
       axisPointer: {

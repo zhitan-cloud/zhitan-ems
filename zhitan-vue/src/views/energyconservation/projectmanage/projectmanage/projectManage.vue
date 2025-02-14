@@ -22,13 +22,12 @@
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
+        <el-form-item style="float: right">
+          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="table-box">
-      <div class="mt20 mb20">
-        <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
-        <!-- <el-button type="primary" icon="Download" @click="handleAdd"> 导出 </el-button> -->
-      </div>
       <el-table :data="tableData" v-loading="loading">
         <el-table-column prop="plan" label="总体计划" show-overflow-tooltip align="center" />
         <el-table-column prop="implementationPlan" label="实施计划" show-overflow-tooltip align="center" />

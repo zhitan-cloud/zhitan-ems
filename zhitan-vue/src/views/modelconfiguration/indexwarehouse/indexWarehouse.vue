@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="page-container-right">
-        <div class="mb20 mt20 ml20 tab-box">
+        <div class="tab-box">
           <div class="tab-li" :class="tab == 1 ? 'is-tab' : ''" @click="handleTab('1')">计量器具配置信息</div>
           <div class="tab-li" :class="tab == 2 ? 'is-tab' : ''" @click="handleTab('2')">统计指标</div>
           <!-- <el-radio-group v-model="tab">
@@ -303,11 +303,13 @@ function handleTab(value) {
   color: #333;
   border-bottom: 1px solid #3371eb;
   margin-right: 20px;
+  margin-left: 15px;
+  font-size: 15px;
 
   .tab-li {
     cursor: pointer;
     border: 1px solid #3371eb;
-    padding: 10px 25px;
+    padding: 8px 20px;
     border-radius: 5px 5px 0 0;
   }
 

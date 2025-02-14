@@ -49,7 +49,7 @@ function initChart(value) {
         color: "#2979ff",
       },
     },
-    color: ["#2979ff", "#19be6b", "#ff9900", "#fa3534"],
+    color: ["#40c2ff", "#2979ff", "#ff9900", "#fa3534"],
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -65,7 +65,7 @@ function initChart(value) {
       },
     },
     grid: {
-      top: "40",
+      top: "60",
       left: "50",
       right: "40",
       bottom: "20",
