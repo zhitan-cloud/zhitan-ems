@@ -9,7 +9,7 @@ import com.zhitan.comprehensivestatistics.service.IComprehensiveStatisticsServic
 import com.zhitan.keyequipment.service.IDailyKeyEquipmentService;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.service.IModelNodeService;
-import com.zhitan.realtimedata.service.IPeriodDataService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/statisticalData/comprehensiveStatistics")
 public class ComprehensiveStatisticsController extends BaseController {
 
-    @Autowired
-    private IPeriodDataService periodDataService;
     @Autowired
     private IModelNodeService modelNodeService;
     @Autowired

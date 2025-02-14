@@ -30,6 +30,12 @@ public class BaseConfig
     /** 验证码类型 */
     private static String captchaType;
 
+    /**
+     * 文件地址域名
+     */
+    private String domainName;
+
+
     public String getName()
     {
         return name;
@@ -118,5 +124,17 @@ public class BaseConfig
     public static String getUploadPath()
     {
         return getProfile() + "/upload";
+    }
+
+    public static String getConfigurePath() {
+        return getProfile() + "/configure";
+    }
+
+    public String getDomainName() {
+        return domainName;
+    }
+
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
     }
 }

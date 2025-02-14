@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhitan.saving.mapper.EnergySavingProgramMapper">
+
+    <resultMap type="EnergySavingProgram" id="EnergySavingProgramResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="plan"    column="plan"    />
+        <result property="target"    column="target"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="liablePerson"    column="liable_person"    />
+        <result property="formulateTime"    column="formulate_time"    />
+        <result property="implementationPlan"    column="implementation_plan"    />
+        <result property="currentWork"    column="current_work"    />
+        <result property="savingAmount"    column="saving_amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="del"    column="del"    />
+    </resultMap>
+
+    <sql id="selectEnergySavingProgramVo">
+        select id,plan,completion_time,liable_person,create_by,update_by,create_time,update_time,del,implementation_plan,current_work,saving_amount,remark from energy_saving_program
+    </sql>
+
+
+
+    <select id="selectEnergySavingProgramById" parameterType="Long" resultMap="EnergySavingProgramResult">
+        <include refid="selectEnergySavingProgramVo"/>
+        where id = #{id}
+    </select>
+
+
+</mapper>

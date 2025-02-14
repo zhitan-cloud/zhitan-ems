@@ -75,8 +75,7 @@ public class DailyKeyEquipmenteController extends BaseController {
             i++;
         };
         startPage();
-        List<DailyKeyEquipment> list = dailykeyEquipment.getdailyKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
-        //return AjaxResult.success(list);
+        List<DailyKeyEquipment> list = dailykeyEquipment.getdailyKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return getDataTable(list);
     }
 
@@ -89,7 +88,7 @@ public class DailyKeyEquipmenteController extends BaseController {
         dataItem.setBeginTime(dataItem.getDataTime());
         String endTime=aa+" 24:00:00";
         dataItem.setEndTime(sf.parse(endTime));
-        List<DailyKeyEquipment> list = dailykeyEquipment.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<DailyKeyEquipment> list = dailykeyEquipment.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
     /*所有设备*/
@@ -107,7 +106,6 @@ public class DailyKeyEquipmenteController extends BaseController {
 
     /**
      * 重点能耗设备
-     * @return
      */
     @GetMapping("/getPointFacility")
     @ApiOperation(value = "查询重点设备列表")

@@ -1,6 +1,12 @@
 package com.zhitan.knowledgeBase.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 /**
  * @Author DYL
@@ -11,6 +17,7 @@ public class KnowledgeBasePageVO {
     /**
      * id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 标题
@@ -31,5 +38,7 @@ public class KnowledgeBasePageVO {
     /**
      * 创建时间
      */
-    private String createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 }

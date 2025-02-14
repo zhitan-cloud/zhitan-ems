@@ -4,6 +4,8 @@ package com.zhitan.dataitem.service;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.realtimedata.domain.DataItem;
+import com.zhitan.statisticalAnalysis.domain.dto.FlowChartsDTO;
+import com.zhitan.statisticalAnalysis.domain.vo.FlowChartsVO;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -77,4 +79,23 @@ public interface IDataItemService {
      * @return
      */
     BigDecimal getDataItemValueByIndexIds(String timeCode, List<String> indexIds);
+
+    /**
+     * 根据indexId与时间范围查询小时的dataitem信息
+     *
+     * @param beginTime 开始时间
+     * @param endTime   截止时间
+     * @param timeType  时间类型
+     * @param indexIds  点位集合
+     * @return
+     */
+    List<DataItem> getDataItemHourInforByIndexIds(Date beginTime, Date endTime, String timeType, List<String> indexIds);
+
+    /**
+     * 获取能流图形分析
+     *
+     * @param dto 请求参数
+     * @return 结果
+     */
+    FlowChartsVO getFlowCharts(FlowChartsDTO dto);
 }
