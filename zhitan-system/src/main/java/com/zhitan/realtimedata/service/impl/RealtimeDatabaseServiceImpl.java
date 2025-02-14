@@ -1,18 +1,20 @@
 package com.zhitan.realtimedata.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import com.zhitan.common.enums.CollectionModes;
+import com.zhitan.common.enums.GroupTimeType;
 import com.zhitan.common.enums.RetrievalModes;
-import com.zhitan.realtimedata.data.RealtimeDatabaseManager;
 import com.zhitan.realtimedata.data.influxdb.InfluxDBRepository;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 实时数据库取数服务实现类.
@@ -22,11 +24,10 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
 
     private final InfluxDBRepository repository;
 
-    private final RealtimeDatabaseManager realtimeDatabaseManager;
 
-    public RealtimeDatabaseServiceImpl(InfluxDBRepository repository, RealtimeDatabaseManager realtimeDatabaseManager) {
+    public RealtimeDatabaseServiceImpl(InfluxDBRepository repository
+    ) {
         this.repository = repository;
-        this.realtimeDatabaseManager = realtimeDatabaseManager;
     }
 
     /**
@@ -114,7 +115,7 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
     @Override
     public TagValue statistics(String tagCode, Date beginTime, Date endTime, CollectionModes collectionModes) {
         List<TagValue> tagValues = repository.statistics(Collections.singletonList(tagCode), beginTime, endTime, collectionModes);
-        return CollectionUtils.isEmpty(tagValues) ? tagValues.get(0) : null;
+        return CollectionUtils.isNotEmpty(tagValues) ? tagValues.get(0) : null;
     }
 
     /**
@@ -129,6 +130,20 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
     @Override
     public List<TagValue> statistics(List<String> tagCodes, Date beginTime, Date endTime, CollectionModes collectionModes) {
         return repository.statistics(tagCodes, beginTime, endTime, collectionModes);
+    }
+
+    @Override
+    public List<TagValue> statistics(String tagCodes, Date beginTime, Date endTime, CollectionModes modes, GroupTimeType timeType) {
+        try {
+            List<String> tagCodeList = Arrays.asList(tagCodes.split(StrUtil.COMMA).clone());
+            List<TagValue> tagValues = repository.statistics(tagCodeList, beginTime, endTime, modes, timeType);
+            if (ObjectUtil.isEmpty(tagValues)) {
+                tagValues = new ArrayList<>();
+            }
+            return tagValues;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -154,6 +169,14 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
     @Override
     public List<TagValue> retrieve(String tagCode, Date beginTime, Date endTime,
                                    RetrievalModes retrievalModes, int pointCount) {
-        return realtimeDatabaseManager.retrieve(tagCode, beginTime, endTime, retrievalModes, pointCount);
+        repository.getHistoryData(Collections.singletonList(tagCode), beginTime, endTime, pointCount);
+        pointCount = retrievalModes == RetrievalModes.Full ? 200 : pointCount;
+        int span =
+                Seconds.secondsBetween(new DateTime(beginTime), new DateTime(endTime)).getSeconds();
+        int interval = span / pointCount;
+        List<String> tagCodes = new ArrayList<>();
+        tagCodes.add(tagCode);
+        List<TagValue> historyData = repository.getHistoryData(tagCodes, beginTime, endTime, interval);
+        return historyData;
     }
 }

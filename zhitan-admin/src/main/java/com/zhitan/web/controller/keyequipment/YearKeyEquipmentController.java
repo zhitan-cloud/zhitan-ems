@@ -1,5 +1,6 @@
 package com.zhitan.web.controller.keyequipment;
 
+import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
 import com.zhitan.common.core.page.TableDataInfo;
@@ -53,9 +54,13 @@ public class YearKeyEquipmentController extends BaseController {
         }
         List<String> indexIds = energyList.stream().map(EnergyIndex::getIndexId).collect(Collectors.toList());
         List<YearKeyEquipment> dataList=new ArrayList<>();
+
+        dataItem.setBeginTime(DateUtil.beginOfYear(dataItem.getDataTime()));
+        dataItem.setEndTime(DateUtil.endOfYear(dataItem.getDataTime()));
+
         DateFormat df = new SimpleDateFormat("yyyy");
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String aa= df.format(dataItem.getBeginTime());
+        String aa= df.format(dataItem.getDataTime());
         String bb="";
         int i = 1;
         while (i <= 12) {
@@ -71,14 +76,15 @@ public class YearKeyEquipmentController extends BaseController {
             i++;
         }
         startPage();
-        List<YearKeyEquipment> list = yearKeyEquipmentService.getYearKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<YearKeyEquipment> list = yearKeyEquipmentService.getYearKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return getDataTable(list);
     }
 
     @GetMapping("/listChart")
     @ApiOperation(value = "重点设备能耗统计（年）图表")
     public AjaxResult listChart(DataItem dataItem){
-        List<YearKeyEquipment> list = yearKeyEquipmentService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+
+        List<YearKeyEquipment> list = yearKeyEquipmentService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
 }

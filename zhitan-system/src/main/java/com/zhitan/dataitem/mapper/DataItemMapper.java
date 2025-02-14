@@ -1,5 +1,6 @@
 package com.zhitan.dataitem.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhitan.carbonemission.domain.CarbonEmission;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.StagseDataEntry;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author sys
  * @date 2020-03-25
  */
-public interface DataItemMapper {
+public interface DataItemMapper extends BaseMapper<DataItem> {
     /**
      * 阶段数据录入
      *
@@ -122,4 +123,16 @@ public interface DataItemMapper {
      */
     List<DataItem> getDataItemHourInforByIndexIds(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
                                                   @Param("timeType") String timeType, @Param("indexIds") List<String> indexIds);
+
+    /**
+     * 查询能源类型非电的用量
+     * @param beginTime
+     * @param endTime
+     * @param timeType 时间类型
+     * @param nodeId 节点Id
+     * @param energyType 能源类型
+     * @return
+     */
+    BigDecimal getDataItemTimeRangeValueByNodeId(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
+                                            @Param("timeType") String timeType, @Param("nodeId") String nodeId, @Param("energyType") String energyType);
 }

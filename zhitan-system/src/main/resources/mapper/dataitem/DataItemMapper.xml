@@ -215,4 +215,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND ( begin_time BETWEEN #{beginTime} AND #{endTime} )
         AND time_type = #{timeType}
     </select>
+
+    <select id="getDataItemTimeRangeValueByNodeId" resultType="java.math.BigDecimal">
+        SELECT
+        COALESCE (SUM ( "value" ), 0)
+        FROM
+        "data_item" di
+        JOIN energy_index ei  ON di.index_id = ei.index_id
+        WHERE
+        di.index_id IN ( SELECT index_id FROM node_index WHERE node_id = #{nodeId})
+        <if test="energyType !='' and energyType !=null  and energyType =='allType'">
+            AND ei.energy_id != ''
+        </if>
+        <if test="energyType !='' and energyType !=null  and energyType !='allType'">
+            AND  ei.energy_id = #{energyType}
+        </if>
+        AND (di.data_time BETWEEN #{beginTime} AND #{endTime})
+        AND di.time_type = #{timeType}
+    </select>
 </mapper>

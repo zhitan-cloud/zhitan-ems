@@ -9,6 +9,7 @@ import com.zhitan.statisticalAnalysis.domain.vo.DataAnalysisMoMVO;
 import com.zhitan.statisticalAnalysis.domain.vo.DataAnalysisYoYExcel;
 import com.zhitan.statisticalAnalysis.domain.vo.DataAnalysisYoYVO;
 import com.zhitan.statisticalAnalysis.service.IStatisticalAnalysisService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +27,7 @@ import java.util.List;
 /**
  * 统计分析 控制层
  */
+@Api(tags = "统计分析")
 @RestController
 @RequestMapping("/statisticalAnalysis")
 public class StatisticalAnalysisController extends BaseController {

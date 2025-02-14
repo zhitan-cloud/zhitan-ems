@@ -1,10 +1,12 @@
 package com.zhitan.web.controller.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.zhitan.common.config.BaseConfig;
+import com.zhitan.common.constant.Constants;
+import com.zhitan.common.core.domain.AjaxResult;
+import com.zhitan.common.utils.StringUtils;
+import com.zhitan.common.utils.file.FileUploadUtils;
+import com.zhitan.common.utils.file.FileUtils;
+import com.zhitan.framework.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -13,13 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.zhitan.common.config.BaseConfig;
-import com.zhitan.common.constant.Constants;
-import com.zhitan.common.core.domain.AjaxResult;
-import com.zhitan.common.utils.StringUtils;
-import com.zhitan.common.utils.file.FileUploadUtils;
-import com.zhitan.common.utils.file.FileUtils;
-import com.zhitan.framework.config.ServerConfig;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 通用请求处理
@@ -36,6 +37,9 @@ public class CommonController
     private ServerConfig serverConfig;
 
     private static final String FILE_DELIMETER = ",";
+
+    @Resource
+    private BaseConfig baseConfig;
 
     /**
      * 通用下载请求
@@ -81,7 +85,7 @@ public class CommonController
             String filePath = BaseConfig.getUploadPath();
             // 上传并返回新文件名称
             String fileName = FileUploadUtils.upload(filePath, file);
-            String url = serverConfig.getUrl() + fileName;
+            String url = baseConfig.getDomainName() + fileName;
             AjaxResult ajax = AjaxResult.success();
             ajax.put("url", url);
             ajax.put("fileName", fileName);

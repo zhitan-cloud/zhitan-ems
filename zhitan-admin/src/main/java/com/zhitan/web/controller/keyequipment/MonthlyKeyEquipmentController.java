@@ -84,7 +84,7 @@ public class MonthlyKeyEquipmentController extends BaseController {
             List<String> indexIds = energyList.stream().map(EnergyIndex::getIndexId).collect(Collectors.toList());
 
             startPage();
-            List<MonthlyKeyEquipment> list = monthlyKeyEquipmentService.getMonthlyKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+            List<MonthlyKeyEquipment> list = monthlyKeyEquipmentService.getMonthlyKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
             int count=Integer.valueOf(getLastDayOfMonth(aa).substring(getLastDayOfMonth(aa).length()-2));
             list.forEach(monthlyReport -> monthlyReport.setCount(count));
             reportList.setTabledata(list);
@@ -107,7 +107,7 @@ public class MonthlyKeyEquipmentController extends BaseController {
         dataItem.setBeginTime(sf.parse(beginTime));
         String endTime=aa+"-"+Integer.valueOf(getLastDayOfMonth(aa).substring(getLastDayOfMonth(aa).length()-2))+" 00:00:00";
         dataItem.setEndTime(sf.parse(endTime));
-        List<MonthlyKeyEquipment> list = monthlyKeyEquipmentService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<MonthlyKeyEquipment> list = monthlyKeyEquipmentService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
     public static String getLastDayOfMonth(String yearMonth) {

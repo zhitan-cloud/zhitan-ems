@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="value0" property="value0"/>
     </resultMap>
     <!--全厂能耗统计-->
-    <select id="getdailyComprehensiveList" resultMap="dataItemMap">
+    <select id="getDailyComprehensiveList" resultType="com.zhitan.comprehensivestatistics.domain.DailyComprehensive">
         SELECT
             aa.index_id,
             aa.index_name,
@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ORDER BY aa.order_num ASC
     </select>
 
-    <select id="getListChart" resultMap="dataItemMap">
+    <select id="getListChart" resultType="com.zhitan.comprehensivestatistics.domain.DailyComprehensive">
         SELECT
             di.index_id,
             ci.name AS "index_name",

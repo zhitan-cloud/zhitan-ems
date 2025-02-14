@@ -41,6 +41,11 @@ public interface IPeakValleyService {
      */
     PeakValleyHourVO segmentAnalysisHour(PeakValleyDTO dto);
 
+    /**
+     * 尖峰平谷分时统计导出
+     * @param dto
+     * @return
+     */
     List<PeakValleyHourDataVO> segmentAnalysisHourExport(PeakValleyDTO dto);
 
     PeakValleyDayVO segmentAnalysisDayCustomize(PeakValleyDTO dto);
