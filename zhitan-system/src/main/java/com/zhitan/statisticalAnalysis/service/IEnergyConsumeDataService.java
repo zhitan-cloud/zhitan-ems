@@ -32,4 +32,13 @@ public interface IEnergyConsumeDataService {
      * @return
      */
     List<EnergyConsumeTrendDetailItem> listEnergyCostTrendDetail(String timeCode, String timeType, String modelCode, String energyType);
+
+    /**
+     * 同比环比分析
+     *
+     * @param req            请求参数
+     * @param comparisonType 对比类型
+     * @return
+     */
+    public List<EnergyTypeValueContrastedVO> listEnergyTypeYoyInfo(QueryCompareRequest req, String comparisonType);
 }
