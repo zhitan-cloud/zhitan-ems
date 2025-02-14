@@ -178,6 +178,5 @@ public class RealtimeDatabaseServiceImpl implements RealtimeDatabaseService {
         tagCodes.add(tagCode);
         List<TagValue> historyData = repository.getHistoryData(tagCodes, beginTime, endTime, interval);
         return historyData;
-//        return realtimeDatabaseManager.retrieve(tagCode, beginTime, endTime, retrievalModes, pointCount);
     }
 }

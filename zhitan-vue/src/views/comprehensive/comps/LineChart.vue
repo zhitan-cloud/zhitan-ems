@@ -31,6 +31,10 @@ watch(
   }
 )
 
+onMounted(() => {
+  initChart()
+})
+
 function initChart(value) {
   const chartDom = document.getElementById("ChartDom")
   if (echarts.getInstanceByDom(chartDom)) {
