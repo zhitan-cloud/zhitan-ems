@@ -493,6 +493,6 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
         return currentSum.subtract(lastSum)
                 .divide(lastSum, CommonConst.DIGIT_2, RoundingMode.HALF_UP)
                 .multiply(multiple)
-                .setScale(CommonConst.DIGIT_0, RoundingMode.HALF_UP);
+                .setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
     }
 }
