@@ -6,12 +6,7 @@
       </div>
       <div class="page-container-right">
         <div class="form-card">
-          <el-form
-            :model="queryParams"
-            ref="queryRef"
-            :inline="true"
-            v-show="showSearch"
-          >
+          <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
             <el-form-item label="期间" prop="timeType">
               <el-select
                 v-model="queryParams.timeType"
@@ -19,12 +14,7 @@
                 style="width: 120px"
                 @change="handleTimeType"
               >
-                <el-option
-                  v-for="dict in period"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
+                <el-option v-for="dict in period" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item label="时间">
@@ -58,33 +48,20 @@
               />
             </el-form-item>
             <el-form-item label="产品类型">
-              <el-select
-                v-model="queryParams.productType"
-                placeholder="产品类型"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="dict in product_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
+              <el-select v-model="queryParams.productType" placeholder="产品类型" style="width: 100%">
+                <el-option v-for="dict in product_type" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="Search" @click="handleQuery">
-                搜索
-              </el-button>
+              <el-button type="primary" icon="Search" @click="handleQuery"> 搜索 </el-button>
               <el-button icon="Refresh" @click="resetQuery"> 重置 </el-button>
+            </el-form-item>
+            <el-form-item style="float: right">
+              <el-button type="primary" icon="Plus" @click="handleAdd"> 新增 </el-button>
             </el-form-item>
           </el-form>
         </div>
         <div class="table-box">
-          <div class="mt20 mb20">
-            <el-button type="primary" icon="Plus" @click="handleAdd">
-              新增
-            </el-button>
-          </div>
           <el-table v-loading="loading" :data="productoutputList">
             <el-table-column
               label="用能单元"
@@ -93,13 +70,7 @@
               prop="nodeName"
               :show-overflow-tooltip="true"
             />
-            <el-table-column
-              label="期间"
-              align="center"
-              key="timeType"
-              prop="timeType"
-              :show-overflow-tooltip="true"
-            >
+            <el-table-column label="期间" align="center" key="timeType" prop="timeType" :show-overflow-tooltip="true">
               <template #default="scope">
                 <dict-tag :options="period" :value="scope.row.timeType" />
               </template>
@@ -120,10 +91,7 @@
               :show-overflow-tooltip="true"
             >
               <template #default="scope">
-                <dict-tag
-                  :options="product_type"
-                  :value="scope.row.productType"
-                />
+                <dict-tag :options="product_type" :value="scope.row.productType" />
               </template>
             </el-table-column>
             <!-- <el-table-column
@@ -133,24 +101,12 @@
               prop="name"
               :show-overflow-tooltip="true"
             /> -->
-            <el-table-column
-              label="单位"
-              align="center"
-              key="unit"
-              prop="unit"
-              :show-overflow-tooltip="true"
-            >
+            <el-table-column label="单位" align="center" key="unit" prop="unit" :show-overflow-tooltip="true">
               <template #default="scope">
                 <dict-tag :options="sys_unit" :value="scope.row.unit" />
               </template>
             </el-table-column>
-            <el-table-column
-              label="产量"
-              align="center"
-              key="number"
-              prop="number"
-              :show-overflow-tooltip="true"
-            />
+            <el-table-column label="产量" align="center" key="number" prop="number" :show-overflow-tooltip="true" />
             <el-table-column
               label="提交时间"
               align="center"
@@ -158,32 +114,13 @@
               :show-overflow-tooltip="true"
               width="200"
             />
-            <el-table-column
-              label="操作"
-              align="center"
-              class-name="small-padding fixed-width"
-              width="200"
-            >
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
               <template #default="scope">
                 <el-tooltip content="编辑" placement="top">
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Edit"
-                    @click="handleUpdate(scope.row)"
-                  >
-                    编辑
-                  </el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"> 编辑 </el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top">
-                  <el-button
-                    link
-                    type="primary"
-                    icon="Delete"
-                    @click="handleDelete(scope.row)"
-                  >
-                    删除
-                  </el-button>
+                  <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"> 删除 </el-button>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -203,11 +140,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="用能单元" prop="nodeName">
-              <el-input
-                v-model="form.nodeName"
-                placeholder="请输入用能单元"
-                disabled
-              />
+              <el-input v-model="form.nodeName" placeholder="请输入用能单元" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -219,12 +152,7 @@
                 style="width: 100%"
                 @change="handleTimeTypeAdd"
               >
-                <el-option
-                  v-for="dict in period"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
+                <el-option v-for="dict in period" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -261,18 +189,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="产品类型" prop="productType">
-              <el-select
-                v-model="form.productType"
-                placeholder="产品类型"
-                clearable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="dict in product_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
+              <el-select v-model="form.productType" placeholder="产品类型" clearable style="width: 100%">
+                <el-option v-for="dict in product_type" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -287,18 +205,8 @@
           </el-col> -->
           <el-col :span="12">
             <el-form-item label="单位" prop="unit">
-              <el-select
-                v-model="form.unit"
-                placeholder="请选择单位"
-                clearable
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="dict in sys_unit"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                />
+              <el-select v-model="form.unit" placeholder="请选择单位" clearable style="width: 100%">
+                <el-option v-for="dict in sys_unit" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -331,19 +239,15 @@ import {
   addProductoutput,
   updateProductoutput,
   delProductoutput,
-} from "@/api/auxiliaryEntry/productOutput";
-const { proxy } = getCurrentInstance();
-import { useRoute } from "vue-router";
-const { period, sys_unit, product_type } = proxy.useDict(
-  "period",
-  "sys_unit",
-  "product_type"
-);
-const productoutputList = ref([]);
-const open = ref(false);
-const loading = ref(false);
-const showSearch = ref(true);
-const title = ref("");
+} from "@/api/auxiliaryEntry/productOutput"
+const { proxy } = getCurrentInstance()
+import { useRoute } from "vue-router"
+const { period, sys_unit, product_type } = proxy.useDict("period", "sys_unit", "product_type")
+const productoutputList = ref([])
+const open = ref(false)
+const loading = ref(false)
+const showSearch = ref(true)
+const title = ref("")
 const data = reactive({
   form: {},
   queryParams: {
@@ -358,12 +262,8 @@ const data = reactive({
   },
   query: { ...useRoute().query },
   rules: {
-    timeType: [
-      { required: true, message: "期间不能为空", trigger: ["blur", "change"] },
-    ],
-    dataTime: [
-      { required: true, message: "时间不能为空", trigger: ["blur", "change"] },
-    ],
+    timeType: [{ required: true, message: "期间不能为空", trigger: ["blur", "change"] }],
+    dataTime: [{ required: true, message: "时间不能为空", trigger: ["blur", "change"] }],
     productType: [
       {
         required: true,
@@ -373,78 +273,74 @@ const data = reactive({
     ],
     // name: [{ required: true, message: "产品名称不能为空", trigger: "blur" }],
     unit: [{ required: true, message: "单位不能为空", trigger: "blur" }],
-    number: [
-      { required: true, message: "产量不能为空", trigger: ["blur", "change"] },
-    ],
+    number: [{ required: true, message: "产量不能为空", trigger: ["blur", "change"] }],
   },
-});
-const { queryParams, query, form, rules } = toRefs(data);
+})
+const { queryParams, query, form, rules } = toRefs(data)
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  queryParams.value.nodeId = data.id;
-  queryParams.value.nodeName = data.label;
-  queryParams.value.productType = null;
-  handleTimeType(period.value[0].value);
-  handleQuery();
+  queryParams.value.nodeId = data.id
+  queryParams.value.nodeName = data.label
+  queryParams.value.productType = null
+  handleTimeType(period.value[0].value)
+  handleQuery()
 }
 function handleTimeType(e) {
-  queryParams.value.timeType = e;
+  queryParams.value.timeType = e
   queryParams.value.dataTime = proxy
     .dayjs(new Date())
-    .format(e == "YEAR" ? "YYYY" : e == "MONTH" ? "YYYY-MM" : "YYYY-MM-DD");
+    .format(e == "YEAR" ? "YYYY" : e == "MONTH" ? "YYYY-MM" : "YYYY-MM-DD")
 }
 // 辅助录入-产品产量录入-列表
 function getList() {
-  loading.value = true;
+  loading.value = true
   listProductoutput(
     proxy.addDateRange({
       ...queryParams.value,
       ...query.value,
     })
   ).then((res) => {
-    loading.value = false;
-    productoutputList.value = res.rows;
-    queryParams.value.total = res.total;
-  });
+    loading.value = false
+    productoutputList.value = res.rows
+    queryParams.value.total = res.total
+  })
 }
 // 辅助录入-产品产量录入-搜索
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  queryParams.value.pageNum = 1
+  getList()
 }
 // 辅助录入-产品产量录入-重置
 function resetQuery() {
-  proxy.resetForm("queryRef");
-  queryParams.value.pageNum = 1;
-  queryParams.value.pageSize = 10;
-  queryParams.value.total = 0;
-  queryParams.value.timeType = null;
-  queryParams.value.dataTime = null;
-  queryParams.value.productType = null;
-  handleTimeType(period.value[0].value);
-  handleQuery();
+  proxy.resetForm("queryRef")
+  queryParams.value.pageNum = 1
+  queryParams.value.pageSize = 10
+  queryParams.value.total = 0
+  queryParams.value.timeType = null
+  queryParams.value.dataTime = null
+  queryParams.value.productType = null
+  handleTimeType(period.value[0].value)
+  handleQuery()
 }
 // 辅助录入-产品产量录入-新增
 function handleAdd() {
-  reset();
-  form.value.nodeId = queryParams.value.nodeId;
-  form.value.nodeName = queryParams.value.nodeName;
-  handleTimeTypeAdd(period.value[0].value);
-  title.value = "新增产品产量录入";
-  open.value = true;
+  reset()
+  form.value.nodeId = queryParams.value.nodeId
+  form.value.nodeName = queryParams.value.nodeName
+  handleTimeTypeAdd(period.value[0].value)
+  title.value = "新增产品产量录入"
+  open.value = true
 }
 function handleTimeTypeAdd(e) {
-  form.value.timeType = e;
-  form.value.dataTime = proxy
-    .dayjs(new Date())
-    .format(e == "YEAR" ? "YYYY" : e == "MONTH" ? "YYYY-MM" : "YYYY-MM-DD");
+  form.value.timeType = e
+  form.value.dataTime = proxy.dayjs(new Date()).format(e == "YEAR" ? "YYYY" : e == "MONTH" ? "YYYY-MM" : "YYYY-MM-DD")
 }
 // 辅助录入-产品产量录入-编辑
 function handleUpdate(row) {
-  reset();
-  form.value = { ...row };
-  open.value = true;
-  title.value = "编辑产品产量录入";
+  reset()
+  form.value = { ...row }
+  open.value = true
+  title.value = "编辑产品产量录入"
 }
 // 辅助录入-产品产量录入-新增/编辑-保存
 function submitForm() {
@@ -452,24 +348,24 @@ function submitForm() {
     if (valid) {
       if (form.value.productOutputId != undefined) {
         updateProductoutput(form.value).then((response) => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
+          proxy.$modal.msgSuccess("修改成功")
+          open.value = false
+          getList()
+        })
       } else {
         addProductoutput(form.value).then((response) => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
+          proxy.$modal.msgSuccess("新增成功")
+          open.value = false
+          getList()
+        })
       }
     }
-  });
+  })
 }
 // 辅助录入-产品产量录入-新增/编辑-取消
 function cancel() {
-  open.value = false;
-  reset();
+  open.value = false
+  reset()
 }
 // 辅助录入-产品产量录入-新增/编辑-表单重置
 function reset() {
@@ -480,8 +376,8 @@ function reset() {
     number: "1",
     timeType: "",
     unit: "",
-  };
-  proxy.resetForm("formRef");
+  }
+  proxy.resetForm("formRef")
 }
 // 辅助录入-产品产量录入-删除
 function handleDelete(row) {
@@ -489,13 +385,13 @@ function handleDelete(row) {
     .confirm('是否确认删除时间为"' + row.dataTime + '"的数据项？')
     // .confirm('是否确认删除产品名称为"' + row.name + '"的数据项？')
     .then(function () {
-      return delProductoutput(row.productOutputId);
+      return delProductoutput(row.productOutputId)
     })
     .then(() => {
-      getList();
-      proxy.$modal.msgSuccess("删除成功");
+      getList()
+      proxy.$modal.msgSuccess("删除成功")
     })
-    .catch(() => {});
+    .catch(() => {})
 }
 </script>
 <style scoped lang="scss">

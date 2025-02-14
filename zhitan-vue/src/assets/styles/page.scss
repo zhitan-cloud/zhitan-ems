@@ -33,6 +33,7 @@
     }
 
     .table-bg-style {
+      margin-top: 12px;
       .theme-dark-mt20 {
         margin-top: 20px;
       }
@@ -56,7 +57,7 @@
   }
 
   .table-box {
-    margin: 20px;
+    margin: 0;
 
     .table-title-box {
       font-weight: bold;
@@ -106,10 +107,12 @@
 
     .form-card {
       background: #fff;
+      // background: #F7F8FA;
       border-radius: 0px 0px 0px 0px;
       // border: 1px solid #000000;
       padding: 18px 0 0 15px;
     }
+    
     .table-bg-style {
       background-color: #fff;
       padding-top: 12px;
@@ -134,7 +137,7 @@
   }
 
   .table-box {
-    margin: 20px;
+    margin: 10px 20px;
 
     .table-title-box {
       font-weight: bold;

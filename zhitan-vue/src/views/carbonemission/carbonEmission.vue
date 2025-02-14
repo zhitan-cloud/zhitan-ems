@@ -35,16 +35,16 @@
               <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="Download" @click="handleExport"> 导出 </el-button>
+              <el-button type="warning" icon="Download" @click="handleExport"> 导出 </el-button>
             </el-form-item>
           </el-form>
         </div>
         <div
           style="height: calc(100vh - 220px) !important; max-height: calc(100vh - 220px) !important; overflow-y: auto"
         >
-          <div class="card-list" v-if="listTop.length > 1">
+          <!-- <div class="" v-if="listTop.length > 1" style="margin: 12px 0 0 18px">
             <el-button @click="dialogVisible = true"> 查看更多 </el-button>
-          </div>
+          </div> -->
           <template v-for="(row, rowIndex) in listTop" :key="rowIndex" v-loading="loading">
             <div class="card-list" v-if="rowIndex == 0">
               <template v-for="(item, index) in row" :key="index">

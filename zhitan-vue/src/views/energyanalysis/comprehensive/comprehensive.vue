@@ -8,42 +8,40 @@
         <div class="form-card">
           <el-form :model="queryParams" ref="queryRef" :inline="true">
             <el-form-item label="期间" prop="timeType">
-              <el-select v-model="queryParams.timeType" placeholder="期间" clearable style="width: 120px"
-                @change="handleTimeType">
+              <el-select
+                v-model="queryParams.timeType"
+                placeholder="期间"
+                clearable
+                style="width: 120px"
+                @change="handleTimeType"
+              >
                 <el-option v-for="dict in period" :key="dict.value" :label="dict.label" :value="dict.value" />
               </el-select>
             </el-form-item>
             <el-form-item label="时间">
-              <el-date-picker v-model="queryParams.dataTime" :type="queryParams.timeType == 'YEAR'
-                ? 'year'
-                : queryParams.timeType == 'MONTH'
-                  ? 'month'
-                  : 'date'
-                " :format="queryParams.timeType == 'YEAR'
-                  ? 'YYYY'
-                  : queryParams.timeType == 'MONTH'
-                    ? 'YYYY-MM'
-                    : 'YYYY-MM-DD'
-                  " value-format="YYYY-MM-DD" placeholder="时间" style="width: 100%" />
+              <el-date-picker
+                v-model="queryParams.dataTime"
+                :type="queryParams.timeType == 'YEAR' ? 'year' : queryParams.timeType == 'MONTH' ? 'month' : 'date'"
+                :format="
+                  queryParams.timeType == 'YEAR' ? 'YYYY' : queryParams.timeType == 'MONTH' ? 'YYYY-MM' : 'YYYY-MM-DD'
+                "
+                value-format="YYYY-MM-DD"
+                placeholder="时间"
+                style="width: 100%"
+              />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="Search" @click="handleQuery">
-                搜索
-              </el-button>
-              <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+              <el-button type="primary" icon="Search" @click="handleQuery"> 搜索 </el-button>
+              <!-- <el-button icon="Refresh" @click="resetQuery">重置</el-button> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="Download" @click="handleExport">
-                导出
-              </el-button>
+              <el-button type="warning" icon="Download" @click="handleExport"> 导出 </el-button>
             </el-form-item>
           </el-form>
         </div>
-        <div style="
-            height: calc(100vh - 220px) !important;
-            max-height: calc(100vh - 220px) !important;
-            overflow-y: auto;
-          ">
+        <div
+          style="height: calc(100vh - 220px) !important; max-height: calc(100vh - 220px) !important; overflow-y: auto"
+        >
           <BaseCard :title="queryParams.nodeName + '-综合能耗趋势'">
             <div class="chart-box" v-loading="loading">
               <div id="Chart1" />
@@ -53,13 +51,16 @@
             <el-col :span="7">
               <BaseCard :title="queryParams.nodeName + '-综合能耗同比环比'">
                 <div class="card-list" v-loading="loading">
-                  <div class="card-list-item" v-show="settingsStore.sideTheme == 'theme-dark'"
-                    :style="{ backgroundImage: 'url(' + item.bg + ')' }" v-for="item in comprehensiveTable"
-                    :key="item.title">
+                  <div
+                    class="card-list-item"
+                    v-show="settingsStore.sideTheme == 'theme-dark'"
+                    :style="{ backgroundImage: 'url(' + item.bg + ')' }"
+                    v-for="item in comprehensiveTable"
+                    :key="item.title"
+                  >
                     <div class="item-left">
                       {{ Math.abs(item.icon) }}%
-                      <el-icon :color="item.icon > 0 ? 'green' : item.icon < 0 ? 'red' : ''
-                        ">
+                      <el-icon :color="item.icon > 0 ? 'green' : item.icon < 0 ? 'red' : ''">
                         <Top v-if="item.icon > 0" />
                         <Bottom v-if="item.icon < 0" />
                       </el-icon>
@@ -72,18 +73,19 @@
                         <div class="item-right-bottom-left">
                           {{ node.label }}
                         </div>
-                        <div class="item-right-bottom-right">
-                          {{ Number(node.value.toFixed(2)) }} tce
-                        </div>
+                        <div class="item-right-bottom-right">{{ Number(node.value.toFixed(2)) }} tce</div>
                       </div>
                     </div>
                   </div>
-                  <div class="card-list-item" v-show="settingsStore.sideTheme == 'theme-light'"
-                    v-for="item in comprehensiveTable" :key="item.title">
+                  <div
+                    class="card-list-item"
+                    v-show="settingsStore.sideTheme == 'theme-light'"
+                    v-for="item in comprehensiveTable"
+                    :key="item.title"
+                  >
                     <div class="item-left">
                       {{ Math.abs(item.icon) }} %
-                      <el-icon :color="item.icon > 0 ? 'green' : item.icon < 0 ? 'red' : ''
-                        ">
+                      <el-icon :color="item.icon > 0 ? 'green' : item.icon < 0 ? 'red' : ''">
                         <Top v-if="item.icon > 0" />
                         <Bottom v-if="item.icon < 0" />
                       </el-icon>
@@ -96,9 +98,7 @@
                         <div class="item-right-bottom-left">
                           {{ node.label }}
                         </div>
-                        <div class="item-right-bottom-right">
-                          {{ Number(node.value.toFixed(2)) }}tce
-                        </div>
+                        <div class="item-right-bottom-right">{{ Number(node.value.toFixed(2)) }}tce</div>
                       </div>
                     </div>
                   </div>
@@ -123,10 +123,20 @@
           <BaseCard :title="queryParams.nodeName + '-综合能耗统计分析表'" v-loading="loading">
             <div class="table-box">
               <el-table :data="comprehensiveList" show-summary>
-                <el-table-column label="日期" align="center" key="currentTime" prop="currentTime"
-                  :show-overflow-tooltip="true" />
-                <el-table-column label="综合能耗量(tce)" align="center" key="currentValue" prop="currentValue"
-                  :show-overflow-tooltip="true" />
+                <el-table-column
+                  label="日期"
+                  align="center"
+                  key="currentTime"
+                  prop="currentTime"
+                  :show-overflow-tooltip="true"
+                />
+                <el-table-column
+                  label="综合能耗量(tce)"
+                  align="center"
+                  key="currentValue"
+                  prop="currentValue"
+                  :show-overflow-tooltip="true"
+                />
               </el-table>
             </div>
           </BaseCard>
@@ -137,26 +147,22 @@
 </template>
 
 <script setup name="comprehensive">
-import {
-  listComprehensive,
-  listYoY,
-  listEnergyRanking,
-} from "@/api/energyAnalysis/energyAnalysis";
-import { listEnergyTypeList } from "@/api/modelConfiguration/energyType";
-import * as echarts from "echarts";
-const { proxy } = getCurrentInstance();
-const { period } = proxy.useDict("period");
-import { useRoute } from "vue-router";
-import useSettingsStore from "@/store/modules/settings";
-const settingsStore = useSettingsStore();
+import { listComprehensive, listYoY, listEnergyRanking } from "@/api/energyAnalysis/energyAnalysis"
+import { listEnergyTypeList } from "@/api/modelConfiguration/energyType"
+import * as echarts from "echarts"
+const { proxy } = getCurrentInstance()
+const { period } = proxy.useDict("period")
+import { useRoute } from "vue-router"
+import useSettingsStore from "@/store/modules/settings"
+const settingsStore = useSettingsStore()
 watch(
   () => settingsStore.sideTheme,
   (val) => {
-    getList();
+    getList()
   }
-);
-import index_card_1 from "@/assets/images/home/index-card-3.png";
-import index_card_2 from "@/assets/images/home/index-card-4.png";
+)
+import index_card_1 from "@/assets/images/home/index-card-3.png"
+import index_card_2 from "@/assets/images/home/index-card-4.png"
 const comprehensiveTable = ref([
   {
     bg: index_card_1,
@@ -188,9 +194,9 @@ const comprehensiveTable = ref([
       },
     ],
   },
-]);
-const comprehensiveList = ref([]);
-const loading = ref(false);
+])
+const comprehensiveList = ref([])
+const loading = ref(false)
 const data = reactive({
   queryParams: {
     nodeId: null,
@@ -200,35 +206,35 @@ const data = reactive({
   query: {
     modelCode: null,
   },
-});
-const { queryParams, query } = toRefs(data);
+})
+const { queryParams, query } = toRefs(data)
 /** 节点单击事件 */
 function handleNodeClick(data) {
-  queryParams.value.nodeId = data.id;
-  queryParams.value.nodeName = data.label;
-  handleTimeType(period.value[0].value);
-  handleQuery();
+  queryParams.value.nodeId = data.id
+  queryParams.value.nodeName = data.label
+  handleTimeType(period.value[0].value)
+  handleQuery()
 }
 function handleTimeType(e) {
-  queryParams.value.timeType = e;
-  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD");
+  queryParams.value.timeType = e
+  queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
 }
 // 能耗对比分析-综合能耗分析-列表
 function getList() {
-  loading.value = true;
+  loading.value = true
   // 在初始化之前，先dispose旧的实例
   if (echarts.getInstanceByDom(document.getElementById("Chart1"))) {
-    echarts.dispose(document.getElementById("Chart1"));
+    echarts.dispose(document.getElementById("Chart1"))
   }
   if (echarts.getInstanceByDom(document.getElementById("Chart2"))) {
-    echarts.dispose(document.getElementById("Chart2"));
+    echarts.dispose(document.getElementById("Chart2"))
   }
   if (echarts.getInstanceByDom(document.getElementById("Chart3"))) {
-    echarts.dispose(document.getElementById("Chart3"));
+    echarts.dispose(document.getElementById("Chart3"))
   }
-  const myChart1 = echarts.init(document.getElementById("Chart1"));
-  const myChart2 = echarts.init(document.getElementById("Chart2"));
-  const myChart3 = echarts.init(document.getElementById("Chart3"));
+  const myChart1 = echarts.init(document.getElementById("Chart1"))
+  const myChart2 = echarts.init(document.getElementById("Chart2"))
+  const myChart3 = echarts.init(document.getElementById("Chart3"))
   listComprehensive(
     proxy.addDateRange({
       ...queryParams.value,
@@ -236,28 +242,24 @@ function getList() {
     })
   ).then((res) => {
     if (!!res.code && res.code == 200) {
-      loading.value = false;
-      let xdata = [];
-      let yvalue = [];
-      let ycompareValue = [];
-      let yqoq = [];
+      loading.value = false
+      let xdata = []
+      let yvalue = []
+      let ycompareValue = []
+      let yqoq = []
       if (!!res.data.chartDataList) {
         res.data.chartDataList.map((item) => {
           xdata.push(
             proxy
               .dayjs(item.xdata)
               .format(
-                queryParams.value.timeType == "YEAR"
-                  ? "MM月"
-                  : queryParams.value.timeType == "MONTH"
-                    ? "DD日"
-                    : "HH时"
+                queryParams.value.timeType == "YEAR" ? "MM月" : queryParams.value.timeType == "MONTH" ? "DD日" : "HH时"
               )
-          );
-          yvalue.push(!!item.yvalue ? item.yvalue : 0);
-          ycompareValue.push(!!item.ycompareValue ? item.ycompareValue : 0);
-          yqoq.push(!!item.yqoq ? item.yqoq : 0);
-        });
+          )
+          yvalue.push(!!item.yvalue ? item.yvalue : 0)
+          ycompareValue.push(!!item.ycompareValue ? item.ycompareValue : 0)
+          yqoq.push(!!item.yqoq ? item.yqoq : 0)
+        })
       }
       setTimeout(() => {
         myChart1.setOption({
@@ -273,13 +275,12 @@ function getList() {
             itemWidth: 14,
             itemHeight: 10,
             textStyle: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
             },
           },
           grid: {
-            top: "45",
-            left: "7%",
+            top: "60",
+            left: "5%",
             right: "5%",
             bottom: "10",
             containLabel: true,
@@ -292,10 +293,7 @@ function getList() {
             axisLine: {
               show: true,
               lineStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               },
             },
             axisTick: {
@@ -308,8 +306,7 @@ function getList() {
               show: false,
             },
             axisLabel: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
               fontSize: 14,
               padding: [5, 0, 0, 0],
               //   formatter: '{value} ml'
@@ -321,10 +318,7 @@ function getList() {
               type: "value",
               name: "tce",
               nameTextStyle: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
                 padding: [0, 0, 5, 0],
               },
@@ -335,10 +329,7 @@ function getList() {
                 show: true,
                 lineStyle: {
                   type: "dashed",
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 },
               },
               axisTick: {
@@ -348,10 +339,7 @@ function getList() {
                 show: false,
               },
               axisLabel: {
-                color:
-                  settingsStore.sideTheme == "theme-dark"
-                    ? "#FFFFFF"
-                    : "#222222",
+                color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                 fontSize: 14,
               },
             },
@@ -363,7 +351,7 @@ function getList() {
               barWidth: "16",
               tooltip: {
                 valueFormatter: function (value) {
-                  return value + "tce";
+                  return value + "tce"
                 },
               },
               itemStyle: {
@@ -383,7 +371,7 @@ function getList() {
               barWidth: "16",
               tooltip: {
                 valueFormatter: function (value) {
-                  return value + "tce";
+                  return value + "tce"
                 },
               },
               itemStyle: {
@@ -398,29 +386,29 @@ function getList() {
               },
             },
           ],
-        });
-      }, 100);
-      let total = 0;
-      let seriesData = [];
+        })
+      }, 100)
+      let total = 0
+      let seriesData = []
       if (!!res.data.energyProportion && res.data.energyProportion.length > 0) {
         res.data.energyProportion.map((item) => {
           seriesData.push({
             name: item.energyName,
             value: Number(item.count).toFixed(2),
-          });
-        });
+          })
+        })
         seriesData.forEach(function (val) {
-          total += Number(val.value);
-        });
+          total += Number(val.value)
+        })
       } else {
         listEnergyTypeList().then((resEnergyTypeList) => {
           resEnergyTypeList.data.map((item) => {
             seriesData.push({
               name: item.enername,
               value: Number(0),
-            });
-          });
-        });
+            })
+          })
+        })
       }
       setTimeout(() => {
         myChart2.setOption({
@@ -449,40 +437,30 @@ function getList() {
               verticalAlign: "middle",
               rich: {
                 name: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
                 value: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
                 rate: {
-                  color:
-                    settingsStore.sideTheme == "theme-dark"
-                      ? "#FFFFFF"
-                      : "#222222",
+                  color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#222222",
                   fontSize: 14,
                 },
               },
             },
             data: seriesData,
             formatter: (name) => {
-              let target, percent, muid;
+              let target, percent, muid
               for (let i = 0; i < seriesData.length; i++) {
                 if (seriesData[i].name === name) {
-                  target = seriesData[i].value;
-                  muid = seriesData[i].muid;
-                  percent =
-                    total != 0 ? ((target / total) * 100).toFixed(2) : 0;
+                  target = seriesData[i].value
+                  muid = seriesData[i].muid
+                  percent = total != 0 ? ((target / total) * 100).toFixed(2) : 0
                 }
               }
-              return `{name|${name}(tce)  }{value| ${target}} {rate| ${percent}%}`;
+              return `{name|${name}(tce)  }{value| ${target}} {rate| ${percent}%}`
             },
           },
           series: [
@@ -500,76 +478,54 @@ function getList() {
               data: seriesData,
             },
           ],
-        });
-      }, 100);
+        })
+      }, 100)
 
-      comprehensiveList.value = !!res.data.dataList ? res.data.dataList : [];
+      comprehensiveList.value = !!res.data.dataList ? res.data.dataList : []
       window.addEventListener(
         "resize",
         () => {
-          myChart1.resize();
-          myChart2.resize();
+          myChart1.resize()
+          myChart2.resize()
         },
         { passive: true }
-      );
+      )
     }
-  });
+  })
   listYoY(
     proxy.addDateRange({
       ...queryParams.value,
     })
   ).then((res) => {
     if (!!res.data.tongbi) {
-      comprehensiveTable.value[0].icon = !!res.data.tongbi.ratio
-        ? res.data.tongbi.ratio
-        : 0;
-      comprehensiveTable.value[0].data[0].label = !!res.data.tongbi.currentTime
-        ? res.data.tongbi.currentTime
-        : 0;
-      comprehensiveTable.value[0].data[0].value = !!res.data.tongbi.currentValue
-        ? res.data.tongbi.currentValue
-        : 0;
-      comprehensiveTable.value[0].data[1].label = !!res.data.tongbi.compareTime
-        ? res.data.tongbi.compareTime
-        : 0;
-      comprehensiveTable.value[0].data[1].value = !!res.data.tongbi.compareValue
-        ? res.data.tongbi.compareValue
-        : 0;
+      comprehensiveTable.value[0].icon = !!res.data.tongbi.ratio ? res.data.tongbi.ratio : 0
+      comprehensiveTable.value[0].data[0].label = !!res.data.tongbi.currentTime ? res.data.tongbi.currentTime : 0
+      comprehensiveTable.value[0].data[0].value = !!res.data.tongbi.currentValue ? res.data.tongbi.currentValue : 0
+      comprehensiveTable.value[0].data[1].label = !!res.data.tongbi.compareTime ? res.data.tongbi.compareTime : 0
+      comprehensiveTable.value[0].data[1].value = !!res.data.tongbi.compareValue ? res.data.tongbi.compareValue : 0
     }
     if (!!res.data.huanbi) {
-      comprehensiveTable.value[1].icon = !!res.data.huanbi.ratio
-        ? res.data.huanbi.ratio
-        : 0;
-      comprehensiveTable.value[1].data[0].label = !!res.data.huanbi.currentTime
-        ? res.data.huanbi.currentTime
-        : 0;
-      comprehensiveTable.value[1].data[0].value = !!res.data.huanbi.currentValue
-        ? res.data.huanbi.currentValue
-        : 0;
-      comprehensiveTable.value[1].data[1].label = !!res.data.huanbi.compareTime
-        ? res.data.huanbi.compareTime
-        : 0;
-      comprehensiveTable.value[1].data[1].value = !!res.data.huanbi.compareValue
-        ? res.data.huanbi.compareValue
-        : 0;
+      comprehensiveTable.value[1].icon = !!res.data.huanbi.ratio ? res.data.huanbi.ratio : 0
+      comprehensiveTable.value[1].data[0].label = !!res.data.huanbi.currentTime ? res.data.huanbi.currentTime : 0
+      comprehensiveTable.value[1].data[0].value = !!res.data.huanbi.currentValue ? res.data.huanbi.currentValue : 0
+      comprehensiveTable.value[1].data[1].label = !!res.data.huanbi.compareTime ? res.data.huanbi.compareTime : 0
+      comprehensiveTable.value[1].data[1].value = !!res.data.huanbi.compareValue ? res.data.huanbi.compareValue : 0
     }
-  });
+  })
   listEnergyRanking(
     proxy.addDateRange({
       ...queryParams.value,
     })
   ).then((res) => {
-    let nodeName = [];
-    let energyConsumption = [];
-    let maxenergyConsumption = [];
+    let nodeName = []
+    let energyConsumption = []
+    let maxenergyConsumption = []
     if (!!res.data) {
       res.data.map((item, index) => {
-        nodeName.push(item.nodeName);
-        energyConsumption.push(
-          !!item.energyConsumption ? item.energyConsumption : 0
-        );
-        maxenergyConsumption[index] = res.data[0].energyConsumption;
-      });
+        nodeName.push(item.nodeName)
+        energyConsumption.push(!!item.energyConsumption ? item.energyConsumption : 0)
+        maxenergyConsumption[index] = res.data[0].energyConsumption
+      })
     }
     setTimeout(() => {
       myChart3.setOption({
@@ -586,7 +542,7 @@ function getList() {
             type: "none",
           },
           formatter: function (params) {
-            return params[0].name + " : " + params[0].value;
+            return params[0].name + " : " + params[0].value
           },
         },
         xAxis: {
@@ -599,38 +555,17 @@ function getList() {
             inverse: true,
             axisLabel: {
               interval: 0,
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
               fontSize: 14,
               formatter: function (value, index) {
                 if (index == 0) {
-                  return (
-                    "{idx0|" +
-                    (1 + index + 0) +
-                    "}{title|" +
-                    value +
-                    "}"
-                  );
+                  return "{idx0|" + (1 + index + 0) + "}{title|" + value + "}"
                 } else if (index == 1) {
-                  return (
-                    "{idx1|" +
-                    (1 + index + 0) +
-                    "}{title|" +
-                    value +
-                    "}"
-                  );
+                  return "{idx1|" + (1 + index + 0) + "}{title|" + value + "}"
                 } else if (index == 2) {
-                  return (
-                    "{idx2|" +
-                    (1 + index + 0) +
-                    "}{title|" +
-                    value +
-                    "}"
-                  );
+                  return "{idx2|" + (1 + index + 0) + "}{title|" + value + "}"
                 } else {
-                  return (
-                    "{idx|" + (1 + index + 0) + "}{title|" + value + "}"
-                  );
+                  return "{idx|" + (1 + index + 0) + "}{title|" + value + "}"
                 }
               },
               rich: {
@@ -681,8 +616,7 @@ function getList() {
             axisLine: "none",
             show: true,
             axisLabel: {
-              color:
-                settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
+              color: settingsStore.sideTheme == "theme-dark" ? "#FFFFFF" : "#000",
               fontSize: "12",
             },
             data: energyConsumption,
@@ -721,27 +655,27 @@ function getList() {
             data: energyConsumption,
           },
         ],
-      });
-    }, 100);
+      })
+    }, 100)
     window.addEventListener(
       "resize",
       () => {
-        myChart3.resize();
+        myChart3.resize()
       },
       { passive: true }
-    );
-  });
+    )
+  })
 }
 // 能耗对比分析-综合能耗分析-搜索
 function handleQuery() {
-  getList();
+  getList()
 }
 // 能耗对比分析-综合能耗分析-重置
 function resetQuery() {
-  proxy.resetForm("queryRef");
-  handleTimeType(period.value[0].value);
-  queryParams.value.analysisType = "YOY";
-  handleQuery();
+  proxy.resetForm("queryRef")
+  handleTimeType(period.value[0].value)
+  queryParams.value.analysisType = "YOY"
+  handleQuery()
 }
 // 能耗对比分析-综合能耗分析-导出
 function handleExport() {
@@ -752,7 +686,7 @@ function handleExport() {
       ...query.value,
     },
     `${queryParams.value.nodeName}-综合能耗统计分析表_${new Date().getTime()}.xlsx`
-  );
+  )
 }
 </script>
 <style scoped lang="scss">

@@ -39,13 +39,7 @@
                   />
                 </el-form-item>
                 <el-form-item label="选择电表" prop="meterId">
-                  <el-select
-                    v-model="queryParams.meterId"
-                    placeholder="选择电表"
-                    clearable
-                    style="width: 200px"
-                    @change="handleTimeType"
-                  >
+                  <el-select v-model="queryParams.meterId" placeholder="选择电表" clearable style="width: 200px">
                     <el-option
                       v-for="dict in electricityMeter"
                       :key="dict.value"
@@ -64,7 +58,7 @@
             </div>
 
             <div style="padding: 0 16px">
-              <el-tabs v-model="activeTabKey" type="card">
+              <el-tabs v-model="activeTabKey" type="card" @tab-change="handleTabChange" style="margin-top: 12px">
                 <el-tab-pane label="电压不平衡" name="1"> </el-tab-pane>
                 <el-tab-pane label="电流不平衡" name="2"> </el-tab-pane>
               </el-tabs>
@@ -80,7 +74,7 @@
 
             <div class="chart-box" v-loading="loading" v-show="activeKey === 1">
               <LineChart ref="LineChartRef" :chartData="lineChartData" />
-              <el-table :data="tableData1" v-loading="loading">
+              <el-table :data="tableData1" v-loading="loading" style="padding: 14px">
                 <el-table-column label="类型" prop="type" align="center" />
                 <el-table-column label="三项不平衡极值" prop="value" align="center" />
                 <el-table-column label="发生时间" prop="time" align="center" />
@@ -225,6 +219,11 @@ function handleNodeClick(data) {
 function handleTimeType(e) {
   queryParams.value.timeType = e
   queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
+  getList()
+}
+
+function handleTabChange(e) {
+  getList()
 }
 
 function switchBtnType(e) {
@@ -235,6 +234,13 @@ function switchBtnType(e) {
 }
 // 列表
 function getList() {
+  if (!queryParams.value.meterId) {
+    // proxy.$message({
+    //   message: "请选择节点",
+    //   type: "warning",
+    // })
+    return
+  }
   loading.value = true
   let params = {
     nodeId: queryParams.value.nodeId,

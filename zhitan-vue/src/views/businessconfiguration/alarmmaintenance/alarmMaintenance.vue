@@ -9,14 +9,13 @@
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
+        <el-form-item style="float: right">
+          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
+        </el-form-item>
       </el-form>
     </div>
 
     <div class="table-bg-style">
-      <div class="theme-dark-mt20 mb20 ml20">
-        <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
-        <!-- <el-button type="primary" icon="Delete">删除</el-button> -->
-      </div>
       <div class="table-box">
         <el-table :data="tableData" v-loading="loading">
           <el-table-column prop="limitName" label="限值类型名称" show-overflow-tooltip align="center" />

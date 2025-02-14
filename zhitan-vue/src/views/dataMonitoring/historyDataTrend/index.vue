@@ -52,7 +52,7 @@
               </div>
             </div>
             <div class="chart-box" v-loading="loading" v-show="activeKey === 1">
-              <LineChart ref="LineChartRef" :chartData="lineChartData" />
+              <LineChart ref="LineChartRef" :chartData="lineChartData" :chartType="'bar'" />
             </div>
             <div style="margin-top: 16px" v-show="activeKey === 2">
               <div class="" style="padding: 0 16px">
