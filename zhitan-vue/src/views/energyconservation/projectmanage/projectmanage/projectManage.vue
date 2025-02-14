@@ -27,34 +27,36 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="table-box">
-      <el-table :data="tableData" v-loading="loading">
-        <el-table-column prop="plan" label="总体计划" show-overflow-tooltip align="center" />
-        <el-table-column prop="implementationPlan" label="实施计划" show-overflow-tooltip align="center" />
-        <el-table-column prop="savingAmount" label="节约量" show-overflow-tooltip align="center" />
-        <!-- <el-table-column prop="value4" label="开始时间" show-overflow-tooltip align="center" />
+    <div class="table-bg-style">
+      <div class="table-box">
+        <el-table :data="tableData" v-loading="loading">
+          <el-table-column prop="plan" label="总体计划" show-overflow-tooltip align="center" />
+          <el-table-column prop="implementationPlan" label="实施计划" show-overflow-tooltip align="center" />
+          <el-table-column prop="savingAmount" label="节约量" show-overflow-tooltip align="center" />
+          <!-- <el-table-column prop="value4" label="开始时间" show-overflow-tooltip align="center" />
         <el-table-column prop="value5" label="结束时间" show-overflow-tooltip align="center" /> -->
-        <el-table-column prop="currentWork" label="当前工作" show-overflow-tooltip align="center" />
-        <el-table-column prop="liablePerson" label="负责人" show-overflow-tooltip align="center" />
-        <el-table-column prop="completionTime" label="完成时间" show-overflow-tooltip align="center" />
-        <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip align="center" />
-        <el-table-column prop="remark" label="备注" show-overflow-tooltip align="center" />
+          <el-table-column prop="currentWork" label="当前工作" show-overflow-tooltip align="center" />
+          <el-table-column prop="liablePerson" label="负责人" show-overflow-tooltip align="center" />
+          <el-table-column prop="completionTime" label="完成时间" show-overflow-tooltip align="center" />
+          <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip align="center" />
+          <el-table-column prop="remark" label="备注" show-overflow-tooltip align="center" />
 
-        <el-table-column label="操作" width="300" align="center">
-          <template #default="scope">
-            <!-- <el-button link type="primary" icon="Files" @click=""> 附件 </el-button> -->
-            <el-button link type="primary" icon="Edit" @click="handleAdd(scope.row)"> 修改 </el-button>
-            <el-button link type="primary" icon="Delete" @click="handleDel(scope.row)"> 删除 </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
+          <el-table-column label="操作" width="300" align="center">
+            <template #default="scope">
+              <!-- <el-button link type="primary" icon="Files" @click=""> 附件 </el-button> -->
+              <el-button link type="primary" icon="Edit" @click="handleAdd(scope.row)"> 修改 </el-button>
+              <el-button link type="primary" icon="Delete" @click="handleDel(scope.row)"> 删除 </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
+        />
+      </div>
     </div>
     <edit-modal ref="EditModalRef" @getList="getList" />
   </div>
