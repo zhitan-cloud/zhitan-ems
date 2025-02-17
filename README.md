@@ -6,7 +6,6 @@
 <p align="center">
     <a href='https://gitee.com/ustcyc/zhitan-ems/stargazers'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
     <a href='https://gitee.com/ustcyc/zhitan-ems/members'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
-	<a href="https://gitee.com/y_project/RuoYi/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
 </p>
 
 ## 介绍
