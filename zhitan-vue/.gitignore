@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 **/*.log
 
+
 tests/**/coverage/
 tests/e2e/reports
 selenium-debug.log
