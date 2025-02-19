@@ -2,7 +2,7 @@
     <img src="readme/logo-chinese.png" alt="输入图片说明" height="150" width="150">
 </div>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
-<h4 align="center">基于SpringBoot和若依框架开发</h4>
+<p align="center">基于SpringBoot和若依框架开发</p>
 <p align="center">
     <a href='https://gitee.com/ustcyc/zhitan-ems/stargazers'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
     <a href='https://gitee.com/ustcyc/zhitan-ems/members'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
