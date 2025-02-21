@@ -32,7 +32,7 @@
 基于SpringBoot的若依框架 易读易懂、界面简洁美观。支持深色&浅色两种风格切换（演示系统右上角）   
 关系数据库：postgresql（mysql需自行适配，mysql性能太差了）   
 时序数据库：influxdb 2.7+  
-中间件：redis，mq  
+中间件：redis  
 VUE版本：VUE 3
 
 ## 特色：数据驱动的计算模型和业务模型配置
