@@ -60,3 +60,19 @@ export function getFlowCharts(query) {
     params: query,
   })
 }
+// 对比分析同比
+export function querySameCompareList(query) {
+  return request({
+    url: "/statisticsAnalysis/querySameCompareList",
+    method: "get",
+    params: query,
+  })
+}
+// 对比分析环比
+export function queryLoopCompareList(query) {
+  return request({
+    url: "/statisticsAnalysis/queryLoopCompareList",
+    method: "get",
+    params: query,
+  })
+}

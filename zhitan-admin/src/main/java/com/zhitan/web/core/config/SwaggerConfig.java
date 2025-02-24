@@ -115,11 +115,11 @@ public class SwaggerConfig {
         // 用ApiInfoBuilder进行定制
         return new ApiInfoBuilder()
                 // 设置标题
-                .title("标题:后台管理系统_接口文档")
+                .title("智碳_能源管理系统_接口文档")
                 // 描述
-                .description("描述:接口文档")
+                .description("采集企业水、电、气、热等能耗数据；帮助企业建立能源管理体系，找到跑冒滴漏，为企业节能提供数据支撑；为企业实现碳跟踪、碳盘查、碳交易、碳汇报的全生命过程；为中国碳达峰-碳中和做出贡献！")
                 // 作者信息
-                .contact(new Contact(baseConfig.getName(), null, null))
+                .contact(new Contact(baseConfig.getName(), "https://www.zhitancloud.com", "yin.cun@qq.com"))
                 // 版本
                 .version("版本号:" + baseConfig.getVersion())
                 .build();

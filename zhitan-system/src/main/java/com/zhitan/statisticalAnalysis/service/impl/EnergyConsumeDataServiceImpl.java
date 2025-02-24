@@ -1,5 +1,6 @@
 package com.zhitan.statisticalAnalysis.service.impl;
 
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.zhitan.basicdata.domain.SysEnergy;
@@ -20,6 +21,7 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import com.zhitan.statisticalAnalysis.domain.vo.*;
 import com.zhitan.statisticalAnalysis.service.IEnergyConsumeDataService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -311,5 +313,186 @@ public class EnergyConsumeDataServiceImpl implements IEnergyConsumeDataService {
                 .setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
         costValueList.add(totalCost);
         accumulationValueList.add(totalAccumulation);
+    }
+
+    /**
+     * 同步环比分析
+     *
+     * @param req            请求参数
+     * @param comparisonType 对比类型
+     * @return
+     */
+    @Override
+    public List<EnergyTypeValueContrastedVO> listEnergyTypeYoyInfo(QueryCompareRequest req, String comparisonType) {
+        String energyType = req.getEnergyType();
+        String timeType = req.getTimeType();
+        String timeCode = req.getTimeCode();
+        String nodeId = req.getNodeId();
+        //能源类型信息
+        SysEnergy sysEnergy = new SysEnergy();
+        sysEnergy.setEnersno(energyType);
+        List<SysEnergy> sysEnergies = sysEnergyMapper.selectSysEnergyList(sysEnergy);
+        if (sysEnergies.isEmpty()) {
+            throw new RuntimeException("未查询到能源信息");
+        }
+        SysEnergy sysEnergyInfo = sysEnergies.get(0);
+
+        // 能耗信息
+        Date startTime = DateTimeUtil.getTime(timeType, timeCode);
+        Date endTime = DateTimeUtil.getEndTimeByType(timeType, startTime);
+        //是否同比
+        boolean isYoy = comparisonType.equals(CommonConst.ENERGY_COMPARISON_YOY);
+        // 计算上一年的同期时间
+        Date lastBeginTime = DateUtil.offset(startTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1);
+        Date lastEndTime = DateUtil.offset(endTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1);
+        if (!isYoy) {
+            switch (timeType) {
+                case TimeTypeConst.TIME_TYPE_DAY:
+                    lastBeginTime = DateUtil.offsetDay(startTime, CommonConst.DIGIT_MINUS_1);
+                    lastEndTime = DateUtil.offsetDay(endTime, CommonConst.DIGIT_MINUS_1);
+                    break;
+                case TimeTypeConst.TIME_TYPE_MONTH:
+                    lastBeginTime = DateUtil.offsetMonth(startTime, CommonConst.DIGIT_MINUS_1);
+                    lastEndTime = DateUtil.offsetMonth(endTime, CommonConst.DIGIT_MINUS_1);
+                    break;
+            }
+        }
+
+        //电：只有HOUR数据有效；其他能源类型：HOUR、DAY有数据
+        String queryTimeType = TimeTypeConst.TIME_TYPE_HOUR;
+        List<EnergyConsumeVO> energyConsumeVOList = new ArrayList<>();
+        switch (sysEnergyInfo.getEnersno()) {
+            case "electric":
+                List<ElectricityDataItem> electricityDataItems = peakValleyMapper.getCostTrends(startTime, endTime, queryTimeType, nodeId, sysEnergyInfo.getEnersno());
+                List<ElectricityDataItem> lastDataItemList = peakValleyMapper.getCostTrends(lastBeginTime, lastEndTime, queryTimeType, nodeId, sysEnergyInfo.getEnersno());
+                if (!lastDataItemList.isEmpty()) {
+                    electricityDataItems.addAll(lastDataItemList);
+                }
+                if (!electricityDataItems.isEmpty()) {
+                    electricityDataItems.forEach(electricityDataItem -> {
+                        EnergyConsumeVO temp = new EnergyConsumeVO();
+                        temp.setDataTime(electricityDataItem.getDataTime());
+                        temp.setAccumulationValue(electricityDataItem.getElectricity());
+                        energyConsumeVOList.add(temp);
+                    });
+                }
+                break;
+            default:
+                if (timeType.equals(TimeTypeConst.TIME_TYPE_MONTH) || timeType.equals(TimeTypeConst.TIME_TYPE_YEAR)) {
+                    queryTimeType = TimeTypeConst.TIME_TYPE_DAY;
+                }
+                List<CarbonEmission> dataItems = dataItemMapper.getMiddleCarbonEmission(startTime, endTime, queryTimeType, nodeId, sysEnergyInfo.getEnersno());
+                List<CarbonEmission> lastDataItems = dataItemMapper.getMiddleCarbonEmission(lastBeginTime, lastEndTime, queryTimeType, nodeId, sysEnergyInfo.getEnersno());
+                if (!lastDataItems.isEmpty()) {
+                    dataItems.addAll(lastDataItems);
+                }
+                dataItems.addAll(lastDataItems);
+                if (!dataItems.isEmpty()) {
+                    dataItems.forEach(dataItem -> {
+                        EnergyConsumeVO temp = new EnergyConsumeVO();
+                        temp.setDataTime(dataItem.getDataTime());
+                        temp.setAccumulationValue(new BigDecimal(dataItem.getValue()));
+                        energyConsumeVOList.add(temp);
+                    });
+                }
+                break;
+        }
+        // 组装统计图信息
+        return getEnergyTypeValueContrastedVOList(startTime, timeType, energyConsumeVOList, sysEnergyInfo.getEnersno(), isYoy);
+    }
+
+    /**
+     * 组装成本趋势分析-统计图信息
+     *
+     * @param bsTime     时间
+     * @param timeType   时间类型
+     * @param dataItems  能耗
+     * @param energyType 能源类型
+     * @param isYoy      是否同比
+     */
+    private List<EnergyTypeValueContrastedVO> getEnergyTypeValueContrastedVOList(Date bsTime, String timeType,
+                                                                                 List<EnergyConsumeVO> dataItems, String energyType, boolean isYoy) {
+        Map<String, List<EnergyConsumeVO>> energyConsumeVOMap;
+        Map<String, List<EnergyConsumeVO>> lastEnergyConsumeVOMap;
+        List<EnergyTypeValueContrastedVO> itemList = new ArrayList<>();
+        //按时间类型组织返回数据
+        switch (timeType) {
+            case TimeTypeConst.TIME_TYPE_DAY:
+                energyConsumeVOMap = dataItems.stream().collect(Collectors.groupingBy(li -> DateUtil.formatDateTime(li.getDataTime())));
+                for (int i = 0; i < CommonConst.DIGIT_24; i++) {
+                    Date currentTime = DateUtil.offsetHour(bsTime, i);
+                    Date compareTime = isYoy ? DateUtil.offset(currentTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1) : DateUtil.offsetDay(currentTime, CommonConst.DIGIT_MINUS_1);
+                    String keyCurrentTime = DateUtil.formatDateTime(currentTime);
+                    String keyCompareTime = DateUtil.formatDateTime(compareTime);
+                    EnergyTypeValueContrastedVO item = getEnergyTypeValueContrastedVO(energyType, energyConsumeVOMap, keyCurrentTime, keyCompareTime, currentTime, compareTime);
+                    itemList.add(item);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_MONTH:
+                energyConsumeVOMap = dataItems.stream().collect(Collectors.groupingBy(li -> DateUtil.formatDate(li.getDataTime())));
+                Date endTime = DateTimeUtil.getEndTimeByType(timeType, bsTime);
+                while (bsTime.before(endTime)) {
+                    Date currentTime = bsTime;
+                    Date compareTime = isYoy ? DateUtil.offset(currentTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1) : DateUtil.offsetMonth(currentTime, CommonConst.DIGIT_MINUS_1);
+                    String keyCurrentTime = DateUtil.formatDate(currentTime);
+                    String keyCompareTime = DateUtil.formatDate(compareTime);
+                    EnergyTypeValueContrastedVO item = getEnergyTypeValueContrastedVO(energyType, energyConsumeVOMap, keyCurrentTime, keyCompareTime, currentTime, compareTime);
+                    itemList.add(item);
+                    bsTime = DateUtil.offsetDay(bsTime, CommonConst.DIGIT_1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_YEAR:
+                SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtil.COMMON_PATTERN_TO_MONTH_ZH);
+                energyConsumeVOMap = dataItems.stream().collect(Collectors.groupingBy(li -> formatter.format(li.getDataTime())));
+                for (int i = 0; i < CommonConst.DIGIT_12; i++) {
+                    Date currentTime = DateUtil.offsetMonth(bsTime, i);
+                    Date compareTime = DateUtil.offset(currentTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1);
+                    String keyCurrentTime = formatter.format(currentTime);
+                    String keyCompareTime = formatter.format(compareTime);
+                    EnergyTypeValueContrastedVO item = getEnergyTypeValueContrastedVO(energyType, energyConsumeVOMap, keyCurrentTime, keyCompareTime, currentTime, compareTime);
+                    itemList.add(item);
+                }
+                break;
+            default:
+                break;
+        }
+        return itemList;
+    }
+
+    private @NotNull EnergyTypeValueContrastedVO getEnergyTypeValueContrastedVO(String energyType, Map<String, List<EnergyConsumeVO>> energyConsumeVOMap,
+                                                                                String keyCurrentTime, String keyCompareTime, Date currentTime, Date compareTime) {
+        List<EnergyConsumeVO> energyConsumeList = Optional.ofNullable(energyConsumeVOMap.get(keyCurrentTime))
+                .orElse(Collections.emptyList());
+        BigDecimal currentValue = calculateSum(energyConsumeList);
+        List<EnergyConsumeVO> lastEnergyConsumeList = Optional.ofNullable(energyConsumeVOMap.get(keyCompareTime))
+                .orElse(Collections.emptyList());
+        BigDecimal contrastValues = calculateSum(lastEnergyConsumeList);
+        BigDecimal multiple = BigDecimal.valueOf(CommonConst.DIGIT_100);
+        BigDecimal ratio = calculateRatio(currentValue, contrastValues, multiple);
+        EnergyTypeValueContrastedVO item = new EnergyTypeValueContrastedVO();
+        item.setEnergyType(energyType);
+        item.setCurrentTime(DateUtil.formatDateTime(currentTime));
+        item.setCompareTime(DateUtil.formatDateTime(compareTime));
+        item.setCurrentValue(currentValue);
+        item.setContrastValues(contrastValues);
+        item.setRatio(ratio);
+        return item;
+    }
+
+    private BigDecimal calculateSum(List<EnergyConsumeVO> dataItemList) {
+        return dataItemList.stream()
+                .map(EnergyConsumeVO::getAccumulationValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal calculateRatio(BigDecimal currentSum, BigDecimal lastSum, BigDecimal multiple) {
+        if (lastSum.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
+        return currentSum.subtract(lastSum)
+                .divide(lastSum, CommonConst.DIGIT_2, RoundingMode.HALF_UP)
+                .multiply(multiple)
+                .setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
     }
 }
