@@ -40,7 +40,6 @@
           <el-table-column prop="completionTime" label="完成时间" show-overflow-tooltip align="center" />
           <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip align="center" />
           <el-table-column prop="remark" label="备注" show-overflow-tooltip align="center" />
-
           <el-table-column label="操作" width="300" align="center">
             <template #default="scope">
               <!-- <el-button link type="primary" icon="Files" @click=""> 附件 </el-button> -->
