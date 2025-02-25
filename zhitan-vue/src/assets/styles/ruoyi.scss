@@ -269,14 +269,11 @@
       td {
         word-break: break-word;
         background-color: #1d3778 !important;
-        // color: #515a6e;
+        color: #515a6e;
         height: 48px !important;
-        // font-size: 13px;
-
         border-radius: 0px 0px 0px 0px;
         font-family: OPPOSans, OPPOSans;
         font-weight: 500;
-        // font-size: 16px;
         color: #ffffff;
         border-bottom: none !important;
       }
@@ -833,14 +830,11 @@
         background-color: #F7F8FA !important;
         // color: #515a6e;
         height: 48px !important;
-        // font-size: 13px;
-
         border-radius: 0px 0px 0px 0px;
         font-family: OPPOSans, OPPOSans;
         font-weight: 500;
-        // font-size: 16px;
         color: #222222;
-        border-bottom: none !important;
+        // border-bottom: none !important;
       }
     }
 
@@ -889,7 +883,7 @@
 
   // 表格底部白线
   .el-table__inner-wrapper::before {
-    background-color: transparent;
+    // background-color: transparent;
   }
 
   /** 表单布局 **/
