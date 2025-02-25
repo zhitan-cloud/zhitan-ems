@@ -65,7 +65,7 @@
     <treeNodeModal
       ref="treeNodeModalRef"
       @getList="getTreeList"
-      modelCode="JCZBK_CODE"
+      :modelCode="modelCode"
       @addTreeList="addTreeList"
       @addTreeSelectList="addTreeSelectList"
     />
@@ -83,6 +83,7 @@ let currentNode = ref()
 let treeRef = ref()
 let tab = ref(1)
 let treeData = ref([])
+const modelCode = proxy.$route.query.modelCode || "JCZBK_CODE"
 
 const defaultProps = ref({
   children: "children",
@@ -113,7 +114,7 @@ let deviceConfigRef = ref(null)
 let statisticalIndicatorManagementRef = ref(null)
 //获取树列表
 function getTreeList() {
-  treeList({ modelCode: "JCZBK_CODE" }).then((res) => {
+  treeList({ modelCode: proxy.$route.query.modelCode || "JCZBK_CODE" }).then((res) => {
     let { data } = res
     treeData.value = data
     let chooseNode = null
