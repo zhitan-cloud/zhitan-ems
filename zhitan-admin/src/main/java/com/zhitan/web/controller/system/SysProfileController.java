@@ -1,5 +1,6 @@
 package com.zhitan.web.controller.system;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,6 +44,7 @@ public class SysProfileController extends BaseController
      * 个人信息
      */
     @GetMapping
+    @PreAuthorize("@ss.hasPermi('system:user:message')")
     public AjaxResult profile()
     {
         LoginUser loginUser = getLoginUser();
@@ -57,6 +59,7 @@ public class SysProfileController extends BaseController
      * 修改用户
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @PutMapping
     public AjaxResult updateProfile(@RequestBody SysUser user)
     {
@@ -87,6 +90,7 @@ public class SysProfileController extends BaseController
      * 重置密码
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @PutMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword)
     {
