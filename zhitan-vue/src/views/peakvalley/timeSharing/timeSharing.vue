@@ -120,7 +120,7 @@
     </div>
     <el-dialog v-model="timeSharingDialogTableVisible" title="查看分时统计详情" width="1300">
       <div class="table-box">
-        <el-table :data="viewTimeSharingList" style="width: 100%" height="420">
+        <el-table :data="viewTimeSharingList" style="width: 100%" height="420" border>
           <el-table-column label="时间" align="center" show-overflow-tooltip width="200">
             <template #default="scope"> {{ scope.row.time }}时 </template>
           </el-table-column>

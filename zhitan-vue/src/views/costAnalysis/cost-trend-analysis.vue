@@ -36,7 +36,7 @@
       </div>
       <div class="table-bg-style">
         <div class="table-box theme-dark-mt20" style="">
-          <el-table :data="tableData" v-loading="loading">
+          <el-table :data="tableData" v-loading="loading" style="border-bottom: 1px solid #ebeef5">
             <el-table-column label="时间" prop="dateCode" align="center" width="160" />
             <el-table-column label="总费用(元)" prop="total" align="center" width="120" />
             <el-table-column :label="col.energyName" v-for="(col, index) in columns" :key="index" align="center">
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="charts-view" v-loading="loading">
-        <el-row :gutter="2" class="" v-for="item in chartDataList" :key="item.energyType">
+        <el-row :gutter="1" class="" v-for="item in chartDataList" :key="item.energyType">
           <el-col :span="12">
             <BaseCard :title="item.costLabel + '(元)'">
               <div class="">
@@ -258,31 +258,23 @@ onMounted(() => {
 
 .table-box {
   margin-top: 0;
-  :deep .el-table--border .el-table__inner-wrapper:after {
-    height: 0;
-  }
+}
 
-  :deep .el-table--border:after {
-    width: 0;
+.themeDark {
+  .table-box {
+    padding: 0 10px;
   }
-
-  :deep .el-table--border:before {
-    width: 0;
-  }
-
-  :deep .el-table__border-left-patch {
-    background: transparent;
-  }
-
-  :deep .el-table--border .el-table__cell {
-    border-right: none;
+}
+.themeLight {
+  .table-box {
+    padding-bottom: 20px;
   }
 }
 
 .charts-view {
   width: 100%;
-  margin-top: 20px;
-  // padding: 0 30px;
+  margin-top: 12px;
+  padding-bottom: 24px;
 }
 .display-buttons {
   display: flex;
