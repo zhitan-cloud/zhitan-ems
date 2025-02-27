@@ -33,7 +33,7 @@
       </el-form>
     </div>
 
-    <div class="table-bg-style">
+    <div class="table-bg-style" style="padding-bottom: 12px">
       <div class="table-box">
         <el-table :data="energyList" v-loading="loading" border max-height="380px">
           <el-table-column fixed prop="indexName" label="指标名称" width="210px">
@@ -126,6 +126,8 @@ function getList() {
     energyList.value = response.data.tabledata
     if (energyList.value && energyList.value.length !== 0) {
       selectChange(energyList.value[0])
+    } else {
+      lineChartData.value = {}
     }
   })
 }
@@ -148,32 +150,6 @@ function selectChange(row) {
     console.log(expectedData)
 
     lineChartData.value = {
-      // xData: [
-      //   "0时",
-      //   "1时",
-      //   "2时",
-      //   "3时",
-      //   "4时",
-      //   "5时",
-      //   "6时",
-      //   "7时",
-      //   "8时",
-      //   "9时",
-      //   "10时",
-      //   "11时",
-      //   "12时",
-      //   "13时",
-      //   "14时",
-      //   "15时",
-      //   "16时",
-      //   "17时",
-      //   "18时",
-      //   "19时",
-      //   "20时",
-      //   "21时",
-      //   "22时",
-      //   "23时",
-      // ],
       xData: actualData,
       yData: expectedData,
       title,
