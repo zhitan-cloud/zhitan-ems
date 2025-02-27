@@ -33,7 +33,7 @@
       </el-form>
     </div>
 
-    <div class="table-bg-style">
+    <div class="table-bg-style" style="padding-bottom: 12px">
       <div class="table-box">
         <el-table :data="energyList" v-loading="loading" border max-height="380px">
           <el-table-column fixed prop="indexName" label="指标名称" width="210px">
@@ -131,6 +131,8 @@ function getList() {
     energyList.value = response.data
     if (response.data && response.data.length !== 0) {
       selectChange(response.data[0])
+    } else {
+      lineChartData.value = {}
     }
   })
 }
