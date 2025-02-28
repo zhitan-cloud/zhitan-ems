@@ -5,8 +5,13 @@
     </div>
     <div class="mycard-content">
       <div class="data-box" v-if="props.tabArray.length > 0">
-        <div v-for="(item, i) in props.tabArray" :key="i" class="li-box" :class="isActive == item.value ? 'is-li' : ''"
-          @click="changeActive(item.value)">
+        <div
+          v-for="(item, i) in props.tabArray"
+          :key="i"
+          class="li-box"
+          :class="isActive == item.value ? 'is-li' : ''"
+          @click="changeActive(item.value)"
+        >
           {{ item.label }}
         </div>
       </div>
@@ -16,7 +21,7 @@
 </template>
 
 <script setup>
-const emit = defineEmits();
+const emit = defineEmits()
 const props = defineProps({
   title: {
     type: String,
@@ -30,16 +35,16 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-});
+})
 const data = reactive({
   isActive: "DAY",
-});
-const { isActive } = toRefs(data);
-changeActive(isActive.value);
+})
+const { isActive } = toRefs(data)
+changeActive(isActive.value)
 
 function changeActive(value) {
-  isActive.value = value;
-  emit("changeActive", isActive.value);
+  isActive.value = value
+  emit("changeActive", isActive.value)
 }
 </script>
 
@@ -55,19 +60,19 @@ function changeActive(value) {
     align-items: center;
     height: 3.7037vh; //40
     padding-left: 2.1354vw; //41px;
-    background: url('../../assets/images/basecard/title_bg.png') no-repeat;
+    background: url("../../assets/images/basecard/title_bg.png") no-repeat;
     background-size: auto 100%;
 
     .name {
       font-family: YouSheBiaoTiHei;
-      font-size: 1.2500vw; //24px;
+      font-size: 1.25vw; //24px;
       color: #fff;
     }
   }
 
   .mycard-content {
     border: 1px solid;
-    border-image: linear-gradient(0deg, #0A3C86, #000) 1;
+    border-image: linear-gradient(0deg, #0a3c86, #000) 1;
     background: linear-gradient(0deg, rgba(18, 111, 216, 0.2) 0%, rgba(18, 111, 216, 0) 100%);
     position: relative;
 
@@ -82,7 +87,7 @@ function changeActive(value) {
       z-index: 1;
 
       .li-box {
-        border: 1px solid #2E86EA;
+        border: 1px solid #2e86ea;
         cursor: pointer;
         text-align: center;
         padding: 0.3704vh 0.3125vw;
@@ -90,8 +95,8 @@ function changeActive(value) {
       }
 
       .is-li {
-        background: #2E86EA;
-        border: 1px solid #2E86EA;
+        background: #2e86ea;
+        border: 1px solid #2e86ea;
       }
     }
   }
