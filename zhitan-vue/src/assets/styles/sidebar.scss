@@ -78,6 +78,7 @@
 
       .svg-icon {
         margin-right: 16px;
+        font-size: 14px;
       }
 
       .el-menu {
@@ -124,12 +125,13 @@
       .sub-menu-title-noDropdown,
       .el-sub-menu__title {
         &:hover {
-          background-color: rgba(0, 0, 0, 0.06) !important;
+          background-color: rgba(0, 0, 0, 0.2) !important;
         }
       }
 
       & .theme-dark .is-active > .el-sub-menu__title {
         color: $base-menu-color-active !important;
+        background-color: rgba(0, 0, 0, 0.2) !important;
       }
 
       & .nest-menu .el-sub-menu > .el-sub-menu__title,
@@ -360,7 +362,7 @@
 
       .svg-icon {
         margin-right: 16px;
-        font-size: 16px;
+        font-size: 14px;
         color: #C3C3C3;
       }
 
@@ -412,8 +414,10 @@
         }
       }
 
-      & .theme-dark .is-active > .el-sub-menu__title {
-        // color: $base-menu-color-active !important;
+      
+      & .theme-light .is-active > .el-sub-menu__title {
+        color: $--color-primary !important;
+        // background-color: #eaeff8 !important;
       }
 
       & .nest-menu .el-sub-menu > .el-sub-menu__title,
