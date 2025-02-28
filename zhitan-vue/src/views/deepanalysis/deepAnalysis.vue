@@ -297,11 +297,11 @@ onMounted(() => {
   .card-list {
     display: flex;
     justify-content: space-between;
-    padding: 18px;
+    padding-top: 12px;
 
     .card-list-item {
       width: 24%;
-      height: 167px;
+      height: 160px;
       background: #223386;
       border-radius: 5px 5px 5px 5px;
       border: 1px solid #4868b7;
@@ -364,11 +364,11 @@ onMounted(() => {
   .card-list {
     display: flex;
     justify-content: space-between;
-    padding: 18px;
+    padding-top: 12px;
 
     .card-list-item {
       width: 24%;
-      height: 167px;
+      height: 160px;
       background: #fff;
       border-radius: 5px 5px 5px 5px;
       border: 1px solid #e8e8e8;
