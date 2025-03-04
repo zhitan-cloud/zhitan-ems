@@ -19,4 +19,6 @@ public class RtdbConfig {
   public String token;
 
   public String bucket;
+
+  public String measurement;
 }

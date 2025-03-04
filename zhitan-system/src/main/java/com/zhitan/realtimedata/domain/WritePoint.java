@@ -8,7 +8,6 @@ import java.time.Instant;
 /**
  * @author fanxinfu
  */
-@Measurement(name = "meilin")
 public class WritePoint {
 
   @Column(tag = true)
