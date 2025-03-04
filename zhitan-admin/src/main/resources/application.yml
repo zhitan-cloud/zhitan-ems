@@ -146,6 +146,7 @@ rtdb:
   token: ==
   org: org
   bucket: bucket
+  measurement: data
 
 ###################### MQTT #################################
 mqtt:
