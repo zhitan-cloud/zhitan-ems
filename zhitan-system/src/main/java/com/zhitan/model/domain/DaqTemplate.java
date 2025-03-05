@@ -25,6 +25,8 @@ public class DaqTemplate extends BaseEntity {
   @Excel(name = "参数编码")
   private String code;
 
+  @Excel(name = "采集编码")
+  private String gatewayKey;
   /**
    * 参数名称
    */
@@ -89,5 +91,13 @@ public class DaqTemplate extends BaseEntity {
 
   public void setUnit(String unit) {
     this.unit = unit;
+  }
+
+  public String getGatewayKey() {
+    return gatewayKey;
+  }
+
+  public void setGatewayKey(String gatewayKey) {
+    this.gatewayKey = gatewayKey;
   }
 }

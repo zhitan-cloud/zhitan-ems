@@ -70,9 +70,12 @@ public class DaqTemplateController extends BaseController {
     boolean isExist = daqTemplateService.dapHasExist(daqTemplate.getCode(), daqTemplate.getDeviceType());
     if (isExist) {
       return AjaxResult.error("相同设备类型下的参数编码不能重复！");
-    } else {
-      return toAjax(daqTemplateService.insertDaqTemplate(daqTemplate));
     }
+    boolean isCodeExist = daqTemplateService.dapCodeHasExist(daqTemplate.getGatewayKey(), daqTemplate.getDeviceType());
+    if (isCodeExist) {
+      return AjaxResult.error("相同设备类型下的采集参数编码不能重复！");
+    }
+    return toAjax(daqTemplateService.insertDaqTemplate(daqTemplate));
   }
 
   /**
@@ -85,11 +88,13 @@ public class DaqTemplateController extends BaseController {
     boolean isExist = daqTemplateService.dapHasExist(daqTemplate);
     if (isExist) {
       return AjaxResult.error("相同设备类型下的参数编码不能重复！");
-    } else {
-      return toAjax(daqTemplateService.updateDaqTemplate(daqTemplate));
     }
+    boolean isCodeExist = daqTemplateService.dapCodeHasExist(daqTemplate);
+    if (isCodeExist) {
+      return AjaxResult.error("相同设备类型下的采集参数编码不能重复！");
+    }
+    return toAjax(daqTemplateService.updateDaqTemplate(daqTemplate));
   }
-
   /**
    * 删除采集参数模板
    */
