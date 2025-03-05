@@ -10,10 +10,11 @@
         <result property="name" column="name"/>
         <result property="deviceType" column="device_type"/>
         <result property="unit" column="unit"/>
+        <result property="gatewayKey" column="gateway_key"/>
     </resultMap>
 
     <sql id="selectDaqTemplateVo">
-        select id, code, name, device_type, unit
+        select id, code, name, device_type, unit, gateway_key
         from daq_template
     </sql>
 
@@ -44,6 +45,19 @@
           AND device_type = #{deviceType}
           AND id != #{id}
     </select>
+    <select id="dapCodeHasExist" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM daq_template
+        WHERE gateway_key = #{key}
+          AND device_type = #{deviceType}
+    </select>
+    <select id="dapCodeHasExistWhenUpdate" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM daq_template
+        WHERE gateway_key = #{key}
+          AND device_type = #{deviceType}
+          AND id != #{id}
+    </select>
     <select id="listTemplate" resultType="com.zhitan.model.domain.DaqTemplate">
         <include refid="selectDaqTemplateVo"/>
     </select>
@@ -56,6 +70,7 @@
             <if test="name != null  and name != ''">name,</if>
             <if test="deviceType != null  and deviceType != ''">device_type,</if>
             <if test="unit != null  and unit != ''">unit,</if>
+            <if test="gatewayKey != null  and gatewayKey != ''">gateway_key,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null  and id != ''">#{id},</if>
@@ -63,6 +78,7 @@
             <if test="name != null  and name != ''">#{name},</if>
             <if test="deviceType != null  and deviceType != ''">#{deviceType},</if>
             <if test="unit != null  and unit != ''">#{unit},</if>
+            <if test="gatewayKey != null  and gatewayKey != ''">#{gatewayKey},</if>
         </trim>
     </insert>
 
@@ -73,6 +89,7 @@
             <if test="name != null  and name != ''">name = #{name},</if>
             <if test="deviceType != null  and deviceType != ''">device_type = #{deviceType},</if>
             <if test="unit != null  and unit != ''">unit = #{unit},</if>
+            <if test="gatewayKey != null  and gatewayKey != ''">gateway_key = #{gatewayKey},</if>
         </trim>
         where id = #{id}
     </update>
