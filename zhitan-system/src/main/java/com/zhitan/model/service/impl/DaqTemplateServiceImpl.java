@@ -114,6 +114,17 @@ public class DaqTemplateServiceImpl implements IDaqTemplateService {
         return count > 0;
     }
 
+    @Override
+    public boolean dapCodeHasExist(String key, String deviceType) {
+        int count = daqTemplateMapper.dapHasExist(key, deviceType);
+        return count > 0;
+    }
+    @Override
+    public boolean dapCodeHasExist(DaqTemplate daqTemplate) {
+        int count = daqTemplateMapper.dapHasExistWhenUpdate(daqTemplate.getId(), daqTemplate.getGatewayKey(), daqTemplate.getDeviceType());
+        return count > 0;
+    }
+
     /**
      * 查询指标模板
      *
