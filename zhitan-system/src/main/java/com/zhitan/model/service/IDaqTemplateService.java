@@ -74,6 +74,15 @@ public interface IDaqTemplateService {
     boolean dapHasExist(DaqTemplate daqTemplate);
 
     /**
+     * 查询相同设备类型下是否有重复的编码
+     *
+     * @param code       参数编码
+     * @param deviceType 设备类型
+     * @return 是否存在
+     */
+    boolean dapCodeHasExist(String code, String deviceType);
+    boolean dapCodeHasExist(DaqTemplate daqTemplate);
+    /**
      * 查询指标模板
      *
      * @return 结果
