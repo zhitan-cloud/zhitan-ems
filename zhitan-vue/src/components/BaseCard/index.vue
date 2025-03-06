@@ -8,8 +8,7 @@
 </template>
 
 <script setup>
-defineProps(['title'])
-
+defineProps(["title"])
 </script>
 
 <style lang="scss" scoped>
@@ -20,7 +19,7 @@ defineProps(['title'])
     border-radius: 10px 10px 10px 10px;
     border: 1px solid #22408c;
     padding-bottom: 10px;
-    
+
     .mycard-title {
       display: flex;
       justify-content: flex-start;

@@ -231,7 +231,6 @@ function handleChartModal(row) {
       padding: 0 10px;
 
       .title {
-        font-size: 14px;
         color: rgba(255, 255, 255, 0.8);
         font-family: OPPOSans, OPPOSans;
         font-weight: 500;
@@ -327,9 +326,9 @@ function handleChartModal(row) {
     }
 
     &-li {
-      width: 240px;
-      margin-right: 10px;
-      margin-top: 16px;
+      width: 18%;
+      min-width: 190px;
+      margin: 1%;
       border-radius: 5px;
       border: 1px solid #ebebeb;
       margin-bottom: 5px;
@@ -339,7 +338,6 @@ function handleChartModal(row) {
       padding: 0 10px;
 
       .title {
-        font-size: 14px;
         color: #676767;
         font-family: OPPOSans, OPPOSans;
         font-weight: 500;
@@ -351,11 +349,10 @@ function handleChartModal(row) {
       }
 
       .num {
-        font-size: 22px;
+        font-size: 24px;
         color: #3271eb;
         font-family: OPPOSans, OPPOSans;
         font-weight: 800;
-        font-size: 32px;
         text-align: left;
         font-style: normal;
         text-transform: none;
@@ -368,6 +365,7 @@ function handleChartModal(row) {
         text-align: left;
         font-style: normal;
         text-transform: none;
+        font-size: 14px;
       }
     }
 

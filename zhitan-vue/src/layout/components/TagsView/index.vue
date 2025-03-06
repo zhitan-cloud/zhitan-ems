@@ -234,7 +234,7 @@ function handleScroll() {
 <style lang="scss" scoped>
 .themeDark {
   .tags-view-container {
-    height: 56px;
+    height: 52px;
     width: 100%;
     background: #1a235d;
     // border-bottom: 1px solid #d8dce5;
@@ -244,12 +244,12 @@ function handleScroll() {
         display: inline-block;
         position: relative;
         cursor: pointer;
-        height: 36px;
-        line-height: 36px;
+        height: 32px;
+        line-height: 30px;
         border: 1px solid #5278f5;
         color: #fff;
         // background: #3271eb;
-        padding: 0 14px;
+        padding: 0 12px;
         font-size: 14px;
         margin-left: 6px;
         margin-top: 10px;
@@ -304,7 +304,7 @@ function handleScroll() {
 
 .themeLight {
   .tags-view-container {
-    height: 56px;
+    height: 52px;
     width: 100%;
     background: #fff;
     // border-bottom: 1px solid #d8dce5;
@@ -314,12 +314,12 @@ function handleScroll() {
         display: inline-block;
         position: relative;
         cursor: pointer;
-        height: 36px;
-        line-height: 36px;
+        height: 32px;
+        line-height: 30px;
         border: 1px solid #d8dce5;
         color: #495060;
         background: #fff;
-        padding: 0 14px;
+        padding: 0 12px;
         font-size: 14px;
         margin-left: 6px;
         margin-top: 10px;
