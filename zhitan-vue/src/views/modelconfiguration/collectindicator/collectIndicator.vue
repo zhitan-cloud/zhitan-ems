@@ -14,11 +14,11 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleQuery">搜索</el-button>
+          <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
+          <el-button type="primary" icon="plus" @click="handleDialog('add')">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,6 +39,7 @@
               <dict-tag :options="sys_device_type" :value="scope.row.deviceType" />
             </template>
           </el-table-column>
+          <el-table-column prop="gatewayKey" label="网关标识" align="center" show-overflow-tooltip />
           <el-table-column fixed="right" label="操作" width="180" align="center" show-overflow-tooltip>
             <template #default="scope">
               <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row.id)"> 修改 </el-button>
@@ -73,6 +74,9 @@
           <el-select v-model="form.deviceType" placeholder="请输入设备类型" clearable style="width: 100%">
             <el-option v-for="dict in sys_device_type" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="网关标识" prop="gatewayKey">
+          <el-input v-model="form.gatewayKey" placeholder="请输入网关标识" clearable />
         </el-form-item>
       </el-form>
       <template #footer>
