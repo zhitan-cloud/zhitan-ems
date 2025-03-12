@@ -6,7 +6,7 @@
 
     <groupId>com.zhitan</groupId>
     <artifactId>BaseAdminAPI</artifactId>
-    <version>3.8.7</version>
+    <version>2.5.2</version>
 
     <name>BaseAdminAPI</name>
     <description>管理系统</description>
@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <zhitan.version>3.8.7</zhitan.version>
+        <zhitan.version>2.5.2</zhitan.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
