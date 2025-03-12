@@ -57,10 +57,10 @@
               </el-form>
             </div>
             <div class="display-buttons">
-              <div class="display-btn" @click="activeKey = 1" :class="{ 'active-display-btn': activeKey === 1 }">
+              <div class="display-btn" @click="switchBtnType(1)" :class="{ 'active-display-btn': activeKey === 1 }">
                 图形
               </div>
-              <div class="display-btn" @click="activeKey = 2" :class="{ 'active-display-btn': activeKey === 2 }">
+              <div class="display-btn" @click="switchBtnType(2)" :class="{ 'active-display-btn': activeKey === 2 }">
                 数据
               </div>
             </div>
@@ -168,6 +168,14 @@ function handleTimeType(e) {
   queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
   getElectricityMeter({ nodeId: queryParams.value.nodeId })
 }
+
+function switchBtnType(e) {
+  activeKey.value = e
+  if (e === 1) {
+    getList()
+  }
+}
+
 const LineChartRef = ref()
 function getList() {
   loading.value = true

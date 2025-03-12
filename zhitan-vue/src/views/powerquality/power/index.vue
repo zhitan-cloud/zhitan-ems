@@ -299,33 +299,4 @@ function handleExport() {
   width: 100%;
   height: 100% !important;
 }
-.display-buttons {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 16px;
-  margin-right: 16px;
-  .display-btn,
-  .active-display-btn {
-    width: 78px;
-    height: 34px;
-    background: #fff;
-    color: #409eff;
-    border: 2px solid #409eff;
-    border-radius: 4px;
-    margin-left: 10px;
-    text-align: center;
-    line-height: 31px;
-    font-size: 14px;
-    font-weight: 400;
-    cursor: pointer;
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-  .active-display-btn {
-    background: #409eff;
-    color: #fff;
-  }
-}
 </style>

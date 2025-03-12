@@ -227,7 +227,7 @@ function getList() {
           color: ["#2979ff", "#19be6b", "#ff9900", "#fa3534"],
           grid: {
             top: "45",
-            left: "7%",
+            left: "4%",
             right: "5%",
             bottom: "10",
             containLabel: true,

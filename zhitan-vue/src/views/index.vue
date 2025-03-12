@@ -495,7 +495,7 @@ function getListEnergyConsumptionTrend() {
           },
           grid: {
             top: "45",
-            left: "7%",
+            left: "2%",
             right: "5%",
             bottom: "10",
             containLabel: true,

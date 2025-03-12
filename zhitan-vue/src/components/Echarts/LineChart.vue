@@ -59,7 +59,7 @@ function initChart(value) {
     name: item.name,
     type: props.chartType, // 根据传入类型渲染
     data: item.data,
-    barWidth: "16",
+    barWidth: props.chartData.barWidth || "16",
     itemStyle: {
       borderRadius: [15, 15, 0, 0],
     },
