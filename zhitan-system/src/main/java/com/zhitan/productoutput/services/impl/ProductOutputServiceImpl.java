@@ -101,6 +101,7 @@ public class ProductOutputServiceImpl extends ServiceImpl<ProductOutputMapper, P
         wrapper.like(StringUtils.isNotEmpty(productOutput.getDataTime()),ProductOutput::getDataTime,productOutput.getDataTime());
         wrapper.eq(StringUtils.isNotEmpty(productOutput.getProductType()),ProductOutput::getProductType,productOutput.getProductType());
         wrapper.eq(StringUtils.isNotEmpty(productOutput.getNodeId()),ProductOutput::getNodeId,productOutput.getNodeId());
+        wrapper.eq(StringUtils.isNotEmpty(productOutput.getTimeType()),ProductOutput::getTimeType,productOutput.getTimeType());
         wrapper.orderByDesc(ProductOutput::getCreateTime);
         Page<ProductOutput> page = productOutputMapper.selectPage(new Page<ProductOutput>(pageNum, pageSize), wrapper);
         return page;

@@ -103,7 +103,7 @@ public interface IEnergyIndexService {
 
     List<EnergyIndex> searchIndexByNodeAndChildrenNode(String nodeId, String filter);
 
-    void removeNodeIndex(String nodeId, List<String> removeLink);
+    void removeNodeIndex(List<String> removeLink);
 
     AjaxResult importEnergyIndex(List<EnergyIndex> energyIndexList, boolean updateSupport);
 

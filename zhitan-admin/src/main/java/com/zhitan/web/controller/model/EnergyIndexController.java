@@ -126,25 +126,18 @@ public class EnergyIndexController extends BaseController {
    */
   @PreAuthorize("@ss.hasPermi('energyindex:energyindex:remove')")
   @Log(title = "指标信息", businessType = BusinessType.DELETE)
-  @DeleteMapping("/{nodeId}/{indexIds}")
-  public AjaxResult remove(@PathVariable String nodeId, @PathVariable String[] indexIds) {
+  @DeleteMapping("/{indexIds}")
+  public AjaxResult remove(@PathVariable String[] indexIds) {
     List<EnergyIndex> energyIndexList = energyIndexService.getEnergyIndexByIds(
         Arrays.asList(indexIds));
-    List<String> deleteIds = energyIndexList.stream()
-        .filter(f -> StringUtils.isBlank(f.getMeterId()))
-        .map(EnergyIndex::getIndexId)
-        .collect(Collectors.toList());
     List<String> removeLink = energyIndexList.stream()
         .filter(f -> StringUtils.isNotBlank(f.getMeterId()))
         .map(EnergyIndex::getIndexId)
         .collect(Collectors.toList());
     if (!removeLink.isEmpty()) {
-      energyIndexService.removeNodeIndex(nodeId, removeLink);
+      energyIndexService.removeNodeIndex(removeLink);
     }
 
-    if (!deleteIds.isEmpty()) {
-      energyIndexService.deleteEnergyIndexByIds(nodeId, deleteIds.toArray(new String[0]));
-    }
     return AjaxResult.success();
   }
 

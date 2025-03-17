@@ -34,4 +34,6 @@ public class PowerDistribution extends BaseEntity {
      * 负责人电话
      */
     private String principalsTel;
+
+    private String remark;
 }
