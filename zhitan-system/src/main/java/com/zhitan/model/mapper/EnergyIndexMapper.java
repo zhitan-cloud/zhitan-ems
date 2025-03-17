@@ -89,7 +89,7 @@ public interface EnergyIndexMapper extends BaseMapper<EnergyIndex> {
 
   List<EnergyIndex> selectEnergyIndex(EnergyIndexQuery query);
 
-  void removeNodeIndex(@Param("nodeId")String nodeId, @Param("indexIds")List<String> indexIds);
+  void removeEnergyIndex(@Param("indexIds")List<String> indexIds);
 
   void saveEnergyIndex(List<EnergyIndex> insertData);
 

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.system.mapper.SysUserMapper">
 
-    <resultMap type="SysUser" id="SysUserResult">
+    <resultMap type="com.zhitan.common.core.domain.entity.SysUser" id="SysUserResult">
         <id property="userId" column="user_id"/>
         <result property="deptId" column="dept_id"/>
         <result property="userName" column="user_name"/>
@@ -24,21 +24,21 @@
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
         <result property="singleUser" column="single_user"/>
-        <association property="dept"    javaType="SysDept"         resultMap="deptResult" />
+        <association property="dept" javaType="com.zhitan.common.core.domain.entity.SysDept" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 
-    <resultMap id="deptResult" type="SysDept">
+    <resultMap id="deptResult" type="com.zhitan.common.core.domain.entity.SysDept">
         <id property="deptId" column="dept_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="deptName" column="dept_name"/>
-        <result property="ancestors" column="ancestors"   />
+        <result property="ancestors" column="ancestors"/>
         <result property="orderNum" column="order_num"/>
         <result property="leader" column="leader"/>
         <result property="status" column="dept_status"/>
     </resultMap>
 
-    <resultMap id="RoleResult" type="SysRole">
+    <resultMap id="RoleResult" type="com.zhitan.common.core.domain.entity.SysRole">
         <id property="roleId" column="role_id"/>
         <result property="roleName" column="role_name"/>
         <result property="roleKey" column="role_key"/>
@@ -84,9 +84,10 @@
                  left join sys_role r on r.role_id = ur.role_id
     </sql>
 
-    <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
+    <select id="selectUserList" parameterType="com.zhitan.common.core.domain.entity.SysUser" resultMap="SysUserResult">
         select u.user_id, u.dept_id, u.nick_name, u.user_name, u.email, u.avatar, u.phone_number, u.password, u.sex,
-        u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,u.single_user, d.dept_name, d.leader from
+        u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,u.single_user, d.dept_name,
+        d.leader from
         sys_user u
         left join sys_dept d on u.dept_id = d.dept_id
         where u.del_flag = '0'
@@ -115,7 +116,7 @@
 
     <select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
-		where u.user_name = #{userName} and u.del_flag = '0'
+        where u.user_name = #{userName} and u.del_flag = '0'
     </select>
 
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
@@ -123,19 +124,64 @@
         where u.user_id = #{userId}
     </select>
 
-	<select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, user_name from sys_user where user_name = #{userName} and del_flag = '0' limit 1
+    <select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
+        select user_id, user_name
+        from sys_user
+        where user_name = #{userName}
+          and del_flag = '0' limit 1
     </select>
 
     <select id="checkPhoneUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, phone_number from sys_user where phone_number = #{phoneNumber} and del_flag = '0' limit 1
+        select user_id, phone_number
+        from sys_user
+        where phone_number = #{phoneNumber}
+          and del_flag = '0' limit 1
     </select>
 
     <select id="checkEmailUnique" parameterType="String" resultMap="SysUserResult">
-		select user_id, email from sys_user where email = #{email} and del_flag = '0' limit 1
+        select user_id, email
+        from sys_user
+        where email = #{email}
+          and del_flag = '0' limit 1
     </select>
 
-    <insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
+    <select id="selectAllocatedList" parameterType="com.zhitan.common.core.domain.entity.SysUser" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phone_number, u.status, u.create_time
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.dept_id
+        left join sys_user_role ur on u.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
+        where u.del_flag = '0' and r.role_id = #{roleId}
+        <if test="userName != null and userName != ''">
+            AND u.user_name like concat('%', #{userName}, '%')
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND u.phone_number like concat('%', #{phoneNumber}, '%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <select id="selectUnallocatedList" parameterType="com.zhitan.common.core.domain.entity.SysUser" resultMap="SysUserResult">
+        select distinct u.user_id, u.dept_id, u.user_name, u.nick_name, u.email, u.phone_number, u.status, u.create_time
+        from sys_user u
+        left join sys_dept d on u.dept_id = d.dept_id
+        left join sys_user_role ur on u.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
+        where u.del_flag = '0' and (r.role_id != #{roleId} or r.role_id IS NULL)
+        and u.user_id not in (select u.user_id from sys_user u inner join sys_user_role ur on u.user_id = ur.user_id and
+        ur.role_id = #{roleId})
+        <if test="userName != null and userName != ''">
+            AND u.user_name like concat('%', #{userName}, '%')
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND u.phone_number like concat('%', #{phoneNumber}, '%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <insert id="insertUser" parameterType="com.zhitan.common.core.domain.entity.SysUser" useGeneratedKeys="true" keyProperty="userId">
         insert into sys_user(
         <if test="userId != null and userId != 0">user_id,</if>
         <if test="deptId != null and deptId != 0">dept_id,</if>
@@ -169,14 +215,14 @@
         )
     </insert>
 
-    <update id="updateUser" parameterType="SysUser">
+    <update id="updateUser" parameterType="com.zhitan.common.core.domain.entity.SysUser">
         update sys_user
         <set>
             <if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
             <if test="userName != null and userName != ''">user_name = #{userName},</if>
             <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
- 			<if test="email != null ">email = #{email},</if>
- 			<if test="phoneNumber != null ">phone_number = #{phoneNumber},</if>
+            <if test="email != null ">email = #{email},</if>
+            <if test="phoneNumber != null ">phone_number = #{phoneNumber},</if>
             <if test="sex != null and sex != ''">sex = #{sex},</if>
             <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
             <if test="password != null and password != ''">password = #{password},</if>
@@ -191,19 +237,19 @@
         where user_id = #{userId}
     </update>
 
-    <update id="updateUserStatus" parameterType="SysUser">
+    <update id="updateUserStatus" parameterType="com.zhitan.common.core.domain.entity.SysUser">
         update sys_user
         set status = #{status}
         where user_id = #{userId}
     </update>
 
-    <update id="updateUserAvatar" parameterType="SysUser">
+    <update id="updateUserAvatar" parameterType="com.zhitan.common.core.domain.entity.SysUser">
         update sys_user
         set avatar = #{avatar}
         where user_name = #{userName}
     </update>
 
-    <update id="resetUserPwd" parameterType="SysUser">
+    <update id="resetUserPwd" parameterType="com.zhitan.common.core.domain.entity.SysUser">
         update sys_user
         set password = #{password}
         where user_name = #{userName}
