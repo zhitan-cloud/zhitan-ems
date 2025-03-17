@@ -32,6 +32,9 @@ public class ElectricityPriceDate extends BaseEntity {
     @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date endDate;
 
+    private String remark;
+
+
 //    /** 是否阶梯价格0否1是 */
 //    @Excel(name = "是否阶梯价格0否1是")
 //    private String type;
@@ -120,5 +123,15 @@ public class ElectricityPriceDate extends BaseEntity {
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
         .toString();
+    }
+
+    @Override
+    public String getRemark() {
+        return remark;
+    }
+
+    @Override
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

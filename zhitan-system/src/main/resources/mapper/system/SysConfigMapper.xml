@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.system.mapper.SysConfigMapper">
     
-    <resultMap type="SysConfig" id="SysConfigResult">
+    <resultMap type="com.zhitan.system.domain.SysConfig" id="SysConfigResult">
     	<id     property="configId"      column="config_id"      />
         <result property="configName"    column="config_name"    />
         <result property="configKey"     column="config_key"     />
@@ -63,7 +63,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectConfigVo"/>
         where config_key = #{configKey}
     </select>
-    
+    <select id="selectConfigById" resultType="com.zhitan.system.domain.SysConfig">
+        <include refid="selectConfigVo"/>
+        where config_id = #{configId}
+    </select>
+
     <insert id="insertConfig" parameterType="SysConfig">
         insert into sys_config (
 			<if test="configName != null and configName != '' ">config_name,</if>

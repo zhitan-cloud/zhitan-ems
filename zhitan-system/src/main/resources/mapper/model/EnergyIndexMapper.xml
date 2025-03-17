@@ -303,11 +303,11 @@
     from energy_index
     where meter_id = #{meterId}
   </delete>
-  <delete id="removeNodeIndex">
-    delete from node_index where node_id = #{nodeId} and index_id in
-    <foreach item="indexId" collection="indexIds" open="(" separator="," close=")">
+  <delete id="removeEnergyIndex">
+    delete from energy_index where index_id in
+    <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
       #{indexId}
-    </foreach>;
+    </foreach>
   </delete>
 
   <select id="getEnergyIndexMeterByCodes" resultMap="EnergyIndexResult">

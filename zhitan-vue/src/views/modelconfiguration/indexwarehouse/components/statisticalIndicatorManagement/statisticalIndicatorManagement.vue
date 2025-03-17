@@ -2,7 +2,7 @@
   <div class="page-box">
     <div class="form-card">
       <el-form :model="form" ref="queryRef" :inline="true" label-width="70px">
-        <el-form-item label="编码" prop="indexCategory">
+        <el-form-item label="指标分类" prop="indexCategory">
           <el-select v-model="form.indexCategory" placeholder="请选择指标分类" style="width: 200px">
             <el-option v-for="dict in sys_index_category" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
