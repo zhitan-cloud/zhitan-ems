@@ -4,8 +4,8 @@
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <p align="center">基于SpringBoot和若依框架开发</p>
 <p align="center">
-    <a href='https://gitee.com/ustcyc/zhitan-ems/stargazers'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
-    <a href='https://gitee.com/ustcyc/zhitan-ems/members'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
+    <a href='https://gitee.com/zhitan-ems/zhitan-ems/stargazers'><img src='https://gitee.com/zhitan-ems/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
+    <a href='https://gitee.com/zhitan-ems/zhitan-ems/members'><img src='https://gitee.com/zhitan-ems/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
 </p>
 
 ## 介绍
@@ -14,11 +14,7 @@
 
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
-
-墙内仓库地址（码云）：https://gitee.com/ustcyc/zhitan-ems
-
-已同步更新到github仓库：https://github.com/Andy-Yin/zhitan-ems
-
+## 请大家有问题提issue吧。。。
 
 ## 在线体验
 
@@ -120,6 +116,7 @@ VUE版本：VUE 3
 
 ## 业务架构
 ![输入图片说明](readme/业务架构.png)
+
 ## 技术架构
 ![输入图片说明](readme/技术架构-1.png)
 ![输入图片说明](readme/技术架构.png)
