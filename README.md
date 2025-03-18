@@ -4,8 +4,8 @@
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <p align="center">基于SpringBoot和若依框架开发</p>
 <p align="center">
-    <a href='https://gitee.com/zhitancloud/zhitan-ems/stargazers'><img src='https://gitee.com/zhitancloud/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
-    <a href='https://gitee.com/zhitancloud/zhitan-ems/members'><img src='https://gitee.com/zhitancloud/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
+    <a href='https://gitee.com/zhitan-ems/zhitan-ems/stargazers'><img src='https://gitee.com/zhitan-ems/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
+    <a href='https://gitee.com/zhitan-ems/zhitan-ems/members'><img src='https://gitee.com/zhitan-ems/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
 </p>
 
 ## 介绍
@@ -14,20 +14,7 @@
 
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
-
-墙内仓库地址（码云）：https://gitee.com/ustcyc/zhitan-ems
-
-已同步更新到github仓库：https://github.com/Andy-Yin/zhitan-ems
-
-## 因为我放我的二维码交流链接，总是有人羡慕我，羡慕我是国内比较先进、最适合国内程序员的java+若依的能源系统，他们就眼红，恶意举报我们说我们是广告引流。
-## 很无奈，很无助，很生气，所以我去掉了所有的联系方式和交流群。
-## 请大家有问题提issue吧。。。https://gitee.com/zhitancloud/zhitan-ems/issues/new
-## 我认为中国市场足够大，国内有几百家做能源系统的的企业和个人，我开源，即贡献了社会，还利他，同时也是为了养活自己，最终也是为我们的双碳目标而努力。
-## 希望举报我的人，能把格局放大，不要像个女人一样，像高中班里两个女生，互相藏对方铅笔，让对方考不好，其不知道，他的竞争对手是国内所有的高考学生。
-## 君子坦荡荡，小人常戚戚。
-## 望某些人，好好做产品，不要想着怎么每天去害别人。
-## 望某些人，做个好人吧！为自己积德，为国家多做点贡献。。
-
+## 请大家有问题提issue吧。。。
 
 ## 在线体验
 
