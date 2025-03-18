@@ -3,6 +3,7 @@
 </div>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <p align="center">基于SpringBoot和若依框架开发</p>
+<p align="center">代码完备，包含数采，清洗，后台展示</p>
 <p align="center">
     <a href='https://gitee.com/liulingling1993/zhitan-ems/stargazers'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
     <a href='https://gitee.com/liulingling1993/zhitan-ems/members'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
@@ -14,10 +15,10 @@
 
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
-## 能碳管理平台包含三个部分
-### 能碳平台展示端：也即含能碳平台后台展示部分，次部分功能在本仓库功能齐全，代码完备
-### 数据采集程序：在本账号zhitan-gateway仓库，提供可以走通一个mqtt格式入时序库的案例，也即mqtt➡️时序库
-### 数据清晰服务：在本账号zhitan-engine仓库，提供可以计算时序数据的例子，也即时序库➡️关系库
+## 【注意】能碳管理平台包含三个部分
+##### 能碳平台展示端：也即含能碳平台后台展示部分，次部分功能在本仓库功能齐全，代码完备
+##### 数据采集程序：zhitan-gateway文件夹，提供可以走通一个mqtt格式入时序库的案例，也即mqtt➡️时序库【正在更新】
+##### 数据清晰服务：zhitan-engine文件夹，提供可以计算时序数据的方法，也即时序库➡️关系库【正在更新】
 
 ## 请大家有问题提issue吧。。。
 
