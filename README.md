@@ -3,7 +3,7 @@
 </div>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <p align="center">基于SpringBoot和若依框架开发</p>
-<p align="center">代码完备，包含数采，清洗，后台展示</p>
+<p align="center">能碳平台后台展示代码完备，数采和数据清洗部分网上开源的库很多，本项目不提供</p>
 <p align="center">
     <a href='https://gitee.com/liulingling1993/zhitan-ems/stargazers'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
     <a href='https://gitee.com/liulingling1993/zhitan-ems/members'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
@@ -16,9 +16,9 @@
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
 ## 【注意】能碳管理平台包含三个部分
-##### 能碳平台展示端：也即能碳平台后台展示部分。
-##### 数据采集程序：zhitan-gateway文件夹，提供可以走通一个mqtt格式入时序库的案例，也即mqtt➡️时序库【正在更新】。
-##### 数据清洗服务：zhitan-engine文件夹，提供可以清洗计算时序数据的方法，也即时序库➡️关系库【正在更新】。
+##### 能碳平台展示端：也即本项目能碳平台后台展示部分，代码完备，运行正常。通过本项目，学习者可以掌握能源管理行业的功能和业务，以及技术架构。
+##### 数据采集程序：也即mqtt➡️时序库功能，市面上开源库非常多，可参考thingsjs等知名项目，或者自己用netty自己实现。
+##### 数据清洗服务：也即时序库➡️关系库，学习者可以使用java自带的XXL job自己实现数据清洗服务。
 
 ## 请大家有问题提issue吧。。。
 
