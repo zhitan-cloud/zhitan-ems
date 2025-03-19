@@ -3,7 +3,10 @@
 </div>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <p align="center">基于SpringBoot和若依框架开发</p>
-<p align="center">能碳平台后台展示代码完备，功能齐全，运行正常，数采和数据清洗部分网上开源的库很多，学习者可以参考友商集成</p>
+<p align="center">能碳平台后台展示&接口已完全开源，代码完备，功能齐全，运行正常</p>
+<p align="center">数采和数据清洗部分网上开源的库很多，学习者可以参考友商集成</p>
+<p align="center"><span style="color: red;">通过本项目，学习者可以掌握能源管理行业的功能和业务，以及技术架构。</span></p>
+
 <p align="center">
     <a href='https://gitee.com/liulingling1993/zhitan-ems/stargazers'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
     <a href='https://gitee.com/liulingling1993/zhitan-ems/members'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
