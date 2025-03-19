@@ -1,7 +1,6 @@
 package com.zhitan.model.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.services.IMeterImplementService;
@@ -212,8 +211,8 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
     }
 
     @Override
-    public void removeNodeIndex(String nodeId, List<String> removeLink) {
-        energyIndexMapper.removeNodeIndex(nodeId, removeLink);
+    public void removeNodeIndex(List<String> removeLink) {
+        energyIndexMapper.removeEnergyIndex(removeLink);
     }
 
     @Override

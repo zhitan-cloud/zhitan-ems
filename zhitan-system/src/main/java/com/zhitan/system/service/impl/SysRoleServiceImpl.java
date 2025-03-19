@@ -433,6 +433,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper,SysRole> imple
                     DateUtils.parseDate(role.getParams().get("beginTime")),
                     DateUtils.parseDate(role.getParams().get("endTime")));
         }
+        queryWrapper.eq(SysRole::getDelFlag, 0);
         return roleMapper.selectPage(new Page<SysRole>(pageNum,pageSize),queryWrapper);
     }
 

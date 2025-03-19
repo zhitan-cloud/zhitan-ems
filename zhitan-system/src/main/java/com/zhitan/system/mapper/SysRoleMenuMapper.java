@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhitan.system.domain.SysRoleMenu;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 角色与菜单关联表 数据层
@@ -34,7 +35,7 @@ import com.zhitan.system.domain.SysRoleMenu;
      * @param ids 需要删除的数据ID
      * @return 结果
      */
-     int deleteRoleMenu(Long[] ids);
+     int deleteRoleMenu(@Param("ids") Long[] ids);
 
     /**
      * 批量新增角色菜单信息
@@ -42,5 +43,5 @@ import com.zhitan.system.domain.SysRoleMenu;
      * @param roleMenuList 角色菜单列表
      * @return 结果
      */
-     int batchRoleMenu(List<SysRoleMenu> roleMenuList);
+     int batchRoleMenu(@Param("list") List<SysRoleMenu> roleMenuList);
 }

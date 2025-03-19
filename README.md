@@ -3,9 +3,13 @@
 </div>
 <h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">智碳能源管理系统</h1>
 <p align="center">基于SpringBoot和若依框架开发</p>
+<p align="center">能碳平台后台展示&接口已完全开源，代码完备，功能齐全，运行正常</p>
+<p align="center">数采和数据清洗部分网上开源的库很多，学习者可以参考友商集成</p>
+<p align="center"><span style="color: red;">通过本项目，学习者可以掌握能源管理行业的功能和业务，以及技术架构。</span></p>
+
 <p align="center">
-    <a href='https://gitee.com/ustcyc/zhitan-ems/stargazers'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
-    <a href='https://gitee.com/ustcyc/zhitan-ems/members'><img src='https://gitee.com/ustcyc/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
+    <a href='https://gitee.com/liulingling1993/zhitan-ems/stargazers'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/star.svg?theme=dark' alt='star'></img></a>
+    <a href='https://gitee.com/liulingling1993/zhitan-ems/members'><img src='https://gitee.com/liulingling1993/zhitan-ems/badge/fork.svg?theme=dark' alt='fork'></img></a>
 </p>
 
 ## 介绍
@@ -14,11 +18,17 @@
 
 针对客户场景：政府、园区、企业、工矿、公共建筑等。
 
+## 【注意】完整能碳管理平台包含三个部分，<span style="color: red;">本仓库只包含能碳平台展示端</span>
+##### 能碳平台展示端：<span style="color: red;">也即本项目能碳平台后台展示部分，代码完备，运行正常。通过本项目，学习者可以掌握能源管理行业的功能和业务，以及技术架构。</span>
+##### 数据采集程序：也即mqtt➡️时序库功能，市面上开源库非常多，可参考thingsjs等知名项目，或者自己用netty自己实现。
+##### 数据清洗服务：也即时序库➡️关系库，学习者可以使用java自带的XXL job等计划任务工具自己按照业务功能，来实现数据清洗服务。
 
-墙内仓库地址（码云）：https://gitee.com/ustcyc/zhitan-ems
+## 关于问题答疑
 
-已同步更新到github仓库：https://github.com/Andy-Yin/zhitan-ems
-
+#####  因总是有人恶意举报我们仓库，说我们做商业推广，顾我已经删除了所有联系方式和交流群
+##### 演示demo、logo、截图等也换成了中性的名字，去掉了所有有可能涉及到涉嫌推广的字眼（我们也不知道git被举报的规则是什么。。。）
+#####  所以大家如果有问题，提issue吧。。。
+##
 
 ## 在线体验
 
@@ -120,6 +130,7 @@ VUE版本：VUE 3
 
 ## 业务架构
 ![输入图片说明](readme/业务架构.png)
+
 ## 技术架构
 ![输入图片说明](readme/技术架构-1.png)
 ![输入图片说明](readme/技术架构.png)
