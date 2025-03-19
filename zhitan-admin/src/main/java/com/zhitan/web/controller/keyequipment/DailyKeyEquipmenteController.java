@@ -3,7 +3,6 @@ package com.zhitan.web.controller.keyequipment;
 import com.zhitan.basicdata.domain.FacilityArchives;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
-import com.zhitan.common.core.page.TableDataInfo;
 import com.zhitan.keyequipment.domain.DailyKeyEquipment;
 import com.zhitan.keyequipment.service.IDailyKeyEquipmentService;
 import com.zhitan.model.domain.EnergyIndex;
@@ -43,14 +42,14 @@ public class DailyKeyEquipmenteController extends BaseController {
 
     @GetMapping("/list")
     @ApiOperation(value = "重点设备能耗分析（日）列表")
-    public TableDataInfo list(DataItem dataItem) throws ParseException {
+    public AjaxResult list(DataItem dataItem) throws ParseException {
         List<ModelNode> nodeId = modelNodeService.getModelNodeByModelCode(dataItem.getIndexCode());
         if(CollectionUtils.isEmpty(nodeId)){
-            return getDataTable(new ArrayList<>());
+            return success(new ArrayList<>());
         }
         List<EnergyIndex> energyList = modelNodeService.getSettingIndex(nodeId.get(0).getNodeId());
         if(CollectionUtils.isEmpty(energyList)){
-            return getDataTable(new ArrayList<>());
+            return success(new ArrayList<>());
         }
         List<String> indexIds = energyList.stream().map(EnergyIndex::getIndexId).collect(Collectors.toList());
         List<DailyKeyEquipment> dataList=new ArrayList<>();
@@ -74,9 +73,10 @@ public class DailyKeyEquipmenteController extends BaseController {
             dataList.add(report);
             i++;
         };
-        startPage();
+
         List<DailyKeyEquipment> list = dailykeyEquipment.getdailyKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
-        return getDataTable(list);
+
+        return success(list);
     }
 
     @GetMapping("/listChart")
@@ -93,7 +93,7 @@ public class DailyKeyEquipmenteController extends BaseController {
     }
     /*所有设备*/
     @GetMapping("/getFacilityArchives")
-    @ApiOperation(value = "查询所有设备列表")
+    @ApiOperation(value = "查询重点设备列表")
     public AjaxResult getFacilityArchives() {
         try {
             List<FacilityArchives> list=dailykeyEquipment.getFacilityArchives();
