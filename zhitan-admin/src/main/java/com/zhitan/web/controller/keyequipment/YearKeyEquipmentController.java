@@ -3,7 +3,6 @@ package com.zhitan.web.controller.keyequipment;
 import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.core.controller.BaseController;
 import com.zhitan.common.core.domain.AjaxResult;
-import com.zhitan.common.core.page.TableDataInfo;
 import com.zhitan.keyequipment.domain.YearKeyEquipment;
 import com.zhitan.keyequipment.service.IYearKeyEquipmentService;
 import com.zhitan.model.domain.EnergyIndex;
@@ -43,14 +42,14 @@ public class YearKeyEquipmentController extends BaseController {
 
     @GetMapping("/list")
     @ApiOperation(value = "重点设备能耗统计（年）列表")
-    public TableDataInfo list(DataItem dataItem) throws ParseException {
+    public AjaxResult list(DataItem dataItem) throws ParseException {
         List<ModelNode> nodeId = modelNodeService.getModelNodeByModelCode(dataItem.getIndexCode());
         if(CollectionUtils.isEmpty(nodeId)){
-            return getDataTable(new ArrayList<>());
+            return success(new ArrayList<>());
         }
         List<EnergyIndex> energyList = modelNodeService.getSettingIndex(nodeId.get(0).getNodeId());
         if(CollectionUtils.isEmpty(energyList)){
-            return getDataTable(new ArrayList<>());
+            return success(new ArrayList<>());
         }
         List<String> indexIds = energyList.stream().map(EnergyIndex::getIndexId).collect(Collectors.toList());
         List<YearKeyEquipment> dataList=new ArrayList<>();
@@ -75,9 +74,9 @@ public class YearKeyEquipmentController extends BaseController {
             dataList.add(report);
             i++;
         }
-        startPage();
+
         List<YearKeyEquipment> list = yearKeyEquipmentService.getYearKeyEquipmentList(indexIds, dataList,dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
-        return getDataTable(list);
+        return success(list);
     }
 
     @GetMapping("/listChart")
