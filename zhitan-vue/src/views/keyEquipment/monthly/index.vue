@@ -18,7 +18,7 @@
             v-model="queryParams.dataTime"
             type="month"
             :clearable="false"
-            value-format="yyyy-MM"
+            value-format="YYYY-MM"
             placeholder="选择日期"
           >
           </el-date-picker>

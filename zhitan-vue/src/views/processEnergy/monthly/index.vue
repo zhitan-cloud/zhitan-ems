@@ -54,7 +54,7 @@
                   style="margin-right: 8px"
                 ></el-button>
                 <el-tooltip
-                  v-if="scope.row.indexName.length > 9"
+                  v-if="scope.row.indexName && scope.row.indexName.length > 9"
                   class="item"
                   effect="dark"
                   :content="scope.row.indexName"
