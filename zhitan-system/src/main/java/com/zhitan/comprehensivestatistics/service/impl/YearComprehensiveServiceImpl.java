@@ -2,7 +2,6 @@ package com.zhitan.comprehensivestatistics.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.constant.CommonConst;
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.common.utils.DateTimeUtil;
 import com.zhitan.comprehensivestatistics.domain.YearComperhensive;
 import com.zhitan.comprehensivestatistics.mapper.YearComprehensiveMapper;
@@ -29,14 +28,14 @@ public class YearComprehensiveServiceImpl implements IyearComprehensive {
 
     @Override
     public List<YearComperhensive> getYearComprehensiveList(String nodeId, List<YearComperhensive> dataList,
-                                                            Date beginTime, Date endTime, TimeType timeType, String indexStorageId){
+                                                            Date beginTime, Date endTime, String timeType, String indexStorageId){
         if (StringUtils.isNotEmpty(nodeId)) {
             return yearMapper.getYearComprehensiveList(nodeId, dataList, beginTime, endTime, timeType, indexStorageId);
         }
         return Collections.emptyList();
     }
     @Override
-    public List<YearComperhensive> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId){
+    public List<YearComperhensive> getListChart(String indexId, Date beginTime, Date endTime, String timeType, String indexStorageId){
         List<YearComperhensive> dataList = new ArrayList<>();
         if (StringUtils.isNotEmpty(indexId)) {
             List<YearComperhensive> listChart = yearMapper.getListChart(indexId, beginTime, endTime, timeType, indexStorageId);
@@ -54,7 +53,7 @@ public class YearComprehensiveServiceImpl implements IyearComprehensive {
                     } else {
                         yearComperhensive.setTimeCode(format);
                         yearComperhensive.setIndexId(indexId);
-                        yearComperhensive.setTimeType(timeType.name());
+                        yearComperhensive.setTimeType(timeType);
                         yearComperhensive.setUnitId(first.getUnitId());
                         yearComperhensive.setIndexName(first.getIndexName());
                     }

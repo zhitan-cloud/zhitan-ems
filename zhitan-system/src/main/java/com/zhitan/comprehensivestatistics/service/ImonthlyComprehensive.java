@@ -1,7 +1,6 @@
 package com.zhitan.comprehensivestatistics.service;
 
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.MonthlyComprehensive;
 
 import java.util.Date;
@@ -25,7 +24,7 @@ public interface ImonthlyComprehensive {
      * @param indexStorageId
      * @return
      */
-    List<MonthlyComprehensive> getMonthlyComprehensiveList(String nodeId, List<MonthlyComprehensive> dataList, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
+    List<MonthlyComprehensive> getMonthlyComprehensiveList(String nodeId, List<MonthlyComprehensive> dataList, Date beginTime, Date endTime, String timeType, String indexStorageId);
 
     /**
      * 全厂综合能耗统计 月
@@ -37,5 +36,5 @@ public interface ImonthlyComprehensive {
      * @param indexStorageId
      * @return
      */
-    List<MonthlyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
+    List<MonthlyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, String timeType, String indexStorageId);
 }

@@ -1,6 +1,5 @@
 package com.zhitan.comprehensivestatistics.mapper;
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.MonthlyComprehensive;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,7 +28,7 @@ public interface MonthlyComprehensiveMapper {
                                                                   @Param("dataList") List<MonthlyComprehensive> dataList,
                                                                   @Param("beginTime") Date beginTime,
                                                                   @Param("endTime") Date endTime,
-                                                                  @Param("timeType") TimeType timeType,
+                                                                  @Param("timeType") String timeType,
                                                                   @Param("indexStorageId") String indexStorageId);
 
     /**
@@ -45,7 +44,7 @@ public interface MonthlyComprehensiveMapper {
     List<MonthlyComprehensive> getListChart(@Param("indexId") String indexId,
                                             @Param("beginTime") Date beginTime,
                                             @Param("endTime") Date endTime,
-                                            @Param("timeType") TimeType timeType,
+                                            @Param("timeType") String timeType,
                                             @Param("indexStorageId") String indexStorageId);
 
 }
