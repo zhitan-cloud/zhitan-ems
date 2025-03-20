@@ -18,7 +18,7 @@
             v-model="queryParams.dataTime"
             type="month"
             :clearable="false"
-            value-format="yyyy-MM"
+            value-format="YYYY-MM"
             placeholder="选择日期"
           >
           </el-date-picker>
@@ -35,7 +35,7 @@
 
     <div class="table-bg-style" style="padding-bottom: 12px">
       <div class="table-box">
-        <el-table :data="energyList" v-loading="loading" border max-height="380px">
+        <el-table :data="energyList" v-loading="loading" border max-height="380px" height="380">
           <el-table-column fixed prop="indexName" label="指标名称" width="210px">
             <template #default="scope">
               <div style="width: 100%; text-align: left">
@@ -54,7 +54,7 @@
                   style="margin-right: 8px"
                 ></el-button>
                 <el-tooltip
-                  v-if="scope.row.indexName.length > 9"
+                  v-if="scope.row.indexName && scope.row.indexName.length > 9"
                   class="item"
                   effect="dark"
                   :content="scope.row.indexName"
@@ -68,7 +68,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column v-for="index in 31" :key="index" :label="index + '日'" align="center" min-width="100">
+          <el-table-column v-for="index in 31" :key="index" :label="index + '日'" align="center" min-width="100px">
             <template #default="scope">{{ numFilter(scope.row[`value${index}`]) }}</template>
           </el-table-column>
         </el-table>
@@ -123,6 +123,7 @@ function getList() {
   getDataList({
     ...queryParams.value,
   }).then((response) => {
+    console.log("1111111111", response)
     energyList.value = response.data.tabledata
     if (energyList.value && energyList.value.length !== 0) {
       selectChange(energyList.value[0])
