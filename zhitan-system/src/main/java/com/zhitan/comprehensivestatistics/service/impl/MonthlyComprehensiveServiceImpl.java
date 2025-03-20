@@ -1,11 +1,9 @@
 package com.zhitan.comprehensivestatistics.service.impl;
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.MonthlyComprehensive;
 import com.zhitan.comprehensivestatistics.mapper.MonthlyComprehensiveMapper;
 import com.zhitan.comprehensivestatistics.service.ImonthlyComprehensive;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +23,7 @@ public class MonthlyComprehensiveServiceImpl implements ImonthlyComprehensive {
     private MonthlyComprehensiveMapper monthMapper;
 
     public List<MonthlyComprehensive> getMonthlyComprehensiveList(String nodeId, List<MonthlyComprehensive> dataList,
-                                                                  Date beginTime, Date endTime, TimeType timeType, String indexStorageId){
+                                                                  Date beginTime, Date endTime, String timeType, String indexStorageId){
         if (StringUtils.isNotEmpty(nodeId)) {
             return monthMapper.getMonthlyComprehensiveList(nodeId, dataList, beginTime, endTime, timeType, indexStorageId);
         }
@@ -33,7 +31,7 @@ public class MonthlyComprehensiveServiceImpl implements ImonthlyComprehensive {
     }
 
     @Override
-    public List<MonthlyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId){
+    public List<MonthlyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, String timeType, String indexStorageId){
         if (indexId != null && !indexId.isEmpty()) {
             return monthMapper.getListChart(indexId,beginTime,endTime,timeType,indexStorageId);
         }

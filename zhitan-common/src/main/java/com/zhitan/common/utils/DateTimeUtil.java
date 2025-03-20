@@ -10,10 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
+import java.util.*;
 /**
  * @Description: 时间工具类
  * @author: yxw
@@ -745,4 +742,42 @@ public class DateTimeUtil {
         }
         return momDate;
     }
+   public static List<TypeTime> getDateTimeList(String timeType,Date dataTime){
+        List<TypeTime> resultlist = new ArrayList<>();
+        Date beginTime = DateUtil.beginOfDay(dataTime);
+        switch (timeType){
+            case TimeTypeConst.TIME_TYPE_DAY:
+                for(int i = 0;i<24;i++){
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime,COMMON_PATTERN));
+                    typeTime.setDateTime(DateTimeUtil.toDateTime(typeTime.getDataTime()));
+                    typeTime.setTimeCode(CommonConst.WORD_H + DateUtil.format(beginTime,COMMON_PATTERN_HOUR));
+                    typeTime.setValue("value" + i);
+                    resultlist.add(typeTime);
+                    beginTime = addHours(beginTime,1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_MONTH:
+                for(int i = 0;i<31;i++){
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime,COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_D + DateUtil.format(beginTime,COMMON_PATTERN_DAY));
+                    typeTime.setValue("value" + i);
+                    resultlist.add(typeTime);
+                    beginTime = addHours(beginTime,1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_YEAR:
+                for(int i = 0;i<12;i++){
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime,COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_M + DateUtil.format(beginTime,COMMON_PATTERN_MONTH));
+                    typeTime.setValue("value" + i);
+                    resultlist.add(typeTime);
+                    beginTime = addHours(beginTime,1);
+                }
+                break;
+        }
+        return resultlist;
+   }
 }
