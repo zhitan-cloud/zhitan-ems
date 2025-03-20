@@ -14,14 +14,14 @@
         </el-form-item>
         <el-form-item label="统计时间">
           <el-date-picker
-            v-model="queryParams.dataTime"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            placeholder="选择日期"
             style="width: 100%"
+            v-model="queryParams.dataTime"
+            type="year"
             :clearable="false"
-          />
+            value-format="YYYY"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -68,8 +68,8 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column v-for="index in 24" :key="index" :label="index - 1 + '时'" align="center" min-width="100">
-            <template #default="scope">{{ numFilter(scope.row[`value${index - 1}`]) }}</template>
+          <el-table-column v-for="index in 12" :key="index" :label="index + '月'" align="center" min-width="100">
+            <template #default="scope">{{ numFilter(scope.row[`value${index}`]) }}</template>
           </el-table-column>
         </el-table>
 
@@ -82,12 +82,9 @@
 </template>
 
 <script setup>
-import {
-  getDataList,
-  getlistChart,
-  exportList,
-} from "@/api/comprehensiveStatistics/dailyComprehensive/dailyComprehensive"
+import { getDataList, getlistChart } from "@/api/comprehensiveStatistics/yearComprehensive/yearComprehensive"
 import { listEnergyTypeList } from "@/api/modelConfiguration/energyType"
+import processApi from "@/api/process/api"
 import LineChart from "../comps/LineChart.vue"
 let { proxy } = getCurrentInstance()
 const energyTypeList = ref()
@@ -111,62 +108,68 @@ function numFilter(value) {
   return realVal
 }
 let loading = ref(false)
-let total = ref(0)
 let queryParams = ref({
   indexStorageId: "",
   indexCode: "",
   pageNum: 1,
   pageSize: 10,
-  dataTime: "",
+  dataTime: "2025-01-01",
+  timeType: "MONTH",
 })
 
 const energyList = ref([])
 const lineChartData = ref({})
 function getList() {
   queryParams.value.indexCode = proxy.$route.query.modelCode
-  getDataList({
-    ...queryParams.value,
-    timeType: "HOUR",
-  }).then((response) => {
-    energyList.value = response.data
-    if (response.data && response.data.length !== 0) {
-      selectChange(response.data[0])
-    } else {
-      lineChartData.value = {}
-    }
-  })
+  processApi
+    .yearList({
+      ...queryParams.value,
+      dataTime: queryParams.value.dataTime ? queryParams.value.dataTime + "-01" : "",
+    })
+    .then((response) => {
+      energyList.value = response.data
+      if (response.data && response.data.length !== 0) {
+        selectChange(response.data[0])
+      } else {
+        lineChartData.value = {}
+      }
+    })
 }
 
 const LineChartRef = ref()
 function selectChange(row) {
   queryParams.value.indexId = row ? row.indexId : undefined
-  queryParams.value.timeType = "HOUR"
-  getlistChart(queryParams.value).then((response) => {
-    let actualData = []
-    let expectedData = []
-    let title = ""
-    response.data.forEach((item) => {
-      expectedData.push(numFilter(item.value))
-      actualData.push(item.timeCode.slice(item.timeCode.length - 2, item.timeCode.length) + "时")
-      title = item.indexName + "(" + (item.unitId || "") + ")"
+  processApi
+    .yearChart({
+      ...queryParams.value,
+      // dataTime: queryParams.value.dataTime ? queryParams.value.dataTime + "-01-01" : "",
     })
+    .then((response) => {
+      let actualData = []
+      let expectedData = []
+      let title = ""
+      response.data.forEach((item) => {
+        expectedData.push(numFilter(item.value))
+        actualData.push(item.timeCode.slice(item.timeCode.length - 2, item.timeCode.length) + "月")
+        title = item.indexName + "(" + (item.unitId || "") + ")"
+      })
 
-    console.log(response)
-    console.log(actualData)
-    console.log(expectedData)
+      console.log(response)
+      console.log(actualData)
+      console.log(expectedData)
 
-    lineChartData.value = {
-      xData: actualData,
-      yData: expectedData,
-      title,
-    }
-    // LineChartRef.value.initChart()
-    // this.lineChartData.actualData = actualData;
-    // this.lineChartData.expectedData = expectedData;
-    // this.lineChartData.title = title;
-    // this.$refs.LineChart.initChart(this.lineChartData);
-    // this.$refs.BarChart.initChart(this.lineChartData);
-  })
+      lineChartData.value = {
+        xData: actualData,
+        yData: expectedData,
+        title,
+      }
+      // LineChartRef.value.initChart()
+      // this.lineChartData.actualData = actualData;
+      // this.lineChartData.expectedData = expectedData;
+      // this.lineChartData.title = title;
+      // this.$refs.LineChart.initChart(this.lineChartData);
+      // this.$refs.BarChart.initChart(this.lineChartData);
+    })
 }
 
 function getTime() {
@@ -176,9 +179,8 @@ function getTime() {
   var date = date.getDate()
   month = month < 10 ? "0" + month : month
   date = date < 10 ? "0" + date : date
-  queryParams.value.dataTime = year + "-" + month + "-" + date
+  queryParams.value.dataTime = year + ""
 }
-getTime()
 
 // 导出按钮操作
 function handleExport() {
@@ -199,10 +201,13 @@ function resetQuery() {
     pageNum: 1,
     pageSize: 10,
     dataTime: null,
+    timeType: "MONTH",
   }
   getTime()
   getList()
 }
+
+getTime()
 </script>
 
 <style lang="scss" scoped>

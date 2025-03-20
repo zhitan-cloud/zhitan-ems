@@ -82,14 +82,11 @@
 </template>
 
 <script setup>
-import {
-  getDataList,
-  getlistChart,
-  exportList,
-} from "@/api/comprehensiveStatistics/dailyComprehensive/dailyComprehensive"
 import { listEnergyTypeList } from "@/api/modelConfiguration/energyType"
+import processApi from "@/api/process/api"
 import LineChart from "../comps/LineChart.vue"
 let { proxy } = getCurrentInstance()
+
 const energyTypeList = ref()
 function getEnergyTypeList() {
   listEnergyTypeList().then((res) => {
@@ -124,24 +121,26 @@ const energyList = ref([])
 const lineChartData = ref({})
 function getList() {
   queryParams.value.indexCode = proxy.$route.query.modelCode
-  getDataList({
-    ...queryParams.value,
-    timeType: "HOUR",
-  }).then((response) => {
-    energyList.value = response.data
-    if (response.data && response.data.length !== 0) {
-      selectChange(response.data[0])
-    } else {
-      lineChartData.value = {}
-    }
-  })
+  processApi
+    .dailyList({
+      ...queryParams.value,
+      timeType: "HOUR",
+    })
+    .then((response) => {
+      energyList.value = response.data
+      if (response.data && response.data.length !== 0) {
+        selectChange(response.data[0])
+      } else {
+        lineChartData.value = {}
+      }
+    })
 }
 
 const LineChartRef = ref()
 function selectChange(row) {
   queryParams.value.indexId = row ? row.indexId : undefined
   queryParams.value.timeType = "HOUR"
-  getlistChart(queryParams.value).then((response) => {
+  processApi.dailyChart(queryParams.value).then((response) => {
     let actualData = []
     let expectedData = []
     let title = ""

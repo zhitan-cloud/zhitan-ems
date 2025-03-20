@@ -1,7 +1,6 @@
 package com.zhitan.realtimedata.domain;
 
 import com.zhitan.common.enums.Quality;
-import com.zhitan.common.enums.TimeType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -32,7 +31,7 @@ public class DataItem implements Serializable {
   @ApiModelProperty(value = "时间类型编码")
   private String timeCode;
   @ApiModelProperty(value = "时间类型")
-  private TimeType timeType;
+  private String timeType;
   @ApiModelProperty(value = "值")
   private Double value;
   @ApiModelProperty(value = "质量")
@@ -110,11 +109,11 @@ public class DataItem implements Serializable {
     this.timeCode = timeCode;
   }
 
-  public TimeType getTimeType() {
+  public String getTimeType() {
     return timeType;
   }
 
-  public void setTimeType(TimeType timeType) {
+  public void setTimeType(String timeType) {
     this.timeType = timeType;
   }
 

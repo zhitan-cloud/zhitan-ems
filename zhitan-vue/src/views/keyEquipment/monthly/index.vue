@@ -14,14 +14,14 @@
         </el-form-item>
         <el-form-item label="统计时间">
           <el-date-picker
-            v-model="queryParams.dataTime"
-            type="date"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            placeholder="选择日期"
             style="width: 100%"
+            v-model="queryParams.dataTime"
+            type="month"
             :clearable="false"
-          />
+            value-format="YYYY-MM"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -54,7 +54,7 @@
                   style="margin-right: 8px"
                 ></el-button>
                 <el-tooltip
-                  v-if="scope.row.indexName && scope.row.indexName.length > 9"
+                  v-if="scope.row.indexName.length > 9"
                   class="item"
                   effect="dark"
                   :content="scope.row.indexName"
@@ -68,11 +68,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column v-for="index in 24" :key="index" :label="index - 1 + '时'" align="center" min-width="100">
-            <template #default="scope">{{ numFilter(scope.row[`value${index - 1}`]) }}</template>
+          <el-table-column v-for="index in 31" :key="index" :label="index + '日'" align="center" min-width="100">
+            <template #default="scope">{{ numFilter(scope.row[`value${index}`]) }}</template>
           </el-table-column>
         </el-table>
-
         <div>
           <line-chart ref="LineChartRef" :chartData="lineChartData" />
         </div>
@@ -82,12 +81,9 @@
 </template>
 
 <script setup>
-import {
-  getDataList,
-  getlistChart,
-  exportList,
-} from "@/api/comprehensiveStatistics/dailyComprehensive/dailyComprehensive"
+import { getDataList, getlistChart } from "@/api/comprehensiveStatistics/monthlyComprehensive/monthlyComprehensive"
 import { listEnergyTypeList } from "@/api/modelConfiguration/energyType"
+import keyEquipmentApi from "@/api/keyEquipment/api"
 import LineChart from "../comps/LineChart.vue"
 let { proxy } = getCurrentInstance()
 const energyTypeList = ref()
@@ -118,36 +114,37 @@ let queryParams = ref({
   pageNum: 1,
   pageSize: 10,
   dataTime: "",
+  timeType: "DAY",
 })
 
 const energyList = ref([])
 const lineChartData = ref({})
 function getList() {
   queryParams.value.indexCode = proxy.$route.query.modelCode
-  getDataList({
-    ...queryParams.value,
-    timeType: "HOUR",
-  }).then((response) => {
-    energyList.value = response.data
-    if (response.data && response.data.length !== 0) {
-      selectChange(response.data[0])
-    } else {
-      lineChartData.value = {}
-    }
-  })
+  keyEquipmentApi
+    .monthlyList({
+      ...queryParams.value,
+    })
+    .then((response) => {
+      energyList.value = response.data
+      if (energyList.value && energyList.value.length !== 0) {
+        selectChange(energyList.value[0])
+      } else {
+        lineChartData.value = {}
+      }
+    })
 }
 
 const LineChartRef = ref()
 function selectChange(row) {
   queryParams.value.indexId = row ? row.indexId : undefined
-  queryParams.value.timeType = "HOUR"
-  getlistChart(queryParams.value).then((response) => {
+  keyEquipmentApi.monthlyChart(queryParams.value).then((response) => {
     let actualData = []
     let expectedData = []
     let title = ""
     response.data.forEach((item) => {
       expectedData.push(numFilter(item.value))
-      actualData.push(item.timeCode.slice(item.timeCode.length - 2, item.timeCode.length) + "时")
+      actualData.push(item.timeCode.slice(item.timeCode.length - 2, item.timeCode.length) + "日")
       title = item.indexName + "(" + (item.unitId || "") + ")"
     })
 
@@ -176,7 +173,7 @@ function getTime() {
   var date = date.getDate()
   month = month < 10 ? "0" + month : month
   date = date < 10 ? "0" + date : date
-  queryParams.value.dataTime = year + "-" + month + "-" + date
+  queryParams.value.dataTime = year + "-" + month
 }
 getTime()
 
@@ -199,6 +196,7 @@ function resetQuery() {
     pageNum: 1,
     pageSize: 10,
     dataTime: null,
+    timeType: "DAY",
   }
   getTime()
   getList()

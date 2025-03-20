@@ -2,6 +2,11 @@
   <div class="page">
     <div class="form-card">
       <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+        <!-- <el-form-item label="重点设备" prop="energyType">
+          <el-select v-model="queryParams.energyType" placeholder="请选择重点设备">
+            <el-option :label="item.name" :value="item.id" v-for="item in facilityList" :key="item.id" />
+          </el-select>
+        </el-form-item> -->
         <el-form-item label="能源类型" prop="energyType">
           <el-select v-model="queryParams.energyType" placeholder="请选择能源类型">
             <el-option
@@ -82,14 +87,18 @@
 </template>
 
 <script setup>
-import {
-  getDataList,
-  getlistChart,
-  exportList,
-} from "@/api/comprehensiveStatistics/dailyComprehensive/dailyComprehensive"
 import { listEnergyTypeList } from "@/api/modelConfiguration/energyType"
+import keyEquipmentApi from "@/api/keyEquipment/api"
 import LineChart from "../comps/LineChart.vue"
 let { proxy } = getCurrentInstance()
+const facilityList = ref([])
+function getEquip() {
+  keyEquipmentApi.getPointFacility().then((res) => {
+    facilityList.value = res.data
+  })
+}
+getEquip()
+
 const energyTypeList = ref()
 function getEnergyTypeList() {
   listEnergyTypeList().then((res) => {
@@ -124,24 +133,26 @@ const energyList = ref([])
 const lineChartData = ref({})
 function getList() {
   queryParams.value.indexCode = proxy.$route.query.modelCode
-  getDataList({
-    ...queryParams.value,
-    timeType: "HOUR",
-  }).then((response) => {
-    energyList.value = response.data
-    if (response.data && response.data.length !== 0) {
-      selectChange(response.data[0])
-    } else {
-      lineChartData.value = {}
-    }
-  })
+  keyEquipmentApi
+    .dailyList({
+      ...queryParams.value,
+      timeType: "HOUR",
+    })
+    .then((response) => {
+      energyList.value = response.data
+      if (response.data && response.data.length !== 0) {
+        selectChange(response.data[0])
+      } else {
+        lineChartData.value = {}
+      }
+    })
 }
 
 const LineChartRef = ref()
 function selectChange(row) {
   queryParams.value.indexId = row ? row.indexId : undefined
   queryParams.value.timeType = "HOUR"
-  getlistChart(queryParams.value).then((response) => {
+  keyEquipmentApi.dailyChart(queryParams.value).then((response) => {
     let actualData = []
     let expectedData = []
     let title = ""

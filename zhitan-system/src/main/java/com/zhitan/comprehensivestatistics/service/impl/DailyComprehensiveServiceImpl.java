@@ -1,6 +1,5 @@
 package com.zhitan.comprehensivestatistics.service.impl;
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.DailyComprehensive;
 import com.zhitan.comprehensivestatistics.mapper.DailyComprehensiveMapper;
 import com.zhitan.comprehensivestatistics.service.IDailyComprehensiveService;
@@ -24,7 +23,7 @@ public class DailyComprehensiveServiceImpl implements IDailyComprehensiveService
     private DailyComprehensiveMapper dailyMapper;
 
     public List<DailyComprehensive> getDailyComprehensiveList(String nodeId, List<DailyComprehensive> dataList,
-                                                              Date beginTime, Date endTime, TimeType timeType, String indexStorageId){
+                                                              Date beginTime, Date endTime, String timeType, String indexStorageId){
 
         if (StringUtils.isNotEmpty(nodeId)) {
             return dailyMapper.getDailyComprehensiveList(nodeId, dataList, beginTime, endTime, timeType, indexStorageId);
@@ -32,7 +31,7 @@ public class DailyComprehensiveServiceImpl implements IDailyComprehensiveService
         return Collections.emptyList();
     }
     @Override
-    public List<DailyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId){
+    public List<DailyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, String timeType, String indexStorageId){
         if (indexId != null && !indexId.isEmpty()) {
             return dailyMapper.getListChart(indexId,beginTime,endTime,timeType,indexStorageId);
         }

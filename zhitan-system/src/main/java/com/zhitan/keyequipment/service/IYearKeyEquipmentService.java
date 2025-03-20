@@ -1,8 +1,9 @@
 package com.zhitan.keyequipment.service;
 
 
-import com.zhitan.common.enums.TimeType;
+import com.zhitan.common.utils.TypeTime;
 import com.zhitan.keyequipment.domain.YearKeyEquipment;
+import com.zhitan.realtimedata.domain.dto.DataItemQueryDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,6 @@ import java.util.List;
  * @date 2021-01-11
  */
 public interface IYearKeyEquipmentService {
-    public List<YearKeyEquipment> getYearKeyEquipmentList(List<String> indexIds, List<YearKeyEquipment> dataList, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
-    List<YearKeyEquipment> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
+    public List<YearKeyEquipment> getYearKeyEquipmentList(List<String> indexIds, List<TypeTime> dataList, Date beginTime, Date endTime, String timeType, String indexStorageId);
+    List<YearKeyEquipment> getListChart(DataItemQueryDTO queryDto);
 }
