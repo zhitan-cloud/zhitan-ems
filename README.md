@@ -150,7 +150,7 @@ VUE版本：VUE 3
   <img src="readme/img/image-yc.png" width=50% height=50%>
 </p>
 
-应很多开发者私信，我创建了QQ群交流，群号：，请备注：ems+姓名。
+应很多开发者私信，我创建了QQ群交流，请备注：ems+姓名。
 <p align="center">
   <img src="readme/img/qq.png" width=50% height=50%>
 </p>
