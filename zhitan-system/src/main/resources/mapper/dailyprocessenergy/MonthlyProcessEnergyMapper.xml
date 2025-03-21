@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhitan.keyequipment.mapper.DailyKeyEquipmentMapper">
-    <resultMap id="dataItemMap" type="com.zhitan.keyequipment.domain.DailyKeyEquipment">
+<mapper namespace="com.zhitan.processenergy.mapper.MonthlyProcessEnergyMapper">
+    <resultMap id="dataItemMap" type="com.zhitan.processenergy.domain.MonthlyProcessEnergy">
         <result column="index_id" property="indexId"/>
         <result column="index_name" property="indexName"/>
         <result column="time_type" property="timeType"/>
@@ -32,9 +32,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="value21" property="value21"/>
         <result column="value22" property="value22"/>
         <result column="value23" property="value23"/>
-        <result column="value0" property="value0"/>
+        <result column="value24" property="value24"/>
+        <result column="value25" property="value25"/>
+        <result column="value26" property="value26"/>
+        <result column="value27" property="value27"/>
+        <result column="value28" property="value28"/>
+        <result column="value29" property="value29"/>
+        <result column="value30" property="value30"/>
+        <result column="value31" property="value31"/>
     </resultMap>
-    <select id="getdailyKeyEquipmentList" resultMap="dataItemMap">
+
+    <select id="getMonthlyProcessEnergy" resultMap="dataItemMap">
         SELECT
         aa.index_id,
         aa.index_name,
@@ -76,18 +84,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             di.time_type,
             di.time_code
         FROM
-        data_item di LEFT JOIN energy_index ci ON di.index_id = ci.index_id
+            data_item di LEFT JOIN energy_index ci ON di.index_id = ci.index_id
         WHERE
             di.index_id =#{indexId}
-            AND di.data_time &lt; #{endTime}
-            AND di.data_time >= #{beginTime}
-            AND di.time_type = #{timeType}
+          AND di.data_time >= #{beginTime}
+          AND di.data_time &lt; #{endTime}
+          AND di.time_type = #{timeType}
         order by di.data_time
-    </select>
-    <select id="getFacilityArchives" resultType="com.zhitan.basicdata.domain.FacilityArchives">
-        SELECT ID,code,facility_name AS facilityName FROM facility_archives
-    </select>
-    <select id="getPointFacility" resultType="com.zhitan.basicdata.domain.FacilityArchives">
-        SELECT ID,code,facility_name AS facilityName FROM facility_archives where point_flag='Y'
     </select>
 </mapper>

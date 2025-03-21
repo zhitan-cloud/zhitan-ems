@@ -64,7 +64,7 @@
                     {{ scope.row.indexName.substr(0, 9) + "..." }}
                   </span>
                 </el-tooltip>
-                <span v-else>{{ scope.row.indexName }}</span>
+                <span v-else>{{ scope.row.indexName || "--" }}</span>
               </div>
             </template>
           </el-table-column>
