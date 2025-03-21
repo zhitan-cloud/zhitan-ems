@@ -51,7 +51,7 @@
         </foreach>
         AND di.time_type = #{timeType}
         <if test="indexStorageId !='' and indexStorageId !=null">
-            and ci.equipment=#{indexStorageId}
+            and ci.energy_id=#{indexStorageId}
         </if>
         ) aa
         GROUP BY

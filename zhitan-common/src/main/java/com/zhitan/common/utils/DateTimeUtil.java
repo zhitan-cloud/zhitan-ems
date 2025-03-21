@@ -803,10 +803,10 @@ public class DateTimeUtil {
     public static List<TypeTime> getDateTimeList(String timeType, Date dataTime) {
 
         List<TypeTime> resultList = new ArrayList<>();
-
-        Date beginTime = DateUtil.beginOfDay(dataTime);
+        Date beginTime;
         switch (timeType) {
             case TimeTypeConst.TIME_TYPE_HOUR:
+                beginTime = DateUtil.beginOfDay(dataTime);
                 for (int i = 1; i <= 24; i++) {
                     TypeTime typeTime = new TypeTime();
                     typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
@@ -818,6 +818,7 @@ public class DateTimeUtil {
                 }
                 break;
             case TimeTypeConst.TIME_TYPE_DAY:
+                beginTime = DateUtil.beginOfMonth(dataTime);
                 for (int i = 1; i <= 31; i++) {
                     TypeTime typeTime = new TypeTime();
                     typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
@@ -829,6 +830,7 @@ public class DateTimeUtil {
                 }
                 break;
             case TimeTypeConst.TIME_TYPE_MONTH:
+                beginTime = DateUtil.beginOfYear(dataTime);
                 for (int i = 1; i <= 12; i++) {
                     TypeTime typeTime = new TypeTime();
                     typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
