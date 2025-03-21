@@ -1,7 +1,6 @@
 package com.zhitan.comprehensivestatistics.service;
 
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.YearComperhensive;
 
 import java.util.Date;
@@ -26,7 +25,7 @@ public interface IyearComprehensive {
      * @return
      */
     List<YearComperhensive> getYearComprehensiveList(String nodeId, List<YearComperhensive> dataList,
-                                                            Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
+                                                            Date beginTime, Date endTime, String timeType, String indexStorageId);
 
     /**
      * 获取综合指标分析（年）图表数据
@@ -38,5 +37,5 @@ public interface IyearComprehensive {
      * @param indexStorageId
      * @return
      */
-    List<YearComperhensive> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
+    List<YearComperhensive> getListChart(String indexId, Date beginTime, Date endTime, String timeType, String indexStorageId);
 }

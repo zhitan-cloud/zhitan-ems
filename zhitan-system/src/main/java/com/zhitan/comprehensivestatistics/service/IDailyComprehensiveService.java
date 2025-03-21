@@ -1,7 +1,6 @@
 package com.zhitan.comprehensivestatistics.service;
 
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.DailyComprehensive;
 
 import java.util.Date;
@@ -14,6 +13,6 @@ import java.util.List;
  * @date 2020-03-25
  */
 public interface IDailyComprehensiveService {
-    public List<DailyComprehensive> getDailyComprehensiveList(String nodeId, List<DailyComprehensive> dataList, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
-    List<DailyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, TimeType timeType, String indexStorageId);
+    public List<DailyComprehensive> getDailyComprehensiveList(String nodeId, List<DailyComprehensive> dataList, Date beginTime, Date endTime, String timeType, String indexStorageId);
+    List<DailyComprehensive> getListChart(String indexId, Date beginTime, Date endTime, String timeType, String indexStorageId);
 }

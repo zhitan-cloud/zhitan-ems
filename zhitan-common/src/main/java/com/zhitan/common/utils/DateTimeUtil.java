@@ -10,9 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 /**
  * @Description: 时间工具类
@@ -642,6 +640,35 @@ public class DateTimeUtil {
     }
 
     /**
+     * 根据时间类型把字符串转成对应的时间
+     * timeType="HOUR",time="2025-02-01"，返回"2025-02-01 01:00:00"
+     * timeType="DAY",time="2025-02"，返回"2025-02-01 01:00:00"
+     * timeType="MONTH",time="2025"，返回"2025-02-01 01:00:00"
+     *
+     * @param timeType 时间类型
+     * @param time     时间字符串
+     * @return
+     */
+    public static Date getTypeTime(String timeType, String time) {
+        Date dt = null;
+        timeType = StringUtil.ifEmptyOrNullReturnValue(timeType).toUpperCase();
+        switch (timeType) {
+            case TimeTypeConst.TIME_TYPE_HOUR:
+                dt = toDateTime(time, COMMON_PATTERN_TO_DAY);
+                break;
+            case TimeTypeConst.TIME_TYPE_DAY:
+                dt = toDateTime(time, COMMON_PATTERN_TO_MONTH);
+                break;
+            case TimeTypeConst.TIME_TYPE_MONTH:
+                dt = toDateTime(time, COMMON_PATTERN_YEAR);
+                break;
+            default:
+                break;
+        }
+        return dt;
+    }
+
+    /**
      * 根据时间类型把连续的日期字符串转成对应的时间 （202303、20230303、2023030301、202303030101）
      *
      * @param timeType 时间类型
@@ -705,7 +732,7 @@ public class DateTimeUtil {
      * @param val 计算值
      * @return
      */
-    public static Date productionCycleCal(Date date, String cycleType,int val) {
+    public static Date productionCycleCal(Date date, String cycleType, int val) {
         Date momDate = date;
         switch (cycleType) {
             case TimeTypeConst.TIME_TYPE_HOUR:
@@ -744,5 +771,77 @@ public class DateTimeUtil {
                 break;
         }
         return momDate;
+    }
+
+    /**
+     * 通过时间类型返回对应的时间list
+     * <p>
+     * 参数：
+     * timeType="YEAR",dataTime="2025-01-01 00:00:00"
+     * timeType="MONTH",dataTime="2025-01-01 00:00:00"
+     * timeType="DAY",dataTime="2025-01-01 00:00:00"
+     * 返回格式：
+     * [
+     * {"datatime":"2025-01-01 00:00:00","value":"value1"},
+     * {"datatime":"2025-02-01 00:00:00","value":"value2"},
+     * {"datatime":"2025-03-01 00:00:00","value":"value3"},
+     * {"datatime":"2025-04-01 00:00:00","value":"value4"},
+     * {"datatime":"2025-05-01 00:00:00","value":"value5"},
+     * {"datatime":"2025-06-01 00:00:00","value":"value6"},
+     * {"datatime":"2025-07-01 00:00:00","value":"value7"},
+     * {"datatime":"2025-08-01 00:00:00","value":"value8"},
+     * {"datatime":"2025-09-01 00:00:00","value":"value9"},
+     * {"datatime":"2025-10-01 00:00:00","value":"value10"},
+     * {"datatime":"2025-11-01 00:00:00","value":"value11"},
+     * {"datatime":"2025-12-01 00:00:00","value":"value12"}
+     * ]
+     *
+     * @param timeType
+     * @param dataTime
+     * @return
+     */
+    public static List<TypeTime> getDateTimeList(String timeType, Date dataTime) {
+
+        List<TypeTime> resultList = new ArrayList<>();
+        Date beginTime;
+        switch (timeType) {
+            case TimeTypeConst.TIME_TYPE_HOUR:
+                beginTime = DateUtil.beginOfDay(dataTime);
+                for (int i = 1; i <= 24; i++) {
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_H + DateUtil.format(beginTime, COMMON_PATTERN_HOUR));
+                    typeTime.setDateTime(beginTime);
+                    typeTime.setValue("value" + i);
+                    resultList.add(typeTime);
+                    beginTime = addHours(beginTime, 1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_DAY:
+                beginTime = DateUtil.beginOfMonth(dataTime);
+                for (int i = 1; i <= 31; i++) {
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_D + DateUtil.format(beginTime, COMMON_PATTERN_DAY));
+                    typeTime.setDateTime(beginTime);
+                    typeTime.setValue("value" + i);
+                    resultList.add(typeTime);
+                    beginTime = addDays(beginTime, 1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_MONTH:
+                beginTime = DateUtil.beginOfYear(dataTime);
+                for (int i = 1; i <= 12; i++) {
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_M + DateUtil.format(beginTime, COMMON_PATTERN_MONTH));
+                    typeTime.setDateTime(beginTime);
+                    typeTime.setValue("value" + i);
+                    resultList.add(typeTime);
+                    beginTime = addMonths(beginTime, 1);
+                }
+                break;
+        }
+        return resultList;
     }
 }
