@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND di.index_id IN <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
         AND di.time_type = #{timeType}
         <if test="indexStorageId !='' and indexStorageId !=null">
-            and ci.equipment=#{indexStorageId}
+            and ci.energy_id=#{indexStorageId}
         </if>
         ) aa
         GROUP BY
