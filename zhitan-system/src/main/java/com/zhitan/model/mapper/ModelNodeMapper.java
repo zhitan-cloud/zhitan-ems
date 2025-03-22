@@ -9,7 +9,7 @@ import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.domain.vo.NodeIndexValueVO;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
@@ -138,7 +138,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @param code
      * @return
      */
-    List<ModelNodeIndexInfor> getModelNodeIndexIdRelationInforByCode(@Param("code") String code);
+    List<ModelNodeIndexInfo> getModelNodeIndexIdRelationInforByCode(@Param("code") String code);
 
     /**
      * 根据nodeId查询对应详细信息
@@ -146,7 +146,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @param nodeId
      * @return
      */
-    List<ModelNodeIndexInfor> getModelNodeIndexIdRelationInforByNodeId(@Param("nodeId") String nodeId);
+    List<ModelNodeIndexInfo> getModelNodeIndexIdRelationInforByNodeId(@Param("nodeId") String nodeId);
 
     /**
      * 根据父id查询详细信息
@@ -154,7 +154,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @param parentId
      * @return
      */
-    List<ModelNodeIndexInfor> listModelNodeIndexIdRelationInforByParentId(@Param("parentId") String parentId);
+    List<ModelNodeIndexInfo> listModelNodeIndexIdRelationInforByParentId(@Param("parentId") String parentId);
 
     /**
      * 根据code查询父级信息
@@ -171,7 +171,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @param nodeId    节点id
      * @return 结果
      */
-    List<ModelNodeIndexInfor> selectIndexByModelCodeAndNodeId(@Param("modelCode") String modelCode, @Param("nodeId") String nodeId);
+    List<ModelNodeIndexInfo> selectIndexByModelCodeAndNodeId(@Param("modelCode") String modelCode, @Param("nodeId") String nodeId);
 
     void delIndexNodeIdAndIndexType(@Param("nodeId")String nodeId, @Param("indexType")String indexType);
 
@@ -185,7 +185,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @author: hmj
      * @date: 2024/10/16 19:16
      */
-    List<ModelNodeIndexInfor> getModelNodeIndexIdByNodeId(@Param("nodeId")String nodeId, @Param("energyType")String energyType);
+    List<ModelNodeIndexInfo> getModelNodeIndexIdByNodeId(@Param("nodeId")String nodeId, @Param("energyType")String energyType);
 
     /**
      * @description: 根据nodeId查询子节点的所有统计指标
@@ -194,11 +194,11 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @author: hmj
      * @date: 2024/10/18 16:12
      */
-    List<ModelNodeIndexInfor> getModelNodeByParentId(String parentId);
+    List<ModelNodeIndexInfo> getModelNodeByParentId(String parentId);
 
     ModelNode getFirstModeNodeInfo(String modelCode);
 
-    List<ModelNodeIndexInfor> selectIndexByNodeIds(@Param("modelCode") String modelCode,@Param("nodeIds") List<String> nodeIds);
+    List<ModelNodeIndexInfo> selectIndexByNodeIds(@Param("modelCode") String modelCode, @Param("nodeIds") List<String> nodeIds);
 
     /**
      * 根据父节点id和能源类型查询点位下的累积量

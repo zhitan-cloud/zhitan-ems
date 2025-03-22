@@ -17,7 +17,7 @@ import com.zhitan.common.utils.StringUtils;
 import com.zhitan.consumptionanalysis.domain.vo.ChartData;
 import com.zhitan.consumptionanalysis.domain.vo.EnergyProportion;
 import com.zhitan.model.domain.EnergyIndex;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.EnergyIndexMapper;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import lombok.AllArgsConstructor;
@@ -184,8 +184,8 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalyisisService {
         /**
          * 查询点位与用能单元信息
          */
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId,null);
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId,null);
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
 
         Integer monthCount = historyAlarmMapper.selectCountByTime(beginOfMonth,endOfMonth);
         Integer yearCount = historyAlarmMapper.selectCountByTime(beginOfYear,endOfYear);

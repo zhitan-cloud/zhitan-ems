@@ -6,9 +6,9 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:postgresql://127.0.0.1:5432/energy
-        username: root
-        password: 123456
+        url: jdbc:postgresql://1.95.85.239:5432/zhitan_ems
+        username: postgres
+        password: tTYEDtDLMkaR4Gp6
       # 从库数据源
       slave:
         # 从数据源开关/默认关闭

@@ -6,7 +6,7 @@ import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.constant.TimeTypeConst;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.dataitem.service.IDataItemService;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.service.IModelNodeService;
 import com.zhitan.realtimedata.domain.DataItem;
 import com.zhitan.statisticalAnalysis.domain.dto.DataAnalysisMoMDTO;
@@ -41,14 +41,14 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
     public List<DataAnalysisYoYVO> listElectricDataComparisonYoY(DataAnalysisMoMDTO dto) {
         List<DataAnalysisYoYVO> yoyList = new ArrayList<>();
         // 查询点位与用能单元信息
-        List<ModelNodeIndexInfor> nodeInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
         if (CollectionUtils.isEmpty(nodeInforList)) {
             return yoyList;
         }
-        List<String> indexIds = nodeInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
+        Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeInforList.stream().collect(
+                Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
         // 获取查询时间
         Date beginTime = dto.getBeginTime();
         Date endTime = dto.getEndTime();
@@ -62,12 +62,12 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
         BigDecimal multiple = BigDecimal.valueOf(CommonConst.DIGIT_100);
         nodeIndexMap.forEach((key, value) -> {
             DataAnalysisYoYVO yoyVO = new DataAnalysisYoYVO();
-            Optional<ModelNodeIndexInfor> first = value.stream().findFirst();
+            Optional<ModelNodeIndexInfo> first = value.stream().findFirst();
             first.ifPresent(modelNodeIndexInfor -> yoyVO.setEnergyUnitName(modelNodeIndexInfor.getName()));
             // 赋值单位
             yoyVO.setUnit("kWh");
             // 找出indexIds
-            List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+            List<String> indexIdList = value.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
             // 求和
             BigDecimal sum = BigDecimal.valueOf(dataItemList.stream().filter(li -> indexIdList.contains(li.getIndexId()))
                     .mapToDouble(DataItem::getValue).sum()).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
@@ -93,11 +93,11 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
     public List<DataAnalysisMoMVO> listElectricDataComparisonMoM(DataAnalysisMoMDTO dto) {
         List<DataAnalysisMoMVO> momList = new ArrayList<>();
         // 根据id查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
         if (CollectionUtils.isEmpty(nodeIndexInforList)) {
             return momList;
         }
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime = dto.getBeginTime();
         Date endTime = dto.getEndTime();
         Date lastTime;
@@ -121,8 +121,8 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
             lastEndTime = DateUtil.offset(endTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1);
         }
         // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeIndexInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
+        Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeIndexInforList.stream().collect(
+                Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
         // 根据indexId查询dataItem
         List<DataItem> dataItemList = dataItemService.getDataItemHourInforByIndexIds(beginTime, endTime, TimeType.HOUR.name(), indexIds);
         List<DataItem> lastDataItemList = dataItemService.getDataItemHourInforByIndexIds(lastTime, lastEndTime, TimeType.HOUR.name(), indexIds);
@@ -130,12 +130,12 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
         BigDecimal multiple = BigDecimal.valueOf(CommonConst.DIGIT_100);
         nodeIndexMap.forEach((key, value) -> {
             DataAnalysisMoMVO momVO = new DataAnalysisMoMVO();
-            Optional<ModelNodeIndexInfor> first = value.stream().findFirst();
+            Optional<ModelNodeIndexInfo> first = value.stream().findFirst();
             first.ifPresent(modelNodeIndexInfor -> momVO.setEnergyUnitName(modelNodeIndexInfor.getName()));
             // 赋值单位
             momVO.setUnit("kWh");
             // 找出indexIds
-            List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+            List<String> indexIdList = value.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
             // 求和
             BigDecimal sum = BigDecimal.valueOf(dataItemList.stream().filter(li -> indexIdList.contains(li.getIndexId()))
                     .mapToDouble(DataItem::getValue).sum()).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
@@ -161,14 +161,14 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
     public List<DataAnalysisYoYVO> listWaterDataComparisonYoY(DataAnalysisMoMDTO dto) {
         List<DataAnalysisYoYVO> yoyList = new ArrayList<>();
         // 查询点位与用能单元信息
-        List<ModelNodeIndexInfor> nodeInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
         if (CollectionUtils.isEmpty(nodeInforList)) {
             return yoyList;
         }
-        List<String> indexIds = nodeInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
+        Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeInforList.stream().collect(
+                Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
         // 时间类型
         // 获取查询时间
         Date beginTime = dto.getBeginTime();
@@ -183,12 +183,12 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
         BigDecimal multiple = BigDecimal.valueOf(CommonConst.DIGIT_100);
         nodeIndexMap.forEach((key, value) -> {
             DataAnalysisYoYVO yoyVO = new DataAnalysisYoYVO();
-            Optional<ModelNodeIndexInfor> first = value.stream().findFirst();
+            Optional<ModelNodeIndexInfo> first = value.stream().findFirst();
             first.ifPresent(modelNodeIndexInfor -> yoyVO.setEnergyUnitName(modelNodeIndexInfor.getName()));
             // 赋值单位
             yoyVO.setUnit("m³");
             // 找出indexIds
-            List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+            List<String> indexIdList = value.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
             // 求和
             BigDecimal sum = BigDecimal.valueOf(dataItemList.stream().filter(li -> indexIdList.contains(li.getIndexId()))
                     .mapToDouble(DataItem::getValue).sum()).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
@@ -214,11 +214,11 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
     public List<DataAnalysisMoMVO> listWaterDataComparisonMoM(DataAnalysisMoMDTO dto) {
         List<DataAnalysisMoMVO> momList = new ArrayList<>();
         // 根据id查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInforList = listModelNodeIndexIdRelationInfor(dto.getNodeId());
         if (CollectionUtils.isEmpty(nodeIndexInforList)) {
             return momList;
         }
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime = dto.getBeginTime();
         Date endTime = dto.getEndTime();
         Date lastTime;
@@ -242,8 +242,8 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
             lastEndTime = DateUtil.offset(endTime, DateField.YEAR, CommonConst.DIGIT_MINUS_1);
         }
         // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeIndexInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
+        Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeIndexInforList.stream().collect(
+                Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
         // 查询对应indexIds，找到对应dataItem信息
         List<DataItem> dataItemList = dataItemService.getDataItemHourInforByIndexIds(beginTime, endTime, TimeType.HOUR.name(), indexIds);
         List<DataItem> lastDataItemList = dataItemService.getDataItemHourInforByIndexIds(lastTime, lastEndTime, TimeType.HOUR.name(), indexIds);
@@ -251,12 +251,12 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
         BigDecimal multiple = BigDecimal.valueOf(CommonConst.DIGIT_100);
         nodeIndexMap.forEach((key, value) -> {
             DataAnalysisMoMVO momVO = new DataAnalysisMoMVO();
-            Optional<ModelNodeIndexInfor> first = value.stream().findFirst();
+            Optional<ModelNodeIndexInfo> first = value.stream().findFirst();
             first.ifPresent(modelNodeIndexInfor -> momVO.setEnergyUnitName(modelNodeIndexInfor.getName()));
             // 赋值单位
             momVO.setUnit("m³");
             // 找出indexIds
-            List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+            List<String> indexIdList = value.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
             // 求和
             BigDecimal sum = BigDecimal.valueOf(dataItemList.stream().filter(li -> indexIdList.contains(li.getIndexId()))
                     .mapToDouble(DataItem::getValue).sum()).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP);
@@ -278,11 +278,11 @@ public class StatisticalAnalysisServiceImpl implements IStatisticalAnalysisServi
     /**
      * 查询点位与用能单元信息
      */
-    private List<ModelNodeIndexInfor> listModelNodeIndexIdRelationInfor(String nodeId) {
-        List<ModelNodeIndexInfor> nodeInforList = modelNodeService.listModelNodeIndexIdRelationInforByParentId(nodeId);
+    private List<ModelNodeIndexInfo> listModelNodeIndexIdRelationInfor(String nodeId) {
+        List<ModelNodeIndexInfo> nodeInforList = modelNodeService.listModelNodeIndexIdRelationInforByParentId(nodeId);
         // 如果是空存在两种情况，1：id有问题，2：最底层
         if (CollectionUtils.isEmpty(nodeInforList)) {
-            List<ModelNodeIndexInfor> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(nodeId);
+            List<ModelNodeIndexInfo> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(nodeId);
             if (CollectionUtils.isNotEmpty(inforList)) {
                 nodeInforList.addAll(inforList);
             }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.common.core.domain.AjaxResult;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.EnergyIndexQuery;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 
 import java.util.List;
 
@@ -103,7 +104,7 @@ public interface IEnergyIndexService {
 
     List<EnergyIndex> searchIndexByNodeAndChildrenNode(String nodeId, String filter);
 
-    void removeNodeIndex(List<String> removeLink);
+    void removeEnergyIndex(List<String> removeLink);
 
     AjaxResult importEnergyIndex(List<EnergyIndex> energyIndexList, boolean updateSupport);
 
@@ -134,4 +135,11 @@ public interface IEnergyIndexService {
      * @return
      */
     List<EnergyIndex> listDeviceIndex(String nodeId, String meterId);
+
+    /**
+     * 根据点位id获取模型节点点位信息
+     * @param indexIds
+     * @return
+     */
+    List<ModelNodeIndexInfo> getModelNodeIndexInfoListByIndexIds(String[] indexIds);
 }

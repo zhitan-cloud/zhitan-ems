@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <HeaderCard :title="'恒邦能源数据综合分析'" />
+    <HeaderCard :title="'能源数据综合分析'" />
     <div class="content-box">
       <div class="left-box">
         <BaseCardBaseCard title="当日能耗">
