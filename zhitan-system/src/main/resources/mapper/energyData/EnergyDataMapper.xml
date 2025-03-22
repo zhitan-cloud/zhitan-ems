@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.energydata.mapper.EnergyDataStatisticMapper">
 
-    <select id="getModelNodeIndexIdByFixedNodeIds" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+    <select id="getModelNodeIndexIdByFixedNodeIds" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
                ni.index_id indexId,

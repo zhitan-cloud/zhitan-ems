@@ -4,7 +4,7 @@ import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.services.IMeterImplementService;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelInfo;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.domain.vo.PointDataVO;
 import com.zhitan.model.mapper.ModelInfoMapper;
 import com.zhitan.model.service.IEnergyIndexService;
@@ -124,16 +124,16 @@ public class ModelInfoServiceImpl implements IModelInfoService {
   public List<PointDataVO> listEnergyIndexByModelId(String modelId) {
     List<PointDataVO> voList = new ArrayList<>();
     // 根据id查询下级id与indexId
-    List<ModelNodeIndexInfor> inforList = modelNodeService.listModelNodeIndexIdRelationInforByParentId(modelId);
+    List<ModelNodeIndexInfo> inforList = modelNodeService.listModelNodeIndexIdRelationInforByParentId(modelId);
     if (CollectionUtils.isEmpty(inforList)) {
-      List<ModelNodeIndexInfor> indexInforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelId);
+      List<ModelNodeIndexInfo> indexInforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelId);
       if (CollectionUtils.isEmpty(indexInforList)) {
         return voList;
       }
       inforList.addAll(indexInforList);
     }
     // 去除所有点位id信息
-    List<String> indexIds = inforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+    List<String> indexIds = inforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
     List<EnergyIndex> energyIndexList = energyIndexService.getEnergyIndexByIds(indexIds);
     // 根据indexid查询对应计量器具信息
     List<String> meterIds = energyIndexList.stream().map(EnergyIndex::getMeterId).collect(Collectors.toList());

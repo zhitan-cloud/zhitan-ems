@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.EnergyIndexQuery;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -102,4 +103,6 @@ public interface EnergyIndexMapper extends BaseMapper<EnergyIndex> {
   List<EnergyIndex> getIndexByCode(@Param("code")String code, @Param("nodeId")String nodeId);
 
   List<EnergyIndex> getIndexByMeterIdIndexCode(@Param("meterId") String meterId, @Param("indexCode") String indexCode, @Param("nodeId") String nodeId);
+
+  List<ModelNodeIndexInfo> getModelNodeIndexInfoListByIndexIds(@Param("indexIds") String[] indexIds);
 }
