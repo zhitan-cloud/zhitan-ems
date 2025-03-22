@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 恒邦能源数据综合分析
+ * 能源数据综合分析
  *
  * @author ZhiTan
  * @date 2024-10-30

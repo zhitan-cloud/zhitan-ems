@@ -11,7 +11,7 @@ import com.zhitan.costmanagement.mapper.CostElectricityInputMapper;
 import com.zhitan.costmanagement.mapper.CostPriceRelevancyMapper;
 import com.zhitan.costmanagement.service.DeviationAnalysisService;
 import com.zhitan.model.domain.ModelNode;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelInfoMapper;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.peakvalley.domain.ElectricityDataItem;
@@ -123,9 +123,9 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
         }else{
             out.setNodeId(nodeId);
             List<StatisticsInfoListOut> child = new ArrayList<>();
-            List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
+            List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
             if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-                Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+                Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
                 List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatisticsDeviationAnalysis(indexSet, dto.getTimeType());
                 StatisticsDataOutItem nowData = compute(dto.getTimeType(),dto.getDate(),nodeId,dataItemList);
                 BeanUtil.copyProperties(nowData,out);
@@ -169,9 +169,9 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
         for(ModelNode modelNode:modelNodeList){
             StatisticsInfoListOut out = new StatisticsInfoListOut();
             String nodeId = modelNode.getNodeId();
-            List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
+            List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
             if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-                Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+                Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
                 List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatisticsDeviationAnalysis(indexSet, dto.getTimeType());
                 StatisticsDataOutItem nowData = compute(dto.getTimeType(),dto.getDate(),nodeId,dataItemList);
                 BeanUtil.copyProperties(nowData,out);
@@ -209,11 +209,11 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
         List<String>xData2 = new ArrayList<>();
         List<BigDecimal>yData = new ArrayList<>();
         Map<String, Object>result = new HashMap<>();
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
 
             String dateStr = dto.getDate();
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
 
             List<ElectricityDataItem> dataItemList = new ArrayList<>();
 
@@ -260,9 +260,9 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
         StatisticsDataOutItem result = new StatisticsDataOutItem();
 
 //        // 查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatisticsDeviationAnalysis(indexSet, dto.getTimeType());
             StatisticsDataOutItem nowData = compute(dto.getTimeType(),dto.getDate(),dto.getNodeId(),dataItemList);
             BeanUtil.copyProperties(nowData,result);
@@ -399,9 +399,9 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
     private StatisticsInfoListOut computeInfoList(DeviationAnalysisDTO dto,List<String>nodes,List<ModelNode>modelNodeList,String nodeId){
         StatisticsInfoListOut out = new StatisticsInfoListOut();
         List<StatisticsInfoListOut> child = new ArrayList<>();
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatisticsDeviationAnalysis(indexSet, dto.getTimeType());
             StatisticsDataOutItem nowData = compute(dto.getTimeType(),dto.getDate(),nodeId,dataItemList);
             BeanUtil.copyProperties(nowData,out);
@@ -432,9 +432,9 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
 
                     StatisticsInfoListOut out2 = new StatisticsInfoListOut();
                     out2.setNodeId(node);
-                    List<ModelNodeIndexInfor> nodeIndexInfoList2 = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), node);
+                    List<ModelNodeIndexInfo> nodeIndexInfoList2 = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), node);
                     if (CollectionUtils.isNotEmpty(nodeIndexInfoList2)) {
-                        Set<String> indexSet2 = nodeIndexInfoList2.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+                        Set<String> indexSet2 = nodeIndexInfoList2.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
                         List<ElectricityDataItem> dataItemList2 = electricityDataItemMapper.getDataStatisticsDeviationAnalysis(indexSet2, dto.getTimeType());
                         StatisticsDataOutItem nowData2 = compute(dto.getTimeType(),dto.getDate(),node,dataItemList2);
                         BeanUtil.copyProperties(nowData2,out2);
@@ -516,9 +516,9 @@ public class DeviationAnalysisServiceServiceImpl implements DeviationAnalysisSer
         }else{
             out.setNodeId(nodeId);
             List<StatisticsInfoListOut> child = new ArrayList<>();
-            List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
+            List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), nodeId);
             if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-                Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+                Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
                 List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatisticsDeviationAnalysis(indexSet, dto.getTimeType());
                 StatisticsDataOutItem nowData = compute(dto.getTimeType(),dto.getDate(),nodeId,dataItemList);
                 BeanUtil.copyProperties(nowData,out);

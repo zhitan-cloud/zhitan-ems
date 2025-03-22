@@ -5,9 +5,8 @@ import cn.hutool.core.date.DateUtil;
 import com.zhitan.common.enums.ElectricityTypeEnum;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.common.utils.DateUtils;
-import com.zhitan.costmanagement.domain.vo.CostPriceRelevancyVo;
 import com.zhitan.costmanagement.mapper.CostPriceRelevancyMapper;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.peakvalley.domain.ElectricityDataItem;
 import com.zhitan.peakvalley.domain.dto.ElectricityDataItemListDTO;
@@ -56,9 +55,9 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
 
         Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
         // 查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, timeType);
 
             electricityDataMap = dataItemList.stream()
@@ -131,9 +130,9 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
 
         Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
         // 查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             // 根据小时数据计算天的数据
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, TimeType.HOUR.name());
 
@@ -312,9 +311,9 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
 
         Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
         // 查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, timeType);
 
             electricityDataMap = dataItemList.stream()
@@ -424,9 +423,9 @@ public class PeakValleyServiceImpl implements IPeakValleyService {
 
         Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
         // 查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, timeType);
 
             electricityDataMap = dataItemList.stream()

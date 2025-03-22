@@ -11,6 +11,7 @@ import com.zhitan.model.domain.DaqTemplate;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.EnergyIndexQuery;
 import com.zhitan.model.domain.ModelNode;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.EnergyIndexMapper;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.model.service.IDaqTemplateService;
@@ -211,7 +212,7 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
     }
 
     @Override
-    public void removeNodeIndex(List<String> removeLink) {
+    public void removeEnergyIndex(List<String> removeLink) {
         energyIndexMapper.removeEnergyIndex(removeLink);
     }
 
@@ -359,5 +360,10 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
     public List<EnergyIndex> listDeviceIndex(String nodeId, String meterId) {
         List<EnergyIndex> energyIndexList = energyIndexMapper.getIndexByMeterIdIndexCode(meterId,null,nodeId);
         return energyIndexList;
+    }
+
+    @Override
+    public List<ModelNodeIndexInfo> getModelNodeIndexInfoListByIndexIds(String[] indexIds) {
+        return energyIndexMapper.getModelNodeIndexInfoListByIndexIds(indexIds);
     }
 }
