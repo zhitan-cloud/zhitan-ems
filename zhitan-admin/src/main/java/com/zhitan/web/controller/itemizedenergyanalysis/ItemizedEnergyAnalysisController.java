@@ -28,7 +28,7 @@ public class ItemizedEnergyAnalysisController {
      * @param dataItem
      * @return
      */
-    @GetMapping("list")
+    @GetMapping("/list")
     private AjaxResult list(ItemizedEnergyAnalysisDTO dataItem) {
         ItemizedEnergyAnalysisVO list = itemizedEnergyAnalysisService.getItemizedEnergyAnalysisService(dataItem);
         return success(list);
