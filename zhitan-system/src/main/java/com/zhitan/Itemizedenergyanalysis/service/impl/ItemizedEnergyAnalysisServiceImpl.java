@@ -12,7 +12,7 @@ import com.zhitan.common.exception.ServiceException;
 import com.zhitan.common.utils.DateTimeUtil;
 import com.zhitan.common.utils.PropUtils;
 import com.zhitan.dataitem.service.IDataItemService;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.realtimedata.domain.DataItem;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * 分项用能分析
  *
  * @author sys
- * @date 2021-01-11
+ * @date 2025-03-25
  */
 @Service
 @AllArgsConstructor
@@ -53,14 +53,14 @@ public class ItemizedEnergyAnalysisServiceImpl implements IItemizedEnergyAnalysi
         DateTime endTime = null;
 
         // 获取节点信息
-        List<ModelNodeIndexInfor> nodeIndexInfo = modelNodeMapper.getModelNodeIndexIdByNodeId(dto.getNodeId(), dto.getEnergyType());
-        List<String> indexList = nodeIndexInfo.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<ModelNodeIndexInfo> nodeIndexInfo = modelNodeMapper.getModelNodeIndexIdByNodeId(dto.getNodeId(), dto.getEnergyType());
+        List<String> indexList = nodeIndexInfo.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
 
         if(ObjectUtil.isEmpty(indexList)){
             return new ItemizedEnergyAnalysisVO();
         }
 
-        ModelNodeIndexInfor info = nodeIndexInfo.stream().findFirst().get();
+        ModelNodeIndexInfo info = nodeIndexInfo.stream().findFirst().get();
 
         // 根据时间类型调整时间范围
         switch (dto.getTimeType()) {

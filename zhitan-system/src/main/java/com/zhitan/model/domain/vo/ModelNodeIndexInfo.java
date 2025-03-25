@@ -38,7 +38,6 @@ public class ModelNodeIndexInfo extends BaseEntity {
      * 名称
      */
     private String nodeName;
-
     /**
      * 点位id
      */
@@ -60,5 +59,8 @@ public class ModelNodeIndexInfo extends BaseEntity {
      * 点位类型
      */
     private String indexType;
-
+    /**
+     * 单位
+     */
+    private String unitId;
 }
