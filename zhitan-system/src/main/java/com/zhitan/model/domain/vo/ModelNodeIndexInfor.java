@@ -2,6 +2,7 @@ package com.zhitan.model.domain.vo;
 
 
 import com.zhitan.common.core.domain.BaseEntity;
+import lombok.Data;
 
 /**
  * 模型节点与点位关系对象
@@ -9,6 +10,7 @@ import com.zhitan.common.core.domain.BaseEntity;
  * @Author: Zhujw
  * @Date: 2023/3/2
  */
+@Data
 public class ModelNodeIndexInfor extends BaseEntity {
   private static final long serialVersionUID = 1L;
 
@@ -32,45 +34,10 @@ public class ModelNodeIndexInfor extends BaseEntity {
    */
   private String energyId;
 
+  /**
+   * 单位
+   */
+  private String unitId;
+
   private String indexType;
-
-  public String getNodeId() {
-    return nodeId;
-  }
-
-  public void setNodeId(String nodeId) {
-    this.nodeId = nodeId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getIndexId() {
-    return indexId;
-  }
-
-  public void setIndexId(String indexId) {
-    this.indexId = indexId;
-  }
-
-  public String getEnergyId() {
-    return energyId;
-  }
-
-  public void setEnergyId(String energyId) {
-    this.energyId = energyId;
-  }
-
-  public String getIndexType() {
-    return indexType;
-  }
-
-  public void setIndexType(String indexType) {
-    this.indexType = indexType;
-  }
 }
