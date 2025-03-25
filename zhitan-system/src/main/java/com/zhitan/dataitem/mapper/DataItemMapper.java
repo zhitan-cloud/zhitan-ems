@@ -3,6 +3,7 @@ package com.zhitan.dataitem.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zhitan.carbonemission.domain.CarbonEmission;
 import com.zhitan.common.enums.TimeType;
+import com.zhitan.consumptionanalysis.domain.vo.RankingEnergyData;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.realtimedata.domain.DataItem;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,7 @@ import java.util.List;
 
 /**
  * 阶段数据录入接口
- * 
+ *
  * @author sys
  * @date 2020-03-25
  */
@@ -80,6 +81,7 @@ public interface DataItemMapper extends BaseMapper<DataItem> {
 
     /**
      * 根据indexId与时间范围查询碳排放数据，上半部分
+     *
      * @param beginTime
      * @param endTime
      * @param timeType
@@ -92,6 +94,7 @@ public interface DataItemMapper extends BaseMapper<DataItem> {
 
     /**
      * 根据indexId与时间范围查询碳排放数据，中间部分
+     *
      * @param beginTime
      * @param endTime
      * @param timeType
@@ -99,10 +102,11 @@ public interface DataItemMapper extends BaseMapper<DataItem> {
      * @return
      */
     List<CarbonEmission> getMiddleCarbonEmission(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
-                                             @Param("timeType") String timeType, @Param("indexId") String indexId,@Param("emissionType") String emissionType);
+                                                 @Param("timeType") String timeType, @Param("indexId") String indexId, @Param("emissionType") String emissionType);
 
     /**
      * 根据indexId与时间范围查询碳排放数据，下半部分
+     *
      * @param beginTime
      * @param endTime
      * @param timeType
@@ -110,7 +114,7 @@ public interface DataItemMapper extends BaseMapper<DataItem> {
      * @return
      */
     List<CarbonEmission> getDownCarbonEmission(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
-                                             @Param("timeType") String timeType, @Param("indexId") String indexId);
+                                               @Param("timeType") String timeType, @Param("indexId") String indexId);
 
     /**
      * 根据indexId与时间范围查询小时的dataitem信息
@@ -126,13 +130,28 @@ public interface DataItemMapper extends BaseMapper<DataItem> {
 
     /**
      * 查询能源类型非电的用量
+     *
      * @param beginTime
      * @param endTime
-     * @param timeType 时间类型
-     * @param nodeId 节点Id
+     * @param timeType   时间类型
+     * @param nodeId     节点Id
      * @param energyType 能源类型
      * @return
      */
     BigDecimal getDataItemTimeRangeValueByNodeId(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime,
-                                            @Param("timeType") String timeType, @Param("nodeId") String nodeId, @Param("energyType") String energyType);
+                                                 @Param("timeType") String timeType, @Param("nodeId") String nodeId, @Param("energyType") String energyType);
+
+    /**
+     * 能源消耗排名
+     *
+     * @param nodeIds
+     * @param timeType
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<RankingEnergyData> getHomePageConsumptionRanking(@Param("nodeIds") List<String> nodeIds,
+                                                          @Param("timeType") String timeType,
+                                                          @Param("beginTime") Date beginTime,
+                                                          @Param("endTime") Date endTime);
 }

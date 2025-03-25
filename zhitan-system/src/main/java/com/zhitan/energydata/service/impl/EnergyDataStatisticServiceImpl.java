@@ -27,7 +27,7 @@ import com.zhitan.energydata.vo.PurchaseConsumptionVo;
 import com.zhitan.home.domain.vo.HomeEnergyStatisticsVO;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.EnergyIndexMapper;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.model.service.IEnergyIndexService;
@@ -37,10 +37,10 @@ import com.zhitan.peakvalley.domain.dto.PeakValleyDTO;
 import com.zhitan.peakvalley.domain.vo.peakvalley.*;
 import com.zhitan.peakvalley.mapper.PeakValleyMapper;
 import com.zhitan.realtimedata.domain.DataItem;
+import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -52,37 +52,24 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
- * 恒邦综合治理大屏接口实现类
+ * 综合治理大屏接口实现类
  */
 @Service
+@AllArgsConstructor
 public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticService {
 
-  @Autowired
   private ModelNodeMapper modelNodeMapper;
-  @Autowired
   private PeakValleyMapper electricityDataItemMapper;
-  @Autowired
   CostPriceRelevancyMapper costPriceRelevancyMapper;
-
-  @Autowired
   CostElectricityInputMapper electricityInputMapper;
-  @Autowired
   private  IDataItemService dataItemService;
-
-  @Autowired
   private SysEnergyMapper sysEnergyMapper;
-  @Autowired
   private  IModelNodeService modelNodeService;
-  @Autowired
   private  IEnergyIndexService energyIndexService;
 
-  @Autowired
   private EnergyDataStatisticMapper statisticMapper;
 
-  @Autowired
   private EnergyIndexMapper energyIndexMapper;
-
-  @Autowired
   private MeterImplementMapper meterImplementMapper;
 
   @Override
@@ -157,9 +144,9 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
 
     Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
     // 查询点位信息
-    List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+    List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
     if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
       List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, timeType);
 
       electricityDataMap = dataItemList.stream()
@@ -335,9 +322,9 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
 
     Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
     // 查询点位信息
-    List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+    List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
     if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
       List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, timeType);
 
       electricityDataMap = dataItemList.stream()
@@ -537,9 +524,9 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
 
     Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
     // 查询点位信息
-    List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
+    List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(dto.getModelCode(), dto.getNodeId());
     if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
       List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime, endTime, timeType);
 
       electricityDataMap = dataItemList.stream()
@@ -677,7 +664,7 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
       return energyDataList;
     }
     final List<String> nodeIds = modelNodeList.stream().map(ModelNode::getNodeId).collect(Collectors.toList());
-    List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.selectIndexByNodeIds(modelCode ,nodeIds);
+    List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.selectIndexByNodeIds(modelCode ,nodeIds);
 
     final Map<String, String> nodeNameMap = new HashMap<>();
     nodeIndexInforList.forEach(n->{
@@ -689,9 +676,9 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
     });
 
     // 按照点位进行分组
-    Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeIndexInforList.stream().collect(
-            Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
-    final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+    Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeIndexInforList.stream().collect(
+            Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
+    final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
     final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
     final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -706,7 +693,7 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
         indexIdEnergyIdMap.put(indexId,energyId);
       }
     });
-    List<String> indexIds = nodeIndexInforList.stream().filter(l -> StringUtils.isNotEmpty(l.getIndexId())).map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+    List<String> indexIds = nodeIndexInforList.stream().filter(l -> StringUtils.isNotEmpty(l.getIndexId())).map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
     Date queryTime = new Date();
     Date beginTime;
     Date endTime;
@@ -736,7 +723,7 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
     Map<String,BigDecimal> resultMap = new HashMap<>();
     nodeIndexMap.forEach((key, value) -> {
       // 找出indexIds
-      List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).filter(Objects::nonNull).collect(Collectors.toList());
+      List<String> indexIdList = value.stream().map(ModelNodeIndexInfo::getIndexId).filter(Objects::nonNull).collect(Collectors.toList());
       if (null!=indexIdList &&!indexIdList.isEmpty()){
         indexIdList.forEach(indexId -> {
           final List<DataItem> dataItems = dataItemMap.get(indexId);
@@ -903,9 +890,9 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
 
     Map<String, List<ElectricityDataItem>> electricityDataMap = new HashMap<>();
 // 查询点位信息
-    List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(modelCode, nodeId);
+    List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(modelCode, nodeId);
     if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+      Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
       List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, startTime,endTime , timeType);
 
       electricityDataMap = dataItemList.stream()
@@ -988,7 +975,7 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
     fixedNodeIds.add("dca20897-5977-40ae-a28a-88a6acdee335");//冶三
     fixedNodeIds.add("4912c751-0611-4f4b-afce-0f58629512b7");//精炼
     fixedNodeIds.add("8eef471f-880c-4636-a428-620a4d2ccd5d");//矿业
-    fixedNodeIds.add("6d6a0412-7c6d-4654-9cb3-0079655e23e5");//恒邦新材料
+    fixedNodeIds.add("6d6a0412-7c6d-4654-9cb3-0079655e23e5");//新材料
 
     LambdaQueryWrapper<ModelNode> nodeLambdaQueryWrapper = new LambdaQueryWrapper<>();
     nodeLambdaQueryWrapper.eq(ModelNode::getModelCode,modelCode);
@@ -1002,14 +989,14 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
 
     Map<String,ModelNode> nodeMap=nodeList.stream().collect(Collectors.toMap(ModelNode::getNodeId,x->x));
 
-    List<ModelNodeIndexInfor> indexList=statisticMapper.getModelNodeIndexIdByFixedNodeIds(modelCode,fixedNodeIds);
+    List<ModelNodeIndexInfo> indexList=statisticMapper.getModelNodeIndexIdByFixedNodeIds(modelCode,fixedNodeIds);
 
 
     // 根据厂区分组
-    Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = indexList.stream().collect(
-            Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
+    Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = indexList.stream().collect(
+            Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
     //查询所有能源类型
-    final List<String> eneryIdList = indexList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+    final List<String> eneryIdList = indexList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
     final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
     queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
 
@@ -1022,7 +1009,7 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
         indexIdEnergyIdMap.put(indexId,energyId);
       }
     });
-    List<String> indexIds = indexList.stream().filter(l -> StringUtils.isNotEmpty(l.getIndexId())).map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+    List<String> indexIds = indexList.stream().filter(l -> StringUtils.isNotEmpty(l.getIndexId())).map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
 //        Date queryTime = new Date();
     Date queryTime = new Date();
     Date beginTime;
@@ -1072,18 +1059,18 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
       }
 
       //node和index关联集合
-      List<ModelNodeIndexInfor> value=nodeIndexMap.get(key);
+      List<ModelNodeIndexInfo> value=nodeIndexMap.get(key);
 
       List<HomeEnergyStatisticsVO> itemVo=new ArrayList<>();
       //根据能源类型分组
-      Map<String, List<ModelNodeIndexInfor>> sysEnergyIds = value.stream().collect(
-              Collectors.groupingBy(ModelNodeIndexInfor::getEnergyId));
+      Map<String, List<ModelNodeIndexInfo>> sysEnergyIds = value.stream().collect(
+              Collectors.groupingBy(ModelNodeIndexInfo::getEnergyId));
 
       if (!sysEnergyIds.isEmpty()) {
         //遍历
-        for (Map.Entry<String, List<ModelNodeIndexInfor>> entry : sysEnergyIds.entrySet()) {
+        for (Map.Entry<String, List<ModelNodeIndexInfo>> entry : sysEnergyIds.entrySet()) {
           String energyIndex = entry.getKey();
-          List<ModelNodeIndexInfor> energyValue = entry.getValue();
+          List<ModelNodeIndexInfo> energyValue = entry.getValue();
           if (energyCoefficientMap.containsKey(energyIndex)) {
             SysEnergy sysEnergy = energyCoefficientMap.get(energyIndex);
             HomeEnergyStatisticsVO item = new HomeEnergyStatisticsVO();
@@ -1095,7 +1082,7 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
             BigDecimal totalConsumption = BigDecimal.ZERO;
             BigDecimal totalCount = BigDecimal.ZERO;
             //合计值
-            for (ModelNodeIndexInfor valueItem:entry.getValue()){
+            for (ModelNodeIndexInfo valueItem:entry.getValue()){
               List<DataItem> dataItems = dataItemMap.get(valueItem.getIndexId());
               if (CollectionUtils.isNotEmpty(dataItems)) {
                 BigDecimal sum = BigDecimal.valueOf(dataItems.stream()
@@ -1171,8 +1158,8 @@ public class EnergyDataStatisticServiceImpl implements IEnergyDataStatisticServi
     if (ObjectUtils.isEmpty(modelNode)) {
       return voList;
     }
-    List<ModelNodeIndexInfor> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelNode.getNodeId());
-    List<String> indexIds = inforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+    List<ModelNodeIndexInfo> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelNode.getNodeId());
+    List<String> indexIds = inforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
     // 通过indexIds找data_Item数据
     List<DataItem> itemList = dataItemService.getDataItemTimeRangeInforByIndexIds(beginTime, endTime, shixuTimeType, indexIds);
     // 查询点位详细信息

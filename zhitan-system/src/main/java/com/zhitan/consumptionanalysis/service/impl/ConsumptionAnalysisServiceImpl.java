@@ -15,7 +15,7 @@ import com.zhitan.consumptionanalysis.service.IConsumptionAnalysisService;
 import com.zhitan.dataitem.service.IDataItemService;
 import com.zhitan.energyIndicators.domain.EnergyIndicators;
 import com.zhitan.energyIndicators.mapper.EnergyIndicatorsMapper;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.model.service.IModelNodeService;
 import com.zhitan.productoutput.domain.ProductOutput;
@@ -67,12 +67,12 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         /**
          * 查询点位与用能单元信息
          */
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
+        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
 
 //        if (CollectionUtils.isEmpty(nodeIndexInforList)) {
 //            return consumptionAnalysisVO;
 //        }
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime;
         Date endTime;
         Date lastTime;
@@ -258,9 +258,9 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         final String parentId = dto.getNodeId();
 
         //根据总结点查询
-        final List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeByParentId(parentId);
+        final List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeByParentId(parentId);
 
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -275,12 +275,12 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         });
 
         // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeIndexInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
+        Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeIndexInforList.stream().collect(
+                Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
 
         // 根据nodeId获取能源类型
         // 所有点位信息
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).distinct().collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).distinct().collect(Collectors.toList());
 
         Date beginTime;
         Date endTime;
@@ -362,11 +362,11 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
      * @param nodeId
      * @return
      */
-    private List<ModelNodeIndexInfor> listModelNodeIndexIdRelationInfor(String nodeId) {
-        List<ModelNodeIndexInfor> nodeInforList = modelNodeService.listModelNodeIndexIdRelationInforByParentId(nodeId);
+    private List<ModelNodeIndexInfo> listModelNodeIndexIdRelationInfor(String nodeId) {
+        List<ModelNodeIndexInfo> nodeInforList = modelNodeService.listModelNodeIndexIdRelationInforByParentId(nodeId);
         // 如果是空存在两种情况，1：id有问题，2：最底层
         if (CollectionUtils.isEmpty(nodeInforList)) {
-            List<ModelNodeIndexInfor> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(nodeId);
+            List<ModelNodeIndexInfo> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(nodeId);
             if (CollectionUtils.isNotEmpty(inforList)) {
                 nodeInforList.addAll(inforList);
             }
@@ -391,14 +391,14 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         /**
          * 查询点位与用能单元信息
          */
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
+        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
 
 //        if (CollectionUtils.isEmpty(nodeIndexInforList)) {
 //            return consumptionAnalysisVO;
 //        }
         //修改过滤统计点位
         nodeIndexInforList = nodeIndexInforList.stream().filter(x -> "STATISTIC".equals(x.getIndexType())).collect(Collectors.toList());
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -412,7 +412,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                 indexIdEnergyIdMap.put(indexId, energyId);
             }
         });
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime;
         Date endTime;
         Date lastTime;
@@ -714,13 +714,13 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         /**
          * 查询点位与用能单元信息
          */
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
+        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
 
 //        if (CollectionUtils.isEmpty(nodeIndexInforList)) {
 //            return consumptionAnalysisVO;
 //        }
         nodeIndexInforList = nodeIndexInforList.stream().filter(x -> "STATISTIC".equals(x.getIndexType())).collect(Collectors.toList());
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -733,7 +733,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                 indexIdEnergyIdMap.put(indexId, energyId);
             }
         });
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime;
         Date endTime;
         String queryTimeType = dto.getTimeType();
@@ -838,7 +838,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         /**
          * 查询点位与用能单元信息
          */
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeByParentId(nodeId);
+        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeByParentId(nodeId);
         final Map<String, String> nodeNameMap = new HashMap<>();
         nodeIndexInforList.forEach(n -> {
             final String id = n.getNodeId();
@@ -848,9 +848,9 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
             }
         });
         // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeIndexInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        Map<String, List<ModelNodeIndexInfo>> nodeIndexMap = nodeIndexInforList.stream().collect(
+                Collectors.groupingBy(ModelNodeIndexInfo::getNodeId));
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -865,7 +865,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                 indexIdEnergyIdMap.put(indexId, energyId);
             }
         });
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime;
         Date endTime;
         String queryTimeType = dto.getTimeType();
@@ -895,7 +895,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         Map<String, BigDecimal> resultMap = new HashMap<>();
         nodeIndexMap.forEach((key, value) -> {
             // 找出indexIds
-            List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+            List<String> indexIdList = value.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
 
             indexIdList.forEach(indexId -> {
                 final List<DataItem> dataItems = dataItemMap.get(indexId);
@@ -994,9 +994,9 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
         /**
          * 查询点位与用能单元信息
          */
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
+        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId, energyType);
 
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
+        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getEnergyId).distinct().collect(Collectors.toList());
         final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList), SysEnergy::getEnersno, eneryIdList);
         final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
@@ -1009,7 +1009,7 @@ public class ConsumptionAnalysisServiceImpl implements IConsumptionAnalysisServi
                 indexIdEnergyIdMap.put(indexId, energyId);
             }
         });
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         Date beginTime;
         Date endTime;
         String queryTimeType = dto.getTimeType();

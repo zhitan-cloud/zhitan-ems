@@ -7,12 +7,11 @@ import com.zhitan.basicdata.domain.SysProduct;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
 import com.zhitan.model.domain.TreeObject;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.model.service.IEnergyIndexService;
 import com.zhitan.model.service.IModelNodeService;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -285,7 +284,7 @@ public class ModelNodeServiceImpl implements IModelNodeService {
    * @return
    */
   @Override
-  public List<ModelNodeIndexInfor> getModelNodeIndexIdRelationInforByCode(String code) {
+  public List<ModelNodeIndexInfo> getModelNodeIndexIdRelationInforByCode(String code) {
     return modelNodeMapper.getModelNodeIndexIdRelationInforByCode(code);
   }
 
@@ -296,7 +295,7 @@ public class ModelNodeServiceImpl implements IModelNodeService {
    * @return
    */
   @Override
-  public List<ModelNodeIndexInfor> getModelNodeIndexIdRelationInforByNodeId(String nodeId) {
+  public List<ModelNodeIndexInfo> getModelNodeIndexIdRelationInforByNodeId(String nodeId) {
     return modelNodeMapper.getModelNodeIndexIdRelationInforByNodeId(nodeId);
   }
 
@@ -307,7 +306,7 @@ public class ModelNodeServiceImpl implements IModelNodeService {
    * @return
    */
   @Override
-  public List<ModelNodeIndexInfor> listModelNodeIndexIdRelationInforByParentId(String parentId) {
+  public List<ModelNodeIndexInfo> listModelNodeIndexIdRelationInforByParentId(String parentId) {
     return modelNodeMapper.listModelNodeIndexIdRelationInforByParentId(parentId);
   }
 

@@ -3,6 +3,7 @@ package com.zhitan.dataitem.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.zhitan.common.enums.TimeType;
+import com.zhitan.consumptionanalysis.domain.vo.RankingEnergyData;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.dataitem.domain.vo.NodeIndexValueVO;
 import com.zhitan.dataitem.mapper.DataItemMapper;
@@ -155,7 +156,7 @@ public class DataItemServiceImpl implements IDataItemService {
                 .eq(ModelNode::getModelCode, dto.getModelCode())
                 .isNull(ModelNode::getParentId);
         List<ModelNode> modelNodes = modelNodeMapper.selectList(wrapper);
-        if(ObjectUtils.isEmpty(modelNodes)){
+        if (ObjectUtils.isEmpty(modelNodes)) {
             throw new RuntimeException("未查询到模型信息");
         }
         ModelNode modelNode = modelNodes.stream().findFirst().get();
@@ -211,6 +212,11 @@ public class DataItemServiceImpl implements IDataItemService {
             flowChartsVO.setItemVOList(itemList);
         }
         return flowChartsVO;
+    }
+
+    @Override
+    public List<RankingEnergyData> getHomePageConsumptionRanking(List<String> nodeIds, String timeType, Date beginTime, Date endTime) {
+        return dataItemMapper.getHomePageConsumptionRanking(nodeIds, timeType, beginTime, endTime);
     }
 
     /**
