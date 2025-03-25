@@ -1,7 +1,6 @@
 package com.zhitan.energydata.mapper;
 
-import com.zhitan.model.domain.CalcFunction;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,5 +8,5 @@ import java.util.List;
 
 public interface EnergyDataStatisticMapper
 {
-    List<ModelNodeIndexInfor> getModelNodeIndexIdByFixedNodeIds(@Param("modelCode")String modelCode,@Param("fixedNodeIds") List<String> fixedNodeIds);
+    List<ModelNodeIndexInfo> getModelNodeIndexIdByFixedNodeIds(@Param("modelCode")String modelCode, @Param("fixedNodeIds") List<String> fixedNodeIds);
 }

@@ -27,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT
             aa.index_id,
             aa.index_name,
+            aa.unit_id,
             <foreach item="item" index="index" collection="dataList">
                 COALESCE ( MAX ( CASE WHEN data_time = #{item.dataTime} THEN "value" END ), null ) AS ${item.value},
             </foreach>
@@ -37,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             SELECT
                 ni.index_id,
                 ei."name" AS "index_name",
+                ei.unit_id,
                 di."value",
                 di.data_time,
                 di.time_type,
@@ -51,12 +53,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND di.data_time >= #{beginTime}
                 AND di.data_time &lt;= #{endTime}
                 AND di.time_type = #{timeType}
-            <if test="indexStorageId !='' and indexStorageId !=null">
-                and ei.energy_id=#{indexStorageId}
-            </if>
+                <if test="indexStorageId !='' and indexStorageId !=null">
+                    and ei.energy_id=#{indexStorageId}
+                </if>
         ) aa
-        GROUP BY aa.index_id, aa.index_name, aa.time_type, aa.order_num
-        ORDER BY aa.order_num ASC
+            GROUP BY aa.index_id, aa.index_name, aa.unit_id, aa.time_type, aa.order_num
+            ORDER BY aa.order_num ASC
     </select>
 
     <select id="getListChart" resultMap="dataItemMap">

@@ -408,4 +408,23 @@
         </if>
     </where>
   </select>
+    <select id="getModelNodeIndexInfoListByIndexIds"
+            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
+        SELECT 	mi.model_name modelName,
+          mi.model_code,
+          mn."name" "name",
+          ei.index_id,
+          ei.code indexCode,
+          ei."name" indexName,
+          ei.energy_id,
+          ei.energy_id
+        FROM node_index ni
+        INNER JOIN energy_index ei ON ni.index_id = ei.index_id
+        LEFT JOIN model_node mn ON ni.node_id = mn.node_id
+        LEFT JOIN model_info mi ON mn.model_code = mi.model_code
+        WHERE ei.index_id IN
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+    </select>
 </mapper>

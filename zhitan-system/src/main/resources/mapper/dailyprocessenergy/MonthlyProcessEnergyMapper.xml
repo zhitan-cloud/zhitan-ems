@@ -44,34 +44,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="getMonthlyProcessEnergy" resultMap="dataItemMap">
         SELECT
-        aa.index_id,
-        aa.index_name,
-        <foreach item="item" index="index" collection="dataList">
-            MAX ( CASE WHEN data_time = #{item.dataTime} THEN "value" END ) AS ${item.value},
-        </foreach>
-        aa.time_type
+            aa.index_id,
+            aa.index_name,
+            aa.unit_id,
+            <foreach item="item" index="index" collection="dataList">
+                MAX ( CASE WHEN data_time = #{item.dataTime} THEN "value" END ) AS ${item.value},
+            </foreach>
+            aa.time_type
         FROM
         (
-        SELECT
-        ci.index_id,
-        ci.NAME  AS "index_name",
-        di."value",
-        di.data_time,
-        di.time_type
-        FROM
-        data_item di LEFT JOIN energy_index ci ON di.index_id = ci.index_id
-        LEFT JOIN facility_archives f ON f."id"=ci.equipment
-        WHERE
-        di.data_time >= #{beginTime}
-        AND di.data_time &lt; #{endTime}
-        AND di.index_id IN <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">#{indexId} </foreach>
-        AND di.time_type = #{timeType}
-        <if test="indexStorageId !='' and indexStorageId !=null">
-            and ci.equipment=#{indexStorageId}
-        </if>
+            SELECT
+                ni.index_id,
+                ei.NAME  AS "index_name",
+                ei.unit_id,
+                di."value",
+                di.data_time,
+                di.time_type
+            FROM
+                model_node mn
+                LEFT JOIN node_index ni ON ni.node_id = mn.node_id
+                LEFT JOIN energy_index ei ON ei.index_id = ni.index_id
+                LEFT JOIN data_item di ON ni.index_id = di.index_id
+            WHERE
+                di.data_time >= #{beginTime}
+                AND di.data_time &lt; #{endTime}
+                AND di.index_id IN
+                    <foreach item="indexId" index="index" collection="indexIds"  open="(" separator="," close=")">
+                        #{indexId}
+                    </foreach>
+                AND di.time_type = #{timeType}
+                <if test="indexStorageId !='' and indexStorageId !=null">
+                    and ei.energy_id=#{indexStorageId}
+                </if>
         ) aa
         GROUP BY
-        aa.index_id,aa.index_name,aa.time_type
+            aa.index_id, aa.index_name, aa.unit_id, aa.time_type
     </select>
 
     <select id="getListChart" resultMap="dataItemMap">

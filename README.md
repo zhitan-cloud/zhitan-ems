@@ -35,7 +35,8 @@
 7. 增加源网荷储（微电网）相关功能
 8. 增加自定义报表
 9. 增加组态自定义配置
-10. 或者其他内容，开发者可以提issue我们来排气
+
+或者其他内容，开发者可以提issue我们来排期
 
 ## 在线体验
 
@@ -89,7 +90,7 @@ VUE版本：VUE 3
    7.2.  尖峰平谷数据
 8. 能耗对比分析（各能源品种）  
    8.1.  电同环比分析      
-   8.2.  水同环比分析
+   8.2.  水同环比分析       
    8.3.  其他能源品种分析
 9. 智能报警  
    9.1.  报警分析        
@@ -144,15 +145,15 @@ VUE版本：VUE 3
 
 ## 沟通交流
 
+应很多开发者私信，我创建了QQ群交流，群号：，请备注：ems+姓名。
+<p align="center">
+  <img src="readme/img/qq.png" width=50% height=50%>
+</p>
+
 扫码添加微信交流，加微信请备注：ems+姓名。
 
 <p align="center">
   <img src="readme/img/image-yc.png" width=50% height=50%>
-</p>
-
-应很多开发者私信，我创建了QQ群交流，请备注：ems+姓名。
-<p align="center">
-  <img src="readme/img/qq.png" width=50% height=50%>
 </p>
 
 ## 参与贡献

@@ -233,4 +233,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND (di.data_time BETWEEN #{beginTime} AND #{endTime})
         AND di.time_type = #{timeType}
     </select>
+    <select id="getHomePageConsumptionRanking"
+            resultType="com.zhitan.consumptionanalysis.domain.vo.RankingEnergyData">
+        SELECT
+            A.node_Id,
+            A."name" AS nodeName,
+            A.energy_id AS energyTypeNo,
+            A.index_type AS energyTypeName,
+            A."value" AS energyConsumption
+        FROM
+        (
+            SELECT
+                mn.node_id,
+                mn."name",
+                ei.energy_id,
+                ei.index_type,
+                se.coefficient,
+                (SUM ( di."value" ) * se.coefficient) AS "value"
+            FROM
+                model_node mn
+            LEFT JOIN node_index ni ON ni.node_id = mn.node_id
+            LEFT JOIN data_item di ON di.index_id = ni.index_id
+            LEFT JOIN energy_index ei ON ei.index_id = ni.index_id
+            LEFT JOIN sys_energy se ON se.enersno = ei.energy_id
+            WHERE
+                mn.node_id IN
+                <foreach collection="nodeIds" item="nodeId" open="(" separator="," close=")">
+                    #{nodeId}
+                </foreach>
+                AND di.time_type = #{timeType}
+                AND di.begin_time between #{beginTime} AND #{endTime}
+                AND ei.index_type = 'STATISTIC'
+            GROUP BY
+                mn.node_id,
+                mn."name",
+                ei.energy_id,
+                ei.index_type,
+                se.coefficient
+        ) A
+        ORDER BY
+            A."value" DESC
+        LIMIT 5
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.zhitan.dataitem.service;
 
 
 import com.zhitan.common.enums.TimeType;
+import com.zhitan.consumptionanalysis.domain.vo.RankingEnergyData;
 import com.zhitan.dataitem.domain.StagseDataEntry;
 import com.zhitan.realtimedata.domain.DataItem;
 import com.zhitan.statisticalAnalysis.domain.dto.FlowChartsDTO;
@@ -98,4 +99,14 @@ public interface IDataItemService {
      * @return 结果
      */
     FlowChartsVO getFlowCharts(FlowChartsDTO dto);
+
+    /**
+     * 获取首页能耗排名
+     * @param nodeIds
+     * @param timeType
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    List<RankingEnergyData> getHomePageConsumptionRanking(List<String> nodeIds, String timeType, Date beginTime, Date endTime);
 }
