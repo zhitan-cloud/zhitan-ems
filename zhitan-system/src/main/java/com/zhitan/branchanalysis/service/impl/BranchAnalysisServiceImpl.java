@@ -39,7 +39,7 @@ public class BranchAnalysisServiceImpl implements IBranchAnalysisService {
     public BranchAnalysisVO getBranchAnalysisService(BranchAnalysisDTO dto) {
         String timeType = dto.getTimeType();
         String dataTime = dto.getDataTime();
-        Date beginTime = DateTimeUtil.getTypeTime(timeType, dataTime);
+        Date beginTime = DateTimeUtil.getTime(timeType, dataTime);
         DateTime endTime = null;
 
         List<ModelNodeIndexInfo> nodeIndexInfo = modelNodeMapper.getModelNodeIndexIdByNodeId(dto.getNodeId(), dto.getEnergyType());
@@ -68,7 +68,7 @@ public class BranchAnalysisServiceImpl implements IBranchAnalysisService {
             default:
                 throw new ServiceException("时间格式错误");
         }
-        //获取数据项列表
+
         List<DataItem> dataItemlist = dataItemMapper.getDataItemTimeRangeInforByIndexIds(beginTime, endTime, timeType, indexlist);
 
         BranchAnalysisVO vo = new BranchAnalysisVO();
