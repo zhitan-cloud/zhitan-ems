@@ -34,10 +34,9 @@ public class ModelNodeIndexInfor extends BaseEntity {
    */
   private String energyId;
 
+  private String indexType;
   /**
    * 单位
    */
   private String unitId;
-
-  private String indexType;
 }
