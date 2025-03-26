@@ -49,7 +49,7 @@ public class ItemizedEnergyAnalysisServiceImpl implements IItemizedEnergyAnalysi
 
         String timeType = dto.getTimeType();
         String dataTime = dto.getDataTime();
-        Date beginTime = DateTimeUtil.getTypeTime(timeType, dataTime);
+        Date beginTime = DateTimeUtil.getTime(timeType, dataTime);
         DateTime endTime = null;
 
         // 获取节点信息
