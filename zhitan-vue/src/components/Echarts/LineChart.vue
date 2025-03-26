@@ -68,7 +68,7 @@ function initChart(value) {
   console.log("initChart", series)
   let option = {
     title: {
-      // text: props.chartData.title,
+      text: props.chartData.title || "",
       left: "40",
       textStyle: {
         color: "#2979ff",
