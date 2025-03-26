@@ -103,7 +103,7 @@
                     align="center"
                     min-width="130"
                   >
-                    <template #default="scope">{{ scope.row[`value${index}`] }}</template>
+                    <template #default="scope">{{ scope.row[`value${index - 1}`] }}</template>
                   </el-table-column>
                 </template>
                 <template v-if="queryParams.timeType == 'YEAR'">
@@ -114,7 +114,7 @@
                     align="center"
                     min-width="130"
                   >
-                    <template #default="scope">{{ scope.row[`value${index}`] }}</template>
+                    <template #default="scope">{{ scope.row[`value${index - 1}`] }}</template>
                   </el-table-column>
                 </template>
               </el-table>
@@ -211,12 +211,12 @@ function getList() {
           }
         } else if (queryParams.value.timeType == "MONTH") {
           for (let i = 0; i < 31; i++) {
-            xData.push(i + "日")
+            xData.push(i + 1 + "日")
             yData.push(dataList[0][`value${i}`])
           }
         } else {
           for (let i = 0; i < 12; i++) {
-            xData.push(i + "月")
+            xData.push(i + 1 + "月")
             yData.push(dataList[0][`value${i}`])
           }
         }

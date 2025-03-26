@@ -57,7 +57,7 @@
           <BaseCard :title="queryParams.nodeName + '-支路用能分析'">
             <div class="">
               <!-- <div id="Chart1" /> -->
-              <line-chart ref="LineChartRef" :chartData="lineChartData" />
+              <line-chart ref="LineChartRef" :chartData="lineChartData" :chartType="'bar'" />
             </div>
           </BaseCard>
           <BaseCard :title="queryParams.nodeName + '-支路用能详情-' + queryParams.enername">
@@ -85,7 +85,7 @@
                     align="center"
                     min-width="130"
                   >
-                    <template #default="scope">{{ scope.row[`value${index}`] }}</template>
+                    <template #default="scope">{{ scope.row[`value${index - 1}`] }}</template>
                   </el-table-column>
                 </template>
                 <template v-if="queryParams.timeType == 'YEAR'">
@@ -96,7 +96,7 @@
                     align="center"
                     min-width="130"
                   >
-                    <template #default="scope">{{ scope.row[`value${index}`] }}</template>
+                    <template #default="scope">{{ scope.row[`value${index - 1}`] }}</template>
                   </el-table-column>
                 </template>
               </el-table>
@@ -191,12 +191,12 @@ function getList() {
           }
         } else if (queryParams.value.timeType == "MONTH") {
           for (let i = 0; i < 31; i++) {
-            xData.push(i + "日")
+            xData.push(i + 1 + "日")
             yData.push(dataList[`value${i}`])
           }
         } else {
           for (let i = 0; i < 12; i++) {
-            xData.push(i + "月")
+            xData.push(i + 1 + "月")
             yData.push(dataList[`value${i}`])
           }
         }
