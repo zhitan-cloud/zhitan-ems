@@ -1,6 +1,7 @@
 package com.zhitan.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhitan.common.constant.CommonConst;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -34,7 +35,8 @@ public class PropUtils {
                 field.set(obj, DoubleUtil.toDouble(value));
             } else if (nameTypeName.contains("bigdecimal")) {
                 BigDecimal valueOf = BigDecimal.valueOf(Double.parseDouble(String.valueOf(value)))
-                        .setScale(2, BigDecimal.ROUND_HALF_UP);
+                        .setScale(CommonConst.DIGIT_2, BigDecimal.ROUND_HALF_UP);
+
                 field.set(obj, valueOf);
             } else {
                 field.set(obj, value);
