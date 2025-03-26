@@ -10,6 +10,7 @@ import com.zhitan.common.utils.DateTimeUtil;
 import com.zhitan.branchanalysis.service.IBranchAnalysisService;
 import com.zhitan.common.utils.PropUtils;
 import com.zhitan.dataitem.mapper.DataItemMapper;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.realtimedata.domain.DataItem;
@@ -41,14 +42,14 @@ public class BranchAnalysisServiceImpl implements IBranchAnalysisService {
         Date beginTime = DateTimeUtil.getTypeTime(timeType, dataTime);
         DateTime endTime = null;
 
-        List<ModelNodeIndexInfor> nodeIndexInfo = modelNodeMapper.getModelNodeIndexIdByNodeId(dto.getNodeId(), dto.getEnergyType());
-        List<String> indexlist = nodeIndexInfo.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<ModelNodeIndexInfo> nodeIndexInfo = modelNodeMapper.getModelNodeIndexIdByNodeId(dto.getNodeId(), dto.getEnergyType());
+        List<String> indexlist = nodeIndexInfo.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
 
         if (ObjectUtil.isEmpty(indexlist)) {
             return new BranchAnalysisVO();
         }
 
-        ModelNodeIndexInfor info = nodeIndexInfo.stream().findFirst().get();
+        ModelNodeIndexInfo info = nodeIndexInfo.stream().findFirst().get();
 
         //根据时间类型调整时间范围
         switch (dto.getTimeType()) {
