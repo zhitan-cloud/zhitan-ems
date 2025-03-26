@@ -378,7 +378,7 @@ public class HomePageServiceImpl implements IHomePageService {
         if (ObjectUtils.isEmpty(parentNode)) {
             return energyDataList;
         }
-        List<String> nodeIds = modelNodeList.stream().filter(x -> ObjectUtils.isNotEmpty(x.getParentId()))
+        List<String> nodeIds = modelNodeList.stream().filter(x -> ObjectUtils.isNotEmpty(x.getParentId()) && parentNode.getNodeId().equals(x.getParentId()))
                 .map(ModelNode::getNodeId).collect(Collectors.toList());
         if (ObjectUtils.isEmpty(nodeIds)) {
             return energyDataList;
