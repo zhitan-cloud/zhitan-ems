@@ -844,4 +844,76 @@ public class DateTimeUtil {
         }
         return resultList;
     }
+
+    /**
+     * 通过时间类型返回对应的时间list
+     * <p>
+     * 参数：
+     * timeType="YEAR",dataTime="2025-01-01 00:00:00"
+     * timeType="MONTH",dataTime="2025-01-01 00:00:00"
+     * timeType="DAY",dataTime="2025-01-01 00:00:00"
+     * 返回格式：
+     * [
+     * {"datatime":"2025-01-01 00:00:00","value":"value1"},
+     * {"datatime":"2025-02-01 00:00:00","value":"value2"},
+     * {"datatime":"2025-03-01 00:00:00","value":"value3"},
+     * {"datatime":"2025-04-01 00:00:00","value":"value4"},
+     * {"datatime":"2025-05-01 00:00:00","value":"value5"},
+     * {"datatime":"2025-06-01 00:00:00","value":"value6"},
+     * {"datatime":"2025-07-01 00:00:00","value":"value7"},
+     * {"datatime":"2025-08-01 00:00:00","value":"value8"},
+     * {"datatime":"2025-09-01 00:00:00","value":"value9"},
+     * {"datatime":"2025-10-01 00:00:00","value":"value10"},
+     * {"datatime":"2025-11-01 00:00:00","value":"value11"},
+     * {"datatime":"2025-12-01 00:00:00","value":"value12"}
+     * ]
+     *
+     * @param timeType
+     * @param dataTime
+     * @return
+     */
+    public static List<TypeTime> getDateTimeListSame(String timeType, Date dataTime) {
+
+        List<TypeTime> resultList = new ArrayList<>();
+        Date beginTime;
+        switch (timeType) {
+            case TimeTypeConst.TIME_TYPE_DAY:
+                beginTime = DateUtil.beginOfDay(dataTime);
+                for (int i = 1; i <= 24; i++) {
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_H + DateUtil.format(beginTime, COMMON_PATTERN_HOUR));
+                    typeTime.setDateTime(beginTime);
+                    typeTime.setValue("value" + i);
+                    resultList.add(typeTime);
+                    beginTime = addHours(beginTime, 1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_MONTH:
+                beginTime = DateUtil.beginOfMonth(dataTime);
+                for (int i = 1; i <= 31; i++) {
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_D + DateUtil.format(beginTime, COMMON_PATTERN_DAY));
+                    typeTime.setDateTime(beginTime);
+                    typeTime.setValue("value" + i);
+                    resultList.add(typeTime);
+                    beginTime = addDays(beginTime, 1);
+                }
+                break;
+            case TimeTypeConst.TIME_TYPE_YEAR:
+                beginTime = DateUtil.beginOfYear(dataTime);
+                for (int i = 1; i <= 12; i++) {
+                    TypeTime typeTime = new TypeTime();
+                    typeTime.setDataTime(DateUtil.format(beginTime, COMMON_PATTERN));
+                    typeTime.setTimeCode(CommonConst.WORD_M + DateUtil.format(beginTime, COMMON_PATTERN_MONTH));
+                    typeTime.setDateTime(beginTime);
+                    typeTime.setValue("value" + i);
+                    resultList.add(typeTime);
+                    beginTime = addMonths(beginTime, 1);
+                }
+                break;
+        }
+        return resultList;
+    }
 }
