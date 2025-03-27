@@ -4,15 +4,14 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.zhitan.branchanalysis.domain.BranchAnalysisVO;
+import com.zhitan.branchanalysis.service.IBranchAnalysisService;
 import com.zhitan.common.constant.TimeTypeConst;
 import com.zhitan.common.exception.ServiceException;
 import com.zhitan.common.utils.DateTimeUtil;
-import com.zhitan.branchanalysis.service.IBranchAnalysisService;
 import com.zhitan.common.utils.PropUtils;
 import com.zhitan.common.utils.TypeTime;
 import com.zhitan.dataitem.mapper.DataItemMapper;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.realtimedata.domain.DataItem;
 import com.zhitan.realtimedata.domain.dto.BranchAnalysisDTO;
@@ -21,16 +20,14 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * c
+ * 支路用能分析
  *
- * @author sys
- * @date 2021-01-11
+ * @author zt
+ * @date 2025-03-27
  */
 @Service
 @AllArgsConstructor
@@ -53,26 +50,22 @@ public class BranchAnalysisServiceImpl implements IBranchAnalysisService {
             return new BranchAnalysisVO();
         }
 
-        String pattern;
         List<TypeTime> dateTimeList;
         //根据时间类型调整时间范围
         switch (dto.getTimeType()) {
             case TimeTypeConst.TIME_TYPE_DAY:
                 timeType = TimeTypeConst.TIME_TYPE_HOUR;
                 endTime = DateUtil.endOfDay(beginTime);
-                pattern = "HH";
                 dateTimeList = DateTimeUtil.getDateTimeListSame(TimeTypeConst.TIME_TYPE_DAY, beginTime);
                 break;
             case TimeTypeConst.TIME_TYPE_MONTH:
                 timeType = TimeTypeConst.TIME_TYPE_DAY;
                 endTime = DateUtil.endOfMonth(beginTime);
-                pattern = "dd";
                 dateTimeList = DateTimeUtil.getDateTimeListSame(TimeTypeConst.TIME_TYPE_MONTH, beginTime);
                 break;
             case TimeTypeConst.TIME_TYPE_YEAR:
                 timeType = TimeTypeConst.TIME_TYPE_MONTH;
                 endTime = DateUtil.endOfYear(beginTime);
-                pattern = "MM";
                 dateTimeList = DateTimeUtil.getDateTimeListSame(TimeTypeConst.TIME_TYPE_YEAR, beginTime);
                 break;
             default:
