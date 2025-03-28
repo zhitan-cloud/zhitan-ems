@@ -156,7 +156,7 @@ const { queryParams, query } = toRefs(data)
 function handleNodeClick(data) {
   queryParams.value.nodeId = data.id
   queryParams.value.nodeName = data.label
-  handleTimeType(period.value[1].value)
+  handleTimeType("MONTH")
   listEnergyTypeList().then((res) => {
     energyTypeList.value = res.data
     queryParams.value.energyType = energyTypeList.value[0].enersno
@@ -168,11 +168,11 @@ function handleNodeClick(data) {
 function handleTimeType(e) {
   queryParams.value.timeType = e
   if (e == "MONTH") {
-    queryParams.value.timeCode = proxy.dayjs(new Date()).format("YYYY-MM")
+    queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
   } else if (e == "YEAR") {
-    queryParams.value.timeCode = proxy.dayjs(new Date()).format("YYYY")
+    queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
   } else {
-    queryParams.value.timeCode = proxy.dayjs(new Date()).format("YYYY-MM-DD")
+    queryParams.value.dataTime = proxy.dayjs(new Date()).format("YYYY-MM-DD")
   }
 }
 function handleEnergyType(item) {
@@ -200,6 +200,7 @@ function getList() {
     proxy.addDateRange({
       ...queryParams.value,
       ...query.value,
+      timeCode: queryParams.value.dataTime,
     })
   ).then((res) => {
     if (!!res.code && res.code == 200) {

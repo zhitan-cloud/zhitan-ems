@@ -11,6 +11,7 @@ import com.zhitan.common.constant.TimeTypeConst;
 import com.zhitan.common.exception.ServiceException;
 import com.zhitan.common.utils.DateTimeUtil;
 import com.zhitan.common.utils.PropUtils;
+import com.zhitan.common.utils.TypeTime;
 import com.zhitan.dataitem.service.IDataItemService;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelNodeMapper;
@@ -62,19 +63,23 @@ public class ItemizedEnergyAnalysisServiceImpl implements IItemizedEnergyAnalysi
 
         ModelNodeIndexInfo info = nodeIndexInfo.stream().findFirst().get();
 
+        List<TypeTime> dateTimeList;
         // 根据时间类型调整时间范围
         switch (dto.getTimeType()) {
             case TimeTypeConst.TIME_TYPE_DAY:
                 timeType = TimeTypeConst.TIME_TYPE_HOUR;
                 endTime = DateUtil.endOfDay(beginTime);
+                dateTimeList = DateTimeUtil.getDateTimeListSame(TimeTypeConst.TIME_TYPE_DAY, beginTime);
                 break;
             case TimeTypeConst.TIME_TYPE_MONTH:
                 timeType = TimeTypeConst.TIME_TYPE_DAY;
                 endTime = DateUtil.endOfMonth(beginTime);
+                dateTimeList = DateTimeUtil.getDateTimeListSame(TimeTypeConst.TIME_TYPE_MONTH, beginTime);
                 break;
             case TimeTypeConst.TIME_TYPE_YEAR:
                 timeType = TimeTypeConst.TIME_TYPE_MONTH;
                 endTime = DateUtil.endOfYear(beginTime);
+                dateTimeList = DateTimeUtil.getDateTimeListSame(TimeTypeConst.TIME_TYPE_YEAR, beginTime);
                 break;
             default:
                 throw new ServiceException("时间格式错误");
@@ -102,9 +107,31 @@ public class ItemizedEnergyAnalysisServiceImpl implements IItemizedEnergyAnalysi
         itemVO.setNodeId(info.getNodeId());
         itemVO.setNodeName(info.getName());
         itemVO.setTotal(sum);
-        for (int i = 0; i < dataItemList.size(); i++) {
-            PropUtils.setValue(itemVO,"value"+ i, dataItemList.get(i).getValue());
+
+        Map<Date, List<DataItem>> dateListMap = dataItemList.stream().collect(Collectors.groupingBy(DataItem::getDataTime));
+        List<DataItem> results = new ArrayList<>();
+        dateListMap.forEach((key, value) -> {
+            DataItem dataItem = new DataItem();
+            dataItem.setDataTime(key);
+            //保留四位小数
+            double totalValue = value.stream().map(data -> BigDecimal.valueOf(data.getValue()))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add).setScale(4, RoundingMode.HALF_UP).doubleValue();
+            dataItem.setValue(totalValue);
+            results.add(dataItem);
+        });
+        //根据时间排序
+        results.sort(Comparator.comparing(DataItem::getDataTime));
+        for (int i = 0; i < dateTimeList.size(); i++) {
+            TypeTime typeTime = dateTimeList.get(i);
+            Optional<DataItem> dataItem = results.stream().filter(result -> result.getDataTime().equals(typeTime.getDateTime())).findFirst();
+            if (dataItem.isPresent()) {
+                DataItem item = dataItem.get();
+                PropUtils.setValue(itemVO, "value" + i, item.getValue());
+            } else {
+                PropUtils.setValue(itemVO, "value" + i, null);
+            }
         }
+
         voList.add(itemVO);
         vo.setDataList(voList);
 
