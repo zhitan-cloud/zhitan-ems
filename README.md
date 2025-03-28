@@ -40,9 +40,10 @@
 
 ## 在线体验
 
-- guestUser/guest@123456
+[//]: # (- guestUser/guest@123456)
 
-演示地址：https://demo-ems.zhitancloud.com/  
+[//]: # ()
+[//]: # (演示地址：https://demo-ems.zhitancloud.com/  )
 
 
 ## 框架：
