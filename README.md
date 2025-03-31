@@ -154,7 +154,7 @@ VUE版本：VUE 3
 扫码添加微信交流，加微信请备注：ems+姓名。
 
 <p align="center">
-  <img src="readme/img/image-yc.png" width=50% height=50%>
+  <img src="readme/img/image-wxm.png" width=50% height=50%>
 </p>
 
 ## 参与贡献
