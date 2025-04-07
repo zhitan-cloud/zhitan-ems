@@ -26,6 +26,13 @@
 ### github wiki地址：https://github.com/zhitan-cloud/zhitan-ems/wiki
 ### gitee wiki地址：https://gitee.com/liulingling1993/zhitan-ems/wikis/
 
+
+## 在线体验
+
+#### guestUser/guest@123456
+#### 演示地址：https://demo-ems.zhitancloud.com/
+
+
 ## 社区版-功能列表
 1.  首页看板 **已完成**
 2.  实时数据监测 **已完成**  
@@ -80,12 +87,6 @@
 14. 光伏运维监控
 15. 充电运营平台
 
-## 在线体验
-
-[//]: # (- guestUser/guest@123456)
-
-[//]: # ()
-[//]: # (演示地址：https://demo-ems.zhitancloud.com/  )
 
 
 ## 框架：
