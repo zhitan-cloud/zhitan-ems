@@ -247,12 +247,8 @@ public class HomePageServiceImpl implements IHomePageService {
         List<String> xdataList = new ArrayList<>();
         // 查询所有能源类型
         List<SysEnergy> sysEnergies = sysEnergyMapper.selectSysEnergyList(new SysEnergy());
-        final Map<String, Object> energyCollectMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
-        final Map<String, String> energyNameMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getEnername));
-
 
         Date queryTime = new Date();
-//        Date queryTime = DateUtil.parseDateTime("2023-03-28 00:00:00");
         Date beginTime;
         Date endTime;
         String shixuTimeType;
@@ -294,22 +290,30 @@ public class HomePageServiceImpl implements IHomePageService {
                 .filter(l -> StringUtils.isNotEmpty(l.getEnergyId())).collect(Collectors.groupingBy(
                         EnergyIndex::getEnergyId, Collectors.mapping(EnergyIndex::getIndexId, Collectors.toList())
                 ));
+
+        List<String> lengList = new ArrayList<>();
+
         while (!beginTime.after(endTime)) {
             final String currentTime = DateUtil.format(beginTime, timeFormat);
             xdataList.add(currentTime);
             final List<DataItem> dataItems = dataItemMap.get(currentTime);
             List<Double> energyCount = new ArrayList<>();
-            energyTypeMap.forEach((energyType, IndexIdList) -> {
+
+            sysEnergies.forEach(x -> {
+                if(!lengList.contains(x.getEnername())){
+                    lengList.add(x.getEnername());
+                }
+                List<String> indexIdList = energyTypeMap.get(x.getEnersno());
                 double sum;
-                if (null == dataItems) {
+                if (null == dataItems || CollectionUtils.isEmpty(indexIdList)) {
                     sum = 0;
                 } else {
-                    sum = dataItems.stream().filter(li -> IndexIdList.contains(li.getIndexId())).mapToDouble(DataItem::getValue).sum();
+                    sum = dataItems.stream().filter(li -> indexIdList.contains(li.getIndexId())).mapToDouble(DataItem::getValue).sum();
                 }
-                final BigDecimal coefficient = (BigDecimal) energyCollectMap.get(energyType);
-                energyCount.add(sum * coefficient.doubleValue());
+                energyCount.add(sum * x.getCoefficient().doubleValue());
             });
             ydataList.add(energyCount);
+
             switch (TimeType.valueOf(timeType)) {
                 case DAY:
                     beginTime = DateUtil.offsetHour(beginTime, 1);
@@ -324,11 +328,6 @@ public class HomePageServiceImpl implements IHomePageService {
         }
         vo.setXdata(xdataList.toArray(new String[0]));
         Double[][] array = new Double[sysEnergies.size()][xdataList.size()];
-        List<String> lengList = new ArrayList<>();
-        energyCollectMap.keySet().forEach(key -> {
-            final String name = energyNameMap.get(key);
-            lengList.add(name);
-        });
 
         for (int i = 0; i < ydataList.size(); i++) {
             final List<Double> doubleList = ydataList.get(i);
