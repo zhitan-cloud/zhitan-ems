@@ -141,7 +141,7 @@ public class EnergyIndexController extends BaseController {
         List<ModelNodeIndexInfo> modelNodeIndexInfoList = energyIndexService.getModelNodeIndexInfoListByIndexIds(indexIds);
         if (ObjectUtils.isNotEmpty(modelNodeIndexInfoList)) {
             ModelNodeIndexInfo modelNodeIndexInfo = modelNodeIndexInfoList.stream().findFirst().get();
-            return AjaxResult.error("指标 " + modelNodeIndexInfo.getIndexName() + " 已被模型 " + modelNodeIndexInfo.getModelName() + " 关联，不能删除！");
+            return AjaxResult.error("采集指标 " + modelNodeIndexInfo.getIndexName() + " 已被模型 " + modelNodeIndexInfo.getModelName() + " 关联，不能删除！");
         }
 
         energyIndexService.removeEnergyIndex(indexIdList);
@@ -164,8 +164,9 @@ public class EnergyIndexController extends BaseController {
         // 查询模型节点点位信息
         List<ModelNodeIndexInfo> modelNodeIndexInfoList = energyIndexService.getModelNodeIndexInfoListByIndexIds(indexIds);
         if (ObjectUtils.isNotEmpty(modelNodeIndexInfoList)) {
-            ModelNodeIndexInfo modelNodeIndexInfo = modelNodeIndexInfoList.stream().findFirst().get();
-            return AjaxResult.error("指标 " + modelNodeIndexInfo.getIndexName() + " 已被模型 " + modelNodeIndexInfo.getModelName() + " 关联，不能删除！");
+            if(modelNodeIndexInfoList.size() > 1){
+                return AjaxResult.error("该统计指标已被其他模型关联，不能删除！");
+            }
         }
 
         energyIndexService.removeEnergyIndex(indexIdList);
