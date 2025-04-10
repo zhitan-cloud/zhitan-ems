@@ -22,6 +22,13 @@
 ##### 2. 数据采集程序：也即mqtt➡️时序库功能，请参考[我们另一个仓库（点击超链接），MQTT采集网关](https://github.com/zhitan-cloud/zhitan-gateway)；或者可参考thingsjs等知名项目，或者自己用netty自己实现。
 ##### 3. 数据清洗服务：也即时序库➡️关系库，学习者可以使用java自带的XXL job等计划任务工具自己按照业务功能，来实现数据清洗服务。
 
+## 新手必读
+最近有很多开发新手在尝试运行本项目（很多大学毕业生要写毕业论文），遇到了不少问题。解决办法：
+一是可以加我微信，我拉你进开发微信群，或者你自助加qq群。我看到问题有空基本都会解答。
+二是本项目底层是基于若依，大家可以移步若依仓库，运行好若依的示例再过来研究本项目，以避免耽误大家太多时间，或者给大家造成很多困扰。
+
+物联网项目本身就有一些门槛，希望能帮到各位。
+
 ## 文档--均在wiki目录
 ### github wiki地址：https://github.com/zhitan-cloud/zhitan-ems/wiki
 ### gitee wiki地址：https://gitee.com/liulingling1993/zhitan-ems/wikis/
