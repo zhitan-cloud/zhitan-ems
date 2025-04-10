@@ -76,7 +76,7 @@ public class HomePageServiceImpl implements IHomePageService {
             final Double tongbiCount = tongbiMap.get(energyNo).stream().map(HomeEnergyStatisticsVO::getCount).mapToDouble(Double::doubleValue).sum();
             final Double huanbiCount = huanbiMap.get(energyNo).stream().map(HomeEnergyStatisticsVO::getCount).mapToDouble(Double::doubleValue).sum();
 
-            vo.setTonCount(format2Double(vo.getCount() * Double.valueOf(vo.getCoefficient())));
+            vo.setTonCount(format2Double(count));
             if (tongbiCount != 0) {
                 vo.setTongbi(format2Double((count - tongbiCount) / tongbiCount * 100));
             } else {
