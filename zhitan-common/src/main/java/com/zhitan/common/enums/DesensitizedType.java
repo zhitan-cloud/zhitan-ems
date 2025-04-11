@@ -6,7 +6,7 @@ import com.zhitan.common.utils.DesensitizedUtil;
 /**
  * 脱敏类型
  *
- * @author zhitan
+ * @author ZhiTan
  */
 public enum DesensitizedType
 {

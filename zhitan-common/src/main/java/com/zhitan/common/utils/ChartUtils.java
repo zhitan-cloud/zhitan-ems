@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @Description: 统计图相关数据工具类
- * @author: yxw
+ * @author ZhiTan
  * @date: 2022年04月28日 15:29
  */
 public class ChartUtils {
