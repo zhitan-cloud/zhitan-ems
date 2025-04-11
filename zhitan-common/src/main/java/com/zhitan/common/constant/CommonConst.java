@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * @Description: 常量封装
- * @author: yxw
+ * @author ZhiTan
  * @date: 2022年02月02日 11:37
  */
 public class CommonConst {

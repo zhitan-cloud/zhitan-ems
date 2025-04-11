@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * @author Geoffrey
+ * @author ZhiTan
  * @date 2025/01/13
  */
 @Data

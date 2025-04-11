@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Entity基类
  *
- * @author zhitan
+ * @author ZhiTan
  */
 public class BaseEntity implements Serializable
 {

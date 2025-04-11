@@ -3,7 +3,7 @@ package com.zhitan.common.constant;
 /**
  * 返回状态码
  * 
- * @author zhitan
+ * @author ZhiTan
  */
 public class HttpStatus
 {

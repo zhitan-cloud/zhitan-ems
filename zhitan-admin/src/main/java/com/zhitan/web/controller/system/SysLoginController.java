@@ -20,7 +20,7 @@ import com.zhitan.system.service.ISysMenuService;
 /**
  * 登录验证
  * 
- * @author zhitan
+ * @author ZhiTan
  */
 @RestController
 public class SysLoginController
