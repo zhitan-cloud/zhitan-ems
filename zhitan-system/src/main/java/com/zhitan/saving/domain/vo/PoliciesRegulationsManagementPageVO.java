@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * 政策法规page vo
- * @author Geoffrey
+ * @author ZhiTan
  * @date 2025/01/13
  */
 @Data

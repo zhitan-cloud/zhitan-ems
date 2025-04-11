@@ -3,7 +3,7 @@ package com.zhitan.common.constant;
 /**
  * 代码生成通用常量
  * 
- * @author zhitan
+ * @author ZhiTan
  */
 public class GenConstants
 {

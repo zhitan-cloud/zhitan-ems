@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Description: 属性值操作工具类
- * @author: yxw
+ * @author ZhiTan
  * @date: 2022年03月07日 9:57
  */
 public class PropUtils {
