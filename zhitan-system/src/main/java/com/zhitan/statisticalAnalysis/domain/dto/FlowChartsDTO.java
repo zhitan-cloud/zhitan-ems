@@ -55,15 +55,6 @@ public class FlowChartsDTO {
         if (ObjectUtils.isEmpty(timeType)) {
             return TimeType.DAY;
         }
-        switch (timeType) {
-            case DAY:
-                return TimeType.HOUR;
-            case MONTH:
-                return TimeType.DAY;
-            case YEAR:
-                return TimeType.MONTH;
-            default:
-                return timeType;
-        }
+        return timeType;
     }
 }

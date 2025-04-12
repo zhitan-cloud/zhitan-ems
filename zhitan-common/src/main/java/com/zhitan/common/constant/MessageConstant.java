@@ -1,7 +1,7 @@
 package com.zhitan.common.constant;
 
 /**
- * @author ZhiTan
+ * @Author DYL
  **/
 public class MessageConstant {
 

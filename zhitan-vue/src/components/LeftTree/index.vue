@@ -53,14 +53,26 @@ const filterNode = (value, data) => {
 getTree();
 /** 查询部门下拉树结构 */
 function getTree() {
+  // 确保query.value有初始值
+  query.value = query.value || {};
+  
+  // 优先使用props中传入的ParentModelCode
   if (props.ParentModelCode) {
-    query.value = { modelCode: props.ParentModelCode };
+    query.value.modelCode = props.ParentModelCode;
+  } else if (useRoute().query.modelCode) {
+    // 其次使用路由中的modelCode
+    query.value.modelCode = useRoute().query.modelCode;
   } else {
-    query.value = { ...useRoute().query };
+    // 最后使用默认值
+    query.value.modelCode = 'JCZBK_CODE';
   }
+  
+  console.log('LeftTree getTree modelCode:', query.value.modelCode);
+  
   treeList(query.value).then((response) => {
     nodeOptions.value = response.data;
     if (response.data.length > 0) {
+      defaultExpandedKeys.value = []; // 清空已有的key，避免重复
       response.data.map((item) => {
         defaultExpandedKeys.value.push(item.id);
       });

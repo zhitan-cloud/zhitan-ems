@@ -3,7 +3,7 @@ package com.zhitan.common.exception;
 /**
  * 自定义异常
  * 
- * @author ZhiTan
+ * @author ruoyi
  */
 public class CustomException extends RuntimeException
 {

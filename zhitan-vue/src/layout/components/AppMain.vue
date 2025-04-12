@@ -27,7 +27,8 @@ const tagsViewStore = useTagsViewStore()
     position: relative;
     overflow: hidden;
     background: #110f2e;
-    padding: 14px 0 0 14px;
+    padding: 14px;
+    box-sizing: border-box;
   }
 
   .fixed-header + .app-main {
@@ -37,8 +38,7 @@ const tagsViewStore = useTagsViewStore()
   .hasTagsView {
     .app-main {
       /* 84 = navbar + tags-view + padding = 70 + 56 + 14 */
-      min-height: calc(100vh - 125px);
-      // padding: 20px;
+      min-height: calc(100vh - 110px);
     }
 
     .fixed-header + .app-main {
@@ -55,7 +55,8 @@ const tagsViewStore = useTagsViewStore()
     position: relative;
     overflow: hidden;
     background: #f7f8fa;
-    padding: 14px 0 0 14px;
+    padding: 14px;
+    box-sizing: border-box;
   }
 
   .fixed-header + .app-main {
@@ -65,8 +66,7 @@ const tagsViewStore = useTagsViewStore()
   .hasTagsView {
     .app-main {
       /* 84 = navbar + tags-view + padding = 70 + 56 + 14 */
-      min-height: calc(100vh - 125px);
-      // padding: 20px;
+      min-height: calc(100vh - 110px);
     }
 
     .fixed-header + .app-main {

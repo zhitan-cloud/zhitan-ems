@@ -10,7 +10,7 @@ import java.util.List;
 /**
  *支路用能分析
  *
- * @author ZhiTan
+ * @author sys
  * @date 2021-01-11
  */
 public interface BranchAnalysisMapper {

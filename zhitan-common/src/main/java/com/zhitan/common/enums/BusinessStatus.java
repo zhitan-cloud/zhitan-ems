@@ -3,7 +3,7 @@ package com.zhitan.common.enums;
 /**
  * 操作状态
  * 
- * @author ZhiTan
+ * @author zhitan
  *
  */
 public enum BusinessStatus

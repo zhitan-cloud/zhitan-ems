@@ -33,10 +33,15 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         "/dev-api": {
-          target: "http://localhost",
+          target: "https://demo-ems.zhitancloud.com",
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, ""),
+          rewrite: (p) => p.replace(/^\/dev-api/, "/prod-api"),
         },
+        "/prod-api": {
+          target: "https://demo-ems.zhitancloud.com",
+          changeOrigin: true,
+          secure: true,
+        }
       },
     },
     //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file

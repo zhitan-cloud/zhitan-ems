@@ -20,6 +20,11 @@ const useTagsViewStore = defineStore(
         )
       },
       addVisitedView(view) {
+        // 过滤首页标签
+        if (view.path === '/index' || view.path === '/' || view.name === 'Index') {
+          return;
+        }
+        
         if (this.visitedViews.some(v => v.path === view.path)) return
         this.visitedViews.push(
           Object.assign({}, view, {
@@ -110,7 +115,8 @@ const useTagsViewStore = defineStore(
       },
       delAllVisitedViews(view) {
         return new Promise(resolve => {
-          const affixTags = this.visitedViews.filter(tag => tag.meta.affix)
+          // 过滤掉首页标签，只保留其他固定标签
+          const affixTags = this.visitedViews.filter(tag => tag.meta.affix && tag.path !== '/index' && tag.path !== '/' && tag.name !== 'Index')
           this.visitedViews = affixTags
           this.iframeViews = []
           resolve([...this.visitedViews])

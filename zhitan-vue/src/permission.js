@@ -8,6 +8,7 @@ import { isRelogin } from '@/utils/request'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
+import useTagsViewStore from '@/store/modules/tagsView'
 
 NProgress.configure({ showSpinner: false });
 
@@ -36,6 +37,28 @@ router.beforeEach((to, from, next) => {
                 router.addRoute(route) // 动态添加可访问路由表
               }
             })
+            
+            // 如果是首页，自动重定向到第一个菜单
+            if (to.path === '/' || to.path === '/index') {
+              const permissionStore = usePermissionStore()
+              const topMenus = permissionStore.topbarRouters.filter(menu => !menu.hidden)
+              if (topMenus.length > 0) {
+                // 跳转到第一个菜单
+                const firstMenu = topMenus[0]
+                if (firstMenu.children && firstMenu.children.length > 0) {
+                  // 有子菜单，跳转到第一个子菜单
+                  const firstChild = firstMenu.children[0]
+                  const path = firstMenu.path.endsWith('/') ? firstMenu.path + firstChild.path : `${firstMenu.path}/${firstChild.path}`
+                  next({ path: path, replace: true })
+                  return
+                } else {
+                  // 没有子菜单，直接跳转
+                  next({ path: firstMenu.path, replace: true })
+                  return
+                }
+              }
+            }
+            
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
           })
         }).catch(err => {
@@ -45,6 +68,26 @@ router.beforeEach((to, from, next) => {
           })
         })
       } else {
+        // 如果是首页，自动重定向到第一个菜单
+        if (to.path === '/' || to.path === '/index') {
+          const permissionStore = usePermissionStore()
+          const topMenus = permissionStore.topbarRouters.filter(menu => !menu.hidden)
+          if (topMenus.length > 0) {
+            // 跳转到第一个菜单
+            const firstMenu = topMenus[0]
+            if (firstMenu.children && firstMenu.children.length > 0) {
+              // 有子菜单，跳转到第一个子菜单
+              const firstChild = firstMenu.children[0]
+              const path = firstMenu.path.endsWith('/') ? firstMenu.path + firstChild.path : `${firstMenu.path}/${firstChild.path}`
+              next({ path: path, replace: true })
+              return
+            } else {
+              // 没有子菜单，直接跳转
+              next({ path: firstMenu.path, replace: true })
+              return
+            }
+          }
+        }
         next()
       }
     }
@@ -62,4 +105,12 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(() => {
   NProgress.done()
+  
+  // 移除所有可能的首页标签
+  const tagsViewStore = useTagsViewStore();
+  if (tagsViewStore && tagsViewStore.visitedViews) {
+    tagsViewStore.visitedViews = tagsViewStore.visitedViews.filter(
+      tag => tag.path !== '/index' && tag.path !== '/' && tag.name !== 'Index'
+    );
+  }
 })

@@ -67,6 +67,20 @@ function changeActive(value) {
       font-family: YouSheBiaoTiHei;
       font-size: 1.25vw; //24px;
       color: #fff;
+      position: relative;
+      padding-left: 12px;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 5px;
+        height: 18px;
+        background-color: #3883FA;
+        border-radius: 2px;
+      }
     }
   }
 

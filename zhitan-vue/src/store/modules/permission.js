@@ -73,6 +73,14 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
         route.component = loadView(route.component)
       }
     }
+    // 处理 query 参数，将字符串转换为对象
+    if (route.query && typeof route.query === 'string') {
+      try {
+        route.query = JSON.parse(route.query);
+      } catch (error) {
+        console.error('Error parsing query string:', route.query, error);
+      }
+    }
     if (route.children != null && route.children && route.children.length) {
       route.children = filterAsyncRouter(route.children, route, type)
     } else {

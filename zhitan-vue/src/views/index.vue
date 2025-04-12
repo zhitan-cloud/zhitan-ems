@@ -1,51 +1,55 @@
 <template>
   <div class="page" style="padding-left: 8px; padding-top: 8px">
     <CardHeader :showBtn="true" :active="'0'" :period="period" @handleClick="handleTimeType">
-      <span>
+      <span class="card-header-title">
         全厂能耗统计
-        <el-button @click="dialogVisible = true" v-if="list.length > 1"> 查看更多 </el-button>
+        <el-button @click="dialogVisible = true" v-if="list.length > 1" type="primary" size="small" class="header-more-btn"> 查看更多 </el-button>
       </span>
     </CardHeader>
     <template v-for="(row, rowIndex) in list" :key="rowIndex" v-loading="loading02">
       <div class="card-list" v-if="settingsStore.sideTheme == 'theme-dark' && rowIndex == 0">
         <template v-for="(item, index) in row" :key="index">
-          <div
-            class="card-list-item"
-            :style="{
-              backgroundImage: 'url(' + bgList[index].bg + ')',
-            }"
-          >
-            <div class="item-top">
-              <div class="top-icon" :style="{ backgroundImage: 'url(' + bgList[index].icon + ')' }" />
+          <div class="card-list-item">
+            <div class="item-left">
+              <div class="top-icon" 
+                :style="{ 
+                  backgroundImage: 'url(' + bgList[index].icon + ')',
+                  backgroundColor: bgList[index].iconBg,
+                  width: '73px',
+                  height: '73px',
+                  backgroundSize: '40px'
+                }" 
+              />
+            </div>
+            <div class="item-right">
               <div class="top-right">
                 <div class="right-name">
                   {{ item.energyName }}
                   <span v-if="item.energyUnit" class="unit">({{ item.energyUnit }})</span>
                 </div>
                 <div class="right-value">
-                  <span> {{ item.count }}</span>
-                  <!-- <span class="unit">{{ item.energyUnit }}</span> -->
+                  <span>{{ item.count }}</span>
                 </div>
               </div>
-            </div>
-            <div class="item-bottom">
-              <div class="bottom-left">
-                <span>
-                  同比: {{ Math.abs(item.tongbi) }}
-                  <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
-                    <Top v-if="item.tongbi > 0" />
-                    <Bottom v-if="item.tongbi < 0" />
-                  </el-icon>
-                </span>
-              </div>
-              <div class="bottom-right">
-                <span
-                  >环比: {{ Math.abs(item.huanbi) }}
-                  <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
-                    <Top v-if="item.huanbi > 0" />
-                    <Bottom v-if="item.huanbi < 0" />
-                  </el-icon>
-                </span>
+              <div class="item-bottom">
+                <div class="bottom-left">
+                  <span>
+                    同比: {{ Math.abs(item.tongbi).toFixed(1) }}
+                    <el-icon :color="item.tongbi > 0 ? '#4CAF50' : item.tongbi < 0 ? '#F44336' : ''">
+                      <Top v-if="item.tongbi > 0" />
+                      <Bottom v-if="item.tongbi < 0" />
+                    </el-icon>
+                  </span>
+                </div>
+                <div class="bottom-right">
+                  <span>
+                    环比: {{ Math.abs(item.huanbi).toFixed(1) }}
+                    <el-icon :color="item.huanbi > 0 ? '#4CAF50' : item.huanbi < 0 ? '#F44336' : ''">
+                      <Top v-if="item.huanbi > 0" />
+                      <Bottom v-if="item.huanbi < 0" />
+                    </el-icon>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -54,36 +58,46 @@
       <div class="card-list" v-if="settingsStore.sideTheme != 'theme-dark' && rowIndex == 0">
         <template v-for="(item, index) in row" :key="index" v-show="rowIndex == 0">
           <div class="card-list-item">
-            <div class="item-top">
-              <div class="top-icon" :style="{ backgroundImage: 'url(' + bgList[index].icon2 + ')' }" />
+            <div class="item-left">
+              <div class="top-icon" 
+                :style="{ 
+                  backgroundImage: 'url(' + bgList[index].icon2 + ')',
+                  backgroundColor: bgList[index].iconBg,
+                  width: '73px',
+                  height: '73px',
+                  backgroundSize: '40px'
+                }" 
+              />
+            </div>
+            <div class="item-right">
               <div class="top-right">
                 <div class="right-name">
                   {{ item.energyName }}
+                  <span v-if="item.energyUnit" class="unit">({{ item.energyUnit }})</span>
                 </div>
                 <div class="right-value">
                   <span>{{ item.count }}</span>
-                  <span class="unit">{{ item.energyUnit }}</span>
                 </div>
               </div>
-            </div>
-            <div class="item-bottom">
-              <div class="bottom-left">
-                <span>
-                  同比: {{ Math.abs(item.tongbi) }}
-                  <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
-                    <Top v-if="item.tongbi > 0" />
-                    <Bottom v-if="item.tongbi < 0" />
-                  </el-icon>
-                </span>
-              </div>
-              <div class="bottom-right">
-                <span
-                  >环比: {{ Math.abs(item.huanbi) }}
-                  <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
-                    <Top v-if="item.huanbi > 0" />
-                    <Bottom v-if="item.huanbi < 0" />
-                  </el-icon>
-                </span>
+              <div class="item-bottom">
+                <div class="bottom-left">
+                  <span>
+                    同比: {{ Math.abs(item.tongbi).toFixed(1) }}
+                    <el-icon :color="item.tongbi > 0 ? '#4CAF50' : item.tongbi < 0 ? '#F44336' : ''">
+                      <Top v-if="item.tongbi > 0" />
+                      <Bottom v-if="item.tongbi < 0" />
+                    </el-icon>
+                  </span>
+                </div>
+                <div class="bottom-right">
+                  <span>
+                    环比: {{ Math.abs(item.huanbi).toFixed(1) }}
+                    <el-icon :color="item.huanbi > 0 ? '#4CAF50' : item.huanbi < 0 ? '#F44336' : ''">
+                      <Top v-if="item.huanbi > 0" />
+                      <Bottom v-if="item.huanbi < 0" />
+                    </el-icon>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -133,66 +147,71 @@
         </el-col>
       </el-row>
     </div>
-    <el-dialog v-model="dialogVisible" title="查看全厂能耗统计" width="80%" v-if="dialogVisible">
+    <el-dialog v-model="dialogVisible" title="查看全厂能耗统计" width="90%" v-if="dialogVisible">
       <template v-for="(row, rowIndex) in list" :key="rowIndex">
         <div class="card-list" v-if="settingsStore.sideTheme == 'theme-dark'">
           <template v-for="(item, index) in row" :key="index">
-            <div
-              class="card-list-item"
-              :style="{
-                backgroundImage: 'url(' + bgList[index].bg + ')',
-              }"
-            >
-              <div class="item-top">
-                <div
-                  class="top-icon"
+            <div class="card-list-item">
+              <div class="item-left">
+                <div class="top-icon"
                   :style="{
                     backgroundImage: 'url(' + bgList[index].icon + ')',
+                    backgroundColor: bgList[index].iconBg,
+                    width: '73px',
+                    height: '73px',
+                    backgroundSize: '40px'
                   }"
                 />
+              </div>
+              <div class="item-right">
                 <div class="top-right">
                   <div class="right-name">
                     {{ item.energyName }}
+                    <span v-if="item.energyUnit" class="unit">({{ item.energyUnit }})</span>
                   </div>
                   <div class="right-value">
                     <span> {{ item.count }}</span>
-                    <span class="unit">{{ item.energyUnit }}</span>
                   </div>
                 </div>
-              </div>
-              <div class="item-bottom">
-                <div class="bottom-left">
-                  <span>
-                    同比: {{ Math.abs(item.tongbi) }}
-                    <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
-                      <Top v-if="item.tongbi > 0" />
-                      <Bottom v-if="item.tongbi < 0" />
-                    </el-icon>
-                  </span>
-                </div>
-                <div class="bottom-right">
-                  <span
-                    >环比: {{ Math.abs(item.huanbi) }}
-                    <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
-                      <Top v-if="item.huanbi > 0" />
-                      <Bottom v-if="item.huanbi < 0" />
-                    </el-icon>
-                  </span>
+                <div class="item-bottom">
+                  <div class="bottom-left">
+                    <span>
+                      同比: {{ Math.abs(item.tongbi).toFixed(1) }}
+                      <el-icon :color="item.tongbi > 0 ? '#4CAF50' : item.tongbi < 0 ? '#F44336' : ''">
+                        <Top v-if="item.tongbi > 0" />
+                        <Bottom v-if="item.tongbi < 0" />
+                      </el-icon>
+                    </span>
+                  </div>
+                  <div class="bottom-right">
+                    <span>
+                      环比: {{ Math.abs(item.huanbi).toFixed(1) }}
+                      <el-icon :color="item.huanbi > 0 ? '#4CAF50' : item.huanbi < 0 ? '#F44336' : ''">
+                        <Top v-if="item.huanbi > 0" />
+                        <Bottom v-if="item.huanbi < 0" />
+                      </el-icon>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </template>
         </div>
         <div class="card-list" v-if="settingsStore.sideTheme != 'theme-dark'">
-          <template v-for="(item, index) in row" :key="index" v-show="rowIndex == 0">
+          <template v-for="(item, index) in row" :key="index">
             <div class="card-list-item">
-              <div class="item-top">
-                <div
-                  class="top-icon"
+              <div class="item-left">
+                <div class="top-icon"
                   :style="{
                     backgroundImage: 'url(' + bgList[index].icon2 + ')',
+                    backgroundColor: bgList[index].iconBg,
+                    width: '73px',
+                    height: '73px',
+                    backgroundSize: '40px'
                   }"
                 />
+              </div>
+              <div class="item-right">
                 <div class="top-right">
                   <div class="right-name">
                     {{ item.energyName }}
@@ -202,29 +221,28 @@
                     <span class="unit">{{ item.energyUnit }}</span>
                   </div>
                 </div>
-              </div>
-              <div class="item-bottom">
-                <div class="bottom-left">
-                  <span>
-                    同比: {{ Math.abs(item.tongbi) }}
-                    <el-icon :color="item.tongbi > 0 ? 'green' : item.tongbi < 0 ? 'red' : ''">
-                      <Top v-if="item.tongbi > 0" />
-                      <Bottom v-if="item.tongbi < 0" />
-                    </el-icon>
-                  </span>
-                </div>
-                <div class="bottom-right">
-                  <span
-                    >环比: {{ Math.abs(item.huanbi) }}
-                    <el-icon :color="item.huanbi > 0 ? 'green' : item.huanbi < 0 ? 'red' : ''">
-                      <Top v-if="item.huanbi > 0" />
-                      <Bottom v-if="item.huanbi < 0" />
-                    </el-icon>
-                  </span>
+                <div class="item-bottom">
+                  <div class="bottom-left">
+                    <span>
+                      同比: {{ Math.abs(item.tongbi).toFixed(1) }}
+                      <el-icon :color="item.tongbi > 0 ? '#4CAF50' : item.tongbi < 0 ? '#F44336' : ''">
+                        <Top v-if="item.tongbi > 0" />
+                        <Bottom v-if="item.tongbi < 0" />
+                      </el-icon>
+                    </span>
+                  </div>
+                  <div class="bottom-right">
+                    <span>
+                      环比: {{ Math.abs(item.huanbi).toFixed(1) }}
+                      <el-icon :color="item.huanbi > 0 ? '#4CAF50' : item.huanbi < 0 ? '#F44336' : ''">
+                        <Top v-if="item.huanbi > 0" />
+                        <Bottom v-if="item.huanbi < 0" />
+                      </el-icon>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="line"></div>
           </template>
         </div>
       </template>
@@ -258,42 +276,47 @@ import index_card_2 from "@/assets/images/home/index-card-2.png"
 import index_card_3 from "@/assets/images/home/index-card-3.png"
 import index_card_4 from "@/assets/images/home/index-card-4.png"
 import index_card_5 from "@/assets/images/home/index-card-5.png"
-import card_icon_1 from "@/assets/images/home/card-icon-1.png"
-import card_icon_2 from "@/assets/images/home/card-icon-2.png"
-import card_icon_3 from "@/assets/images/home/card-icon-3.png"
-import card_icon_4 from "@/assets/images/home/card-icon-4.png"
-import card_icon_5 from "@/assets/images/home/card-icon-5.png"
-import card_icon2_1 from "@/assets/images/home/card-icon2-1.png"
-import card_icon2_2 from "@/assets/images/home/card-icon2-2.png"
-import card_icon2_3 from "@/assets/images/home/card-icon2-3.png"
-import card_icon2_4 from "@/assets/images/home/card-icon2-4.png"
-import card_icon2_5 from "@/assets/images/home/card-icon2-5.png"
+import card_icon_1 from "@/assets/images/2.png"
+import card_icon_2 from "@/assets/images/3.png"
+import card_icon_3 from "@/assets/images/5.png"
+import card_icon_4 from "@/assets/images/6.png"
+import card_icon_5 from "@/assets/images/7.png"
+import card_icon2_1 from "@/assets/images/2.png"
+import card_icon2_2 from "@/assets/images/3.png"
+import card_icon2_3 from "@/assets/images/5.png"
+import card_icon2_4 from "@/assets/images/6.png"
+import card_icon2_5 from "@/assets/images/7.png"
 import { fa } from "element-plus/es/locales.mjs"
 const bgList = ref([
   {
     bg: index_card_1,
     icon: card_icon_1,
     icon2: card_icon2_1,
+    iconBg: "#3F7EE8"
   },
   {
     bg: index_card_2,
     icon: card_icon_2,
     icon2: card_icon2_2,
+    iconBg: "#FFA024"
   },
   {
     bg: index_card_3,
     icon: card_icon_3,
     icon2: card_icon2_3,
+    iconBg: "#FFCC00"
   },
   {
     bg: index_card_4,
     icon: card_icon_4,
     icon2: card_icon2_4,
+    iconBg: "#3CC8D9"
   },
   {
     bg: index_card_5,
     icon: card_icon_5,
     icon2: card_icon2_5,
+    iconBg: "#8833FF"
   },
 ])
 const list = ref([[{}, {}, {}, {}, {}]])
@@ -857,10 +880,24 @@ function getListPeakValley() {
 }
 </script>
 <style scoped lang="scss">
+.card-header-title {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  
+  .header-more-btn {
+    margin-left: 12px;
+    padding: 4px 10px;
+    font-size: 12px;
+    height: 28px;
+  }
+}
+
 .themeDark {
   .page {
     padding: 20px;
-    background: #120f2e;
+    background: #05234A;
 
     .card-title {
       width: 132px;
@@ -873,70 +910,138 @@ function getListPeakValley() {
     .card-list {
       margin-top: 14px;
       display: flex;
-      // justify-content: space-between;
       width: 100%;
       flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+      
+      &:after {
+        content: "";
+        flex: auto;
+      }
 
       .card-list-item {
-        width: 19%;
-        margin-right: 1%;
-        height: 157px;
-        background-size: 100% 100%;
+        width: 320px;
+        height: 127px;
+        background: rgba(242, 246, 250, 0.1);
         box-sizing: border-box;
-        padding: 25px 18px 12px 16px;
+        padding: 16px;
         color: #fff;
-
-        .item-top {
-          display: flex;
-
-          .top-icon {
-            width: 50px;
-            height: 50px;
-            background-size: 100% 100%;
-          }
-
-          .top-right {
-            margin-left: 12px;
-
-            .right-name {
-              font-weight: bold;
-              font-size: 16px;
-              font-family: OPPOSans-Bold;
-              .unit {
-                margin-left: 2px;
-                font-size: 16px;
-                font-weight: normal;
-              }
-            }
-
-            .right-value {
-              font-weight: 800;
-              font-size: 25px;
-              margin-top: 10px;
-              font-family: OPPOSans-Medium;
-
-              .unit {
-                margin-left: 5px;
-                font-size: 16px;
-                font-weight: normal;
-              }
-            }
-          }
+        border-radius: 9px;
+        box-shadow: none;
+        border: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+        &:hover {
+          background: rgba(242, 246, 250, 0.15);
         }
 
-        .item-bottom {
+        .item-left {
+          margin-right: 16px;
+          
+          .top-icon {
+            width: 73px;
+            height: 73px;
+            background-size: 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
+          }
+        }
+        
+        .item-right {
+          flex: 1;
           display: flex;
-          justify-content: space-between;
-          margin-top: 18px;
-          font-family: OPPOSans, OPPOSans;
-          font-weight: bold;
-          font-size: 14px;
+          flex-direction: column;
+          
+          .top-right {
+            display: flex;
+            flex-direction: column;
+            
+            .right-name {
+              font-weight: 400;
+              font-size: 14px;
+              font-family: OPPOSans-Regular;
+              color: rgba(255, 255, 255, 0.65);
+              .unit {
+                color: rgba(255, 255, 255, 0.65);
+                margin-left: 2px;
+                font-size: 12px;
+                font-weight: normal;
+              }
+            }
+            
+            .right-value {
+              font-weight: 500;
+              font-size: 26px;
+              margin-top: 4px;
+              font-family: OPPOSans-Medium;
+              color: #fff;
+              line-height: 1;
+            }
+          }
+          
+          .item-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-family: OPPOSans, OPPOSans;
+            font-weight: normal;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1;
+            
+            .bottom-left, .bottom-right {
+              display: flex;
+              align-items: center;
+              
+              :deep(.el-icon) {
+                margin-left: 4px;
+                font-size: 12px;
+              }
+            }
+          }
         }
       }
     }
 
     .page-main {
-      margin-top: 23px;
+      margin-top: 20px;
+      
+      .el-card {
+        background-color: #0E2E5E;
+        border: none;
+        border-radius: 6px;
+        
+        :deep(.el-card__body) {
+          padding: 12px;
+        }
+      }
+    }
+
+    .top-header {
+      margin-top: 12px;
+      height: 32px;
+      font-family: OPPOSans, OPPOSans;
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+
+      .header-left {
+        display: flex;
+
+        .name {
+          margin-left: 7px;
+          margin-right: 7px;
+        }
+      }
     }
   }
 
@@ -946,25 +1051,29 @@ function getListPeakValley() {
     margin-top: 10px;
   }
 
-  .top-header {
-    margin-top: 15px;
-    height: 23px;
-    font-family: OPPOSans, OPPOSans;
-    font-weight: 500;
-    font-size: 14px;
-    color: rgba(196, 213, 255, 0.6);
-    border-bottom: 1px solid rgba(196, 213, 255, 0.6);
-    display: flex;
-    justify-content: space-between;
-
-    .header-left {
-      display: flex;
-
-      .name {
-        margin-left: 7px;
-        margin-right: 7px;
-      }
+  :deep(.el-button--primary) {
+    background-color: #1976D2;
+    border-color: #1976D2;
+  }
+  
+  :deep(.el-card__header) {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item) {
+    border-color: rgba(255, 255, 255, 0.1);
+    background-color: transparent;
+    color: #fff;
+    
+    &.is-active {
+      background-color: #1976D2;
+      border-color: #1976D2;
     }
+  }
+  
+  :deep(.el-tabs--card > .el-tabs__header) {
+    border-color: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -978,82 +1087,140 @@ function getListPeakValley() {
       height: 29px;
       font-weight: bold;
       font-size: 22px;
-      color: #ffffff;
+      color: #333;
     }
 
     .card-list {
-      width: 100%;
       margin-top: 14px;
       display: flex;
-      // justify-content: space-between;
-      align-items: center;
-      background-image: url("@/assets/images/home/index-card-bg2.png");
-      background-size: 100% 100%;
+      width: 100%;
       flex-wrap: wrap;
-      border-radius: 20px;
+      justify-content: space-between;
+      gap: 15px;
+      
+      &:after {
+        content: "";
+        flex: auto;
+      }
 
       .card-list-item {
-        width: 19%;
-        margin-right: 0.5%;
-        height: 157px;
-        background-size: 100% 100%;
+        width: 320px;
+        height: 127px;
+        background: #fff;
         box-sizing: border-box;
-        padding: 25px 18px 12px 16px;
-        color: #fff;
-
-        .item-top {
-          display: flex;
-
+        padding: 16px;
+        color: #333;
+        border-radius: 9px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+        .item-left {
+          margin-right: 16px;
+          
           .top-icon {
-            width: 69px;
-            height: 69px;
-            background-size: 100% 100%;
+            width: 73px;
+            height: 73px;
+            background-size: 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 50%;
           }
-
+        }
+        
+        .item-right {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          
           .top-right {
-            margin-left: 16px;
-
+            display: flex;
+            flex-direction: column;
+            
             .right-name {
-              font-weight: bold;
-              font-size: 16px;
-              font-family: OPPOSans-Bold;
-            }
-
-            .right-value {
-              font-weight: 800;
-              font-size: 30px;
-              margin-top: 10px;
-              font-family: OPPOSans-Medium;
-
+              font-weight: 400;
+              font-size: 14px;
+              font-family: OPPOSans-Regular;
+              color: rgba(0, 0, 0, 0.65);
               .unit {
-                margin-left: 5px;
-                font-size: 16px;
+                color: rgba(0, 0, 0, 0.65);
+                margin-left: 2px;
+                font-size: 12px;
                 font-weight: normal;
+              }
+            }
+            
+            .right-value {
+              font-weight: 500;
+              font-size: 26px;
+              margin-top: 4px;
+              font-family: OPPOSans-Medium;
+              color: #333;
+              line-height: 1;
+            }
+          }
+          
+          .item-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            font-family: OPPOSans, OPPOSans;
+            font-weight: normal;
+            font-size: 12px;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 1;
+            
+            .bottom-left, .bottom-right {
+              display: flex;
+              align-items: center;
+              
+              :deep(.el-icon) {
+                margin-left: 4px;
+                font-size: 12px;
               }
             }
           }
         }
-
-        .item-bottom {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 18px;
-          font-family: OPPOSans, OPPOSans;
-          font-weight: bold;
-          font-size: 14px;
-        }
-      }
-
-      .line {
-        width: 1px;
-        height: 64px;
-        background-image: url("@/assets/images/home/line@2x.png");
-        background-size: 100% 100%;
       }
     }
 
     .page-main {
-      margin-top: 23px;
+      margin-top: 20px;
+      
+      .el-card {
+        background-color: #fff;
+        border: none;
+        border-radius: 6px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+        
+        :deep(.el-card__body) {
+          padding: 12px;
+        }
+      }
+    }
+
+    .top-header {
+      margin-top: 12px;
+      height: 32px;
+      font-family: OPPOSans, OPPOSans;
+      font-weight: 500;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 10px;
+
+      .header-left {
+        display: flex;
+
+        .name {
+          margin-left: 7px;
+          margin-right: 7px;
+        }
+      }
     }
   }
 
@@ -1063,25 +1230,28 @@ function getListPeakValley() {
     margin-top: 10px;
   }
 
-  .top-header {
-    margin-top: 15px;
-    height: 23px;
-    font-family: OPPOSans, OPPOSans;
-    font-weight: 500;
-    font-size: 14px;
-    color: rgba(29, 29, 29, 0.6);
-    border-bottom: 1px solid rgba(196, 213, 255, 0.6);
-    display: flex;
-    justify-content: space-between;
-
-    .header-left {
-      display: flex;
-
-      .name {
-        margin-left: 7px;
-        margin-right: 7px;
-      }
+  :deep(.el-button--primary) {
+    background-color: #1976D2;
+    border-color: #1976D2;
+  }
+  
+  :deep(.el-card__header) {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  :deep(.el-tabs--card > .el-tabs__header .el-tabs__item) {
+    border-color: rgba(0, 0, 0, 0.1);
+    
+    &.is-active {
+      background-color: #1976D2;
+      border-color: #1976D2;
+      color: #fff;
     }
+  }
+  
+  :deep(.el-tabs--card > .el-tabs__header) {
+    border-color: rgba(0, 0, 0, 0.1);
   }
 }
 </style>

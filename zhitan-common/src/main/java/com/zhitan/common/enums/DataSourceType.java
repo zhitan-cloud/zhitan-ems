@@ -3,7 +3,7 @@ package com.zhitan.common.enums;
 /**
  * 数据源
  * 
- * @author ZhiTan
+ * @author zhitan
  */
 public enum DataSourceType
 {

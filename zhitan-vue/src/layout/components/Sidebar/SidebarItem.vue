@@ -86,7 +86,15 @@ function resolvePath(routePath, routeQuery) {
     return props.basePath
   }
   if (routeQuery) {
-    let query = JSON.parse(routeQuery);
+    let query = routeQuery;
+    // 如果 routeQuery 是字符串，则尝试解析它
+    if (typeof routeQuery === 'string') {
+      try {
+        query = JSON.parse(routeQuery);
+      } catch (error) {
+        console.error('Error parsing query string:', routeQuery, error);
+      }
+    }
     return { path: getNormalPath(props.basePath + '/' + routePath), query: query }
   }
   return getNormalPath(props.basePath + '/' + routePath)

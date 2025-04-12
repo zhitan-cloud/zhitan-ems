@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 模型节点Mapper接口
  *
- * @author ZhiTan
+ * @author fanxinfu
  * @date 2020-02-10
  */
 public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
@@ -182,7 +182,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
     /**
      * @description: 根据节点id和能源类型查询点位信息
      * @param nodeId
-     * @author ZhiTan
+     * @author: hmj
      * @date: 2024/10/16 19:16
      */
     List<ModelNodeIndexInfo> getModelNodeIndexIdByNodeId(@Param("nodeId")String nodeId, @Param("energyType")String energyType);
@@ -191,7 +191,7 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
      * @description: 根据nodeId查询子节点的所有统计指标
      * @param parentId
      * @return java.util.List<com.zhitan.model.domain.vo.ModelNodeIndexInfor>
-     * @author ZhiTan
+     * @author: hmj
      * @date: 2024/10/18 16:12
      */
     List<ModelNodeIndexInfo> getModelNodeByParentId(String parentId);

@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * 政策法规对象
- * @author ZhiTan
+ * @author Geoffrey
  * @date 2025/01/13
  */
 @Data
