@@ -91,8 +91,8 @@ function goToAlarm() {
 
 // 打开AI大模型对话框
 function openAIModel() {
-  // 这里可以实现打开AI对话框的逻辑
-  console.log('打开AI大模型对话框')
+  // 跳转到指定的URL
+  window.open('https://deepseek.tan-zhonghe.com/chat', '_blank')
 }
 
 const classObj = computed(() => ({

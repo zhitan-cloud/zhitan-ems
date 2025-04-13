@@ -9,10 +9,12 @@
 body {
   height: 100%;
   margin: 0;
+  padding: 0;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 label {
@@ -22,10 +24,17 @@ label {
 html {
   height: 100%;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 #app {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 *,

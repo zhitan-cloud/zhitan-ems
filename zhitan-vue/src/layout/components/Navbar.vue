@@ -55,8 +55,8 @@ function handleAlarm() {
 }
 
 function handleRobot() {
-  // 处理大模型按钮点击事件
-  console.log('大模型按钮被点击')
+  // 跳转到智能助手页面
+  window.open('https://deepseek.tan-zhonghe.com/chat', '_blank')
 }
 </script>
 
