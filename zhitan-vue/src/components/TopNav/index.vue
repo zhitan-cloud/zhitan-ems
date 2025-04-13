@@ -167,12 +167,7 @@ function handleSelect(key, keyPath) {
     return;
   } 
   
-  if (key === '/index' || key === '/') {
-    // 首页时显示折叠的侧边栏，而不是隐藏
-    router.push({ path: key });
-    appStore.showCollapsedSidebar();
-    return;
-  } 
+ 
   
   // 检查是否有子路由
   if (route && route.children && route.children.length > 0) {
@@ -258,11 +253,7 @@ function handleSelect(key, keyPath) {
 
 function activeRoutes(key) {
   let routes = [];
-  if (key === '/index' || key === '/') {
-    // 首页时显示折叠的侧边栏，而不是隐藏
-    appStore.showCollapsedSidebar();
-    return [];
-  }
+ 
   
   // 查找匹配的路由
   if (childrenMenus.value && childrenMenus.value.length > 0) {
