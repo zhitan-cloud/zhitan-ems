@@ -211,6 +211,12 @@ function handleLogout() {
     &.is-active {
       background-color: #3883FA !important;
       color: #fff !important;
+      font-weight: bold;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(56, 131, 250, 0.5);
+      
+      // 左侧指示条
+     
     }
     
     &:hover {
@@ -229,6 +235,13 @@ function handleLogout() {
       
       &:hover {
         background-color: rgba(56, 131, 250, 0.1) !important;
+      }
+    }
+    
+    &.is-active {
+      > .el-sub-menu__title {
+        color: #3883FA !important;
+        font-weight: bold;
       }
     }
     
@@ -458,6 +471,62 @@ function handleLogout() {
   }
 }
 
+// 添加深色模式专用样式
+.theme-dark {
+  :deep(.custom-menu) {
+    // Override Element Plus menu styles for dark theme
+    .el-menu-item {
+      &.is-active {
+        background-color: #4e77f8 !important;
+        color: #ffffff !important;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(78, 119, 248, 0.6);
+        position: relative;
+        
+        // 左侧指示条
+        
+      }
+      
+      &:hover {
+        background-color: rgba(78, 119, 248, 0.2) !important;
+      }
+    }
+    
+    .el-sub-menu {
+      &.is-active {
+        > .el-sub-menu__title {
+          color: #4e77f8 !important;
+          font-weight: bold;
+        }
+      }
+      
+      .el-sub-menu__title {
+        &:hover {
+          background-color: rgba(78, 119, 248, 0.2) !important;
+        }
+      }
+      
+      // 嵌套子菜单样式
+      .el-menu {
+        .el-menu-item {
+          &.is-active {
+            background-color: #4e77f8 !important;
+            color: #ffffff !important;
+          }
+        }
+        
+        .el-sub-menu {
+          &.is-active {
+            > .el-sub-menu__title {
+              color: #4e77f8 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // Add global style to override Element Plus defaults
 :global(.el-menu--vertical .el-menu-item),
 :global(.el-menu--vertical .el-sub-menu__title) {
@@ -506,6 +575,23 @@ function handleLogout() {
   // 确保折叠时弹出的子菜单有正确样式
   .el-tooltip__trigger:focus:not(.focusing) {
     outline: none;
+  }
+}
+
+// 深色模式下折叠菜单的样式
+.theme-dark {
+  :deep(.custom-menu.el-menu--collapse) {
+    .el-menu-item, .el-sub-menu__title {
+      &.is-active {
+        background-color: #4e77f8 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 8px rgba(78, 119, 248, 0.6);
+      }
+      
+      &:hover {
+        background-color: rgba(78, 119, 248, 0.2) !important;
+      }
+    }
   }
 }
 </style>
