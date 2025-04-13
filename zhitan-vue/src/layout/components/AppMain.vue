@@ -74,6 +74,11 @@ const tagsViewStore = useTagsViewStore()
     }
   }
 }
+
+/* 用户个人资料页特殊高度处理 */
+.user-profile-container {
+  min-height: calc(100vh - 50px) !important;
+}
 </style>
 
 <style lang="scss">

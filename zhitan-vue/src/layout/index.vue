@@ -9,7 +9,7 @@
               <img v-if="sideTheme === 'theme-dark'" :src="systemInfo.leftLogo" class="sidebar-logo" />
               <img v-else :src="systemInfo.leftLogo" class="sidebar-logo" />
             </div>
-            <div class="name" v-if="sidebar.opened" :style="{ color: '#fff' }">
+            <div class="name" v-if="sidebar.opened" :style="{ color: sideTheme === 'theme-dark' ? '#fff' : '#333' }">
               {{ title }}
             </div>
           </div>
@@ -86,13 +86,13 @@ const alarmCount = ref(5)
 
 // 跳转到报警页面
 function goToAlarm() {
-  router.push('/alarm/list')
+  router.push('/alarmmanage/measuremen?modelCode=BJGL')
 }
 
 // 打开AI大模型对话框
 function openAIModel() {
-  // 这里可以实现打开AI对话框的逻辑
-  console.log('打开AI大模型对话框')
+  // 跳转到指定的URL
+  window.open('https://deepseek.tan-zhonghe.com/chat', '_blank')
 }
 
 const classObj = computed(() => ({
@@ -351,47 +351,12 @@ function setLayout() {
 }
 
 .themeDark {
-  .navbar-container {
-    background: #1a235d;
-    border-bottom: 2px solid #110f2e;
-  }
-  
   .navbar {
-    background: transparent !important;
+    background: #002866 !important;
   }
   
   .sidebar-container {
     background-color: #002866 !important;
-  }
-}
-
-.themeLight {
-  .navbar-container {
-    background: #3883FA;
-  }
-  
-  .navbar {
-    background: transparent !important;
-    
-    .left {
-      .sidebar-logo-container {
-        .name {
-          color: #fff !important;
-        }
-      }
-    }
-    
-    .right {
-      .right-menu {
-        .right-menu-item {
-          color: #fff;
-          
-          .right-menu-icon {
-            color: #fff;
-          }
-        }
-      }
-    }
   }
 }
 </style>
