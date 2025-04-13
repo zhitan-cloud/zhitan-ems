@@ -58,6 +58,20 @@ const usePermissionStore = defineStore(
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false, parentRoute = null) {
   return asyncRouterMap.filter(route => {
+    // 不再过滤掉首页看板相关路由
+    /* 
+    // 过滤掉首页看板相关路由
+    if (route.name === 'Index' && route.meta && route.meta.title === '首页看板') {
+      return false;
+    }
+    
+    // 如果是首页看板的子菜单，也过滤掉
+    if (route.path === '/index' || route.path === 'index' || 
+        (route.meta && route.meta.title === '首页看板')) {
+      return false;
+    }
+    */
+    
     // 设置父路由引用
     if (parentRoute) {
       route.parent = parentRoute;

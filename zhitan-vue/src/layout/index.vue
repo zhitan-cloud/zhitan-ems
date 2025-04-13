@@ -134,10 +134,11 @@ watchEffect(() => {
 
 // 组件挂载时，确保首页侧边栏状态正确
 onMounted(() => {
-  // 如果当前是首页，确保侧边栏可见
+  // 如果当前是首页子页面，只确保侧边栏不被隐藏，但保持折叠/展开状态不变
   if (route.path === '/index/index') {
+    // 只设置不隐藏侧边栏，但不改变其展开/折叠状态
     appStore.toggleSideBarHide(false)
-    appStore.sidebar.opened = true
+    // 不再强制设置opened为true，保持用户之前的设置
   }
 })
 

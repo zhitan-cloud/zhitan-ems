@@ -234,7 +234,7 @@ function handleScroll() {
 <style lang="scss" scoped>
 .themeDark {
   .tags-view-container {
-    height: 52px;
+    height: 40px;
     width: 100%;
     background: #1a235d;
     // border-bottom: 1px solid #d8dce5;
