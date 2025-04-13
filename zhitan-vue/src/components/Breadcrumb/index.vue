@@ -63,19 +63,5 @@ getBreadcrumb();
     color: #fff;
     cursor: text;
   }
-  
-  :deep(.el-breadcrumb__item) {
-    .el-breadcrumb__inner {
-      color: rgba(255, 255, 255, 0.8);
-      
-      &:hover {
-        color: #fff;
-      }
-    }
-    
-    .el-breadcrumb__separator {
-      color: rgba(255, 255, 255, 0.8);
-    }
-  }
 }
 </style>

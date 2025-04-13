@@ -9,7 +9,7 @@
               <img v-if="sideTheme === 'theme-dark'" :src="systemInfo.leftLogo" class="sidebar-logo" />
               <img v-else :src="systemInfo.leftLogo" class="sidebar-logo" />
             </div>
-            <div class="name" v-if="sidebar.opened" :style="{ color: '#fff' }">
+            <div class="name" v-if="sidebar.opened" :style="{ color: sideTheme === 'theme-dark' ? '#fff' : '#333' }">
               {{ title }}
             </div>
           </div>
@@ -86,7 +86,7 @@ const alarmCount = ref(5)
 
 // 跳转到报警页面
 function goToAlarm() {
-  router.push('/alarmmanage/measuremen?modelCode=BJGL')
+  router.push('/alarm/list')
 }
 
 // 打开AI大模型对话框
@@ -351,47 +351,12 @@ function setLayout() {
 }
 
 .themeDark {
-  .navbar-container {
-    background: #1a235d;
-    border-bottom: 2px solid #110f2e;
-  }
-  
   .navbar {
-    background: transparent !important;
+    background: #002866 !important;
   }
   
   .sidebar-container {
     background-color: #002866 !important;
-  }
-}
-
-.themeLight {
-  .navbar-container {
-    background: #3883FA;
-  }
-  
-  .navbar {
-    background: transparent !important;
-    
-    .left {
-      .sidebar-logo-container {
-        .name {
-          color: #fff !important;
-        }
-      }
-    }
-    
-    .right {
-      .right-menu {
-        .right-menu-item {
-          color: #fff;
-          
-          .right-menu-icon {
-            color: #fff;
-          }
-        }
-      }
-    }
   }
 }
 </style>

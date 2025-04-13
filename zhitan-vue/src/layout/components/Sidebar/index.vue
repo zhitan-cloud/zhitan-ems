@@ -182,9 +182,11 @@ function handleLogout() {
   }
 }
 
-:deep(.custom-menu) {
+.custom-menu {
+  width: 100%;
   padding: 6px 0;
   height: auto !important; // 改为自适应高度，避免固定高度导致内容溢出
+  transition: all 0.3s ease;
   
   // Override Element Plus default menu styles
   .el-menu-item {
@@ -193,6 +195,7 @@ function handleLogout() {
     border-radius: 4px; 
     margin: 4px 10px;
     width: calc(100% - 20px);
+    transition: all 0.2s ease;
     
     &.is-active {
       background-color: #3883FA !important;
@@ -211,6 +214,7 @@ function handleLogout() {
       border-radius: 4px;
       margin: 4px 10px;
       width: calc(100% - 20px);
+      transition: all 0.2s ease;
       
       &:hover {
         background-color: rgba(56, 131, 250, 0.1) !important;
@@ -426,5 +430,49 @@ function handleLogout() {
 :global(.el-menu--vertical .el-sub-menu__title) {
   height: 38px !important;
   line-height: 38px !important;
+}
+
+// Add styles for collapsed menu items
+:deep(.custom-menu.el-menu--collapse) {
+  width: 54px !important;
+  
+  .el-menu-item, .el-sub-menu__title {
+    width: 36px !important;
+    min-width: 36px !important;
+    margin: 4px 9px !important; /* 9px是为了确保居中：(54px宽 - 36px菜单项) / 2 = 9px */
+    padding: 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    
+    &.is-active {
+      background-color: #3883FA !important;
+      color: #fff !important;
+      box-shadow: 0 2px 6px rgba(56, 131, 250, 0.4);
+      transform: scale(0.95);
+      transition: all 0.2s ease;
+    }
+    
+    .el-icon, .svg-icon {
+      margin: 0 !important;
+      font-size: 18px !important;
+      
+      svg {
+        width: 1.2em;
+        height: 1.2em;
+      }
+    }
+    
+    // 确保折叠时子菜单的标题也居中对齐
+    .el-sub-menu__icon-arrow {
+      display: none;
+    }
+  }
+  
+  // 确保折叠时弹出的子菜单有正确样式
+  .el-tooltip__trigger:focus:not(.focusing) {
+    outline: none;
+  }
 }
 </style>
