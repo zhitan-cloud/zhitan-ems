@@ -86,7 +86,7 @@ const alarmCount = ref(5)
 
 // 跳转到报警页面
 function goToAlarm() {
-  router.push('/alarm/list')
+  router.push('/alarmmanage/measuremen?modelCode=BJGL')
 }
 
 // 打开AI大模型对话框

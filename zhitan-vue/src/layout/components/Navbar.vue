@@ -41,17 +41,19 @@ import TopNav from "@/components/TopNav"
 import Hamburger from "@/components/Hamburger"
 import useAppStore from "@/store/modules/app"
 import useSettingsStore from "@/store/modules/settings"
+import { useRouter } from "vue-router"
 
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
+const router = useRouter()
 
 function toggleSideBar() {
   appStore.toggleSideBar()
 }
 
 function handleAlarm() {
-  // 处理报警按钮点击事件
-  console.log('报警按钮被点击')
+  // 跳转到报警管理页面
+  router.push('/alarmmanage/measuremen?modelCode=BJGL')
 }
 
 function handleRobot() {
