@@ -135,6 +135,28 @@ function scrollRight() {
   setTimeout(updateScrollButtons, 300);
 }
 
+/**
+ * 查找最深层的子菜单（叶子节点）
+ * 递归查找第一个没有children的子菜单
+ */
+function findDeepestLeafMenu(route) {
+  if (!route) return null;
+  
+  // 如果没有子菜单或子菜单为空，则返回当前路由
+  if (!route.children || route.children.length === 0) {
+    return route;
+  }
+  
+  // 找到第一个非隐藏的子菜单
+  const firstVisibleChild = route.children.find(child => !child.hidden);
+  if (!firstVisibleChild) {
+    return route; // 如果所有子菜单都是隐藏的，返回当前路由
+  }
+  
+  // 递归查找这个子菜单的最深层子菜单
+  return findDeepestLeafMenu(firstVisibleChild);
+}
+
 function handleSelect(key, keyPath) {
   currentIndex.value = key;
   const route = routers.value.find(item => item.path === key);
@@ -156,12 +178,70 @@ function handleSelect(key, keyPath) {
   if (route && route.children && route.children.length > 0) {
     // 有子路由，显示侧边栏
     activeRoutes(key);
-    const firstChild = route.children[0];
-    const path = firstChild.path.startsWith('/') ? firstChild.path : `${key}/${firstChild.path}`;
-    if (firstChild.query) {
-      router.push({ path, query: firstChild.query });
+    
+    // 按照正确的路径构建层级，这里是特殊处理
+    let targetPath = key; // 从当前点击的菜单路径开始
+    let targetQuery = null;
+    let currentNode = route;
+    let pathSegments = [];
+    
+    // 当前路径是第一段
+    pathSegments.push(currentNode.path);
+    
+    // 逐层添加子路径
+    while (currentNode.children && currentNode.children.length > 0) {
+      const firstChild = currentNode.children.find(child => !child.hidden);
+      if (!firstChild) break;
+      
+      // 跳过ParentView类型的中间节点，直接使用其子节点的path
+      if (firstChild.component === 'ParentView' || firstChild.component.name === 'ParentView') {
+        currentNode = firstChild;
+        pathSegments.push(firstChild.path);
+        continue;
+      }
+      
+      // 普通节点处理
+      currentNode = firstChild;
+      // 如果路径不是以/开头，则添加到路径片段中
+      if (!firstChild.path.startsWith('/')) {
+        pathSegments.push(firstChild.path);
+      } else {
+        // 如果是绝对路径，则替换之前所有路径
+        pathSegments = [firstChild.path];
+      }
+      
+      targetQuery = firstChild.query;
+      
+      // 如果到达叶子节点（没有子节点），则结束查找
+      if (!firstChild.children || firstChild.children.length === 0) {
+        break;
+      }
+    }
+    
+    // 构建最终路径
+    if (pathSegments.length > 0) {
+      // 如果第一段不是以/开头，添加/
+      if (!pathSegments[0].startsWith('/')) {
+        pathSegments[0] = '/' + pathSegments[0];
+      }
+      
+      // 组合路径 - 把数组中所有路径拼接起来，如果某段包含完整路径（以/开头）则从该段重新开始
+      targetPath = pathSegments.reduce((fullPath, segment, index) => {
+        if (segment.startsWith('/')) {
+          return segment;
+        } else if (index === 0) {
+          return segment;
+        } else {
+          return `${fullPath}/${segment}`;
+        }
+      });
+    }
+    
+    // 导航到目标路由
+    if (targetQuery) {
+      router.push({ path: targetPath, query: targetQuery });
     } else {
-      router.push({ path });
+      router.push({ path: targetPath });
     }
   } else {
     // 没有子路由，隐藏侧边栏

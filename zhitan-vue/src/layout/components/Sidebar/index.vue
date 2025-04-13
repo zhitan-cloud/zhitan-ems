@@ -162,12 +162,13 @@ function handleLogout() {
 }
 
 :deep(.scrollbar-wrapper) {
-  height: calc(100% - 290px) !important;
+  height: calc(100% - 220px) !important;
   overflow-x: hidden !important;
 }
 
 :deep(.scrollbar-view) {
   height: 100%;
+  padding-bottom: 20px;
 }
 
 :deep(.el-scrollbar__bar.is-vertical) {
@@ -237,6 +238,28 @@ function handleLogout() {
         height: 38px !important;
         line-height: 38px !important;
       }
+      
+      // Add styling for deeply nested submenus (level 3+)
+      .el-sub-menu {
+        .el-menu-item {
+          padding-left: 65px !important;
+          
+          &.is-active {
+            padding-left: 65px !important;
+          }
+        }
+        
+        // Level 4
+        .el-menu {
+          .el-menu-item {
+            padding-left: 85px !important;
+            
+            &.is-active {
+              padding-left: 85px !important;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -250,7 +273,7 @@ function handleLogout() {
 // 底部用户区域样式
 .sidebar-footer {
   position: absolute;
-  bottom: 72px;
+  bottom: 0;
   left: 0;
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.1);

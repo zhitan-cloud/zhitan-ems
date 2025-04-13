@@ -56,8 +56,13 @@ const usePermissionStore = defineStore(
   })
 
 // 遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
+function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false, parentRoute = null) {
   return asyncRouterMap.filter(route => {
+    // 设置父路由引用
+    if (parentRoute) {
+      route.parent = parentRoute;
+    }
+    
     if (type && route.children) {
       route.children = filterChildren(route.children)
     }
@@ -82,7 +87,8 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
       }
     }
     if (route.children != null && route.children && route.children.length) {
-      route.children = filterAsyncRouter(route.children, route, type)
+      // 将当前路由作为父路由传递给子路由
+      route.children = filterAsyncRouter(route.children, route, type, route)
     } else {
       delete route['children']
       delete route['redirect']
@@ -97,6 +103,9 @@ function filterChildren(childrenMap, lastRouter = false) {
     if (el.children && el.children.length) {
       if (el.component === 'ParentView' && !lastRouter) {
         el.children.forEach(c => {
+          // 设置父路由引用
+          c.parent = el;
+          
           c.path = el.path + '/' + c.path
           if (c.children && c.children.length) {
             children = children.concat(filterChildren(c.children, c))
@@ -108,6 +117,9 @@ function filterChildren(childrenMap, lastRouter = false) {
       }
     }
     if (lastRouter) {
+      // 设置父路由引用
+      el.parent = lastRouter;
+      
       el.path = lastRouter.path + '/' + el.path
       if (el.children && el.children.length) {
         children = children.concat(filterChildren(el.children, el))
