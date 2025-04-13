@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 分项用能分析返回类
  *
- * @author ZhiTan
+ * @author 张
  */
 @Data
 public class ItemizedEnergyAnalysisVO {

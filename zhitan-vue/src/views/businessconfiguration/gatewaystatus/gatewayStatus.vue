@@ -1,5 +1,11 @@
 <template>
   <div class="page">
+    <div class="page-title">
+      <div class="title-bar">
+        <span class="title-text">网关状态监测</span>
+      </div>
+    </div>
+    
     <div class="table-box">
       <div class="border">
         <div class="table" v-for="(item, index) in dataList" :key="index">
@@ -460,14 +466,62 @@ let dataList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @import "@/assets/styles/page.scss";
+
+.page {
+  background: #08234F;
+  min-height: calc(100vh - 145px)
+}
+
+.page-title {
+  position: relative;
+ 
+  .title-bar {
+    position: relative;
+    padding: 14px 0;
+    padding-left: 16px;
+    
+    .title-text {
+      font-size: 18px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 22px;
+      color: #fff;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 5px;
+        height: 18px;
+        background-color: #3883FA;
+        border-radius: 2px;
+      }
+    }
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    opacity: 0.12;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #E6E6E6;
+  }
+}
+
 .themeDark {
   .border {
     border: 1px solid #fff;
     color: #fff;
 
     .table {
+      margin-top: 10px;
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -544,6 +598,10 @@ let dataList = ref([
         }
       }
     }
+  }
+
+  .table-box {
+    margin: 20px 25px;
   }
 }
 
@@ -629,6 +687,16 @@ let dataList = ref([
         }
       }
     }
+  }
+
+  .table-box {
+    margin: 10px 25px;
+  }
+}
+
+.page {
+  .table-box {
+    // ... 保持现有样式
   }
 }
 </style>

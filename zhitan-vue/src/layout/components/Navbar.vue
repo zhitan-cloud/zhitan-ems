@@ -12,108 +12,51 @@
     </div>
 
     <div class="right-menu">
-      <!-- <template v-if="appStore.device !== 'mobile'">
-        <header-search id="header-search" class="right-menu-item" />
-
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-      </template> -->
-      <!-- <el-button @click="toggleTheme">切换</el-button> -->
-      <div class="avatar-container">
-        <el-dropdown @command="handleCommand" class="right-menu-item hover-effect" trigger="click">
-          <div class="avatar-wrapper">
-            <img :src="userStore.avatar" class="user-avatar" />
-            <el-icon><caret-bottom /></el-icon>
+      <!-- 报警按钮 -->
+      <div class="right-menu-item hover-effect nav-btn-item">
+        <el-tooltip content="报警" effect="dark" placement="bottom">
+          <div class="nav-btn" @click="handleAlarm">
+            <img src="@/assets/images/alarm.png" alt="报警" />
+            <span>报警</span>
           </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <router-link to="/user/profile">
-                <el-dropdown-item>个人中心</el-dropdown-item>
-              </router-link>
-              <el-dropdown-item command="toggleTheme">
-                <span>风格切换</span>
-              </el-dropdown-item>
-              <!--               
-              <el-dropdown-item command="setLayout" v-if="settingsStore.showSettings">
-                <span>布局设置</span>
-              </el-dropdown-item> -->
-              <el-dropdown-item divided command="logout">
-                <span>退出登录</span>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        </el-tooltip>
+      </div>
+      
+      <!-- 大模型按钮 -->
+      <div class="right-menu-item hover-effect nav-btn-item">
+        <el-tooltip content="大模型" effect="dark" placement="bottom">
+          <div class="nav-btn" @click="handleRobot">
+            <img src="@/assets/images/robot.png" alt="大模型" />
+            <span>大模型</span>
+          </div>
+        </el-tooltip>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ElMessageBox } from "element-plus"
 import Breadcrumb from "@/components/Breadcrumb"
 import TopNav from "@/components/TopNav"
 import Hamburger from "@/components/Hamburger"
-import Screenfull from "@/components/Screenfull"
-import SizeSelect from "@/components/SizeSelect"
-import HeaderSearch from "@/components/HeaderSearch"
 import useAppStore from "@/store/modules/app"
-import useUserStore from "@/store/modules/user"
 import useSettingsStore from "@/store/modules/settings"
 
 const appStore = useAppStore()
-const userStore = useUserStore()
 const settingsStore = useSettingsStore()
-
-function toggleTheme() {
-  if (settingsStore.sideTheme == "theme-dark") {
-    settingsStore.sideTheme = "theme-light"
-    document.querySelector("body").className = "themeLight"
-  } else {
-    settingsStore.sideTheme = "theme-dark"
-    document.querySelector("body").className = "themeDark"
-  }
-}
 
 function toggleSideBar() {
   appStore.toggleSideBar()
 }
 
-function handleCommand(command) {
-  switch (command) {
-    case "toggleTheme":
-      toggleTheme()
-      break
-    case "setLayout":
-      setLayout()
-      break
-    case "logout":
-      logout()
-      break
-    default:
-      break
-  }
+function handleAlarm() {
+  // 处理报警按钮点击事件
+  console.log('报警按钮被点击')
 }
 
-function logout() {
-  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  })
-    .then(() => {
-      userStore.logOut().then(() => {
-        location.href = "/index"
-      })
-    })
-    .catch(() => {})
-}
-
-const emits = defineEmits(["setLayout"])
-function setLayout() {
-  emits("setLayout")
+function handleRobot() {
+  // 处理大模型按钮点击事件
+  console.log('大模型按钮被点击')
 }
 </script>
 
@@ -188,26 +131,35 @@ function setLayout() {
         }
       }
 
-      .avatar-container {
-        margin-right: 40px;
-
-        .avatar-wrapper {
-          margin-top: 5px;
-          position: relative;
-
-          .user-avatar {
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+      .nav-btn-item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        height: 70px;
+        
+        .nav-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: #fff;
+          background-color: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          padding: 8px 16px;
+          
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
           }
-
-          i {
-            cursor: pointer;
-            position: absolute;
-            right: -20px;
-            top: 25px;
-            font-size: 12px;
+          
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
+          }
+          
+          span {
+            font-size: 14px;
+            font-weight: 500;
           }
         }
       }
@@ -284,26 +236,35 @@ function setLayout() {
         }
       }
 
-      .avatar-container {
-        margin-right: 40px;
-
-        .avatar-wrapper {
-          margin-top: 5px;
-          position: relative;
-
-          .user-avatar {
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+      .nav-btn-item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        height: 70px;
+        
+        .nav-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: #333;
+          background-color: rgba(0, 0, 0, 0.05);
+          border-radius: 4px;
+          padding: 8px 16px;
+          
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
           }
-
-          i {
-            cursor: pointer;
-            position: absolute;
-            right: -20px;
-            top: 25px;
-            font-size: 12px;
+          
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
+          }
+          
+          span {
+            font-size: 14px;
+            font-weight: 500;
           }
         }
       }

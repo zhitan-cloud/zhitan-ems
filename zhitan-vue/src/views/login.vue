@@ -202,7 +202,7 @@ getCookie()
   display: flex;
   align-items: center;
   height: 100%;
-  background-image: url("@/assets/images/login-background.jpg");
+  background-image: url("@/assets/images/login-background.png");
   background-repeat: no-repeat;
   background-size: cover;
   flex-direction: column;

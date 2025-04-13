@@ -3,7 +3,7 @@ package com.zhitan.common.enums;
 /**
  * 业务操作类型
  * 
- * @author ZhiTan
+ * @author zhitan
  */
 public enum BusinessType
 {

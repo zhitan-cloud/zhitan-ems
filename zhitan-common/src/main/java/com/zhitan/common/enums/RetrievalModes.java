@@ -1,7 +1,7 @@
 package com.zhitan.common.enums;
 
 /**
- * @author ZhiTan
+ * @author 范新富
  *
  *     获取实时数据方式.
  */

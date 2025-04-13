@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 模型节点对象 model_node
  *
- * @author ZhiTan
+ * @author fanxinfu
  * @date 2020-02-10
  */
 public class ModelNode extends BaseEntity {
