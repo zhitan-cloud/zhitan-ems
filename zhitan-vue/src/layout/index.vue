@@ -311,13 +311,19 @@ function setLayout() {
   top: 60px;
   right: 0;
   z-index: 9;
-  width: 100%;
+  width: calc(100% - #{$base-sidebar-width});
   transition: width 0.28s;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .hideSidebar .fixed-header {
+  width: calc(100% - 54px);
+}
+
+.sidebarHide .fixed-header {
   width: 100%;
 }
 

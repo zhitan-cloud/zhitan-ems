@@ -29,6 +29,7 @@ const tagsViewStore = useTagsViewStore()
     background: #110f2e;
     padding: 14px;
     box-sizing: border-box;
+    padding-top: 8px;
   }
 
   .fixed-header + .app-main {
@@ -42,7 +43,7 @@ const tagsViewStore = useTagsViewStore()
     }
 
     .fixed-header + .app-main {
-      padding-top: 130px;
+      padding-top: 108px; /* 60px(navbar) + 34px(tagsview) + 14px(内边距) */
     }
   }
 }
@@ -70,7 +71,7 @@ const tagsViewStore = useTagsViewStore()
     }
 
     .fixed-header + .app-main {
-      padding-top: 130px;
+      padding-top: 108px; /* 60px(navbar) + 34px(tagsview) + 14px(内边距) */
     }
   }
 }

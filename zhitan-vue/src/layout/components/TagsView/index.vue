@@ -232,119 +232,49 @@ function handleScroll() {
 </script>
 
 <style lang="scss" scoped>
-.themeDark {
-  .tags-view-container {
-    height: 40px;
-    width: 100%;
-    background: #1a235d;
-    // border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-    .tags-view-wrapper {
-      .tags-view-item {
-        display: inline-block;
-        position: relative;
-        cursor: pointer;
-        height: 32px;
-        line-height: 30px;
-        border: 1px solid #5278f5;
-        color: #fff;
-        // background: #3271eb;
-        padding: 0 12px;
-        font-size: 14px;
-        margin-left: 6px;
-        margin-top: 10px;
-        border-radius: 4px;
-        font-family: OPPOSans, OPPOSans;
-        &:first-of-type {
-          margin-left: 16px;
-        }
-        &:last-of-type {
-          margin-right: 15px;
-        }
-        &.active {
-          background-color: #4e77f8 !important;
-          color: #fff;
-          border-color: #4e77f8 !important;
-          &::before {
-            content: "";
-            background: #fff;
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            position: relative;
-            margin-right: 5px;
-          }
-        }
-      }
-    }
-    .contextmenu {
-      margin: 0;
+.tags-view-container {
+  height: 34px;
+  width: calc(100% - 42px);
+  margin-top: 10px;
+  margin-left: 14px;
+  box-sizing: border-box;
+ // 添加水平内边距与app-main的内边距一致
+ background: #0A3465;
+ 
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  .tags-view-wrapper {
+    .tags-view-item {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #d8dce5;
+      color: #495060;
       background: #fff;
-      z-index: 3000;
-      position: absolute;
-      list-style-type: none;
-      padding: 5px 0;
-      border-radius: 4px;
+      padding: 0 8px;
       font-size: 12px;
-      font-weight: 400;
-      color: #333;
-      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-      li {
-        margin: 0;
-        padding: 7px 16px;
-        cursor: pointer;
-        &:hover {
-          background: #eee;
-        }
+      margin-left: 5px;
+      margin-top: 4px;
+      &:first-of-type {
+        margin-left: 5px;
       }
-    }
-  }
-}
-
-.themeLight {
-  .tags-view-container {
-    height: 52px;
-    width: 100%;
-    background: #fff;
-    // border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-    .tags-view-wrapper {
-      .tags-view-item {
-        display: inline-block;
-        position: relative;
-        cursor: pointer;
-        height: 32px;
-        line-height: 30px;
-        border: 1px solid #d8dce5;
-        color: #495060;
-        background: #fff;
-        padding: 0 12px;
-        font-size: 14px;
-        margin-left: 6px;
-        margin-top: 10px;
-        border-radius: 4px;
-        font-family: OPPOSans, OPPOSans;
-        &:first-of-type {
-          margin-left: 16px;
-        }
-        &:last-of-type {
-          margin-right: 15px;
-        }
-        &.active {
-          background-color: #42b983;
-          color: #fff;
-          border-color: #42b983;
-          &::before {
-            content: "";
-            background: #fff;
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            position: relative;
-            margin-right: 5px;
-          }
+      &:last-of-type {
+        margin-right: 5px;
+      }
+      &.active {
+        background-color: #42b983;
+        color: #fff;
+        border-color: #42b983;
+        &::before {
+          content: "";
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
         }
       }
     }
@@ -401,6 +331,6 @@ function handleScroll() {
 }
 
 .scroll-container .el-scrollbar__wrap {
-  height: 50px !important;
+  height: 34px !important;
 }
 </style>
