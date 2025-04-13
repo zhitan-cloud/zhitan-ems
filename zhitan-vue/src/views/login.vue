@@ -201,7 +201,11 @@ getCookie()
 .login {
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   height: 100vh;
+=======
+  height: 100%;
+>>>>>>> bf185c5d6a86eaa6a27d93b6d5942234d5bebb24
   background-image: url("@/assets/images/login-background.png");
   background-repeat: no-repeat;
   background-size: cover;
