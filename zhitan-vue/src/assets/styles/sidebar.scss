@@ -13,6 +13,7 @@
 
 
     .main-container {
+      background-color: #110f2e !important;
       height: 100%;
       transition: margin-left 0.28s;
       margin-left: $base-sidebar-width;
@@ -28,7 +29,7 @@
       transition: width 0.28s;
       width: $base-sidebar-width !important;
       background-color: $base-menu-background;
-      height: 100%;
+      height: calc(100% - 60px) !important;
       position: fixed;
       top: 60px;
       bottom: 0;
@@ -321,7 +322,7 @@
       transition: width 0.28s;
       width: $base-sidebar-width !important;
       background-color: $base-menu-background;
-      height: 100%;
+      height: calc(100% - 60px) !important;
       position: fixed;
       top: 60px;
       bottom: 0;

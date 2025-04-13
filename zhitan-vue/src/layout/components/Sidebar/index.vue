@@ -5,9 +5,8 @@
     class="sidebar-container-wrapper"
   >
     <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper" view-class="scrollbar-view">
-      <!-- 首页时不显示任何菜单项 -->
+      <!-- 始终显示菜单项，不再根据路径判断 -->
       <el-menu
-        v-if="!isHomePage"
         :default-active="activeMenu"
         :collapse="isCollapse"
         :background-color="'transparent'"
@@ -18,15 +17,24 @@
         mode="vertical"
         class="custom-menu"
       >
-        <sidebar-item
-          v-for="(route, index) in sidebarRouters"
-          :key="route.path + index"
-          :item="route"
-          :base-path="route.path"
-        />
+        <!-- 当前是首页看板子路由时，渲染专用路由 -->
+        <template v-if="isIndexSubRoute">
+          <sidebar-item
+            v-for="(route, index) in indexPageRouters"
+            :key="route.path + index"
+            :item="route"
+            :base-path="route.path"
+          />
+        </template>
+        <template v-else>
+          <sidebar-item
+            v-for="(route, index) in sidebarRouters"
+            :key="route.path + index"
+            :item="route"
+            :base-path="route.path"
+          />
+        </template>
       </el-menu>
-      <!-- 首页时的空白区域 -->
-      <div v-else class="home-empty-menu"></div>
     </el-scrollbar>
     
     <!-- 底部用户区域 -->
@@ -95,19 +103,21 @@ const userStore = useUserStore()
 
 const sidebarRouters = computed(() => permissionStore.sidebarRouters)
 
-// 判断当前是否为首页
-const isHomePage = computed(() => {
-  return route.path === '/index' || route.path === '/' || route.fullPath.startsWith('/index')
+// 判断当前是否为首页子路由(/index/index)
+const isIndexSubRoute = computed(() => {
+  return route.path === '/index/index'
 })
 
-// 首页专用路由，只有首页一个菜单项
-const homePageRouters = computed(() => {
-  // 从原始路由中筛选出首页路由
-  const homeRoute = sidebarRouters.value.find(route => {
-    return route.children && route.children.find(child => child.path === '/index')
-  })
-  
-  return homeRoute ? [homeRoute] : []
+// 判断当前是否为主首页路由(/index或/)
+const isMainIndexRoute = computed(() => {
+  return route.path === '/index' || route.path === '/'
+})
+
+// 首页专用路由，首页看板相关菜单
+const indexPageRouters = computed(() => {
+  // 查找name为Index的路由
+  const indexRoute = sidebarRouters.value.find(route => route.name === 'Index')
+  return indexRoute ? [indexRoute] : []
 })
 
 const showLogo = computed(() => settingsStore.sidebarLogo)
@@ -162,12 +172,13 @@ function handleLogout() {
 }
 
 :deep(.scrollbar-wrapper) {
-  height: calc(100% - 290px) !important;
+  height: calc(100% - 220px) !important;
   overflow-x: hidden !important;
 }
 
 :deep(.scrollbar-view) {
   height: 100%;
+  padding-bottom: 20px;
 }
 
 :deep(.el-scrollbar__bar.is-vertical) {
@@ -200,6 +211,12 @@ function handleLogout() {
     &.is-active {
       background-color: #3883FA !important;
       color: #fff !important;
+      font-weight: bold;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(56, 131, 250, 0.5);
+      
+      // 左侧指示条
+     
     }
     
     &:hover {
@@ -221,6 +238,13 @@ function handleLogout() {
       }
     }
     
+    &.is-active {
+      > .el-sub-menu__title {
+        color: #3883FA !important;
+        font-weight: bold;
+      }
+    }
+    
     .el-menu-item {
       padding-left: 45px !important; 
       min-width: auto !important;
@@ -237,6 +261,28 @@ function handleLogout() {
         height: 38px !important;
         line-height: 38px !important;
       }
+      
+      // Add styling for deeply nested submenus (level 3+)
+      .el-sub-menu {
+        .el-menu-item {
+          padding-left: 65px !important;
+          
+          &.is-active {
+            padding-left: 65px !important;
+          }
+        }
+        
+        // Level 4
+        .el-menu {
+          .el-menu-item {
+            padding-left: 85px !important;
+            
+            &.is-active {
+              padding-left: 85px !important;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -250,7 +296,7 @@ function handleLogout() {
 // 底部用户区域样式
 .sidebar-footer {
   position: absolute;
-  bottom: 72px;
+  bottom: 0;
   left: 0;
   width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -425,6 +471,62 @@ function handleLogout() {
   }
 }
 
+// 添加深色模式专用样式
+.theme-dark {
+  :deep(.custom-menu) {
+    // Override Element Plus menu styles for dark theme
+    .el-menu-item {
+      &.is-active {
+        background-color: #4e77f8 !important;
+        color: #ffffff !important;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(78, 119, 248, 0.6);
+        position: relative;
+        
+        // 左侧指示条
+        
+      }
+      
+      &:hover {
+        background-color: rgba(78, 119, 248, 0.2) !important;
+      }
+    }
+    
+    .el-sub-menu {
+      &.is-active {
+        > .el-sub-menu__title {
+          color: #4e77f8 !important;
+          font-weight: bold;
+        }
+      }
+      
+      .el-sub-menu__title {
+        &:hover {
+          background-color: rgba(78, 119, 248, 0.2) !important;
+        }
+      }
+      
+      // 嵌套子菜单样式
+      .el-menu {
+        .el-menu-item {
+          &.is-active {
+            background-color: #4e77f8 !important;
+            color: #ffffff !important;
+          }
+        }
+        
+        .el-sub-menu {
+          &.is-active {
+            > .el-sub-menu__title {
+              color: #4e77f8 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // Add global style to override Element Plus defaults
 :global(.el-menu--vertical .el-menu-item),
 :global(.el-menu--vertical .el-sub-menu__title) {
@@ -473,6 +575,23 @@ function handleLogout() {
   // 确保折叠时弹出的子菜单有正确样式
   .el-tooltip__trigger:focus:not(.focusing) {
     outline: none;
+  }
+}
+
+// 深色模式下折叠菜单的样式
+.theme-dark {
+  :deep(.custom-menu.el-menu--collapse) {
+    .el-menu-item, .el-sub-menu__title {
+      &.is-active {
+        background-color: #4e77f8 !important;
+        color: #ffffff !important;
+        box-shadow: 0 2px 8px rgba(78, 119, 248, 0.6);
+      }
+      
+      &:hover {
+        background-color: rgba(78, 119, 248, 0.2) !important;
+      }
+    }
   }
 }
 </style>

@@ -14,6 +14,75 @@ NProgress.configure({ showSpinner: false });
 
 const whiteList = ['/login', '/register', '/energy']
 
+/**
+ * 查找最深层的子菜单并构建完整路径
+ */
+function findDeepestPath(route) {
+  if (!route) return { path: null, query: null };
+  
+  // 首先添加当前节点的路径
+  let currentNode = route;
+  let pathSegments = [];
+  
+  if (currentNode.path) {
+    pathSegments.push(currentNode.path);
+  }
+  
+  // 逐层添加子路径
+  while (currentNode.children && currentNode.children.length > 0) {
+    const firstChild = currentNode.children.find(child => !child.hidden);
+    if (!firstChild) break;
+    
+    // 跳过ParentView类型的中间节点
+    if (firstChild.component === 'ParentView' || 
+        (typeof firstChild.component === 'object' && firstChild.component.name === 'ParentView')) {
+      currentNode = firstChild;
+      pathSegments.push(firstChild.path);
+      continue;
+    }
+    
+    // 普通节点处理
+    currentNode = firstChild;
+    // 如果路径不是以/开头，则添加到路径片段中
+    if (!firstChild.path.startsWith('/')) {
+      pathSegments.push(firstChild.path);
+    } else {
+      // 如果是绝对路径，则替换之前所有路径
+      pathSegments = [firstChild.path];
+    }
+    
+    // 如果到达叶子节点，则结束查找
+    if (!firstChild.children || firstChild.children.length === 0) {
+      break;
+    }
+  }
+  
+  // 构建最终路径
+  let targetPath = '';
+  if (pathSegments.length > 0) {
+    // 如果第一段不是以/开头，添加/
+    if (!pathSegments[0].startsWith('/')) {
+      pathSegments[0] = '/' + pathSegments[0];
+    }
+    
+    // 组合路径
+    targetPath = pathSegments.reduce((fullPath, segment, index) => {
+      if (segment.startsWith('/')) {
+        return segment;
+      } else if (index === 0) {
+        return segment;
+      } else {
+        return `${fullPath}/${segment}`;
+      }
+    });
+  }
+  
+  return { 
+    path: targetPath, 
+    query: currentNode.query
+  };
+}
+
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
@@ -45,11 +114,23 @@ router.beforeEach((to, from, next) => {
               if (topMenus.length > 0) {
                 // 跳转到第一个菜单
                 const firstMenu = topMenus[0]
-                if (firstMenu.children && firstMenu.children.length > 0) {
-                  // 有子菜单，跳转到第一个子菜单
+                
+                // 查找最深层的子菜单并构建路径
+                const { path, query } = findDeepestPath(firstMenu);
+                
+                if (path) {
+                  // 有最深层子菜单，跳转到该菜单
+                  if (query) {
+                    next({ path, query, replace: true });
+                  } else {
+                    next({ path, replace: true });
+                  }
+                  return;
+                } else if (firstMenu.children && firstMenu.children.length > 0) {
+                  // 使用原有逻辑
                   const firstChild = firstMenu.children[0]
-                  const path = firstMenu.path.endsWith('/') ? firstMenu.path + firstChild.path : `${firstMenu.path}/${firstChild.path}`
-                  next({ path: path, replace: true })
+                  const childPath = firstMenu.path.endsWith('/') ? firstMenu.path + firstChild.path : `${firstMenu.path}/${firstChild.path}`
+                  next({ path: childPath, replace: true })
                   return
                 } else {
                   // 没有子菜单，直接跳转
@@ -75,11 +156,23 @@ router.beforeEach((to, from, next) => {
           if (topMenus.length > 0) {
             // 跳转到第一个菜单
             const firstMenu = topMenus[0]
-            if (firstMenu.children && firstMenu.children.length > 0) {
-              // 有子菜单，跳转到第一个子菜单
+            
+            // 查找最深层的子菜单并构建路径
+            const { path, query } = findDeepestPath(firstMenu);
+            
+            if (path) {
+              // 有最深层子菜单，跳转到该菜单
+              if (query) {
+                next({ path, query, replace: true });
+              } else {
+                next({ path, replace: true });
+              }
+              return;
+            } else if (firstMenu.children && firstMenu.children.length > 0) {
+              // 使用原有逻辑
               const firstChild = firstMenu.children[0]
-              const path = firstMenu.path.endsWith('/') ? firstMenu.path + firstChild.path : `${firstMenu.path}/${firstChild.path}`
-              next({ path: path, replace: true })
+              const childPath = firstMenu.path.endsWith('/') ? firstMenu.path + firstChild.path : `${firstMenu.path}/${firstChild.path}`
+              next({ path: childPath, replace: true })
               return
             } else {
               // 没有子菜单，直接跳转
@@ -88,6 +181,26 @@ router.beforeEach((to, from, next) => {
             }
           }
         }
+        
+        // 自动处理带有重定向的路由
+        if (to.matched.length > 0 && to.matched[0].path === to.path) {
+          const currentRouteConfig = router.getRoutes().find(r => r.path === to.path);
+          
+          if (currentRouteConfig && currentRouteConfig.children && currentRouteConfig.children.length > 0) {
+            // 有子路由，自动导航到最深层子菜单
+            const { path, query } = findDeepestPath(currentRouteConfig);
+            
+            if (path && path !== to.path) {
+              if (query) {
+                next({ path, query, replace: true });
+              } else {
+                next({ path, replace: true });
+              }
+              return;
+            }
+          }
+        }
+        
         next()
       }
     }

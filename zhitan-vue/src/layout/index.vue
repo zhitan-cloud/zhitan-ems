@@ -119,21 +119,26 @@ watchEffect(() => {
 
 // 监听路由变化，处理首页的侧边栏显示
 watchEffect(() => {
-  // 检查是否是首页路由
-  if (route.path === '/index' || route.path === '/') {
+  // 检查是否是首页路由，但排除/index/index子路由
+  if ((route.path === '/index' || route.path === '/') && route.path !== '/index/index') {
     // 首页路由，确保侧边栏不隐藏，但状态是折叠的
-    appStore.showCollapsedSidebar()
+    appStore.toggleSideBarHide(false) // 改为不隐藏侧边栏
   } else if (route.meta && route.meta.showSidebar === false) {
     // 如果路由明确指定隐藏侧边栏
     appStore.toggleSideBarHide(true)
+  } else {
+    // 其他路由，确保侧边栏可见
+    appStore.toggleSideBarHide(false)
   }
 })
 
 // 组件挂载时，确保首页侧边栏状态正确
 onMounted(() => {
-  // 如果当前是首页，确保侧边栏是折叠的而不是隐藏的
-  if (route.path === '/index' || route.path === '/') {
-    appStore.showCollapsedSidebar()
+  // 如果当前是首页子页面，只确保侧边栏不被隐藏，但保持折叠/展开状态不变
+  if (route.path === '/index/index') {
+    // 只设置不隐藏侧边栏，但不改变其展开/折叠状态
+    appStore.toggleSideBarHide(false)
+    // 不再强制设置opened为true，保持用户之前的设置
   }
 })
 
@@ -306,13 +311,19 @@ function setLayout() {
   top: 60px;
   right: 0;
   z-index: 9;
-  width: 100%;
+  width: calc(100% - #{$base-sidebar-width});
   transition: width 0.28s;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .hideSidebar .fixed-header {
+  width: calc(100% - 54px);
+}
+
+.sidebarHide .fixed-header {
   width: 100%;
 }
 
