@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 /**
  * description todu
  *
- * @author ZhiTan
+ * @author hmj
  * @date 2024-10-31 18:07
  */
 @Service
@@ -76,7 +76,7 @@ public class HomePageServiceImpl implements IHomePageService {
             final Double tongbiCount = tongbiMap.get(energyNo).stream().map(HomeEnergyStatisticsVO::getCount).mapToDouble(Double::doubleValue).sum();
             final Double huanbiCount = huanbiMap.get(energyNo).stream().map(HomeEnergyStatisticsVO::getCount).mapToDouble(Double::doubleValue).sum();
 
-            vo.setTonCount(format2Double(count));
+            vo.setTonCount(format2Double(vo.getCount() * Double.valueOf(vo.getCoefficient())));
             if (tongbiCount != 0) {
                 vo.setTongbi(format2Double((count - tongbiCount) / tongbiCount * 100));
             } else {

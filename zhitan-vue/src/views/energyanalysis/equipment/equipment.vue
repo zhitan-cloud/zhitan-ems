@@ -115,9 +115,10 @@
 </template>
 
 <script setup name="equipment">
-import { listRegion, listDepartment } from "@/api/energyAnalysis/energyAnalysis"
+import { listDepartment } from "@/api/energyAnalysis/energyAnalysis"
 import { listEnergyTypeList } from "@/api/modelConfiguration/energyType"
 import * as echarts from "echarts"
+import request from "@/utils/request"
 const { proxy } = getCurrentInstance()
 const { period } = proxy.useDict("period")
 import { useRoute } from "vue-router"
@@ -183,12 +184,16 @@ function getList() {
   // }
   const myChart1 = echarts.init(document.getElementById("Chart1"))
   // const myChart2 = echarts.init(document.getElementById("Chart2"));
-  listRegion(
-    proxy.addDateRange({
+  
+  // 修改为直接调用consumptionanalysis/getByArea接口
+  request({
+    url: "/consumptionanalysis/getByArea",
+    method: "get",
+    params: proxy.addDateRange({
       ...queryParams.value,
       ...query.value,
     })
-  ).then((res) => {
+  }).then((res) => {
     if (!!res.code && res.code == 200) {
       loading.value = false
       let xdata = []
@@ -551,7 +556,7 @@ function resetQuery() {
 // 能耗对比分析-设备能耗分析-导出
 function handleExport() {
   proxy.download(
-    "consumptionanalysis/energyExport",
+    "consumptionanalysis/getByArea/export",
     {
       ...queryParams.value,
       ...query.value,

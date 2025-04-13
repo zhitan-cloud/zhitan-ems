@@ -3,7 +3,7 @@ package com.zhitan.common.constant;
 /**
  * 缓存的key 常量
  * 
- * @author ZhiTan
+ * @author zhitan
  */
 public class CacheConstants
 {

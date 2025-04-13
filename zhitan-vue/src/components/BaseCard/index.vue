@@ -28,11 +28,26 @@ defineProps(["title"])
       border-radius: 7px 7px 0 0;
       padding: 20px;
       background-color: #22408c;
+      
       .name {
         font-family: OPPOSans, OPPOSans;
         font-weight: bold;
         font-size: 18px;
         color: #fff;
+        position: relative;
+        padding-left: 12px;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 5px;
+          height: 18px;
+          background-color: #3883FA;
+          border-radius: 2px;
+        }
       }
     }
   }
@@ -46,6 +61,7 @@ defineProps(["title"])
     border: 1px solid #ebebeb;
     padding-bottom: 10px;
     background-color: #fff;
+    
     .mycard-title {
       display: flex;
       justify-content: flex-start;
@@ -54,11 +70,26 @@ defineProps(["title"])
       border-radius: 7px 7px 0 0;
       padding: 20px;
       background-color: #e7eefd;
+      
       .name {
         font-family: OPPOSans, OPPOSans;
         font-weight: bold;
         font-size: 18px;
         color: #2d2e31;
+        position: relative;
+        padding-left: 12px;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 5px;
+          height: 18px;
+          background-color: #3883FA;
+          border-radius: 2px;
+        }
       }
     }
   }

@@ -1,7 +1,7 @@
 .themeDark {
   #app {
     .el-menu-item.is-active {
-      background: #3271eb !important;
+     // background: #3271eb !important;
       // border-radius: 30px 30px 30px 30px !important;
       color: #fff;
     }
@@ -30,11 +30,12 @@
       background-color: $base-menu-background;
       height: 100%;
       position: fixed;
-      top: 0;
+      top: 60px;
       bottom: 0;
       left: 0;
-      z-index: 1001;
+      z-index: 999;
       overflow: hidden;
+      background-color: #002866 !important;
       -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       font-family: OPPOSans, OPPOSans;
@@ -92,7 +93,7 @@
       .menu-title {
         overflow: hidden !important;
         font-weight: 400 !important;
-        font-size: 16px !important;
+        font-size: 14px !important;
       }
 
       // @media (min-width: 1440px) {
@@ -284,7 +285,7 @@
 .themeLight {
   #app {
     .el-menu-item.is-active {
-      background: #e0eafc !important;
+     
       // border-radius: 30px 30px 30px 30px !important;
     }
 
@@ -311,10 +312,10 @@
       background-color: $base-menu-background;
       height: 100%;
       position: fixed;
-      top: 0;
+      top: 60px;
       bottom: 0;
       left: 0;
-      z-index: 1001;
+      z-index: 999;
       overflow: hidden;
       -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       box-shadow: none;

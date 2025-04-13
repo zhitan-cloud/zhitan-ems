@@ -3,17 +3,19 @@
     :class="{ 'has-logo': showLogo }"
     :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }"
   >
-    <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
+      <!-- 首页时不显示任何菜单项 -->
       <el-menu
+        v-if="!isHomePage"
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="sideTheme === 'theme-dark' ? '#232D70' : '#fff'"
+        :background-color="'transparent'"
         :text-color="sideTheme === 'theme-dark' ? '#fff' : '#000'"
         :unique-opened="true"
         :active-text-color="theme"
         :collapse-transition="false"
         mode="vertical"
+        class="custom-menu"
       >
         <sidebar-item
           v-for="(route, index) in sidebarRouters"
@@ -22,24 +24,91 @@
           :base-path="route.path"
         />
       </el-menu>
+      <!-- 首页时的空白区域 -->
+      <div v-else class="home-empty-menu"></div>
     </el-scrollbar>
+    
+    <!-- 底部用户区域 -->
+    <div class="sidebar-footer" :class="{ 'collapsed': isCollapse, 'theme-light': sideTheme === 'theme-light' }">
+      <div class="user-avatar-container">
+        <img :src="userStore.avatar" class="user-avatar" />
+      </div>
+      
+      <!-- 展开状态下显示完整内容 -->
+      <div class="user-info" v-if="!isCollapse">
+        <div class="username">{{ userStore.name || 'admin' }}</div>
+        
+        <div class="action-buttons">
+          <div class="action-button" :class="{'theme-light': sideTheme === 'theme-light'}" @click="toUserProfile">
+            <el-icon><User /></el-icon>
+            <span>个人中心</span>
+          </div>
+          
+          <div class="action-button" :class="{'theme-light': sideTheme === 'theme-light'}" @click="toggleTheme">
+            <el-icon><Brush /></el-icon>
+            <span>切换主题</span>
+          </div>
+          
+          <div class="action-button" :class="{'theme-light': sideTheme === 'theme-light'}" @click="handleLogout">
+            <el-icon><SwitchButton /></el-icon>
+            <span>退出登录</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 折叠状态下只显示图标按钮 -->
+      <div class="collapsed-actions" v-if="isCollapse">
+        <div class="action-icon" :class="{'theme-light': sideTheme === 'theme-light'}" @click="toUserProfile" title="个人中心">
+          <el-icon><User /></el-icon>
+        </div>
+        
+        <div class="action-icon" :class="{'theme-light': sideTheme === 'theme-light'}" @click="toggleTheme" title="切换主题">
+          <el-icon><Brush /></el-icon>
+        </div>
+        
+        <div class="action-icon" :class="{'theme-light': sideTheme === 'theme-light'}" @click="handleLogout" title="退出登录">
+          <el-icon><SwitchButton /></el-icon>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import Logo from "./Logo"
 import SidebarItem from "./SidebarItem"
 import variables from "@/assets/styles/variables.module.scss"
 import useAppStore from "@/store/modules/app"
 import useSettingsStore from "@/store/modules/settings"
 import usePermissionStore from "@/store/modules/permission"
+import useUserStore from "@/store/modules/user"
+import { User, Brush, SwitchButton } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const route = useRoute()
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
+const userStore = useUserStore()
 
 const sidebarRouters = computed(() => permissionStore.sidebarRouters)
+
+// 判断当前是否为首页
+const isHomePage = computed(() => {
+  return route.path === '/index' || route.path === '/' || route.fullPath.startsWith('/index')
+})
+
+// 首页专用路由，只有首页一个菜单项
+const homePageRouters = computed(() => {
+  // 从原始路由中筛选出首页路由
+  const homeRoute = sidebarRouters.value.find(route => {
+    return route.children && route.children.find(child => child.path === '/index')
+  })
+  
+  return homeRoute ? [homeRoute] : []
+})
+
 const showLogo = computed(() => settingsStore.sidebarLogo)
 const sideTheme = computed(() => settingsStore.sideTheme)
 const theme = computed(() => settingsStore.theme)
@@ -53,5 +122,278 @@ const activeMenu = computed(() => {
   }
   return path
 })
+
+function toUserProfile() {
+  router.push('/user/profile')
+}
+
+function toggleTheme() {
+  if (settingsStore.sideTheme == "theme-dark") {
+    settingsStore.sideTheme = "theme-light"
+    document.querySelector("body").className = "themeLight"
+  } else {
+    settingsStore.sideTheme = "theme-dark"
+    document.querySelector("body").className = "themeDark"
+  }
+}
+
+function handleLogout() {
+  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      userStore.logOut().then(() => {
+        location.href = "/index"
+      })
+    })
+    .catch(() => {})
+}
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.custom-menu) {
+  padding: 6px 0;
+  height: calc(100% - 150px); // 留出底部用户区域的空间
+  
+  // Override Element Plus default menu styles
+  .el-menu-item {
+    height: 38px !important;
+    line-height: 38px !important;
+    border-radius: 4px; 
+    margin: 4px 10px;
+    width: calc(100% - 20px);
+    
+    &.is-active {
+      background-color: #3883FA !important;
+      color: #fff !important;
+    }
+    
+    &:hover {
+      background-color: rgba(56, 131, 250, 0.1) !important;
+    }
+  }
+  
+  .el-sub-menu {
+    .el-sub-menu__title {
+      height: 38px !important;
+      line-height: 38px !important;
+      border-radius: 4px;
+      margin: 4px 10px;
+      width: calc(100% - 20px);
+      
+      &:hover {
+        background-color: rgba(56, 131, 250, 0.1) !important;
+      }
+    }
+    
+    .el-menu-item {
+      padding-left: 45px !important; 
+      min-width: auto !important;
+      
+      &.is-active {
+        padding-left: 45px !important;
+      }
+    }
+    
+    // For nested submenus
+    .el-menu {
+      .el-menu-item, 
+      .el-sub-menu__title {
+        height: 38px !important;
+        line-height: 38px !important;
+      }
+    }
+  }
+}
+
+// 首页空白菜单区域样式
+.home-empty-menu {
+  height: calc(100% - 150px);
+}
+
+// 底部用户区域样式
+.sidebar-footer {
+  position: absolute;
+  bottom: 72px;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  &.collapsed {
+    padding: 10px;
+    
+    .user-avatar-container {
+      margin-bottom: 10px;
+    }
+  }
+  
+  &.theme-light {
+    background-color: rgba(255, 255, 255, 0.6);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    
+    .user-avatar-container {
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .user-info {
+      .username {
+        color: #333;
+      }
+    }
+  }
+  
+  .user-avatar-container {
+    margin-bottom: 10px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 4px;
+    }
+  }
+  
+  .user-info {
+    width: 100%;
+    text-align: center;
+    
+    .username {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .action-buttons {
+      .action-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(56, 131, 250, 0.11);
+        border-radius: 9px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        
+        &:hover {
+          background: rgba(56, 131, 250, 0.2);
+        }
+        
+        .el-icon {
+          margin-right: 8px;
+          font-size: 16px;
+        }
+        
+        span {
+          font-size: 14px;
+        }
+        
+        &.theme-light {
+          background-color: rgba(56, 131, 250, 1);
+          color: #fff;
+          border: 1px solid rgba(56, 131, 250, 0.8);
+          
+          &:hover {
+            background-color: rgba(56, 131, 250, 0.9);
+          }
+          
+          .el-icon {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+  
+  .collapsed-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    
+    .action-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 8px;
+      background: rgba(56, 131, 250, 0.11);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      
+      &:hover {
+        background: rgba(56, 131, 250, 0.2);
+      }
+      
+      .el-icon {
+        font-size: 20px;
+        color: #fff;
+      }
+      
+      &.theme-light {
+        background: rgba(56, 131, 250, 1);
+        border: 1px solid rgba(56, 131, 250, 0.8);
+        
+        &:hover {
+          background: rgba(56, 131, 250, 0.9);
+        }
+        
+        .el-icon {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.theme-light {
+  :deep(.custom-menu) {
+    // Override Element Plus menu styles for light theme
+    .el-menu-item {
+      &.is-active {
+        background-color: #3883FA !important;
+        color: #fff !important;
+      }
+      
+      &:hover {
+        background-color: rgba(56, 131, 250, 0.1) !important;
+      }
+    }
+    
+    .el-sub-menu {
+      .el-sub-menu__title {
+        &:hover {
+          background-color: rgba(56, 131, 250, 0.1) !important;
+        }
+      }
+    }
+  }
+}
+
+// Add global style to override Element Plus defaults
+:global(.el-menu--vertical .el-menu-item),
+:global(.el-menu--vertical .el-sub-menu__title) {
+  height: 38px !important;
+  line-height: 38px !important;
+}
+</style>

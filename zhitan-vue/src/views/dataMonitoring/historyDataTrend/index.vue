@@ -210,6 +210,10 @@ function handleExport() {
 <style scoped lang="scss">
 @import "@/assets/styles/page.scss";
 
+.page {
+  background-color: #08234F;
+}
+
 .themeDark {
   .card-list {
     width: 100%;

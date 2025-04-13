@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * HomePageController
  *
- * @author ZhiTan
+ * @author hmj
  * @date 2024-10-08
  */
 @RestController
@@ -43,7 +43,7 @@ public class HomePageController extends BaseController {
 
     /**
      * @description: 能耗趋势
-     * @author ZhiTan
+     * @author: hmj
      * @date: 2024/10/8 13:41
      */
     @GetMapping("/energyConsumptionTrend")
@@ -61,7 +61,7 @@ public class HomePageController extends BaseController {
 
     /**
      * @description: 科室能耗排名
-     * @author ZhiTan
+     * @author: hmj
      * @date: 2024/10/8 13:41
      */
     @GetMapping("/energyConsumptionRanking")
@@ -78,7 +78,7 @@ public class HomePageController extends BaseController {
 
     /**
      * @description: 峰平谷占比
-     * @author ZhiTan
+     * @author: hmj
      * @date: 2024/10/8 13:41
      */
     @GetMapping("/peakValley")

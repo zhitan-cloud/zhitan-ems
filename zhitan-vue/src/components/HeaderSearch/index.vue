@@ -52,7 +52,7 @@ function change(val) {
     window.open(path.substr(pindex, path.length), "_blank");
   } else {
     if (query) {
-      router.push({ path: path, query: JSON.parse(query) });
+      router.push({ path: path, query: query });
     } else {
       router.push(path)
     }

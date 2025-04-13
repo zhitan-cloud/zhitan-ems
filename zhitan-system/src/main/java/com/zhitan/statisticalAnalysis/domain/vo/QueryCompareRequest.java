@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * @Description: 数据查询条件实体
- * @author ZhiTan
+ * @author: yxw
  * @date: 2022年01月28日 14:49
  */
 @Data

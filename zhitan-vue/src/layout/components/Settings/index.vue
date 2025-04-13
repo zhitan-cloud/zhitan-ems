@@ -134,6 +134,8 @@ function themeChange(val) {
 function handleTheme(val) {
   settingsStore.sideTheme = val
   sideTheme.value = val
+  // Update body class to match the theme
+  document.querySelector("body").className = val === 'theme-dark' ? "themeDark" : "themeLight"
 }
 function saveSetting() {
   proxy.$modal.loading("正在保存到本地，请稍候...")

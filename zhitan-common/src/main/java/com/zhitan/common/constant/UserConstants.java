@@ -3,7 +3,7 @@ package com.zhitan.common.constant;
 /**
  * 用户常量信息
  * 
- * @author ZhiTan
+ * @author zhitan
  */
 public class UserConstants
 {

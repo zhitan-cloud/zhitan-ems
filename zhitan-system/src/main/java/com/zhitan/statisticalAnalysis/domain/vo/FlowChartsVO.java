@@ -52,11 +52,10 @@ public class FlowChartsVO {
 
     public BigDecimal getEnergyLossRatio() {
         if (BigDecimal.ZERO.compareTo(totalAccumulatedAmount) == 0
-                || BigDecimal.ZERO.compareTo(difference) == 0) {
+                || BigDecimal.ZERO.compareTo(difference) == 0){
             return BigDecimal.ZERO;
         }
-        // 先计算比例，再乘以 100 转换为百分数
-        return energyLossRatio = difference.divide(totalAccumulatedAmount, 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP);
+        return energyLossRatio = difference.divide(totalAccumulatedAmount, 2, RoundingMode.HALF_UP);
     }
 
     public FlowChartsVO() {

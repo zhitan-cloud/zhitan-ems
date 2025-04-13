@@ -18,10 +18,11 @@ function getBreadcrumb() {
   // only show routes with meta.title
   let matched = route.matched.filter(item => item.meta && item.meta.title);
   const first = matched[0]
-  // 判断是否为首页
-  if (!isDashboard(first)) {
-    matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
-  }
+  
+  // 不自动添加首页到面包屑中
+  // if (!isDashboard(first)) {
+  //   matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
+  // }
 
   levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
 }
@@ -61,6 +62,20 @@ getBreadcrumb();
   .no-redirect {
     color: #fff;
     cursor: text;
+  }
+  
+  :deep(.el-breadcrumb__item) {
+    .el-breadcrumb__inner {
+      color: rgba(255, 255, 255, 0.8);
+      
+      &:hover {
+        color: #fff;
+      }
+    }
+    
+    .el-breadcrumb__separator {
+      color: rgba(255, 255, 255, 0.8);
+    }
   }
 }
 </style>

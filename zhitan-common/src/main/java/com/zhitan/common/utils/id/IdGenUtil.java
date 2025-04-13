@@ -6,7 +6,7 @@ import java.util.UUID;
 
 /**
  * 生成ID
- * @author ZhiTan
+ * @author Geoffrey
  * @date 2024/12/31
  */
 public class IdGenUtil {
