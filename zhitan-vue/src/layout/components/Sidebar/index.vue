@@ -2,8 +2,9 @@
   <div
     :class="{ 'has-logo': showLogo }"
     :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }"
+    class="sidebar-container-wrapper"
   >
-    <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
+    <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper" view-class="scrollbar-view">
       <!-- 首页时不显示任何菜单项 -->
       <el-menu
         v-if="!isHomePage"
@@ -152,9 +153,38 @@ function handleLogout() {
 }
 </script>
 <style lang="scss" scoped>
+.sidebar-container-wrapper {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.scrollbar-wrapper) {
+  height: calc(100% - 290px) !important;
+  overflow-x: hidden !important;
+}
+
+:deep(.scrollbar-view) {
+  height: 100%;
+}
+
+:deep(.el-scrollbar__bar.is-vertical) {
+  right: 0;
+  width: 6px;
+}
+
+:deep(.el-scrollbar__thumb) {
+  background-color: rgba(144, 147, 153, 0.3);
+  &:hover {
+    background-color: rgba(144, 147, 153, 0.5);
+  }
+}
+
 :deep(.custom-menu) {
   padding: 6px 0;
-  height: calc(100% - 150px); // 留出底部用户区域的空间
+  height: auto !important; // 改为自适应高度，避免固定高度导致内容溢出
   
   // Override Element Plus default menu styles
   .el-menu-item {
@@ -209,7 +239,8 @@ function handleLogout() {
 
 // 首页空白菜单区域样式
 .home-empty-menu {
-  height: calc(100% - 150px);
+  height: auto;
+  min-height: 100px;
 }
 
 // 底部用户区域样式

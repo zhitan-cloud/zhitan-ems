@@ -51,10 +51,11 @@
 
       .scrollbar-wrapper {
         overflow-x: hidden !important;
+        height: calc(100% - 290px) !important;
       }
 
       .el-scrollbar__bar.is-vertical {
-        right: 0px;
+        right: 0 !important;
       }
 
       .el-scrollbar {
