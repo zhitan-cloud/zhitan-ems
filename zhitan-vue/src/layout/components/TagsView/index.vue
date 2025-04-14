@@ -1,5 +1,5 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div id="tags-view-container" class="tags-view-container" :class="{'theme-dark': sideTheme === 'theme-dark', 'theme-light': sideTheme === 'theme-light'}">
     <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
@@ -52,6 +52,7 @@ const router = useRouter()
 const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
+const sideTheme = computed(() => useSettingsStore().sideTheme)
 
 watch(route, () => {
   addTags()
@@ -238,10 +239,36 @@ function handleScroll() {
   margin-top: 10px;
   margin-left: 14px;
   box-sizing: border-box;
- // 添加水平内边距与app-main的内边距一致
- background: #0A3465;
- 
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  
+  &.theme-dark {
+    background: #0A3465;
+    .tags-view-item {
+      color: #fff;
+      background: #0c3f79;
+      border: 1px solid #0c4685;
+      
+      &.active {
+        background-color: var(--el-color-primary) !important;
+        color: #fff !important;
+      }
+    }
+  }
+  
+  &.theme-light {
+    background: #fff;
+    .tags-view-item {
+      color: #495060;
+      background: #fff;
+      border: 1px solid #d8dce5;
+      
+      &.active {
+        background-color: var(--el-color-primary) !important;
+        color: #fff !important;
+      }
+    }
+  }
+  
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
@@ -249,10 +276,8 @@ function handleScroll() {
       cursor: pointer;
       height: 26px;
       line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
+      border-radius: 3px;
+      padding: 0 10px;
       font-size: 12px;
       margin-left: 5px;
       margin-top: 4px;
@@ -278,25 +303,25 @@ function handleScroll() {
         }
       }
     }
-    .contextmenu {
+  }
+  .contextmenu {
+    margin: 0;
+    background: #fff;
+    z-index: 3000;
+    position: absolute;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    li {
       margin: 0;
-      background: #fff;
-      z-index: 3000;
-      position: absolute;
-      list-style-type: none;
-      padding: 5px 0;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 400;
-      color: #333;
-      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-      li {
-        margin: 0;
-        padding: 7px 16px;
-        cursor: pointer;
-        &:hover {
-          background: #eee;
-        }
+      padding: 7px 16px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
       }
     }
   }
