@@ -120,7 +120,18 @@ function filterChildren(childrenMap, lastRouter = false) {
           // 设置父路由引用
           c.parent = el;
           
-          c.path = el.path + '/' + c.path
+          // 确保路径格式正确拼接
+          if (el.path) {
+            if (c.path.startsWith('/')) {
+              // 绝对路径保持不变
+              // 但也设置原始父路径用于菜单导航
+              c.parentPath = el.path;
+            } else {
+              // 相对路径需要拼接
+              c.path = el.path.endsWith('/') ? el.path + c.path : el.path + '/' + c.path;
+            }
+          }
+          
           if (c.children && c.children.length) {
             children = children.concat(filterChildren(c.children, c))
             return
@@ -134,7 +145,18 @@ function filterChildren(childrenMap, lastRouter = false) {
       // 设置父路由引用
       el.parent = lastRouter;
       
-      el.path = lastRouter.path + '/' + el.path
+      // 确保路径格式正确拼接
+      if (lastRouter.path) {
+        if (el.path.startsWith('/')) {
+          // 绝对路径保持不变 
+          // 但也设置原始父路径用于菜单导航
+          el.parentPath = lastRouter.path;
+        } else {
+          // 相对路径需要拼接
+          el.path = lastRouter.path.endsWith('/') ? lastRouter.path + el.path : lastRouter.path + '/' + el.path;
+        }
+      }
+      
       if (el.children && el.children.length) {
         children = children.concat(filterChildren(el.children, el))
         return

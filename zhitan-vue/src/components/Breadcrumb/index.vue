@@ -19,20 +19,29 @@ function getBreadcrumb() {
   let matched = route.matched.filter(item => item.meta && item.meta.title);
   const first = matched[0]
   
-  // 不自动添加首页到面包屑中
-  // if (!isDashboard(first)) {
-  //   matched = [{ path: '/index', meta: { title: '首页' } }].concat(matched)
-  // }
+  // 添加调试日志
+  console.log('Current route path:', route.path);
+  console.log('Route matched:', route.matched);
+  console.log('Filtered matched routes:', matched);
+  
+  // 如果是首页看板路由，确保它被添加到面包屑中
+  if (route.path === '/index' || route.path === '/index/index') {
+    matched = [{ path: '/index', meta: { title: '首页看板' } }].concat(matched)
+    console.log('Added index route to matched:', matched);
+  }
 
   levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+  console.log('Final breadcrumb items:', levelList.value);
 }
+
 function isDashboard(route) {
   const name = route && route.name
   if (!name) {
     return false
   }
-  return name.trim() === 'Index'
+  return name.trim().toLowerCase() === 'index'
 }
+
 function handleLink(item) {
   const { redirect, path } = item
   if (redirect) {

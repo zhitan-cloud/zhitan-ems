@@ -35,9 +35,16 @@ function findDeepestPath(route) {
     
     // 跳过ParentView类型的中间节点
     if (firstChild.component === 'ParentView' || 
-        (typeof firstChild.component === 'object' && firstChild.component.name === 'ParentView')) {
+        (typeof firstChild.component === 'object' && 
+         firstChild.component.name === 'ParentView')) {
       currentNode = firstChild;
-      pathSegments.push(firstChild.path);
+      // 如果路径不是以/开头，则添加到路径片段中
+      if (!firstChild.path.startsWith('/')) {
+        pathSegments.push(firstChild.path);
+      } else {
+        // 如果是绝对路径，则替换之前所有路径
+        pathSegments = [firstChild.path];
+      }
       continue;
     }
     
@@ -72,7 +79,10 @@ function findDeepestPath(route) {
       } else if (index === 0) {
         return segment;
       } else {
-        return `${fullPath}/${segment}`;
+        // 确保路径之间不会出现重复的斜杠
+        const base = fullPath.endsWith('/') ? fullPath.slice(0, -1) : fullPath;
+        const part = segment.startsWith('/') ? segment : '/' + segment;
+        return `${base}${part}`;
       }
     });
   }

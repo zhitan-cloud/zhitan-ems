@@ -911,18 +911,20 @@ function getListPeakValley() {
       margin-top: 14px;
       display: flex;
       width: 100%;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-between;
       gap: 15px;
       
       &:after {
         content: "";
-        flex: auto;
+        flex: 0 0 0;
       }
-
+      
       .card-list-item {
-        width: 320px;
-        height: 127px;
+        width: 0;
+        flex: 1 1 320px;
+        max-width: 320px;
+        height: 135px;
         background: rgba(242, 246, 250, 0.1);
         box-sizing: border-box;
         padding: 16px;
@@ -937,9 +939,9 @@ function getListPeakValley() {
         &:hover {
           background: rgba(242, 246, 250, 0.15);
         }
-
+        
         .item-left {
-          margin-right: 16px;
+          margin-right: 20px;
           
           .top-icon {
             width: 73px;
@@ -965,9 +967,12 @@ function getListPeakValley() {
               font-size: 14px;
               font-family: OPPOSans-Regular;
               color: rgba(255, 255, 255, 0.65);
+              letter-spacing: 0.5px;
+              margin-bottom: 4px;
+              
               .unit {
                 color: rgba(255, 255, 255, 0.65);
-                margin-left: 2px;
+                margin-left: 4px;
                 font-size: 12px;
                 font-weight: normal;
               }
@@ -976,29 +981,31 @@ function getListPeakValley() {
             .right-value {
               font-weight: 500;
               font-size: 26px;
-              margin-top: 4px;
+              margin-top: 6px;
               font-family: OPPOSans-Medium;
               color: #fff;
-              line-height: 1;
+              line-height: 1.2;
+              letter-spacing: 0.5px;
             }
           }
           
           .item-bottom {
             display: flex;
             justify-content: space-between;
-            margin-top: 14px;
+            margin-top: 18px;
             font-family: OPPOSans, OPPOSans;
             font-weight: normal;
             font-size: 12px;
             color: rgba(255, 255, 255, 0.5);
-            line-height: 1;
+            line-height: 1.2;
             
             .bottom-left, .bottom-right {
               display: flex;
               align-items: center;
+              letter-spacing: 0.3px;
               
               :deep(.el-icon) {
-                margin-left: 4px;
+                margin-left: 6px;
                 font-size: 12px;
               }
             }
@@ -1080,7 +1087,7 @@ function getListPeakValley() {
 .themeLight {
   .page {
     padding: 20px;
-    background: #f7f8fa;
+    background: #fff;
 
     .card-title {
       width: 132px;
@@ -1094,18 +1101,20 @@ function getListPeakValley() {
       margin-top: 14px;
       display: flex;
       width: 100%;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-between;
       gap: 15px;
       
       &:after {
         content: "";
-        flex: auto;
+        flex: 0 0 0;
       }
-
+      
       .card-list-item {
-        width: 320px;
-        height: 127px;
+        width: 0;
+        flex: 1 1 320px;
+        max-width: 320px;
+        height: 135px;
         background: #fff;
         box-sizing: border-box;
         padding: 16px;
@@ -1117,7 +1126,7 @@ function getListPeakValley() {
         align-items: center;
         
         .item-left {
-          margin-right: 16px;
+          margin-right: 20px;
           
           .top-icon {
             width: 73px;
@@ -1143,9 +1152,12 @@ function getListPeakValley() {
               font-size: 14px;
               font-family: OPPOSans-Regular;
               color: rgba(0, 0, 0, 0.65);
+              letter-spacing: 0.5px;
+              margin-bottom: 4px;
+              
               .unit {
                 color: rgba(0, 0, 0, 0.65);
-                margin-left: 2px;
+                margin-left: 4px;
                 font-size: 12px;
                 font-weight: normal;
               }
@@ -1154,29 +1166,31 @@ function getListPeakValley() {
             .right-value {
               font-weight: 500;
               font-size: 26px;
-              margin-top: 4px;
+              margin-top: 6px;
               font-family: OPPOSans-Medium;
               color: #333;
-              line-height: 1;
+              line-height: 1.2;
+              letter-spacing: 0.5px;
             }
           }
           
           .item-bottom {
             display: flex;
             justify-content: space-between;
-            margin-top: 14px;
+            margin-top: 18px;
             font-family: OPPOSans, OPPOSans;
             font-weight: normal;
             font-size: 12px;
             color: rgba(0, 0, 0, 0.5);
-            line-height: 1;
+            line-height: 1.2;
             
             .bottom-left, .bottom-right {
               display: flex;
               align-items: center;
+              letter-spacing: 0.3px;
               
               :deep(.el-icon) {
-                margin-left: 4px;
+                margin-left: 6px;
                 font-size: 12px;
               }
             }
