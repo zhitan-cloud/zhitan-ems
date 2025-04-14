@@ -163,9 +163,9 @@
       display: flex;
 
       .page-container-left {
-        width: 280px;
+        width: 220px;
         min-height: calc(100vh - 148px);
-        border-right: 1px solid #fff;
+        border-right: 1px solid #e8e8e8;
         background: #f1f4fa;
         
         .el-tree {
@@ -194,8 +194,8 @@
         }
 
         .tree {
-          height: calc(100vh - 170px) !important;
-          max-height: calc(100vh - 170px) !important;
+          height: calc(100vh - 170px);
+          max-height: calc(100vh - 170px);
           overflow-y: auto;
         }
       }
