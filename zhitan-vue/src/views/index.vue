@@ -911,17 +911,19 @@ function getListPeakValley() {
       margin-top: 14px;
       display: flex;
       width: 100%;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-between;
       gap: 15px;
       
       &:after {
         content: "";
-        flex: auto;
+        flex: 0 0 0;
       }
-
+      
       .card-list-item {
-        width: 320px;
+        width: 0;
+        flex: 1 1 320px;
+        max-width: 320px;
         height: 127px;
         background: rgba(242, 246, 250, 0.1);
         box-sizing: border-box;
@@ -937,7 +939,7 @@ function getListPeakValley() {
         &:hover {
           background: rgba(242, 246, 250, 0.15);
         }
-
+        
         .item-left {
           margin-right: 16px;
           
@@ -1094,17 +1096,19 @@ function getListPeakValley() {
       margin-top: 14px;
       display: flex;
       width: 100%;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: space-between;
       gap: 15px;
       
       &:after {
         content: "";
-        flex: auto;
+        flex: 0 0 0;
       }
-
+      
       .card-list-item {
-        width: 320px;
+        width: 0;
+        flex: 1 1 320px;
+        max-width: 320px;
         height: 127px;
         background: #fff;
         box-sizing: border-box;

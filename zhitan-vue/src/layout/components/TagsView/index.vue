@@ -245,9 +245,10 @@ function handleScroll() {
     background: #0A3465;
     .tags-view-item {
       color: #fff;
-      background: #0c3f79;
       border: 1px solid #0c4685;
-      
+      background: rgba(10, 52, 101, .48);
+      border-radius: 5px;
+    
       &.active {
         background-color: var(--el-color-primary) !important;
         color: #fff !important;
