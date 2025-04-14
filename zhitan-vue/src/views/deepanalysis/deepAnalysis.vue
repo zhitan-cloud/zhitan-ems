@@ -18,15 +18,23 @@
           </el-select>
         </el-form-item>
         <el-form-item label="时间选择" prop="dataTime">
-          <el-date-picker v-if="form.timeType == 'YEAR'" v-model="form.dataTime" type="year" />
+          <el-date-picker v-if="form.timeType == 'YEAR'" v-model="form.dataTime" type="year" :clearable="false" />
           <el-date-picker
             v-else-if="form.timeType == 'MONTH'"
             v-model="form.dataTime"
             type="month"
             format="YYYY-MM"
             value-format="YYYY-MM"
+            :clearable="false"
           />
-          <el-date-picker v-else v-model="form.dataTime" type="date" format="YYYY-MM-DD" value-format="YYYY-MM-DD" />
+          <el-date-picker
+            v-else
+            v-model="form.dataTime"
+            :clearable="false"
+            type="date"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+          />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -141,7 +149,8 @@ function getData() {
   getFlowCharts({
     energyType: form.value.energyType,
     nodeId: "",
-    queryTime: form.value.dataTime,
+    queryTime: proxy.dayjs(new Date(form.value.dataTime)).format("YYYY-MM-DD"),
+    dataTime: proxy.dayjs(new Date(form.value.dataTime)).format("YYYY-MM-DD"),
     timeType: form.value.timeType,
     modelCode: proxy.$route.query.modelCode,
   }).then((res) => {
@@ -298,6 +307,7 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     padding-top: 12px;
+    padding: 12px 14px 0;
 
     .card-list-item {
       width: 24%;
@@ -365,6 +375,7 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     padding-top: 12px;
+    padding: 12px 14px 0;
 
     .card-list-item {
       width: 24%;
