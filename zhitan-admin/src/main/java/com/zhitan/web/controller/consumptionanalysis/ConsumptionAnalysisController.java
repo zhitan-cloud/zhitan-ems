@@ -10,6 +10,7 @@ import com.zhitan.consumptionanalysis.domain.vo.ProductEnergyAnalysisVO;
 import com.zhitan.consumptionanalysis.domain.vo.RankingDataVO;
 import com.zhitan.consumptionanalysis.domain.vo.RankingEnergyData;
 import com.zhitan.consumptionanalysis.service.IConsumptionAnalysisService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -35,6 +36,7 @@ import java.util.List;
  * @Author: Zhujw
  * @Date: 2023/3/1
  */
+@Api(tags = "综合能耗分析")
 @RestController
 @RequestMapping("/consumptionanalysis")
 public class ConsumptionAnalysisController extends BaseController {

@@ -269,14 +269,11 @@
       td {
         word-break: break-word;
         background-color: #1d3778 !important;
-        // color: #515a6e;
+        color: #515a6e;
         height: 48px !important;
-        // font-size: 13px;
-
         border-radius: 0px 0px 0px 0px;
         font-family: OPPOSans, OPPOSans;
         font-weight: 500;
-        // font-size: 16px;
         color: #ffffff;
         border-bottom: none !important;
       }
@@ -312,6 +309,10 @@
       // tr:hover > td {
       // 	background-color: #141E4A;
       // }
+
+      .el-table-fixed-column--left {
+        background-color: #110f2e !important;
+      }
     }
   }
 
@@ -393,7 +394,7 @@
   // 树
   .el-tree {
     background: transparent;
-    font-size: 16px;
+    font-size: 14px;
     color: #ffffff;
 
     .el-tree-node__content {
@@ -564,6 +565,19 @@
   }
   .el-tabs__item.is-active {
     color: #409EFF;
+  }
+
+  .el-descriptions__cell {
+    background: transparent;
+    color: #fff !important;
+  }
+  .el-descriptions__body {
+    background-color: transparent;
+    color: #fff;
+  }
+  .el-descriptions__label {
+    color: #fff !important;
+    background-color: #1a235d !important;
   }
 }
 
@@ -816,14 +830,11 @@
         background-color: #F7F8FA !important;
         // color: #515a6e;
         height: 48px !important;
-        // font-size: 13px;
-
         border-radius: 0px 0px 0px 0px;
         font-family: OPPOSans, OPPOSans;
         font-weight: 500;
-        // font-size: 16px;
         color: #222222;
-        border-bottom: none !important;
+        // border-bottom: none !important;
       }
     }
 
@@ -858,6 +869,9 @@
       // tr:hover > td {
       // 	background-color: #141E4A;
       // }
+      .el-table-fixed-column--left {
+        background-color: #fff;
+      }
     }
   }
 
@@ -869,7 +883,7 @@
 
   // 表格底部白线
   .el-table__inner-wrapper::before {
-    background-color: transparent;
+    // background-color: transparent;
   }
 
   /** 表单布局 **/

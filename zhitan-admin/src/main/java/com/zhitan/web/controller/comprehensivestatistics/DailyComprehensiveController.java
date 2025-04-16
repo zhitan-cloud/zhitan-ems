@@ -67,7 +67,7 @@ public class DailyComprehensiveController extends BaseController {
                 i++;
             }
             List<DailyComprehensive> list = dailyComprehensiveService.getDailyComprehensiveList(modelNode.getNodeId(),
-                    dataList, dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(), dataItem.getIndexStorageId());
+                    dataList, dataItem.getBeginTime(), dataItem.getEndTime(), dataItem.getTimeType(), dataItem.getEnergyType());
             return AjaxResult.success(list);
         } catch (Exception ex) {
             logger.error("获取出错！", ex);
@@ -87,7 +87,7 @@ public class DailyComprehensiveController extends BaseController {
         dataItem.setBeginTime(dataItem.getDataTime());
         String endTime=aa+" 24:00:00";
         dataItem.setEndTime(sf.parse(endTime));
-        List<DailyComprehensive> list = dailyComprehensiveService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getIndexStorageId());
+        List<DailyComprehensive> list = dailyComprehensiveService.getListChart(dataItem.getIndexId(),dataItem.getBeginTime(),dataItem.getEndTime(), dataItem.getTimeType(),dataItem.getEnergyType());
         return AjaxResult.success(list);
     }
 

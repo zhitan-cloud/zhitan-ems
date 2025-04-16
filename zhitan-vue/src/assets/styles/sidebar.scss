@@ -1,7 +1,7 @@
 .themeDark {
   #app {
     .el-menu-item.is-active {
-      background: #3271eb !important;
+     // background: #3271eb !important;
       // border-radius: 30px 30px 30px 30px !important;
       color: #fff;
     }
@@ -13,6 +13,7 @@
 
 
     .main-container {
+      background-color: #110f2e !important;
       height: 100%;
       transition: margin-left 0.28s;
       margin-left: $base-sidebar-width;
@@ -28,13 +29,14 @@
       transition: width 0.28s;
       width: $base-sidebar-width !important;
       background-color: $base-menu-background;
-      height: 100%;
+      height: calc(100% - 60px) !important;
       position: fixed;
-      top: 0;
+      top: 60px;
       bottom: 0;
       left: 0;
-      z-index: 1001;
+      z-index: 999;
       overflow: hidden;
+      background-color: #002866 !important;
       -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       font-family: OPPOSans, OPPOSans;
@@ -50,10 +52,11 @@
 
       .scrollbar-wrapper {
         overflow-x: hidden !important;
+        height: calc(100% - 290px) !important;
       }
 
       .el-scrollbar__bar.is-vertical {
-        right: 0px;
+        right: 0 !important;
       }
 
       .el-scrollbar {
@@ -78,6 +81,7 @@
 
       .svg-icon {
         margin-right: 16px;
+        font-size: 14px;
       }
 
       .el-menu {
@@ -91,7 +95,7 @@
       .menu-title {
         overflow: hidden !important;
         font-weight: 400 !important;
-        font-size: 16px !important;
+        font-size: 14px !important;
       }
 
       // @media (min-width: 1440px) {
@@ -124,12 +128,13 @@
       .sub-menu-title-noDropdown,
       .el-sub-menu__title {
         &:hover {
-          background-color: rgba(0, 0, 0, 0.06) !important;
+          background-color: rgba(0, 0, 0, 0.2) !important;
         }
       }
 
       & .theme-dark .is-active > .el-sub-menu__title {
         color: $base-menu-color-active !important;
+        background-color: rgba(0, 0, 0, 0.2) !important;
       }
 
       & .nest-menu .el-sub-menu > .el-sub-menu__title,
@@ -189,22 +194,32 @@
       }
 
       .el-menu--collapse {
-        .el-sub-menu {
-          & > .el-sub-menu__title {
-            & > span {
-              height: 0;
-              width: 0;
-              overflow: hidden;
-              visibility: hidden;
-              display: inline-block;
-            }
-            & > i {
-              height: 0;
-              width: 0;
-              overflow: hidden;
-              visibility: hidden;
-              display: inline-block;
-            }
+        width: 54px !important;
+
+        /* 清除后代选择器中干扰居中的样式 */
+        .el-sub-menu, .el-menu-item {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+
+          /* 让图标和菜单项居中 */
+          .el-menu-item, .el-sub-menu__title {
+            width: 36px !important;
+            min-width: 36px !important;
+            height: 38px !important;
+            line-height: 38px !important;
+            margin: 4px 9px !important; /* 精确计算居中边距 */
+            padding: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            border-radius: 4px !important;
+          }
+
+          /* 确保图标居中 */
+          .svg-icon, .el-icon {
+            margin: 0 !important;
+            padding: 0 !important;
           }
         }
       }
@@ -282,7 +297,7 @@
 .themeLight {
   #app {
     .el-menu-item.is-active {
-      background: #e0eafc !important;
+     
       // border-radius: 30px 30px 30px 30px !important;
     }
 
@@ -292,6 +307,7 @@
     }
 
     .main-container {
+      background-color: #f7f8fa;
       height: 100%;
       transition: margin-left 0.28s;
       margin-left: $base-sidebar-width;
@@ -307,12 +323,12 @@
       transition: width 0.28s;
       width: $base-sidebar-width !important;
       background-color: $base-menu-background;
-      height: 100%;
+      height: calc(100% - 60px) !important;
       position: fixed;
-      top: 0;
+      top: 60px;
       bottom: 0;
       left: 0;
-      z-index: 1001;
+      z-index: 999;
       overflow: hidden;
       -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
       box-shadow: none;
@@ -360,7 +376,7 @@
 
       .svg-icon {
         margin-right: 16px;
-        font-size: 16px;
+        font-size: 14px;
         color: #C3C3C3;
       }
 
@@ -375,7 +391,7 @@
       .menu-title {
         overflow: hidden !important;
         font-weight: 400 !important;
-        font-size: 16px !important;
+        font-size: 14px !important;
       }
 
       // @media (min-width: 1440px) {
@@ -412,8 +428,10 @@
         }
       }
 
-      & .theme-dark .is-active > .el-sub-menu__title {
-        // color: $base-menu-color-active !important;
+      
+      & .theme-light .is-active > .el-sub-menu__title {
+        color: $--color-primary !important;
+        // background-color: #eaeff8 !important;
       }
 
       & .nest-menu .el-sub-menu > .el-sub-menu__title,
@@ -474,22 +492,32 @@
       }
 
       .el-menu--collapse {
-        .el-sub-menu {
-          & > .el-sub-menu__title {
-            & > span {
-              height: 0;
-              width: 0;
-              overflow: hidden;
-              visibility: hidden;
-              display: inline-block;
-            }
-            & > i {
-              height: 0;
-              width: 0;
-              overflow: hidden;
-              visibility: hidden;
-              display: inline-block;
-            }
+        width: 54px !important;
+
+        /* 清除后代选择器中干扰居中的样式 */
+        .el-sub-menu, .el-menu-item {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+
+          /* 让图标和菜单项居中 */
+          .el-menu-item, .el-sub-menu__title {
+            width: 36px !important;
+            min-width: 36px !important;
+            height: 38px !important;
+            line-height: 38px !important;
+            margin: 4px 9px !important; /* 精确计算居中边距 */
+            padding: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            border-radius: 4px !important;
+          }
+
+          /* 确保图标居中 */
+          .svg-icon, .el-icon {
+            margin: 0 !important;
+            padding: 0 !important;
           }
         }
       }

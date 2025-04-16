@@ -1,7 +1,6 @@
 package com.zhitan.model.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.services.IMeterImplementService;
@@ -12,6 +11,7 @@ import com.zhitan.model.domain.DaqTemplate;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.EnergyIndexQuery;
 import com.zhitan.model.domain.ModelNode;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.EnergyIndexMapper;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.model.service.IDaqTemplateService;
@@ -212,8 +212,8 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
     }
 
     @Override
-    public void removeNodeIndex(String nodeId, List<String> removeLink) {
-        energyIndexMapper.removeNodeIndex(nodeId, removeLink);
+    public void removeEnergyIndex(List<String> removeLink) {
+        energyIndexMapper.removeEnergyIndex(removeLink);
     }
 
     @Override
@@ -345,10 +345,8 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
      * @return
      */
     public List<EnergyIndex> listDeviceIndexByCode(String nodeId, String meterId, String indexCode) {
-        return energyIndexMapper.selectList(Wrappers.<EnergyIndex>lambdaQuery()
-                .eq(EnergyIndex::getNodeId, nodeId)
-                .eq(EnergyIndex::getMeterId, meterId)
-                .like(EnergyIndex::getCode, indexCode));
+        List<EnergyIndex> energyIndexList = energyIndexMapper.getIndexByMeterIdIndexCode(meterId,indexCode,nodeId);
+        return energyIndexList;
     }
 
     /**
@@ -360,8 +358,12 @@ public class EnergyIndexServiceImpl implements IEnergyIndexService {
      */
     @Override
     public List<EnergyIndex> listDeviceIndex(String nodeId, String meterId) {
-        return energyIndexMapper.selectList(Wrappers.<EnergyIndex>lambdaQuery()
-                .eq(EnergyIndex::getNodeId, nodeId)
-                .eq(EnergyIndex::getMeterId, meterId));
+        List<EnergyIndex> energyIndexList = energyIndexMapper.getIndexByMeterIdIndexCode(meterId,null,nodeId);
+        return energyIndexList;
+    }
+
+    @Override
+    public List<ModelNodeIndexInfo> getModelNodeIndexInfoListByIndexIds(String[] indexIds) {
+        return energyIndexMapper.getModelNodeIndexInfoListByIndexIds(indexIds);
     }
 }

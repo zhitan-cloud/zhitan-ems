@@ -1,6 +1,6 @@
 package com.zhitan.keyequipment.mapper;
 
-import com.zhitan.common.enums.TimeType;
+import com.zhitan.common.utils.TypeTime;
 import com.zhitan.keyequipment.domain.YearKeyEquipment;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,15 +15,15 @@ import java.util.List;
  */
 public interface YearKeyEquipmentMapper {
     public List<YearKeyEquipment> getYearKeyEquipmentList(@Param("indexIds") List<String> indexIds,
-                                                          @Param("dataList") List<YearKeyEquipment> dataList,
+                                                          @Param("dataList") List<TypeTime> dataList,
                                                           @Param("beginTime") Date beginTime,
                                                           @Param("endTime") Date endTime,
-                                                          @Param("timeType") TimeType timeType,
+                                                          @Param("timeType") String timeType,
                                                           @Param("indexStorageId") String indexStorageId);
     List<YearKeyEquipment> getListChart(@Param("indexId") String indexId,
                                             @Param("beginTime") Date beginTime,
                                             @Param("endTime") Date endTime,
-                                            @Param("timeType") TimeType timeType,
-                                            @Param("indexStorageId") String indexStorageId);
+                                            @Param("timeType") String timeType
+                                            );
 
 }

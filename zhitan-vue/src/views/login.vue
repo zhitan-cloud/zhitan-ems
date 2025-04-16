@@ -201,14 +201,15 @@ getCookie()
 .login {
   display: flex;
   align-items: center;
-  height: 100%;
-  background-image: url("@/assets/images/login-background.jpg");
+  height: 100vh;
+  background-image: url("@/assets/images/login-background.png");
   background-repeat: no-repeat;
   background-size: cover;
   flex-direction: column;
   position: relative;
   min-width: 700px;
   min-height: 700px;
+  background-color:#001146
 }
 
 .middle-view {

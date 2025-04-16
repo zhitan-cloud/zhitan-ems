@@ -1,6 +1,5 @@
 package com.zhitan.comprehensivestatistics.mapper;
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.comprehensivestatistics.domain.DailyComprehensive;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,13 +17,13 @@ public interface DailyComprehensiveMapper {
                                                               @Param("dataList") List<DailyComprehensive> dataList,
                                                               @Param("beginTime") Date beginTime,
                                                               @Param("endTime") Date endTime,
-                                                              @Param("timeType") TimeType timeType,
+                                                              @Param("timeType") String timeType,
                                                               @Param("indexStorageId") String indexStorageId);
 
     List<DailyComprehensive> getListChart(@Param("indexId") String indexId,
                                             @Param("beginTime") Date beginTime,
                                             @Param("endTime") Date endTime,
-                                            @Param("timeType") TimeType timeType,
+                                            @Param("timeType") String timeType,
                                             @Param("indexStorageId")  String indexStorageId);
 
 }

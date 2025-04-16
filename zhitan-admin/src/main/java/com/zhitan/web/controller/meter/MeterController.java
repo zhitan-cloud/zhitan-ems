@@ -26,9 +26,8 @@ import java.util.List;
  * @Version: 1.0
  * @Since: JDK1.8
  */
-
-@Slf4j
 @Api("采集计量表数据管理")
+@Slf4j
 @RestController
 @RequestMapping("/meters")
 public class MeterController extends BaseController {

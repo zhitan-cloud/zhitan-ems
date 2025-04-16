@@ -1,7 +1,6 @@
 package com.zhitan.keyequipment.mapper;
 
 import com.zhitan.basicdata.domain.FacilityArchives;
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.keyequipment.domain.DailyKeyEquipment;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,12 +18,12 @@ public interface DailyKeyEquipmentMapper {
                                                             @Param("dataList") List<DailyKeyEquipment> dataList,
                                                             @Param("beginTime") Date beginTime,
                                                             @Param("endTime") Date endTime,
-                                                            @Param("timeType") TimeType timeType,
+                                                            @Param("timeType") String timeType,
                                                             @Param("indexStorageId") String indexStorageId);
     List<DailyKeyEquipment> getListChart(@Param("indexId") String indexId,
                                             @Param("beginTime") Date beginTime,
                                             @Param("endTime") Date endTime,
-                                            @Param("timeType") TimeType timeType,
+                                            @Param("timeType") String timeType,
                                             @Param("indexStorageId")  String indexStorageId);
     List<FacilityArchives> getFacilityArchives();
     List<FacilityArchives> getPointFacility();

@@ -56,6 +56,7 @@ public class ElectricThreePhaseController extends BaseController {
         if (ObjectUtils.isEmpty(meterId)){
             return AjaxResult.error("电表id不能为空");
         }
+
         List<EnergyIndex> energyIndexList = energyIndexService.listDeviceIndex(nodeId, meterId);
 
         return AjaxResult.success(electricThreePhaseService.list(timeType, timeCode, energyIndexList, requestType, meterId));

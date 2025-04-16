@@ -1,6 +1,5 @@
 package com.zhitan.keyequipment.mapper;
 
-import com.zhitan.common.enums.TimeType;
 import com.zhitan.keyequipment.domain.MonthlyKeyEquipment;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,12 +17,12 @@ public interface MonthlyKeyEquipmentMapper {
                                                                 @Param("dataList") List<MonthlyKeyEquipment> dataList,
                                                                 @Param("beginTime") Date beginTime,
                                                                 @Param("endTime") Date endTime,
-                                                                @Param("timeType") TimeType timeType,
+                                                                @Param("timeType") String timeType,
                                                                 @Param("indexStorageId") String indexStorageId);
     List<MonthlyKeyEquipment> getListChart(@Param("indexId") String indexId,
                                                @Param("beginTime") Date beginTime,
                                                @Param("endTime") Date endTime,
-                                               @Param("timeType") TimeType timeType,
+                                               @Param("timeType") String timeType,
                                                @Param("indexStorageId") String indexStorageId);
 
 }

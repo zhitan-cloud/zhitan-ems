@@ -1,5 +1,5 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div id="tags-view-container" class="tags-view-container" :class="{'theme-dark': sideTheme === 'theme-dark', 'theme-light': sideTheme === 'theme-light'}">
     <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
@@ -52,6 +52,7 @@ const router = useRouter()
 const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
+const sideTheme = computed(() => useSettingsStore().sideTheme)
 
 watch(route, () => {
   addTags()
@@ -232,141 +233,96 @@ function handleScroll() {
 </script>
 
 <style lang="scss" scoped>
-.themeDark {
-  .tags-view-container {
-    height: 56px;
-    width: 100%;
-    background: #1a235d;
-    // border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-    .tags-view-wrapper {
-      .tags-view-item {
-        display: inline-block;
-        position: relative;
-        cursor: pointer;
-        height: 36px;
-        line-height: 36px;
-        border: 1px solid #5278f5;
-        color: #fff;
-        // background: #3271eb;
-        padding: 0 14px;
-        font-size: 14px;
-        margin-left: 6px;
-        margin-top: 10px;
-        border-radius: 4px;
-        font-family: OPPOSans, OPPOSans;
-        &:first-of-type {
-          margin-left: 16px;
-        }
-        &:last-of-type {
-          margin-right: 15px;
-        }
-        &.active {
-          background-color: #4e77f8 !important;
-          color: #fff;
-          border-color: #4e77f8 !important;
-          &::before {
-            content: "";
-            background: #fff;
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            position: relative;
-            margin-right: 5px;
-          }
-        }
+.tags-view-container {
+  height: 34px;
+  width: calc(100% - 42px);
+  margin-top: 10px;
+  margin-left: 14px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  
+  &.theme-dark {
+    background: #0A3465;
+    .tags-view-item {
+      color: #fff;
+      border: 1px solid #0c4685;
+      background: rgba(10, 52, 101, .48);
+      border-radius: 5px;
+    
+      &.active {
+        background-color: var(--el-color-primary) !important;
+        color: #fff !important;
       }
     }
-    .contextmenu {
-      margin: 0;
+  }
+  
+  &.theme-light {
+    background: #fff;
+    .tags-view-item {
+      color: #495060;
       background: #fff;
-      z-index: 3000;
-      position: absolute;
-      list-style-type: none;
-      padding: 5px 0;
-      border-radius: 4px;
+      border: 1px solid #d8dce5;
+      
+      &.active {
+        background-color: var(--el-color-primary) !important;
+        color: #fff !important;
+      }
+    }
+  }
+  
+  .tags-view-wrapper {
+    .tags-view-item {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+      border-radius: 3px;
+      padding: 0 10px;
       font-size: 12px;
-      font-weight: 400;
-      color: #333;
-      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-      li {
-        margin: 0;
-        padding: 7px 16px;
-        cursor: pointer;
-        &:hover {
-          background: #eee;
+      margin-left: 5px;
+      margin-top: 4px;
+      &:first-of-type {
+        margin-left: 5px;
+      }
+      &:last-of-type {
+        margin-right: 5px;
+      }
+      &.active {
+        background-color: #42b983;
+        color: #fff;
+        border-color: #42b983;
+        &::before {
+          content: "";
+          background: #fff;
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          position: relative;
+          margin-right: 2px;
         }
       }
     }
   }
-}
-
-.themeLight {
-  .tags-view-container {
-    height: 56px;
-    width: 100%;
+  .contextmenu {
+    margin: 0;
     background: #fff;
-    // border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-    .tags-view-wrapper {
-      .tags-view-item {
-        display: inline-block;
-        position: relative;
-        cursor: pointer;
-        height: 36px;
-        line-height: 36px;
-        border: 1px solid #d8dce5;
-        color: #495060;
-        background: #fff;
-        padding: 0 14px;
-        font-size: 14px;
-        margin-left: 6px;
-        margin-top: 10px;
-        border-radius: 4px;
-        font-family: OPPOSans, OPPOSans;
-        &:first-of-type {
-          margin-left: 16px;
-        }
-        &:last-of-type {
-          margin-right: 15px;
-        }
-        &.active {
-          background-color: #42b983;
-          color: #fff;
-          border-color: #42b983;
-          &::before {
-            content: "";
-            background: #fff;
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            position: relative;
-            margin-right: 5px;
-          }
-        }
-      }
-    }
-    .contextmenu {
+    z-index: 3000;
+    position: absolute;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    li {
       margin: 0;
-      background: #fff;
-      z-index: 3000;
-      position: absolute;
-      list-style-type: none;
-      padding: 5px 0;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 400;
-      color: #333;
-      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-      li {
-        margin: 0;
-        padding: 7px 16px;
-        cursor: pointer;
-        &:hover {
-          background: #eee;
-        }
+      padding: 7px 16px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
       }
     }
   }
@@ -401,6 +357,6 @@ function handleScroll() {
 }
 
 .scroll-container .el-scrollbar__wrap {
-  height: 50px !important;
+  height: 34px !important;
 }
 </style>

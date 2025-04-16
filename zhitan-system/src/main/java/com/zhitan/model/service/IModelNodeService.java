@@ -8,7 +8,7 @@ import com.zhitan.basicdata.domain.SysProduct;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
 import com.zhitan.model.domain.TreeObject;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 
 import java.util.List;
 
@@ -126,7 +126,7 @@ public interface IModelNodeService {
    * @param code
    * @return
    */
-  List<ModelNodeIndexInfor> getModelNodeIndexIdRelationInforByCode(String code);
+  List<ModelNodeIndexInfo> getModelNodeIndexIdRelationInforByCode(String code);
 
   /**
    * 根据nodeId查询对应详细信息
@@ -134,7 +134,7 @@ public interface IModelNodeService {
    * @param nodeId
    * @return
    */
-  List<ModelNodeIndexInfor> getModelNodeIndexIdRelationInforByNodeId(String nodeId);
+  List<ModelNodeIndexInfo> getModelNodeIndexIdRelationInforByNodeId(String nodeId);
 
   /**
    * 根据父id查询详细信息
@@ -142,7 +142,7 @@ public interface IModelNodeService {
    * @param parentId
    * @return
    */
-  List<ModelNodeIndexInfor> listModelNodeIndexIdRelationInforByParentId(String parentId);
+  List<ModelNodeIndexInfo> listModelNodeIndexIdRelationInforByParentId(String parentId);
 
   /**
    * 根据code查询父级信息

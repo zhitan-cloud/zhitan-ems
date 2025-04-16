@@ -65,6 +65,9 @@ public interface DaqTemplateMapper extends BaseMapper<DaqTemplate> {
 
     int dapHasExistWhenUpdate(@Param("id") String id, @Param("code") String code, @Param("deviceType") String deviceType);
 
+    int dapCodeHasExist(@Param("kay") String key, @Param("deviceType") String deviceType);
+
+    int dapCodeHasExistWhenUpdate(@Param("id") String id, @Param("key") String code, @Param("deviceType") String deviceType);
     /**
      * 查询指标模板信息
      *

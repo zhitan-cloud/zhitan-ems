@@ -4,7 +4,9 @@ import createVitePlugins from "./vite/plugins"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
+  mode = "production"
   const env = loadEnv(mode, process.cwd())
+  console.log(mode, "==========env")
   const { VITE_APP_ENV } = env
   return {
     // 部署生产环境和开发环境下的URL。
@@ -31,9 +33,14 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         "/dev-api": {
-          target: "http://139.159.201.118:8201",
+          target: "https://demo-ems.zhitancloud.com",
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, ""),
+          rewrite: (p) => p.replace(/^\/dev-api/, "/prod-api"),
+        },
+        "/prod-api": {
+          target: "https://demo-ems.zhitancloud.com",
+          changeOrigin: true,
+          secure: true,
         },
       },
     },

@@ -10,6 +10,12 @@ target/
 
 ######################################################################
 # IDE
+.DS_Store
+/.DS_Store
+zhitan-admin/.DS_Store
+zhitan-admin/src/.DS_Store
+zhitan-system/.DS_Store
+zhitan-system/src/.DS_Store
 
 ### STS ###
 .apt_generated
@@ -45,5 +51,7 @@ nbdist/
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml
+
+*/.DS_Store
 
 uploadPath

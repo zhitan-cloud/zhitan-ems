@@ -5,7 +5,6 @@ import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zhitan.basicdata.domain.SysEnergy;
 import com.zhitan.basicdata.mapper.SysEnergyMapper;
-import com.zhitan.common.constant.CommonConst;
 import com.zhitan.common.core.domain.entity.SysDictData;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.consumptionanalysis.domain.vo.RankingEnergyData;
@@ -16,7 +15,7 @@ import com.zhitan.home.domain.vo.HomePeakValleyVO;
 import com.zhitan.home.service.impl.IHomePageService;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
-import com.zhitan.model.domain.vo.ModelNodeIndexInfor;
+import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.ModelNodeMapper;
 import com.zhitan.model.service.IEnergyIndexService;
 import com.zhitan.model.service.IModelNodeService;
@@ -30,9 +29,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,18 +45,11 @@ import java.util.stream.Collectors;
 public class HomePageServiceImpl implements IHomePageService {
 
     private final SysEnergyMapper sysEnergyMapper;
-
     private final IModelNodeService modelNodeService;
-
     private final IDataItemService dataItemService;
-
     private final IEnergyIndexService energyIndexService;
-
     private final ISysDictDataService sysDictDataService;
-
-    @Resource
     private ModelNodeMapper modelNodeMapper;
-    @Resource
     private PeakValleyMapper electricityDataItemMapper;
 
 
@@ -69,7 +59,7 @@ public class HomePageServiceImpl implements IHomePageService {
 
         DateTime tongbiTime = DateUtil.offsetMonth(currentTime, -12);
         DateTime huanbiTime = DateUtil.offsetMonth(currentTime, -1);
-        if(TimeType.DAY.name().equals( timeType)){
+        if (TimeType.DAY.name().equals(timeType)) {
             huanbiTime = DateUtil.offsetDay(currentTime, -1);
         }
 
@@ -80,22 +70,22 @@ public class HomePageServiceImpl implements IHomePageService {
         final Map<String, List<HomeEnergyStatisticsVO>> tongbiMap = tongbi.stream().collect(Collectors.groupingBy(HomeEnergyStatisticsVO::getEnergyNo));
         final Map<String, List<HomeEnergyStatisticsVO>> huanbiMap = huanbi.stream().collect(Collectors.groupingBy(HomeEnergyStatisticsVO::getEnergyNo));
 
-        current.stream().forEach(vo->{
+        current.stream().forEach(vo -> {
             final String energyNo = vo.getEnergyNo();
             final Double count = vo.getCount();
             final Double tongbiCount = tongbiMap.get(energyNo).stream().map(HomeEnergyStatisticsVO::getCount).mapToDouble(Double::doubleValue).sum();
             final Double huanbiCount = huanbiMap.get(energyNo).stream().map(HomeEnergyStatisticsVO::getCount).mapToDouble(Double::doubleValue).sum();
 
-            vo.setTonCount(format2Double( vo.getCount() * Double.valueOf(vo.getCoefficient())));
+            vo.setTonCount(format2Double(vo.getCount() * Double.valueOf(vo.getCoefficient())));
             if (tongbiCount != 0) {
-                vo.setTongbi(format2Double( (count - tongbiCount) / tongbiCount * 100));
-            }else {
+                vo.setTongbi(format2Double((count - tongbiCount) / tongbiCount * 100));
+            } else {
                 vo.setTongbi(0D);
             }
 
             if (huanbiCount != 0) {
-                vo.setHuanbi (format2Double((count - huanbiCount) / huanbiCount * 100));
-            }else {
+                vo.setHuanbi(format2Double((count - huanbiCount) / huanbiCount * 100));
+            } else {
                 vo.setHuanbi(0D);
             }
         });
@@ -141,8 +131,8 @@ public class HomePageServiceImpl implements IHomePageService {
         if (ObjectUtils.isEmpty(modelNode)) {
             return voList;
         }
-        List<ModelNodeIndexInfor> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelNode.getNodeId());
-        List<String> indexIds = inforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<ModelNodeIndexInfo> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelNode.getNodeId());
+        List<String> indexIds = inforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         // 通过indexIds找data_Item数据
         List<DataItem> itemList = dataItemService.getDataItemTimeRangeInforByIndexIds(beginTime, endTime, shixuTimeType, indexIds);
         // 查询点位详细信息
@@ -157,7 +147,7 @@ public class HomePageServiceImpl implements IHomePageService {
             List<String> indexs = energyTypeMap.get(ratioVO.getEnergyNo());
             if (CollectionUtils.isEmpty(indexs)) {
                 ratioVO.setCount(0D);
-            }else {
+            } else {
                 // 找到合计值
                 double doubleCount = itemList.stream().filter(li -> indexs.contains(li.getIndexId())).mapToDouble(DataItem::getValue).sum();
                 ratioVO.setCount(format2Double(doubleCount));
@@ -180,7 +170,7 @@ public class HomePageServiceImpl implements IHomePageService {
         List<HomePeakValleyVO> voList = new ArrayList<>();
         // 查询器具类型
         final List<SysDictData> electricityPrice = sysDictDataService.selectDictDataByType("electricity_price");
-        electricityPrice.stream().forEach(v->{
+        electricityPrice.stream().forEach(v -> {
             HomePeakValleyVO vo = new HomePeakValleyVO();
             vo.setTimeName(v.getDictLabel());
             vo.setTimeType(v.getDictValue());
@@ -214,17 +204,17 @@ public class HomePageServiceImpl implements IHomePageService {
         Map<String, List<ElectricityDataItem>> electricityDataMap;
         // 查询点位信息
         final ModelNode firstModeNodeInfo = modelNodeMapper.getFirstModeNodeInfo(modelcode);
-        if(null == firstModeNodeInfo){
+        if (null == firstModeNodeInfo) {
             return voList;
         }
 
         double totalElectric;
         // 查询点位信息
-        List<ModelNodeIndexInfor> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(modelcode, firstModeNodeInfo.getNodeId());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.selectIndexByModelCodeAndNodeId(modelcode, firstModeNodeInfo.getNodeId());
         if (CollectionUtils.isNotEmpty(nodeIndexInfoList)) {
-            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toSet());
+            Set<String> indexSet = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toSet());
             List<ElectricityDataItem> dataItemList = electricityDataItemMapper.getDataStatistics(indexSet, beginTime, endTime, shixuTimeType);
-            if(null != dataItemList){
+            if (null != dataItemList) {
                 totalElectric = dataItemList.stream().map(ElectricityDataItem::getElectricity).mapToDouble(BigDecimal::doubleValue).sum();
             } else {
                 totalElectric = 0;
@@ -235,13 +225,13 @@ public class HomePageServiceImpl implements IHomePageService {
             totalElectric = 0;
             electricityDataMap = null;
         }
-        if(null != electricityDataMap) {
+        if (null != electricityDataMap) {
             voList.stream().forEach(vo -> {
                 final List<ElectricityDataItem> electricityDataItems = electricityDataMap.get(vo.getTimeType());
-                if(null != electricityDataItems) {
+                if (null != electricityDataItems) {
                     final double sum = electricityDataItems.stream().map(ElectricityDataItem::getElectricity).mapToDouble(BigDecimal::doubleValue).sum();
                     vo.setCount(format2Double(sum));
-                    if(totalElectric != 0) {
+                    if (totalElectric != 0) {
                         vo.setPercentage(format2Double(sum / totalElectric * 100));
                     }
                 }
@@ -257,12 +247,8 @@ public class HomePageServiceImpl implements IHomePageService {
         List<String> xdataList = new ArrayList<>();
         // 查询所有能源类型
         List<SysEnergy> sysEnergies = sysEnergyMapper.selectSysEnergyList(new SysEnergy());
-        final Map<String, Object> energyCollectMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
-        final Map<String, String> energyNameMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getEnername));
-
 
         Date queryTime = new Date();
-//        Date queryTime = DateUtil.parseDateTime("2023-03-28 00:00:00");
         Date beginTime;
         Date endTime;
         String shixuTimeType;
@@ -292,8 +278,8 @@ public class HomePageServiceImpl implements IHomePageService {
         if (ObjectUtils.isEmpty(modelNode)) {
             return vo;
         }
-        List<ModelNodeIndexInfor> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelNode.getNodeId());
-        List<String> indexIds = inforList.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
+        List<ModelNodeIndexInfo> inforList = modelNodeService.getModelNodeIndexIdRelationInforByNodeId(modelNode.getNodeId());
+        List<String> indexIds = inforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
         // 通过indexIds找data_Item数据
         List<DataItem> itemList = dataItemService.getDataItemTimeRangeInforByIndexIds(beginTime, endTime, shixuTimeType, indexIds);
         final Map<String, List<DataItem>> dataItemMap = itemList.stream().collect(Collectors.groupingBy(li -> DateUtil.format(li.getDataTime(), timeFormat)));
@@ -304,22 +290,30 @@ public class HomePageServiceImpl implements IHomePageService {
                 .filter(l -> StringUtils.isNotEmpty(l.getEnergyId())).collect(Collectors.groupingBy(
                         EnergyIndex::getEnergyId, Collectors.mapping(EnergyIndex::getIndexId, Collectors.toList())
                 ));
+
+        List<String> lengList = new ArrayList<>();
+
         while (!beginTime.after(endTime)) {
             final String currentTime = DateUtil.format(beginTime, timeFormat);
             xdataList.add(currentTime);
             final List<DataItem> dataItems = dataItemMap.get(currentTime);
             List<Double> energyCount = new ArrayList<>();
-            energyTypeMap.forEach((energyType,IndexIdList)->{
-                double sum;
-                if(null == dataItems){
-                    sum = 0;
-                }else {
-                    sum = dataItems.stream().filter(li -> IndexIdList.contains(li.getIndexId())).mapToDouble(DataItem::getValue).sum();
+
+            sysEnergies.forEach(x -> {
+                if(!lengList.contains(x.getEnername())){
+                    lengList.add(x.getEnername());
                 }
-                final BigDecimal coefficient = (BigDecimal) energyCollectMap.get(energyType);
-                energyCount.add(sum * coefficient.doubleValue());
+                List<String> indexIdList = energyTypeMap.get(x.getEnersno());
+                double sum;
+                if (null == dataItems || CollectionUtils.isEmpty(indexIdList)) {
+                    sum = 0;
+                } else {
+                    sum = dataItems.stream().filter(li -> indexIdList.contains(li.getIndexId())).mapToDouble(DataItem::getValue).sum();
+                }
+                energyCount.add(sum * x.getCoefficient().doubleValue());
             });
             ydataList.add(energyCount);
+
             switch (TimeType.valueOf(timeType)) {
                 case DAY:
                     beginTime = DateUtil.offsetHour(beginTime, 1);
@@ -334,15 +328,10 @@ public class HomePageServiceImpl implements IHomePageService {
         }
         vo.setXdata(xdataList.toArray(new String[0]));
         Double[][] array = new Double[sysEnergies.size()][xdataList.size()];
-        List<String> lengList = new ArrayList<>();
-        energyCollectMap.keySet().forEach(key->{
-            final String name = energyNameMap.get(key);
-            lengList.add(name);
-        });
 
-        for(int i = 0; i < ydataList.size(); i++){
+        for (int i = 0; i < ydataList.size(); i++) {
             final List<Double> doubleList = ydataList.get(i);
-            for(int n = 0; n < doubleList.size(); n++){
+            for (int n = 0; n < doubleList.size(); n++) {
                 array[n][i] = format2Double(doubleList.get(n));
             }
         }
@@ -352,108 +341,51 @@ public class HomePageServiceImpl implements IHomePageService {
     }
 
     @Override
-    public List<RankingEnergyData> energyConsumptionRanking(String modelcode, String timeType) {
+    public List<RankingEnergyData> energyConsumptionRanking(String modelCode, String timeType) {
+
         List<RankingEnergyData> energyDataList = new ArrayList<>();
-        String nodeCategory = "2";
-        LambdaQueryWrapper<ModelNode> modelNodeLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        modelNodeLambdaQueryWrapper.eq(ModelNode::getModelCode,modelcode);
-        modelNodeLambdaQueryWrapper.eq(ModelNode::getNodeCategory,nodeCategory);
-        List<ModelNode> modelNodeList = modelNodeMapper.selectList(modelNodeLambdaQueryWrapper);
-        if(CollectionUtils.isEmpty(modelNodeList)){
-            return energyDataList;
-        }
-        final List<String> nodeIds = modelNodeList.stream().map(ModelNode::getNodeId).collect(Collectors.toList());
-        List<ModelNodeIndexInfor> nodeIndexInforList = modelNodeMapper.selectIndexByNodeIds(modelcode ,nodeIds);
-
-        final Map<String, String> nodeNameMap = new HashMap<>();
-        nodeIndexInforList.forEach(n->{
-            final String id = n.getNodeId();
-            final String name = n.getName();
-            if(!nodeNameMap.containsKey(id)){
-                nodeNameMap.put(id,name);
-            }
-        });
-
-        // 按照点位进行分组
-        Map<String, List<ModelNodeIndexInfor>> nodeIndexMap = nodeIndexInforList.stream().collect(
-                Collectors.groupingBy(ModelNodeIndexInfor::getNodeId));
-        final List<String> eneryIdList = nodeIndexInforList.stream().map(ModelNodeIndexInfor::getEnergyId).distinct().collect(Collectors.toList());
-        final LambdaQueryWrapper<SysEnergy> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.in(CollectionUtils.isNotEmpty(eneryIdList),SysEnergy::getEnersno,eneryIdList);
-        final List<SysEnergy> sysEnergies = sysEnergyMapper.selectList(queryWrapper);
-        //能源编号和能源折标系数
-        final Map<String, Object> energyCoefficientMap = sysEnergies.stream().collect(Collectors.toMap(SysEnergy::getEnersno, SysEnergy::getCoefficient));
-        //index和能源
-        final Map<String, String> indexIdEnergyIdMap = new HashMap<>();
-        nodeIndexInforList.forEach(n->{
-            final String indexId = n.getIndexId();
-            final String energyId = n.getEnergyId();
-            if(!indexIdEnergyIdMap.containsKey(indexId)){
-                indexIdEnergyIdMap.put(indexId,energyId);
-            }
-        });
-        List<String> indexIds = nodeIndexInforList.stream().filter(l -> StringUtils.isNotEmpty(l.getIndexId())).map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
         Date queryTime = new Date();
-//        Date queryTime = DateUtil.parseDateTime("2023-03-28 00:00:00");
         Date beginTime;
         Date endTime;
-        String shixuTimeType;
         if (TimeType.DAY.name().equals(timeType)) {
             beginTime = DateUtil.beginOfDay(queryTime);
             endTime = DateUtil.endOfDay(queryTime);
-            shixuTimeType = TimeType.HOUR.name();
+            timeType = TimeType.HOUR.name();
             // 月
         } else if (TimeType.MONTH.name().equals(timeType)) {
             beginTime = DateUtil.beginOfMonth(queryTime);
             endTime = DateUtil.endOfMonth(queryTime);
-            shixuTimeType = TimeType.DAY.name();
+            timeType = TimeType.DAY.name();
+
             // 年
-        } else {
+        } else if (TimeType.YEAR.name().equals(timeType)) {
             beginTime = DateUtil.beginOfYear(queryTime);
             endTime = DateUtil.endOfYear(queryTime);
-            shixuTimeType = TimeType.MONTH.name();
+            timeType = TimeType.MONTH.name();
+
+        } else {
+            return energyDataList;
         }
-        // 根据indexId查询dataItem
-        List<DataItem> dataItemList = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(indexIds)) {
-            dataItemList = dataItemService.getDataItemTimeRangeInforByIndexIds(beginTime, endTime, shixuTimeType, indexIds);
+
+        LambdaQueryWrapper<ModelNode> parentNodeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        parentNodeLambdaQueryWrapper.eq(ModelNode::getModelCode, modelCode);
+        List<ModelNode> modelNodeList = modelNodeMapper.selectList(parentNodeLambdaQueryWrapper);
+        if (CollectionUtils.isEmpty(modelNodeList)) {
+            return energyDataList;
         }
-        Map<String, List<DataItem>> dataItemMap = dataItemList.stream().collect(Collectors.groupingBy(DataItem::getIndexId));
-
-        Map<String,BigDecimal> resultMap = new HashMap<>();
-        nodeIndexMap.forEach((key, value) -> {
-            // 找出indexIds
-            List<String> indexIdList = value.stream().map(ModelNodeIndexInfor::getIndexId).collect(Collectors.toList());
-
-            indexIdList.forEach(indexId->{
-                final List<DataItem> dataItems = dataItemMap.get(indexId);
-                final String energyId = indexIdEnergyIdMap.get(indexId);
-                final BigDecimal coefficient = (BigDecimal) energyCoefficientMap.get(energyId);
-
-                if(CollectionUtils.isNotEmpty(dataItems) ){
-                    BigDecimal sum = BigDecimal.valueOf(dataItems.stream()
-                            .mapToDouble(DataItem::getValue).sum()).setScale(CommonConst.DIGIT_2, RoundingMode.HALF_UP).multiply(coefficient);
-
-                    if (resultMap.containsKey(key)) {
-                        resultMap.put(key, resultMap.get(key).add(sum));
-                    } else {
-                        resultMap.put(key, sum);
-                    }
-                }
-            });
+        ModelNode parentNode = modelNodeList.stream().filter(x -> ObjectUtils.isEmpty(x.getParentId())).findFirst().orElse(null);
+        if (ObjectUtils.isEmpty(parentNode)) {
+            return energyDataList;
+        }
+        List<String> nodeIds = modelNodeList.stream().filter(x -> ObjectUtils.isNotEmpty(x.getParentId()) && parentNode.getNodeId().equals(x.getParentId()))
+                .map(ModelNode::getNodeId).collect(Collectors.toList());
+        if (ObjectUtils.isEmpty(nodeIds)) {
+            return energyDataList;
+        }
+        energyDataList = dataItemService.getHomePageConsumptionRanking(nodeIds, timeType, beginTime, endTime);
+        energyDataList.forEach(x -> {
+            x.energyConsumption = new BigDecimal(x.energyConsumption).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         });
-
-        resultMap.forEach((key,value)->{
-            RankingEnergyData rankingEnergyData = new RankingEnergyData();
-            rankingEnergyData.setNodeId(key);
-            rankingEnergyData.setNodeName(nodeNameMap.get(key));
-            rankingEnergyData.setEnergyConsumption(value.doubleValue());
-            energyDataList.add(rankingEnergyData);
-        });
-        Collections.sort(energyDataList, Comparator.comparingDouble((RankingEnergyData item) -> item.getEnergyConsumption()).reversed());
-        // 获取前5条记录
-        List<RankingEnergyData> top5Items = energyDataList.subList(0, Math.min(5, energyDataList.size()));
-
-        return top5Items;
+        return energyDataList;
     }
 }

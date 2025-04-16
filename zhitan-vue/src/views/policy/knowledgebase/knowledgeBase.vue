@@ -3,26 +3,24 @@
     <div class="form-card">
       <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="120px">
         <el-form-item label="标题">
-          <el-input v-model="queryParams.title" placeholder="请输入标题" clearable/>
+          <el-input v-model="queryParams.title" placeholder="请输入标题" clearable />
         </el-form-item>
         <el-form-item label="能源类型">
-              <el-select v-model="queryParams.type" placeholder="请选择能源类型" style="width: 100%" clearable>
-                  <el-option v-for="dict in types" :key="dict.value"
-                      :label="dict.label" :value="dict.value" />
-              </el-select>
-          </el-form-item>
+          <el-select v-model="queryParams.type" placeholder="请选择能源类型" style="width: 100%" clearable>
+            <el-option v-for="dict in types" :key="dict.value" :label="dict.label" :value="dict.value" />
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        </el-form-item>
+        <el-form-item style="float: right">
+          <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <div class="table-bg-style">
-      <div class="theme-dark-mt20 mb20 ml20">
-        <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
-        <!-- <el-button type="primary" icon="Delete">删除</el-button> -->
-      </div>
       <div class="table-box">
         <el-table :data="tableData" v-loading="loading">
           <el-table-column prop="title" label="标题" show-overflow-tooltip align="center" />
@@ -46,26 +44,26 @@
         />
       </div>
     </div>
-    <edit-modal ref="EditModalRef" @getList="getList"  :types="types" />
+    <edit-modal ref="EditModalRef" @getList="getList" :types="types" />
   </div>
 </template>
 
 <script setup>
- import EditModal from "./components/EditModal.vue"
-import { knowledgeBaseList, knowledgeBaseDel,knowledgeBaseInfo } from "@/api/policy/knowledgeBase"
+import EditModal from "./components/EditModal.vue"
+import { knowledgeBaseList, knowledgeBaseDel, knowledgeBaseInfo } from "@/api/policy/knowledgeBase"
 let { proxy } = getCurrentInstance()
 const types = ref([
   { label: "电", value: 0 },
   { label: "水", value: 1 },
   { label: "天然气", value: 2 },
   { label: "蒸汽", value: 3 },
-]);
+])
 let loading = ref(false)
 let total = ref(0)
 let tableData = ref([])
 let queryParams = ref({
   title: "",
-  type:null,
+  type: null,
   pageNum: 1,
   pageSize: 10,
 })
@@ -85,14 +83,13 @@ getList()
 let EditModalRef = ref("")
 function handleAdd(row) {
   if (EditModalRef.value) {
-    if(row.id){
+    if (row.id) {
       knowledgeBaseInfo(row.id).then((res) => {
         EditModalRef.value.handleOpen(res.data)
       })
-    }else{
+    } else {
       EditModalRef.value.handleOpen(row)
     }
-   
   }
 }
 
@@ -117,7 +114,7 @@ function handleQuery() {
 function resetQuery() {
   queryParams.value = {
     title: "",
-    type:null,
+    type: null,
     pageNum: 1,
     pageSize: 10,
   }

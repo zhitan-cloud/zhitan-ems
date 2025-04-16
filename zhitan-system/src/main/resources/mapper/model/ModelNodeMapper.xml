@@ -292,7 +292,7 @@
     </select>
 
     <select id="getModelNodeIndexIdRelationInforByCode"
-            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
                ni.index_id indexId
@@ -303,7 +303,7 @@
     </select>
 
     <select id="listModelNodeIndexIdRelationInforByParentId"
-            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
                ni.index_id indexId
@@ -313,7 +313,7 @@
     </select>
 
     <select id="getModelNodeIndexIdRelationInforByNodeId"
-            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
                ni.index_id indexId
@@ -336,7 +336,7 @@
         LIMIT 1;
     </select>
     <select id="selectIndexByModelCodeAndNodeId"
-            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+            resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id  nodeId,
                mn."name",
                ni.index_id indexId
@@ -380,12 +380,13 @@
         </foreach>
     </insert>
 
-    <select id="getModelNodeIndexIdByNodeId" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+    <select id="getModelNodeIndexIdByNodeId" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id nodeId,
         mn."name" "name",
         ni.index_id indexId,
         ei.energy_id energyId,
-        ei.index_type indexType
+        ei.index_type indexType,
+        ei.unit_id unitId
         FROM "model_node" mn
         LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
         LEFT JOIN energy_index ei on ni.index_id = ei.index_id
@@ -394,7 +395,7 @@
             and ei.energy_id = #{energyType}
         </if>
     </select>
-    <select id="getModelNodeByParentId" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+    <select id="getModelNodeByParentId" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id  nodeId,
                mn."name"   "name",
                ni.index_id indexId,
@@ -410,7 +411,7 @@
         where model_code = #{modelCode} AND parent_id is null
         order by order_num
     </select>
-    <select id="selectIndexByNodeIds" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfor">
+    <select id="selectIndexByNodeIds" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
         SELECT mn.node_id nodeId,
         mn."name" "name",
         ni.index_id indexId,

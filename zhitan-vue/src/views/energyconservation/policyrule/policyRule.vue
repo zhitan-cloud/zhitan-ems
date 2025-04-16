@@ -14,35 +14,36 @@
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
+        <el-form-item style="float: right">
+          <el-button type="primary" icon="Plus" @click="handleAdd"> 新增 </el-button>
+        </el-form-item>
       </el-form>
     </div>
-    <div class="table-box">
-      <div class="mt20 mb20">
-        <el-button type="primary" icon="plus" @click="handleAdd">新增</el-button>
-        <!-- <el-button type="primary" icon="Delete">删除</el-button> -->
+    <div class="table-bg-style">
+      <div class="table-box">
+        <el-table :data="tableData" v-loading="loading">
+          <el-table-column prop="title" label="文件标题" show-overflow-tooltip align="center" />
+          <el-table-column prop="typeName" label="文件类别" show-overflow-tooltip align="center" />
+          <el-table-column prop="dept" label="印发部门" show-overflow-tooltip align="center" />
+          <el-table-column prop="issuingTime" label="印发时间" show-overflow-tooltip align="center" />
+          <el-table-column label="操作" width="300" align="center">
+            <template #default="scope">
+              <el-button v-if="scope.row.url" link type="primary" icon="Files" @click="handleFile(scope.row.url)">
+                附件
+              </el-button>
+              <el-button link type="primary" icon="Edit" @click="handleAdd(scope.row)"> 修改 </el-button>
+              <el-button link type="primary" icon="Delete" @click="handleDel(scope.row)"> 删除 </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
+        />
       </div>
-      <el-table :data="tableData" v-loading="loading">
-        <el-table-column prop="title" label="文件标题" show-overflow-tooltip align="center" />
-        <el-table-column prop="typeName" label="文件类别" show-overflow-tooltip align="center" />
-        <el-table-column prop="dept" label="印发部门" show-overflow-tooltip align="center" />
-        <el-table-column prop="issuingTime" label="印发时间" show-overflow-tooltip align="center" />
-        <el-table-column label="操作" width="300" align="center">
-          <template #default="scope">
-            <el-button v-if="scope.row.url" link type="primary" icon="Files" @click="handleFile(scope.row.url)">
-              附件
-            </el-button>
-            <el-button link type="primary" icon="Edit" @click="handleAdd(scope.row)"> 修改 </el-button>
-            <el-button link type="primary" icon="Delete" @click="handleDel(scope.row)"> 删除 </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        v-show="total > 0"
-        :total="total"
-        v-model:page="queryParams.pageNum"
-        v-model:limit="queryParams.pageSize"
-        @pagination="getList"
-      />
     </div>
     <EditModal ref="editModalRef" @get-list="getList" />
   </div>

@@ -23,7 +23,7 @@ const useSettingsStore = defineStore(
       // 修改布局设置
       changeSetting(data) {
         const { key, value } = data
-        if (this.hasOwnProperty(key)) {
+        if (key in this.$state) {
           this[key] = value
         }
       },

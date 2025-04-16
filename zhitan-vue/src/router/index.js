@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
 import Layout from '@/layout'
+import useAppStore from '@/store/modules/app'
 
 /**
  * Note: 路由配置项
@@ -66,7 +67,7 @@ export const constantRoutes = [
         path: '/index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true, showSidebar: true, breadcrumb: false }
       }
     ]
   },

@@ -27,7 +27,9 @@ const tagsViewStore = useTagsViewStore()
     position: relative;
     overflow: hidden;
     background: #110f2e;
-    padding: 14px 0 0 14px;
+    padding: 14px;
+    box-sizing: border-box;
+    padding-top: 8px;
   }
 
   .fixed-header + .app-main {
@@ -37,12 +39,11 @@ const tagsViewStore = useTagsViewStore()
   .hasTagsView {
     .app-main {
       /* 84 = navbar + tags-view + padding = 70 + 56 + 14 */
-      min-height: calc(100vh - 125px);
-      // padding: 20px;
+      min-height: calc(100vh - 110px);
     }
 
     .fixed-header + .app-main {
-      padding-top: 130px;
+      padding-top: 108px; /* 60px(navbar) + 34px(tagsview) + 14px(内边距) */
     }
   }
 }
@@ -55,7 +56,8 @@ const tagsViewStore = useTagsViewStore()
     position: relative;
     overflow: hidden;
     background: #f7f8fa;
-    padding: 14px 0 0 14px;
+    padding: 14px;
+    box-sizing: border-box;
   }
 
   .fixed-header + .app-main {
@@ -65,14 +67,18 @@ const tagsViewStore = useTagsViewStore()
   .hasTagsView {
     .app-main {
       /* 84 = navbar + tags-view + padding = 70 + 56 + 14 */
-      min-height: calc(100vh - 125px);
-      // padding: 20px;
+      min-height: calc(100vh - 110px);
     }
 
     .fixed-header + .app-main {
-      padding-top: 130px;
+      padding-top: 108px; /* 60px(navbar) + 34px(tagsview) + 14px(内边距) */
     }
   }
+}
+
+/* 用户个人资料页特殊高度处理 */
+.user-profile-container {
+  min-height: calc(100vh - 50px) !important;
 }
 </style>
 
