@@ -12,7 +12,7 @@
     </svg> -->
     
     <img src="/src/assets/images/nav-btn.png" width="26" v-if="settingsStore.sideTheme == 'theme-dark'">
-    <img src="/src/assets/images/nav-btn2.png" width="26" v-else>
+    <img src="/src/assets/images/nav-btn.png" width="26" v-else>
   </div>
 </template>
 

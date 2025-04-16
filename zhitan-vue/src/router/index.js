@@ -67,13 +67,7 @@ export const constantRoutes = [
         path: '/index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true, showSidebar: true, breadcrumb: false },
-        beforeEnter: (to, from, next) => {
-          // 获取app store并设置侧边栏为折叠状态
-          const appStore = useAppStore()
-          appStore.showCollapsedSidebar()
-          next()
-        }
+        meta: { title: '首页', icon: 'dashboard', affix: true, showSidebar: true, breadcrumb: false }
       }
     ]
   },
