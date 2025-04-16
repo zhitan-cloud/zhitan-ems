@@ -56,8 +56,27 @@ const usePermissionStore = defineStore(
   })
 
 // 遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
+function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false, parentRoute = null) {
   return asyncRouterMap.filter(route => {
+    // 不再过滤掉首页看板相关路由
+    /* 
+    // 过滤掉首页看板相关路由
+    if (route.name === 'Index' && route.meta && route.meta.title === '首页看板') {
+      return false;
+    }
+    
+    // 如果是首页看板的子菜单，也过滤掉
+    if (route.path === '/index' || route.path === 'index' || 
+        (route.meta && route.meta.title === '首页看板')) {
+      return false;
+    }
+    */
+    
+    // 设置父路由引用
+    if (parentRoute) {
+      route.parent = parentRoute;
+    }
+    
     if (type && route.children) {
       route.children = filterChildren(route.children)
     }
@@ -82,7 +101,8 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
       }
     }
     if (route.children != null && route.children && route.children.length) {
-      route.children = filterAsyncRouter(route.children, route, type)
+      // 将当前路由作为父路由传递给子路由
+      route.children = filterAsyncRouter(route.children, route, type, route)
     } else {
       delete route['children']
       delete route['redirect']
@@ -97,7 +117,21 @@ function filterChildren(childrenMap, lastRouter = false) {
     if (el.children && el.children.length) {
       if (el.component === 'ParentView' && !lastRouter) {
         el.children.forEach(c => {
-          c.path = el.path + '/' + c.path
+          // 设置父路由引用
+          c.parent = el;
+          
+          // 确保路径格式正确拼接
+          if (el.path) {
+            if (c.path.startsWith('/')) {
+              // 绝对路径保持不变
+              // 但也设置原始父路径用于菜单导航
+              c.parentPath = el.path;
+            } else {
+              // 相对路径需要拼接
+              c.path = el.path.endsWith('/') ? el.path + c.path : el.path + '/' + c.path;
+            }
+          }
+          
           if (c.children && c.children.length) {
             children = children.concat(filterChildren(c.children, c))
             return
@@ -108,7 +142,21 @@ function filterChildren(childrenMap, lastRouter = false) {
       }
     }
     if (lastRouter) {
-      el.path = lastRouter.path + '/' + el.path
+      // 设置父路由引用
+      el.parent = lastRouter;
+      
+      // 确保路径格式正确拼接
+      if (lastRouter.path) {
+        if (el.path.startsWith('/')) {
+          // 绝对路径保持不变 
+          // 但也设置原始父路径用于菜单导航
+          el.parentPath = lastRouter.path;
+        } else {
+          // 相对路径需要拼接
+          el.path = lastRouter.path.endsWith('/') ? lastRouter.path + el.path : lastRouter.path + '/' + el.path;
+        }
+      }
+      
       if (el.children && el.children.length) {
         children = children.concat(filterChildren(el.children, el))
         return
