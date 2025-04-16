@@ -41,7 +41,7 @@ export default defineConfig(({ mode, command }) => {
           target: "https://demo-ems.zhitancloud.com",
           changeOrigin: true,
           secure: true,
-        }
+        },
       },
     },
     //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file
