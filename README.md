@@ -33,7 +33,7 @@
 #### 演示地址：https://demo-ems.zhitancloud.com/
 
 ## 开源协议
-zhitan-ems是基于 [AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html) 和 [ZPL](https://zpl.pub/page/zplv12.html) 双协议的开源软件。
+zhitan-ems是基于 [AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html) 和 [ZTPL](./ZTPL%20LICENSE) 双协议的开源软件。
 
 ## 社区版-功能列表
 1.  首页看板 **已完成**
