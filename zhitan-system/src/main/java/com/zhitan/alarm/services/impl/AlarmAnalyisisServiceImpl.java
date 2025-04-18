@@ -2,6 +2,7 @@ package com.zhitan.alarm.services.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.zhitan.alarm.domain.JkHistoryAlarm;
 import com.zhitan.alarm.domain.dto.AlarmAnalysisDTO;
 import com.zhitan.alarm.domain.vo.AlarmAnalysisVO;
@@ -53,7 +54,7 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalysisService {
     private final SysEnergyMapper sysEnergyMapper;
 
     /**
-     * 根据节点id获取报警分析信息(废弃)
+     * 根据节点id获取报警分析信息
      *
      * @param alarmAnalysisDTO
      * @return
@@ -198,23 +199,27 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalysisService {
 
         AlarmAnalysisVO alarmAnalysisVO = new AlarmAnalysisVO();
 
+        ModelNode parentNode = modelNodeMapper.selectModelNodeById(alarmAnalysisDTO.getNodeId());
+        if(ObjectUtils.isEmpty(parentNode)){
+            return alarmAnalysisVO;
+        }
+
         // 查询模型下的点位数据
-        ModelNode modelNode = modelNodeMapper.selectModelNodeById(alarmAnalysisDTO.getNodeId());
-        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.getAllModelNodeIndexByAddress(modelNode.getModelCode(), modelNode.getAddress());
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.getAllModelNodeIndexByAddress(parentNode.getModelCode(), parentNode.getAddress());
         alarmAnalysisVO.setIndexCount(nodeIndexInfoList.size());
         if (CollectionUtils.isEmpty(nodeIndexInfoList)) {
             return alarmAnalysisVO;
         }
 
         // 获取月报警数、年报警数
-        List<String> nodeIdList = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
+        List<String> indexIdList = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
 
         DateTime beginOfMonth = DateUtil.beginOfMonth(new Date());
         DateTime endOfMonth = DateUtil.endOfMonth(new Date());
         DateTime beginOfYear = DateUtil.beginOfYear(new Date());
         DateTime endOfYear = DateUtil.endOfYear(new Date());
-        Integer monthCount = historyAlarmMapper.selectCountByTime(beginOfMonth,endOfMonth, nodeIdList);
-        Integer yearCount = historyAlarmMapper.selectCountByTime(beginOfYear,endOfYear, nodeIdList);
+        Integer monthCount = historyAlarmMapper.selectCountByTime(beginOfMonth,endOfMonth, indexIdList);
+        Integer yearCount = historyAlarmMapper.selectCountByTime(beginOfYear,endOfYear, indexIdList);
 
         alarmAnalysisVO.setMonthCount(monthCount);
         alarmAnalysisVO.setYearCount(yearCount);

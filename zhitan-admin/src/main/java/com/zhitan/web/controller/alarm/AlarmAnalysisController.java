@@ -32,9 +32,7 @@ public class AlarmAnalysisController extends BaseController {
 
     @GetMapping("/getCountInfo")
     public AjaxResult getCountInfo(@Validated AlarmAnalysisDTO alarmAnalysisDTO){
-        if(ObjectUtils.isEmpty(alarmAnalysisDTO.getNodeId())){
-            return AjaxResult.error("节点id不能为空");
-        }
+
         if(ObjectUtils.isEmpty(alarmAnalysisDTO.getModelCode())){
             return AjaxResult.error("模型编码不能为空");
         }

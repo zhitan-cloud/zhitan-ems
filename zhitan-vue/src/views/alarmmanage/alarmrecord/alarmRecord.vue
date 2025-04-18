@@ -70,7 +70,7 @@
                 show-overflow-tooltip
                 :formatter="(row, column) => formatterLabel(energyTypeList, row.energyId)"
               />
-              <el-table-column label="预设值" prop="energyType" align="center" show-overflow-tooltip />
+              <el-table-column label="预设值" prop="limitingValue" align="center" show-overflow-tooltip />
               <el-table-column label="报警值" prop="alarmValue" align="center" show-overflow-tooltip />
               <el-table-column label="报警时间" prop="alarmBeginTime" align="center" show-overflow-tooltip />
             </el-table>

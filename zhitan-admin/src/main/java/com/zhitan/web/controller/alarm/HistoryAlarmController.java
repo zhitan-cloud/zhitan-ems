@@ -57,10 +57,7 @@ public class HistoryAlarmController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(JkHistoryAlarm jkHistoryAlarm)
     {
-        startPage();
-        List<JkHistoryAlarm> list = historyAlarmService.selectHistoryAlarmPageList(jkHistoryAlarm);
-//        Page<JkHistoryAlarm> list = historyAlarmService.selectJkHistoryAlarmPage(jkHistoryAlarm);
-        return getDataTable(list);
+        return getDataTable(historyAlarmService.selectHistoryAlarmPageList(jkHistoryAlarm));
     }
     /**
      * 导出历史报警监控列表

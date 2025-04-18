@@ -33,12 +33,12 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         "/dev-api": {
-          target: "https://demo-ems.zhitancloud.com",
+          target: "http://localhost:8080",
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, "/prod-api"),
+          rewrite: (p) => p.replace(/^\/dev-api/, "/"),
         },
         "/prod-api": {
-          target: "https://demo-ems.zhitancloud.com",
+          target: "http://localhost:8080",
           changeOrigin: true,
           secure: true,
         },

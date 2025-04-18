@@ -338,9 +338,9 @@
       <if test="endTime != null ">
         and begin_time &lt;= #{endTime}
       </if>
-      <if test="nodeIdList != null and nodeIdList.size() > 0">
-        and node_id in
-        <foreach collection="nodeIdList" item="item" open="(" separator="," close=")">
+      <if test="indexIdList != null and indexIdList.size() > 0">
+        and index_id in
+        <foreach collection="indexIdList" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
       </if>
@@ -348,19 +348,22 @@
   </select>
     <select id="getHistoryAlarmList" resultType="com.zhitan.alarm.domain.JkHistoryAlarm">
       SELECT
+        mn.node_id nodeId,
         mn."name" modelName,
         mi.meter_name meterName,
+        mi.energy_type energyId,
         his.index_id indexId,
         ei."name" indexName,
+        ei.index_type indexType,
         ei.code code,
         ei.unit_id unitId,
         ai.alarm_level alarmLevel,
         ai.limit_type limitType,
         his.limiting_value limitingValue,
         his.alarm_value alarmValue,
-        his.begin_time beginTime,
-        his.end_time endTime,
-        his.duration
+        his.begin_time alarmBeginTime,
+        his.end_time alarmEndTime,
+        his.duration duration
       FROM
         history_alarm his
           LEFT JOIN alarm_item ai ON his.item_id = ai."id"

@@ -13,6 +13,7 @@ import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.mapper.MeterImplementMapper;
 import com.zhitan.common.enums.TimeType;
 import com.zhitan.common.utils.DateUtils;
+import com.zhitan.common.utils.PageUtils;
 import com.zhitan.common.utils.StringUtils;
 import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
@@ -91,23 +92,6 @@ public class HistoryAlarmServiceImpl implements IHistoryAlarmService {
         historyAlarmMapper.updateHistoryAlarm(alarmCode, historyAlarm);
     }
 
-    // 废弃
-    @Override
-    public Page<JkHistoryAlarm> selectJkHistoryAlarmPage(JkHistoryAlarm jkHistoryAlarm, Long pageNum, Long pageSize) {
-        final Page<JkHistoryAlarm> jkHistoryAlarmPage = historyAlarmMapper.selectJkHistoryAlarmPage(jkHistoryAlarm, new Page<>(pageNum, pageSize));
-        jkHistoryAlarmPage.getRecords().forEach(alarm -> {
-            final String indexType = alarm.getIndexType();
-            final String indexId = alarm.getIndexId();
-            if ("COLLECT".equals(indexType) && StringUtils.isEmpty(alarm.getEnergyId())) {
-                //根据nodeId和indexId 去查询计量器具
-                EnergyIndex energyIndex = energyIndexMapper.selectEnergyIndexById(indexId);
-                final MeterImplement meterImplement = meterImplementMapper.selectMeterImplementById(energyIndex.getMeterId());
-                alarm.setEnergyId(meterImplement.getEnergyType());
-            }
-        });
-        return jkHistoryAlarmPage;
-    }
-
     /**
      * 获取历史报警分页数据
      *
@@ -115,7 +99,8 @@ public class HistoryAlarmServiceImpl implements IHistoryAlarmService {
      * @return
      */
     @Override
-    public List<JkHistoryAlarm> selectHistoryAlarmPageList(JkHistoryAlarm historyAlarm) {
+    public Page<JkHistoryAlarm> selectHistoryAlarmPageList(JkHistoryAlarm historyAlarm) {
+        Page<JkHistoryAlarm> pageInfo = PageUtils.getPageInfo(JkHistoryAlarm.class);
 
         List<String> indexIdList = new ArrayList<>();
         if ("ALL".equals(historyAlarm.getEierarchyFlag())) {
@@ -154,7 +139,7 @@ public class HistoryAlarmServiceImpl implements IHistoryAlarmService {
         }
 
         if (ObjectUtils.isEmpty(indexIdList)) {
-            return new ArrayList<>();
+            return pageInfo;
         }
 
         //时间处理 如果不传时间默认查询当天的数据
@@ -162,13 +147,12 @@ public class HistoryAlarmServiceImpl implements IHistoryAlarmService {
         if (ObjectUtils.isEmpty(endTime)) {
             endTime = DateUtil.endOfDay(DateUtils.getNowDate());
         }
-        Date beginTime = DateUtils.parseDate(historyAlarm.getEndTime());
+        Date beginTime = DateUtils.parseDate(historyAlarm.getBeginTime());
         if (ObjectUtils.isEmpty(beginTime)) {
             beginTime = DateUtil.beginOfDay(DateUtils.getNowDate());
         }
 
-        List<JkHistoryAlarm> historyAlarmList = historyAlarmMapper.getHistoryAlarmList(indexIdList, beginTime, endTime);
-        return historyAlarmList;
+        return historyAlarmMapper.getHistoryAlarmList(beginTime, endTime,indexIdList, pageInfo);
     }
 
 }
