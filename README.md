@@ -100,7 +100,9 @@ zhitan-ems是基于 [AGPL](https://www.gnu.org/licenses/agpl-3.0.en.html) 和 [Z
 VUE版本：VUE 3
 
 ## 特色：数据驱动的计算模型和业务模型配置
-1.  支持动态点位配置。
+1. 精心设计的展示界面。
+ ![输入图片说明](readme/img/0-index.png)
+2. 支持动态点位配置。
 ![输入图片说明](readme/img/指标配置.png)
 2.  支持计算公式。
 ![输入图片说明](readme/img/计算公式.png)
