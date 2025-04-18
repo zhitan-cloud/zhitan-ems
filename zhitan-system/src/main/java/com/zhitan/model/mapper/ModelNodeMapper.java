@@ -215,4 +215,9 @@ public interface ModelNodeMapper  extends BaseMapper<ModelNode> {
                                                      @Param("energyType") String energyType,
                                                      @Param("timeType") TimeType timeType,
                                                      @Param("dateTimeMap") Map<String, LocalDateTime> dateTimeMap);
+
+    /**
+     * 通过节点地址查询节点下及子节点下的所有点位信息
+     */
+    List<ModelNodeIndexInfo> getAllModelNodeIndexByAddress(@Param("modelCode") String modelCode, @Param("address") String address);
 }

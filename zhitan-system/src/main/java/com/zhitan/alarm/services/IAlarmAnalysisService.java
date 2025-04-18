@@ -4,13 +4,20 @@ import com.zhitan.alarm.domain.dto.AlarmAnalysisDTO;
 import com.zhitan.alarm.domain.vo.AlarmAnalysisVO;
 
 /**
- * description todu
+ * 报警分析接口
  *
- * @author hmj
- * @date 2024-10-26 17:33
+ * @author zhitan
+ * @date
  */
-public interface IAlarmAnalyisisService {
+public interface IAlarmAnalysisService {
+
     AlarmAnalysisVO getByNodeId(AlarmAnalysisDTO alarmAnalysisDTO);
 
+    /**
+     * 报警分析统计
+     *
+     * @param alarmAnalysisDTO
+     * @return
+     */
     AlarmAnalysisVO getCountInfo(AlarmAnalysisDTO alarmAnalysisDTO);
 }

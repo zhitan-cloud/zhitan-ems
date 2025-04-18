@@ -12,6 +12,7 @@ import com.zhitan.common.core.page.TableDataInfo;
 import com.zhitan.common.enums.BusinessType;
 import com.zhitan.common.utils.poi.ExcelUtil;
 import com.zhitan.framework.web.service.TokenService;
+import com.zhitan.model.domain.ModelNode;
 import com.zhitan.realtimedata.domain.TagValue;
 import com.zhitan.realtimedata.service.RealtimeDatabaseService;
 import io.swagger.annotations.Api;
@@ -43,10 +44,7 @@ import java.util.List;
 public class HistoryAlarmController extends BaseController
 {
     @Autowired
-    private IHistoryAlarmService iHistoryAlarmService;
-
-    @Autowired
-    private TokenService tokenService;
+    private IHistoryAlarmService historyAlarmService;
 
     @Autowired
     private RealtimeDatabaseService realtimeDatabaseService;
@@ -55,12 +53,11 @@ public class HistoryAlarmController extends BaseController
      * 历史报警 页面 根据 节点目录和 条件查询
      */
     @ApiOperation("历史报警查询")
-//    @PreAuthorize("@ss.hasPermi('energyAlarm:historicalAlarm:list')")
+    @PreAuthorize("@ss.hasPermi('energyAlarm:historicalAlarm:list')")
     @GetMapping("/list")
-    public TableDataInfo list(JkHistoryAlarm jkHistoryAlarm,Long pageNum,Long pageSize)
+    public TableDataInfo list(JkHistoryAlarm jkHistoryAlarm)
     {
-        Page<JkHistoryAlarm> list = iHistoryAlarmService.selectJkHistoryAlarmPage(jkHistoryAlarm,pageNum,pageSize);
-        return getDataTable(list);
+        return getDataTable(historyAlarmService.selectHistoryAlarmPageList(jkHistoryAlarm));
     }
     /**
      * 导出历史报警监控列表
@@ -70,7 +67,7 @@ public class HistoryAlarmController extends BaseController
     @GetMapping("/export")
     public AjaxResult export(JkHistoryAlarm jkHistoryAlarm)
     {
-        List<JkHistoryAlarm> list = iHistoryAlarmService.selectJkHistoryAlarmListExcel(jkHistoryAlarm);
+        List<JkHistoryAlarm> list = historyAlarmService.selectJkHistoryAlarmListExcel(jkHistoryAlarm);
         ExcelUtil<JkHistoryAlarm> util = new ExcelUtil<JkHistoryAlarm>(JkHistoryAlarm.class);
         return util.exportExcel(list, "alarm");
     }
@@ -165,7 +162,7 @@ public class HistoryAlarmController extends BaseController
     public TableDataInfo listNote(JkHistoryAlarm jkHistoryAlarm)
     {
         startPage();
-        List<JkHistoryAlarm> list = iHistoryAlarmService.selectHistoryAlarmNoteList(jkHistoryAlarm);
+        List<JkHistoryAlarm> list = historyAlarmService.selectHistoryAlarmNoteList(jkHistoryAlarm);
         return getDataTable(list);
     }
 }
