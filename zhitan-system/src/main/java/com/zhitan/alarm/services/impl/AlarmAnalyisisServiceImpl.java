@@ -8,8 +8,8 @@ import com.zhitan.alarm.domain.dto.AlarmAnalysisDTO;
 import com.zhitan.alarm.domain.vo.AlarmAnalysisVO;
 import com.zhitan.alarm.mapper.HistoryAlarmMapper;
 import com.zhitan.alarm.services.IAlarmAnalysisService;
-import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.domain.SysEnergy;
+import com.zhitan.basicdata.domain.vo.MeterImplementModel;
 import com.zhitan.basicdata.mapper.MeterImplementMapper;
 import com.zhitan.basicdata.mapper.SysEnergyMapper;
 import com.zhitan.common.enums.IndexType;
@@ -17,7 +17,6 @@ import com.zhitan.common.enums.TimeType;
 import com.zhitan.common.utils.StringUtils;
 import com.zhitan.consumptionanalysis.domain.vo.ChartData;
 import com.zhitan.consumptionanalysis.domain.vo.EnergyProportion;
-import com.zhitan.model.domain.EnergyIndex;
 import com.zhitan.model.domain.ModelNode;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.EnergyIndexMapper;
@@ -27,10 +26,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,19 +58,12 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalysisService {
     @Override
     public AlarmAnalysisVO getByNodeId(AlarmAnalysisDTO alarmAnalysisDTO) {
         AlarmAnalysisVO alarmAnalysisVO = new AlarmAnalysisVO();
-        List<EnergyProportion> alarmProportionList = new ArrayList<>();
-        for(IndexType indexType : IndexType.values()){
-            EnergyProportion proportion = new EnergyProportion();
-            proportion.setEnergyName(indexType.name());
-            proportion.setCount(0D);
-            proportion.setPercentage(0D);
-            alarmProportionList.add(proportion);
-        }
-                
-                
+        // 初始化报警比例列表
+        List<EnergyProportion> alarmProportionList = initializeProportionList(IndexType.values());
+        // 初始化能源比例列表
         List<EnergyProportion> energyProportionList = new ArrayList<>();
-        final List<SysEnergy> sysEnergies = sysEnergyMapper.selectSysEnergyList(new SysEnergy());
-        sysEnergies.forEach(sysEnergy -> {
+
+        sysEnergyMapper.selectSysEnergyList(new SysEnergy()).forEach(sysEnergy -> {
             EnergyProportion proportion = new EnergyProportion();
             proportion.setEnergyName(sysEnergy.getEnersno());
             proportion.setCount(0D);
@@ -112,72 +101,115 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalysisService {
         query.setNodeId(nodeId);
         final List<JkHistoryAlarm> jkHistoryAlarms = historyAlarmMapper.selectJkHistoryAlarmList(query);
         if(CollectionUtils.isNotEmpty(jkHistoryAlarms)) {
-            jkHistoryAlarms.forEach(alarm -> {
-                final String indexType = alarm.getIndexType();
-                final String indexId = alarm.getIndexId();
-                final String alarmNodeId = alarm.getNodeId();
-                if ("COLLECT".equals(indexType) && StringUtils.isEmpty(alarm.getEnergyId())) {
-                    //根据nodeId和indexId 去查询计量器具
-                    EnergyIndex energyIndex = energyIndexMapper.selectEnergyIndexById(indexId);
-                    final MeterImplement meterImplement = meterImplementMapper.selectMeterImplementById(energyIndex.getMeterId());
-                    alarm.setEnergyId(meterImplement.getEnergyType());
-                }
-            });
-            final Map<String, List<JkHistoryAlarm>> alarmTypeMap = jkHistoryAlarms.stream().collect(Collectors.groupingBy(JkHistoryAlarm::getIndexType));
-            alarmTypeMap.forEach((key, value) -> {
-                alarmProportionList.forEach(alarm->{
-                    if(alarm.getEnergyName().equals(key)){
-                        alarm.setEnergyName(key);
-                        alarm.setCount(format2Double(value.size()));
-                        double percentage = value.size() / jkHistoryAlarms.size() * 100;
-                        alarm.setPercentage(format2Double(percentage));
-                    }
-                });
-            });
-            final Map<String, List<JkHistoryAlarm>> energyTypeMap = jkHistoryAlarms.stream().collect(Collectors.groupingBy(JkHistoryAlarm::getEnergyId));
-            energyTypeMap.forEach((key, value) -> {
-                energyProportionList.forEach(en->{
-                    if(en.getEnergyName().equals(key)){
-                        en.setEnergyName(key);
-                        en.setCount(format2Double(value.size()));
-                        double percentage = value.size() / jkHistoryAlarms.size() * 100;
-                        en.setPercentage(format2Double(percentage));
-                    }
-                });
-                
-            });
 
+            // 设置能源类型
+            processEnergyType(jkHistoryAlarms);
 
-            jkHistoryAlarms.forEach(jkHistoryAlarm -> {
-                final String alarmBeginTime = DateUtil.format(jkHistoryAlarm.getAlarmBeginTime(), timeFormat);
-                jkHistoryAlarm.setAlarmTime(alarmBeginTime);
-            });
-            final Map<String, List<JkHistoryAlarm>> timeMap = jkHistoryAlarms.stream().collect(Collectors.groupingBy(JkHistoryAlarm::getAlarmTime));
-            while (!beginTime.after(endTime)) {
-                final String currentTime = DateUtil.format(beginTime, timeFormat);
-                final List<JkHistoryAlarm> value = timeMap.get(currentTime);
-                ChartData chartData = new ChartData();
-                chartData.setXData(currentTime);
-                chartData.setYValue(null == value?0:(double)value.size());
-                chartDataList.add(chartData);
+            // 计算报警类型比例
+            calculateProportions(jkHistoryAlarms, alarmProportionList, JkHistoryAlarm::getIndexType);
+            // 计算能源类型比例
+            calculateProportions(jkHistoryAlarms, energyProportionList, JkHistoryAlarm::getEnergyId);
 
-                switch (TimeType.valueOf(queryTimeType)) {
-                    case DAY:
-                        beginTime = DateUtil.offsetHour(beginTime, 1);
-                        break;
-                    case MONTH:
-                        beginTime = DateUtil.offsetDay(beginTime, 1);
-                        break;
-                    default:
-                        beginTime = DateUtil.offsetMonth(beginTime, 1);
-                        break;
-                }
-            }
+            // 处理报警时间
+            processAlarmTimes(jkHistoryAlarms, timeFormat);
+
+            // 生成图表数据
+            generateChartData(chartDataList, jkHistoryAlarms, beginTime, endTime, timeFormat, queryTimeType);
+
         }
         alarmAnalysisVO.setAlarmProportion(alarmProportionList);
         alarmAnalysisVO.setEnergyProportion(energyProportionList);
         alarmAnalysisVO.setChartDataList(chartDataList);
         return alarmAnalysisVO;
+    }
+
+    /**
+     * 设置能源类型
+     */
+    private void processEnergyType(List<JkHistoryAlarm> jkHistoryAlarms) {
+        List<String> indexIds = jkHistoryAlarms.stream().map(JkHistoryAlarm::getIndexId).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(indexIds)) {
+            List<MeterImplementModel> modelList = energyIndexMapper.selectEnergyTypeByIndex(indexIds);
+            if (CollectionUtils.isNotEmpty(modelList)){
+                Map<String, String> energyMap = modelList.stream().collect(Collectors.toMap(MeterImplementModel::getIndexId, MeterImplementModel::getEnergyType));
+
+                jkHistoryAlarms.forEach(alarm -> {
+                    if (IndexType.COLLECT.getDescription().equals(alarm.getIndexType()) && StringUtils.isEmpty(alarm.getEnergyId())){
+                        alarm.setEnergyId(energyMap.get(alarm.getIndexId()));
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * 计算占比
+     */
+    private void calculateProportions(List<JkHistoryAlarm> jkHistoryAlarms, List<EnergyProportion> proportionList, java.util.function.Function<JkHistoryAlarm, String> keyExtractor) {
+        Map<String, List<JkHistoryAlarm>> typeMap = jkHistoryAlarms.stream()
+                .collect(Collectors.groupingBy(keyExtractor));
+        typeMap.forEach((key, value) -> {
+            proportionList.forEach(alarm -> {
+                if (alarm.getEnergyName().equals(key)) {
+                    alarm.setCount(format2Double(value.size()));
+                    double percentage = (double) value.size() / jkHistoryAlarms.size() * 100;
+                    alarm.setPercentage(format2Double(percentage));
+                }
+            });
+        });
+    }
+
+    /**
+     * 处理报警时间
+     */
+    private void processAlarmTimes(List<JkHistoryAlarm> jkHistoryAlarms, String timeFormat) {
+        jkHistoryAlarms.forEach(jkHistoryAlarm -> {
+            String alarmBeginTime = DateUtil.format(jkHistoryAlarm.getAlarmBeginTime(), timeFormat);
+            jkHistoryAlarm.setAlarmTime(alarmBeginTime);
+        });
+    }
+
+    /**
+     * 生成图表数据
+     */
+    private void generateChartData(List<ChartData> chartDataList, List<JkHistoryAlarm> jkHistoryAlarms, Date beginTime, Date endTime, String timeFormat, String queryTimeType) {
+        Map<String, List<JkHistoryAlarm>> timeMap = jkHistoryAlarms.stream()
+                .collect(Collectors.groupingBy(JkHistoryAlarm::getAlarmTime));
+        while (!beginTime.after(endTime)) {
+            String currentTime = DateUtil.format(beginTime, timeFormat);
+            List<JkHistoryAlarm> value = timeMap.get(currentTime);
+            ChartData chartData = new ChartData();
+            chartData.setXData(currentTime);
+            chartData.setYValue(value == null ? 0 : (double) value.size());
+            chartDataList.add(chartData);
+
+            switch (TimeType.valueOf(queryTimeType)) {
+                case DAY:
+                    beginTime = DateUtil.offsetHour(beginTime, 1);
+                    break;
+                case MONTH:
+                    beginTime = DateUtil.offsetDay(beginTime, 1);
+                    break;
+                default:
+                    beginTime = DateUtil.offsetMonth(beginTime, 1);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 初始化占比列表
+     */
+    private List<EnergyProportion> initializeProportionList(Object[] items) {
+        List<EnergyProportion> proportionList = new ArrayList<>();
+        for (Object item : items) {
+            EnergyProportion proportion = new EnergyProportion();
+            proportion.setEnergyName(item.toString());
+            proportion.setCount(0D);
+            proportion.setPercentage(0D);
+            proportionList.add(proportion);
+        }
+        return proportionList;
     }
 
     private double format2Double(double averageEnergy) {

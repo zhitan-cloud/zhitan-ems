@@ -1,317 +1,319 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.model.mapper.EnergyIndexMapper">
 
-  <resultMap type="com.zhitan.model.domain.EnergyIndex" id="EnergyIndexResult">
-    <result property="indexId" column="index_id"/>
-    <result property="name" column="name"/>
-    <result property="code" column="code"/>
-    <result property="indexType" column="index_type"/>
-    <result property="indexCategory" column="index_category"/>
-    <result property="remark" column="remark"/>
-    <result property="unitId" column="unit_id"/>
-    <result property="meterId" column="meter_id"/>
-    <result property="orderNum" column="order_num"/>
-    <result property="equipment" column="equipment"/>
-    <result property="energyId" column="energy_id"/>
-    <result property="meterName" column="meter_name"/>
-  </resultMap>
+    <resultMap type="com.zhitan.model.domain.EnergyIndex" id="EnergyIndexResult">
+        <result property="indexId" column="index_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="indexType" column="index_type"/>
+        <result property="indexCategory" column="index_category"/>
+        <result property="remark" column="remark"/>
+        <result property="unitId" column="unit_id"/>
+        <result property="meterId" column="meter_id"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="equipment" column="equipment"/>
+        <result property="energyId" column="energy_id"/>
+        <result property="meterName" column="meter_name"/>
+    </resultMap>
 
-  <sql id="selectEnergyIndexVo">
-    select index_id,
-           name,
-           code,
-           index_type,
-           index_category,
-           remark,
-           unit_id,
-           meter_id,
-           order_num,
-           equipment,
-           energy_id
-    from energy_index
-  </sql>
+    <sql id="selectEnergyIndexVo">
+        select index_id,
+               name,
+               code,
+               index_type,
+               index_category,
+               remark,
+               unit_id,
+               meter_id,
+               order_num,
+               equipment,
+               energy_id
+        from energy_index
+    </sql>
 
-  <select id="selectEnergyIndexList" parameterType="com.zhitan.model.domain.EnergyIndex" resultMap="EnergyIndexResult">
-    select ni.index_id, name, code, index_type, remark, unit_id, index_category
-    from energy_index ei left join node_index ni on ei.index_id = ni.index_id
-    <where>
-      <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
-      <if test="code != null  and code != ''">and code like concat('%', #{code}, '%')</if>
-      <if test="indexType != null">and index_type = #{indexType}</if>
-      <if test="nodeId != null  and nodeId != ''">and node_id = #{nodeId}</if>
-      <if test="indexCategory != null  and indexCategory != ''">and index_category =
-        #{indexCategory}
-      </if>
-    </where>
-    order by ei.order_num
-  </select>
+    <select id="selectEnergyIndexList" parameterType="com.zhitan.model.domain.EnergyIndex"
+            resultMap="EnergyIndexResult">
+        select ni.index_id, name, code, index_type, remark, unit_id, index_category
+        from energy_index ei left join node_index ni on ei.index_id = ni.index_id
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="code != null  and code != ''">and code like concat('%', #{code}, '%')</if>
+            <if test="indexType != null">and index_type = #{indexType}</if>
+            <if test="nodeId != null  and nodeId != ''">and node_id = #{nodeId}</if>
+            <if test="indexCategory != null  and indexCategory != ''">and index_category =
+                #{indexCategory}
+            </if>
+        </where>
+        order by ei.order_num
+    </select>
 
-  <select id="selectEnergyIndexById" parameterType="String" resultMap="EnergyIndexResult">
-    <include refid="selectEnergyIndexVo"/>
-    where index_id = #{indexId}
-    order by order_num
-  </select>
+    <select id="selectEnergyIndexById" parameterType="String" resultMap="EnergyIndexResult">
+        <include refid="selectEnergyIndexVo"/>
+        where index_id = #{indexId}
+        order by order_num
+    </select>
 
-  <select id="selectEnergyIndexByIds" resultType="com.zhitan.model.domain.EnergyIndex">
-    <include refid="selectEnergyIndexVo"/>
-    where
+    <select id="selectEnergyIndexByIds" resultType="com.zhitan.model.domain.EnergyIndex">
+        <include refid="selectEnergyIndexVo"/>
+        where
         index_id IN
         <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
-          #{indexId}
+            #{indexId}
         </foreach>
-  </select>
+    </select>
 
-  <select id="energyIndexHasExist" resultType="java.lang.Integer">
-    select count(*)
-    from energy_index
-    where code = #{code};
-  </select>
-  <select id="energyIndexHasExistWhenUpdate" resultType="java.lang.Integer">
-    select count(*)
-    from energy_index
-    where code = #{code}
-      AND index_id != #{indexId};
-  </select>
-  <select id="getMeterIndex" resultMap="EnergyIndexResult">
-    <include refid="selectEnergyIndexVo"/>
-    where meter_id = #{meterId}
-    order by order_num
-  </select>
-  <select id="modelHasConfig" resultType="java.lang.Integer">
-    select count(*)
-    from model_node
-    where model_code = #{modelCode};
-  </select>
-  <select id="selectCollectIndex" resultMap="EnergyIndexResult">
-    <include refid="selectEnergyIndexVo"/>
-    where meter_id = #{deviceId}
-    order by order_num
-  </select>
-  <select id="getEnergyIndexByIds" resultMap="EnergyIndexResult">
-    <include refid="selectEnergyIndexVo"/>
-    where index_id in
-    <foreach item="indexId" collection="list" open="(" separator="," close=")">
-      #{indexId}
-    </foreach>
-    order by order_num
-  </select>
-  <select id="getEnergyIndexByCodes" resultMap="EnergyIndexResult">
-    <include refid="selectEnergyIndexVo"/>
-    where code in
-    <foreach item="indexCode" collection="list" open="(" separator="," close=")">
-      #{indexCode}
-    </foreach>
-    order by order_num
-  </select>
-  <select id="getIndexByNodeAndChildrenNode" resultMap="EnergyIndexResult">
-    select ei.*
-    from energy_index ei
-           left join node_index ni on ei.index_id = ni.index_id
-    where ni.node_id in (select node_id
-                         from model_node
-                         where address like (select address
-                                             from model_node
-                                             where node_id = #{nodeId}) || '%')
-    order by ei.order_num
-  </select>
-  <select id="searchIndexByNodeAndChildrenNode" resultMap="EnergyIndexResult">
-    select ei.*
-    from energy_index ei
-           left join node_index ni on ei.index_id = ni.index_id
-    where ni.node_id in (select node_id
-                         from model_node
-                         where address like (select address
-                                             from model_node
-                                             where node_id = #{nodeId}) || '%')
-      and (ei.code like concat('%', #{filter}, '%') or ei.name like concat('%', #{filter}, '%'))
-    order by ei.order_num
-  </select>
-  <select id="selectEnergyIndex" resultMap="EnergyIndexResult">
-    select ni.index_id, name, code, index_type, remark, unit_id, index_category
-    from energy_index ei left join node_index ni on ei.index_id = ni.index_id
-    <where>
-      <if test="codeOrName != null  and codeOrName != ''">and (name like concat('%', #{codeOrName},
-        '%') or code like concat('%', #{codeOrName}, '%'))
-      </if>
-      <if test="nodeId != null  and nodeId != ''">and node_id = #{nodeId}</if>
-      <if test="indexType != null">and index_type = #{indexType}</if>
-      <if test="indexCategory != null  and indexCategory != ''">and index_category =
-        #{indexCategory}
-      </if>
-    </where>
-    order by ei.order_num
-  </select>
+    <select id="energyIndexHasExist" resultType="java.lang.Integer">
+        select count(*)
+        from energy_index
+        where code = #{code};
+    </select>
+    <select id="energyIndexHasExistWhenUpdate" resultType="java.lang.Integer">
+        select count(*)
+        from energy_index
+        where code = #{code}
+          AND index_id != #{indexId};
+    </select>
+    <select id="getMeterIndex" resultMap="EnergyIndexResult">
+        <include refid="selectEnergyIndexVo"/>
+        where meter_id = #{meterId}
+        order by order_num
+    </select>
+    <select id="modelHasConfig" resultType="java.lang.Integer">
+        select count(*)
+        from model_node
+        where model_code = #{modelCode};
+    </select>
+    <select id="selectCollectIndex" resultMap="EnergyIndexResult">
+        <include refid="selectEnergyIndexVo"/>
+        where meter_id = #{deviceId}
+        order by order_num
+    </select>
+    <select id="getEnergyIndexByIds" resultMap="EnergyIndexResult">
+        <include refid="selectEnergyIndexVo"/>
+        where index_id in
+        <foreach item="indexId" collection="list" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+        order by order_num
+    </select>
+    <select id="getEnergyIndexByCodes" resultMap="EnergyIndexResult">
+        <include refid="selectEnergyIndexVo"/>
+        where code in
+        <foreach item="indexCode" collection="list" open="(" separator="," close=")">
+            #{indexCode}
+        </foreach>
+        order by order_num
+    </select>
+    <select id="getIndexByNodeAndChildrenNode" resultMap="EnergyIndexResult">
+        select ei.*
+        from energy_index ei
+                 left join node_index ni on ei.index_id = ni.index_id
+        where ni.node_id in (select node_id
+                             from model_node
+                             where address like (select address
+                                                 from model_node
+                                                 where node_id = #{nodeId}) || '%')
+        order by ei.order_num
+    </select>
+    <select id="searchIndexByNodeAndChildrenNode" resultMap="EnergyIndexResult">
+        select ei.*
+        from energy_index ei
+                 left join node_index ni on ei.index_id = ni.index_id
+        where ni.node_id in (select node_id
+                             from model_node
+                             where address like (select address
+                                                 from model_node
+                                                 where node_id = #{nodeId}) || '%')
+          and (ei.code like concat('%', #{filter}, '%') or ei.name like concat('%', #{filter}, '%'))
+        order by ei.order_num
+    </select>
+    <select id="selectEnergyIndex" resultMap="EnergyIndexResult">
+        select ni.index_id, name, code, index_type, remark, unit_id, index_category
+        from energy_index ei left join node_index ni on ei.index_id = ni.index_id
+        <where>
+            <if test="codeOrName != null  and codeOrName != ''">and (name like concat('%', #{codeOrName},
+                '%') or code like concat('%', #{codeOrName}, '%'))
+            </if>
+            <if test="nodeId != null  and nodeId != ''">and node_id = #{nodeId}</if>
+            <if test="indexType != null">and index_type = #{indexType}</if>
+            <if test="indexCategory != null  and indexCategory != ''">and index_category =
+                #{indexCategory}
+            </if>
+        </where>
+        order by ei.order_num
+    </select>
 
-  <insert id="insertEnergyIndex" parameterType="com.zhitan.model.domain.EnergyIndex">
-    insert into energy_index
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="indexId != null  and indexId != ''">index_id,</if>
-      <if test="name != null  and name != ''">name,</if>
-      <if test="code != null  and code != ''">code,</if>
-      <if test="indexType != null">index_type,</if>
-      <if test="indexCategory != null  and indexCategory != ''">
-        index_category,
-      </if>
-      <if test="remark != null  and remark != ''">remark,</if>
-      <if test="unitId != null  and unitId != ''">unit_id,</if>
-      <if test="orderNum != null">order_num,</if>
-      <if test="equipment != null">equipment,</if>
-      <if test="energyId != null">energy_id,</if>
-    </trim>
-    <trim prefix="values (" suffix=");" suffixOverrides=",">
-      <if test="indexId != null  and indexId != ''">
-        #{indexId},
-      </if>
-      <if test="name != null  and name != ''">#{name},</if>
-      <if test="code != null  and code != ''">#{code},</if>
-      <if test="indexType != null">
-        #{indexType},
-      </if>
-      <if test="indexCategory != null  and indexCategory != ''">
-        #{indexCategory},
-      </if>
-      <if test="remark != null  and remark != ''">#{remark},
-      </if>
-      <if test="unitId != null  and unitId != ''">#{unitId},
-      </if>
-      <if test="orderNum != null">#{orderNum},
-      </if>
-      <if test="equipment != null">#{equipment},
-      </if>
-      <if test="energyId != null">#{energyId},
-      </if>
-    </trim>
+    <insert id="insertEnergyIndex" parameterType="com.zhitan.model.domain.EnergyIndex">
+        insert into energy_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="indexId != null  and indexId != ''">index_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="code != null  and code != ''">code,</if>
+            <if test="indexType != null">index_type,</if>
+            <if test="indexCategory != null  and indexCategory != ''">
+                index_category,
+            </if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="unitId != null  and unitId != ''">unit_id,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="equipment != null">equipment,</if>
+            <if test="energyId != null">energy_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=");" suffixOverrides=",">
+            <if test="indexId != null  and indexId != ''">
+                #{indexId},
+            </if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="code != null  and code != ''">#{code},</if>
+            <if test="indexType != null">
+                #{indexType},
+            </if>
+            <if test="indexCategory != null  and indexCategory != ''">
+                #{indexCategory},
+            </if>
+            <if test="remark != null  and remark != ''">#{remark},
+            </if>
+            <if test="unitId != null  and unitId != ''">#{unitId},
+            </if>
+            <if test="orderNum != null">#{orderNum},
+            </if>
+            <if test="equipment != null">#{equipment},
+            </if>
+            <if test="energyId != null">#{energyId},
+            </if>
+        </trim>
 
-  </insert>
-  <insert id="insertNodeIndex">
-    insert into node_index (node_id, index_id) values (#{nodeId}, #{indexId});
-  </insert>
-  <insert id="insertEnergyIndices">
-    <foreach collection="energyIndices" item="energyIndex" separator=";">
-      insert into energy_index
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">index_id,</if>
-        <if test="energyIndex.name != null  and energyIndex.name != ''">name,</if>
-        <if test="energyIndex.code != null  and energyIndex.code != ''">code,</if>
-        <if test="energyIndex.indexType != null">index_type,</if>
-        <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
-          index_category,
-        </if>
-        <if test="energyIndex.remark != null  and energyIndex.remark != ''">remark,</if>
-        <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">unit_id,</if>
-        <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">meter_id,</if>
-        <if test="energyIndex.orderNum != null">order_num,</if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">
-          #{energyIndex.indexId},
-        </if>
-        <if test="energyIndex.name != null  and energyIndex.name != ''">#{energyIndex.name},</if>
-        <if test="energyIndex.code != null  and energyIndex.code != ''">#{energyIndex.code},</if>
-        <if test="energyIndex.indexType != null">
-          #{energyIndex.indexType},
-        </if>
-        <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
-          #{energyIndex.indexCategory},
-        </if>
-        <if test="energyIndex.remark != null  and energyIndex.remark != ''">#{energyIndex.remark},
-        </if>
-        <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">#{energyIndex.unitId},
-        </if>
-        <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">
-          #{energyIndex.meterId},
-        </if>
-        <if test="energyIndex.orderNum != null">#{energyIndex.orderNum},</if>
-      </trim>
-    </foreach>
-  </insert>
-  <insert id="saveEnergyIndex">
-    <foreach collection="list" item="energyIndex" separator=";">
-      insert into energy_index
-      <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">index_id,</if>
-        <if test="energyIndex.name != null  and energyIndex.name != ''">name,</if>
-        <if test="energyIndex.code != null  and energyIndex.code != ''">code,</if>
-        <if test="energyIndex.indexType != null">index_type,</if>
-        <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
-          index_category,
-        </if>
-        <if test="energyIndex.remark != null  and energyIndex.remark != ''">remark,</if>
-        <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">unit_id,</if>
-        <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">meter_id,</if>
-        <if test="energyIndex.orderNum != null">order_num,</if>
-      </trim>
-      <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">
-          #{energyIndex.indexId},
-        </if>
-        <if test="energyIndex.name != null  and energyIndex.name != ''">#{energyIndex.name},</if>
-        <if test="energyIndex.code != null  and energyIndex.code != ''">#{energyIndex.code},</if>
-        <if test="energyIndex.indexType != null">
-          #{energyIndex.indexType},
-        </if>
-        <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
-          #{energyIndex.indexCategory},
-        </if>
-        <if test="energyIndex.remark != null  and energyIndex.remark != ''">#{energyIndex.remark},
-        </if>
-        <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">#{energyIndex.unitId},
-        </if>
-        <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">
-          #{energyIndex.meterId},
-        </if>
-        <if test="energyIndex.orderNum != null">#{energyIndex.orderNum},</if>
-      </trim>
-      ;
-      insert into node_index (node_id, index_id) values (#{energyIndex.nodeId},
-      #{energyIndex.indexId});
-    </foreach>
-  </insert>
+    </insert>
+    <insert id="insertNodeIndex">
+        insert into node_index (node_id, index_id)
+        values (#{nodeId}, #{indexId});
+    </insert>
+    <insert id="insertEnergyIndices">
+        <foreach collection="energyIndices" item="energyIndex" separator=";">
+            insert into energy_index
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">index_id,</if>
+                <if test="energyIndex.name != null  and energyIndex.name != ''">name,</if>
+                <if test="energyIndex.code != null  and energyIndex.code != ''">code,</if>
+                <if test="energyIndex.indexType != null">index_type,</if>
+                <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
+                    index_category,
+                </if>
+                <if test="energyIndex.remark != null  and energyIndex.remark != ''">remark,</if>
+                <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">unit_id,</if>
+                <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">meter_id,</if>
+                <if test="energyIndex.orderNum != null">order_num,</if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">
+                    #{energyIndex.indexId},
+                </if>
+                <if test="energyIndex.name != null  and energyIndex.name != ''">#{energyIndex.name},</if>
+                <if test="energyIndex.code != null  and energyIndex.code != ''">#{energyIndex.code},</if>
+                <if test="energyIndex.indexType != null">
+                    #{energyIndex.indexType},
+                </if>
+                <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
+                    #{energyIndex.indexCategory},
+                </if>
+                <if test="energyIndex.remark != null  and energyIndex.remark != ''">#{energyIndex.remark},
+                </if>
+                <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">#{energyIndex.unitId},
+                </if>
+                <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">
+                    #{energyIndex.meterId},
+                </if>
+                <if test="energyIndex.orderNum != null">#{energyIndex.orderNum},</if>
+            </trim>
+        </foreach>
+    </insert>
+    <insert id="saveEnergyIndex">
+        <foreach collection="list" item="energyIndex" separator=";">
+            insert into energy_index
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">index_id,</if>
+                <if test="energyIndex.name != null  and energyIndex.name != ''">name,</if>
+                <if test="energyIndex.code != null  and energyIndex.code != ''">code,</if>
+                <if test="energyIndex.indexType != null">index_type,</if>
+                <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
+                    index_category,
+                </if>
+                <if test="energyIndex.remark != null  and energyIndex.remark != ''">remark,</if>
+                <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">unit_id,</if>
+                <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">meter_id,</if>
+                <if test="energyIndex.orderNum != null">order_num,</if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="energyIndex.indexId != null  and energyIndex.indexId != ''">
+                    #{energyIndex.indexId},
+                </if>
+                <if test="energyIndex.name != null  and energyIndex.name != ''">#{energyIndex.name},</if>
+                <if test="energyIndex.code != null  and energyIndex.code != ''">#{energyIndex.code},</if>
+                <if test="energyIndex.indexType != null">
+                    #{energyIndex.indexType},
+                </if>
+                <if test="energyIndex.indexCategory != null  and energyIndex.indexCategory != ''">
+                    #{energyIndex.indexCategory},
+                </if>
+                <if test="energyIndex.remark != null  and energyIndex.remark != ''">#{energyIndex.remark},
+                </if>
+                <if test="energyIndex.unitId != null  and energyIndex.unitId != ''">#{energyIndex.unitId},
+                </if>
+                <if test="energyIndex.meterId != null  and energyIndex.meterId != ''">
+                    #{energyIndex.meterId},
+                </if>
+                <if test="energyIndex.orderNum != null">#{energyIndex.orderNum},</if>
+            </trim>
+            ;
+            insert into node_index (node_id, index_id) values (#{energyIndex.nodeId},
+            #{energyIndex.indexId});
+        </foreach>
+    </insert>
 
-  <update id="updateEnergyIndex" parameterType="com.zhitan.model.domain.EnergyIndex">
-    update energy_index
-    <trim prefix="SET" suffixOverrides=",">
-      <if test="name != null  and name != ''">name = #{name},</if>
-      <if test="code != null  and code != ''">code = #{code},</if>
-      <if test="indexType != null">index_type = #{indexType},</if>
-      <if test="indexCategory != null  and indexCategory != ''">index_category = #{indexCategory},
-      </if>
-      <if test="remark != null  and remark != ''">remark = #{remark},</if>
-      <if test="unitId != null  and unitId != ''">unit_id = #{unitId},</if>
-      <if test="orderNum != null">order_num = #{orderNum},</if>
-      <if test="equipment != null">equipment = #{equipment},</if>
-      <if test="energyId != null">energy_id=#{energyId},</if>
-    </trim>
-    where index_id = #{indexId}
-  </update>
+    <update id="updateEnergyIndex" parameterType="com.zhitan.model.domain.EnergyIndex">
+        update energy_index
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="code != null  and code != ''">code = #{code},</if>
+            <if test="indexType != null">index_type = #{indexType},</if>
+            <if test="indexCategory != null  and indexCategory != ''">index_category = #{indexCategory},
+            </if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="unitId != null  and unitId != ''">unit_id = #{unitId},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="equipment != null">equipment = #{equipment},</if>
+            <if test="energyId != null">energy_id=#{energyId},</if>
+        </trim>
+        where index_id = #{indexId}
+    </update>
 
-  <delete id="deleteEnergyIndexByIds" parameterType="String">
-    delete from energy_index where index_id in
-    <foreach item="indexId" collection="indexIds" open="(" separator="," close=")">
-      #{indexId}
-    </foreach>;
-    delete from node_index where node_id = #{nodeId} and index_id in
-    <foreach item="indexId" collection="indexIds" open="(" separator="," close=")">
-      #{indexId}
-    </foreach>;
-  </delete>
-  <delete id="deleteIndexByMeterId">
-    delete
-    from energy_index
-    where meter_id = #{meterId}
-  </delete>
-  <delete id="removeEnergyIndex">
-    delete from energy_index where index_id in
-    <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
-      #{indexId}
-    </foreach>
-  </delete>
+    <delete id="deleteEnergyIndexByIds" parameterType="String">
+        delete from energy_index where index_id in
+        <foreach item="indexId" collection="indexIds" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>;
+        delete from node_index where node_id = #{nodeId} and index_id in
+        <foreach item="indexId" collection="indexIds" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>;
+    </delete>
+    <delete id="deleteIndexByMeterId">
+        delete
+        from energy_index
+        where meter_id = #{meterId}
+    </delete>
+    <delete id="removeEnergyIndex">
+        delete from energy_index where index_id in
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+    </delete>
 
-  <select id="getEnergyIndexMeterByCodes" resultMap="EnergyIndexResult">
-    select ei.index_id,
+    <select id="getEnergyIndexMeterByCodes" resultMap="EnergyIndexResult">
+        select ei.index_id,
         ei.name,
         ei.code,
         ei.index_type,
@@ -324,105 +326,118 @@
         ei.energy_id,
         meter_name
         from energy_index as ei,meter_implement as me
-    where ei.code in
-    <foreach item="indexCode" collection="list" open="(" separator="," close=")">
-      #{indexCode}
-    </foreach>
-    and ei.meter_id = me.id
-    order by ei.order_num
-  </select>
-
-  <select id="selectEnergyIndexPage" resultMap="EnergyIndexResult">
-    select ni.index_id, name, code, index_type, remark, unit_id, index_category
-    from energy_index ei left join node_index ni on ei.index_id = ni.index_id
-    <where>
-      <if test="query.codeOrName != null  and query.codeOrName != ''">and (name like concat('%', #{query.codeOrName},
-        '%') or code like concat('%', #{query.codeOrName}, '%'))
-      </if>
-      <if test="query.indexType != null">and index_type = #{query.indexType}</if>
-      <if test="query.nodeId != null  and query.nodeId != ''">and ni.node_id = #{query.nodeId}</if>
-      <if test="query.indexCategory != null  and query.indexCategory != ''">and index_category =
-        #{query.indexCategory}
-      </if>
-    </where>
-    order by ei.order_num
-
-  </select>
-    <select id="listIndexByMeterIds" resultType="com.zhitan.model.domain.EnergyIndex">
-      select ei.index_id,
-      name,
-      code,
-      index_type,
-      index_category,
-      remark,
-      unit_id,
-      meter_id,
-      order_num,
-      equipment,
-      energy_id
-      from energy_index ei
-      left join node_index ni on ei.index_id = ni.index_id
-      <where>
-
-        <if test="nodeId != null  and nodeId != ''">and ni.node_id = #{nodeId}</if>
-        <if test="meterIds != null">
-          and ei.meter_id in
-          <foreach collection="meterIds" item="meterId" open="(" separator="," close=")">
-            #{meterId}
-          </foreach>
-        </if>
-      </where>
+        where ei.code in
+        <foreach item="indexCode" collection="list" open="(" separator="," close=")">
+            #{indexCode}
+        </foreach>
+        and ei.meter_id = me.id
+        order by ei.order_num
     </select>
-  <select id="getiEnergyIndexByCode" resultType="com.zhitan.model.domain.EnergyIndex">
-    <include refid="selectEnergyIndexVo"/>
-    where code = #{cdoe}
-  </select>
-  <select id="getIndexByCode" resultType="com.zhitan.model.domain.EnergyIndex">
-    SELECT ei.code,mi.meter_name||'_'||ei.name as name from energy_index ei
-    LEFT JOIN node_device nd on ei.meter_id =  nd.device_id
-    LEFT JOIN meter_implement  mi on mi."id" = nd.device_id
-    <where>
-        <if test="nodeId != null  and nodeId != ''">and nd.node_id  = #{nodeId}</if>
-        <if test="code != null  and code != ''">
-          and (mi.meter_name like concat('%', #{code}, '%')
-          or ei.code like concat('%', #{code}, '%')
-          or ei.name like concat('%', #{code}, '%')
-          )
-        </if>
-    </where>
-  </select>
-  <select id="getIndexByMeterIdIndexCode" resultType="com.zhitan.model.domain.EnergyIndex">
-    SELECT ei.code,mi.meter_name||'_'||ei.name as name from energy_index ei
-    LEFT JOIN node_device nd on ei.meter_id =  nd.device_id
-    LEFT JOIN meter_implement  mi on mi."id" = nd.device_id
-    <where>
-        <if test="nodeId != null  and nodeId != ''">and nd.node_id  = #{nodeId}</if>
-        <if test="indexCode != null  and indexCode != ''">
-          and (mi.meter_name like concat('%', #{indexCode}, '%')
-          or ei.code like concat('%', #{indexCode}, '%')
-          or ei.name like concat('%', #{indexCode}, '%')
-          )
-        </if>
-        <if test="meterId != null  and meterId != ''">
-          and ei.meter_id = #{meterId}
-        </if>
-    </where>
-  </select>
+
+    <select id="selectEnergyIndexPage" resultMap="EnergyIndexResult">
+        select ni.index_id, name, code, index_type, remark, unit_id, index_category
+        from energy_index ei left join node_index ni on ei.index_id = ni.index_id
+        <where>
+            <if test="query.codeOrName != null  and query.codeOrName != ''">and (name like concat('%',
+                #{query.codeOrName},
+                '%') or code like concat('%', #{query.codeOrName}, '%'))
+            </if>
+            <if test="query.indexType != null">and index_type = #{query.indexType}</if>
+            <if test="query.nodeId != null  and query.nodeId != ''">and ni.node_id = #{query.nodeId}</if>
+            <if test="query.indexCategory != null  and query.indexCategory != ''">and index_category =
+                #{query.indexCategory}
+            </if>
+        </where>
+        order by ei.order_num
+
+    </select>
+    <select id="listIndexByMeterIds" resultType="com.zhitan.model.domain.EnergyIndex">
+        select ei.index_id,
+        name,
+        code,
+        index_type,
+        index_category,
+        remark,
+        unit_id,
+        meter_id,
+        order_num,
+        equipment,
+        energy_id
+        from energy_index ei
+        left join node_index ni on ei.index_id = ni.index_id
+        <where>
+
+            <if test="nodeId != null  and nodeId != ''">and ni.node_id = #{nodeId}</if>
+            <if test="meterIds != null">
+                and ei.meter_id in
+                <foreach collection="meterIds" item="meterId" open="(" separator="," close=")">
+                    #{meterId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="getiEnergyIndexByCode" resultType="com.zhitan.model.domain.EnergyIndex">
+        <include refid="selectEnergyIndexVo"/>
+        where code = #{cdoe}
+    </select>
+    <select id="getIndexByCode" resultType="com.zhitan.model.domain.EnergyIndex">
+        SELECT ei.code,mi.meter_name||'_'||ei.name as name from energy_index ei
+        LEFT JOIN node_device nd on ei.meter_id = nd.device_id
+        LEFT JOIN meter_implement mi on mi."id" = nd.device_id
+        <where>
+            <if test="nodeId != null  and nodeId != ''">and nd.node_id = #{nodeId}</if>
+            <if test="code != null  and code != ''">
+                and (mi.meter_name like concat('%', #{code}, '%')
+                or ei.code like concat('%', #{code}, '%')
+                or ei.name like concat('%', #{code}, '%')
+                )
+            </if>
+        </where>
+    </select>
+    <select id="getIndexByMeterIdIndexCode" resultType="com.zhitan.model.domain.EnergyIndex">
+        SELECT ei.code,mi.meter_name||'_'||ei.name as name from energy_index ei
+        LEFT JOIN node_device nd on ei.meter_id = nd.device_id
+        LEFT JOIN meter_implement mi on mi."id" = nd.device_id
+        <where>
+            <if test="nodeId != null  and nodeId != ''">and nd.node_id = #{nodeId}</if>
+            <if test="indexCode != null  and indexCode != ''">
+                and (mi.meter_name like concat('%', #{indexCode}, '%')
+                or ei.code like concat('%', #{indexCode}, '%')
+                or ei.name like concat('%', #{indexCode}, '%')
+                )
+            </if>
+            <if test="meterId != null  and meterId != ''">
+                and ei.meter_id = #{meterId}
+            </if>
+        </where>
+    </select>
     <select id="getModelNodeIndexInfoListByIndexIds"
             resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
-        SELECT 	mi.model_name modelName,
-          mi.model_code,
-          mn."name" "name",
-          ei.index_id,
-          ei.code indexCode,
-          ei."name" indexName,
-          ei.energy_id,
-          ei.energy_id
+        SELECT mi.model_name modelName,
+        mi.model_code,
+        mn."name" "name",
+        ei.index_id,
+        ei.code indexCode,
+        ei."name" indexName,
+        ei.energy_id,
+        ei.energy_id
         FROM node_index ni
         INNER JOIN energy_index ei ON ni.index_id = ei.index_id
         LEFT JOIN model_node mn ON ni.node_id = mn.node_id
         LEFT JOIN model_info mi ON mn.model_code = mi.model_code
         WHERE ei.index_id IN
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
+            #{indexId}
+        </foreach>
+    </select>
+
+    <select id="selectEnergyTypeByIndex" resultType="com.zhitan.basicdata.domain.vo.MeterImplementModel">
+        select ex.index_id indexId,
+               mi.id meterId,
+               mi.energy_type energyType
+        from energy_index ex
+                 left join meter_implement mi on ex.meter_id = mi.id
+        where ex.index_id in
         <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
             #{indexId}
         </foreach>
