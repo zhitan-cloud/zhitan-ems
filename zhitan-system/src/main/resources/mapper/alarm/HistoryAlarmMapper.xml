@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.alarm.mapper.HistoryAlarmMapper">
 
-  <resultMap type="HistoryAlarm" id="HistoryAlarmResult">
+  <resultMap type="com.zhitan.alarm.domain.HistoryAlarm" id="HistoryAlarmResult">
     <result property="id" column="id"/>
     <result property="endTime" column="end_time"/>
     <result property="indexId" column="index_id"/>
@@ -18,7 +18,7 @@
     <result property="content" column="content"/>
   </resultMap>
 
-  <resultMap type="JkHistoryAlarm" id="JkHistoryAlarmResult">
+  <resultMap type="com.zhitan.alarm.domain.JkHistoryAlarm" id="JkHistoryAlarmResult">
     <result property="modelName" column="modelname"/>
     <result property="code" column="code"/>
     <result property="indexName" column="indexname"/>
@@ -50,7 +50,7 @@
     from history_alarm
   </sql>
 
-  <select id="selectHistoryAlarmList" parameterType="HistoryAlarm" resultMap="HistoryAlarmResult">
+  <select id="selectHistoryAlarmList" parameterType="com.zhitan.alarm.domain.HistoryAlarm" resultMap="HistoryAlarmResult">
     <include refid="selectHistoryAlarmVo"/>
     <where>
       <if test="indexName != null  and indexName != ''">and index_name like concat('%',
@@ -77,7 +77,7 @@
   </select>
 
 
-  <update id="updateHistoryAlarm" parameterType="HistoryAlarm">
+  <update id="updateHistoryAlarm" parameterType="com.zhitan.alarm.domain.HistoryAlarm">
     delete from realtime_alarm where alarm_code = #{alarmCode};
     insert into history_alarm
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -127,7 +127,7 @@
   </delete>
 
   <!--历史 报警列表页面 采集点 主页面列表查询-->
-  <select id="selectJkHistoryAlarmList" parameterType="JkHistoryAlarm"
+  <select id="selectJkHistoryAlarmList" parameterType="com.zhitan.alarm.domain.JkHistoryAlarm"
     resultMap="JkHistoryAlarmResult">
     SELECT
     mo."name" AS modelname,
@@ -180,7 +180,7 @@
     order by alarm_level,mo.node_id,limit_type asc
   </select>
 
-  <select id="selectJkHistoryAlarmListExcel" parameterType="JkHistoryAlarm"
+  <select id="selectJkHistoryAlarmListExcel" parameterType="com.zhitan.alarm.domain.JkHistoryAlarm"
     resultMap="JkHistoryAlarmResult">
     SELECT
     mo."name" AS modelname,
@@ -232,7 +232,7 @@
     order by alarm_level,mo.node_id,limit_type asc
   </select>
 
-  <select id="selectHistoryAlarmNoteList" parameterType="JkHistoryAlarm"
+  <select id="selectHistoryAlarmNoteList" parameterType="com.zhitan.alarm.domain.JkHistoryAlarm"
     resultMap="JkHistoryAlarmResult">
     SELECT
     ei.code,
@@ -273,7 +273,7 @@
     </if>
     order by alarm_level,limit_type asc
   </select>
-  <select id="selectJkHistoryAlarmPage" resultType="JkHistoryAlarm">
+  <select id="selectJkHistoryAlarmPage" resultType="com.zhitan.alarm.domain.JkHistoryAlarm">
     SELECT
     mo."name" AS modelname,
     ei.code,
@@ -294,7 +294,7 @@
     energy_index ei,
     node_index ni,
     model_node mo,
-    history_alarm bj ,
+    history_alarm bj,
     alarm_item alit
     WHERE
     ni.node_id IN (
@@ -310,30 +310,74 @@
     AND alit.alarm_code = bj.alarm_code
     AND alit.time_slot='LIVE'
     AND ei.index_type=#{jkHistoryAlarm.indexType}
-    <if test="jkHistoryAlarm.indexName != null  and jkHistoryAlarm.indexName != ''">and ei.name like concat('%', #{jkHistoryAlarm.indexName},
-      '%')
+    <if test="jkHistoryAlarm.indexName != null  and jkHistoryAlarm.indexName != ''">
+      and ei.name like concat('%', #{jkHistoryAlarm.indexName}, '%')
     </if>
-    <if test="jkHistoryAlarm.limitType != null  and jkHistoryAlarm.limitType != ''">and alit.limit_type=#{jkHistoryAlarm.limitType}</if>
-    <if test="jkHistoryAlarm.alarmLevel != null  and jkHistoryAlarm.alarmLevel != ''">and alit.alarm_level=#{jkHistoryAlarm.alarmLevel}</if>
-    <if test="jkHistoryAlarm.beginTime != null and jkHistoryAlarm.beginTime != ''">and begin_time &gt;=
-      to_timestamp(#{jkHistoryAlarm.beginTime},'yyyy-mm-dd hh24:mi:ss')
+    <if test="jkHistoryAlarm.limitType != null  and jkHistoryAlarm.limitType != ''">
+      and alit.limit_type=#{jkHistoryAlarm.limitType}
+      </if>
+    <if test="jkHistoryAlarm.alarmLevel != null  and jkHistoryAlarm.alarmLevel != ''">
+      and alit.alarm_level=#{jkHistoryAlarm.alarmLevel}
+      </if>
+    <if test="jkHistoryAlarm.beginTime != null and jkHistoryAlarm.beginTime != ''">
+      and begin_time &gt;= to_timestamp(#{jkHistoryAlarm.beginTime}, 'yyyy-mm-dd hh24:mi:ss')
     </if>
-    <if test="jkHistoryAlarm.endTime != null and jkHistoryAlarm.endTime != ''">and begin_time &lt;=
-      to_timestamp(#{jkHistoryAlarm.endTime},'yyyy-mm-dd hh24:mi:ss')
+    <if test="jkHistoryAlarm.endTime != null and jkHistoryAlarm.endTime != ''">
+      and begin_time &lt;= to_timestamp(#{jkHistoryAlarm.endTime},'yyyy-mm-dd hh24:mi:ss')
     </if>
     order by alarm_level,mo.node_id,limit_type asc
   </select>
+
   <select id="selectCountByTime" resultType="java.lang.Integer">
     select count(0)
     from history_alarm 
     <where>
       <if test="beginTime != null ">
-       and begin_time &gt;= #{beginTime}
+        and begin_time &gt;= #{beginTime}
       </if>
       <if test="endTime != null ">
-      and begin_time &lt;= #{endTime}
+        and begin_time &lt;= #{endTime}
+      </if>
+      <if test="indexIdList != null and indexIdList.size() > 0">
+        and index_id in
+        <foreach collection="indexIdList" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
       </if>
     </where>
   </select>
+    <select id="getHistoryAlarmList" resultType="com.zhitan.alarm.domain.JkHistoryAlarm">
+      SELECT
+        mn.node_id nodeId,
+        mn."name" modelName,
+        mi.meter_name meterName,
+        mi.energy_type energyId,
+        his.index_id indexId,
+        ei."name" indexName,
+        ei.index_type indexType,
+        ei.code code,
+        ei.unit_id unitId,
+        ai.alarm_level alarmLevel,
+        ai.limit_type limitType,
+        his.limiting_value limitingValue,
+        his.alarm_value alarmValue,
+        his.begin_time alarmBeginTime,
+        his.end_time alarmEndTime,
+        his.duration duration
+      FROM
+        history_alarm his
+          LEFT JOIN alarm_item ai ON his.item_id = ai."id"
+          LEFT JOIN energy_index ei ON his.index_id = ei.index_id
+          LEFT JOIN meter_implement mi ON ei.meter_id = mi."id"
+          LEFT JOIN model_node mn ON mn.node_id = ai.node_id
+      WHERE
+        his.begin_time BETWEEN #{beginTime} AND #{endTime}
+        <if test="indexIdList != null and indexIdList.size() > 0">
+          AND his.index_id IN
+          <foreach collection="indexIdList" item="item" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+        </if>
+    </select>
 
 </mapper>
