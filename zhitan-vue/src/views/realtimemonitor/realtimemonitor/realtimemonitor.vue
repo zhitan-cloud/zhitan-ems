@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page-container">
       <div class="page-container-left">
-        <LeftTree ref="leftTreeRef" @handleNodeClick="handleNodeClick" />
+        <LeftTree ref="leftTreeRef" @handleNodeClick="handleNodeClick" ParentModelCode="YSCJMX" />
       </div>
       <div class="page-container-right">
         <div class="form-card">
@@ -207,8 +207,8 @@ function handleChartModal(row) {
       text-align: left;
       font-weight: bold;
       font-family: OPPOSans, OPPOSans;
-      font-weight: 500;
-      font-size: 16px;
+     
+      font-size: 14px;
       font-style: normal;
       text-transform: none;
     }
@@ -233,8 +233,8 @@ function handleChartModal(row) {
       .title {
         color: rgba(255, 255, 255, 0.8);
         font-family: OPPOSans, OPPOSans;
-        font-weight: 500;
-        font-size: 16px;
+       
+        font-size: 14px;
         line-height: 19px;
         text-align: left;
         font-style: normal;
@@ -242,7 +242,7 @@ function handleChartModal(row) {
       }
 
       .num {
-        font-size: 24px;
+        font-size: 26px;
         color: #36d3ff;
         font-family: OPPOSans, OPPOSans;
         font-weight: 800;
@@ -292,7 +292,7 @@ function handleChartModal(row) {
       text-align: center;
       margin: 5px 8px;
       border-radius: 8px;
-      padding: 7px 10px;
+      padding: 2px 6px;
       font-family: OPPOSans, OPPOSans;
       font-weight: 500;
       font-size: 16px;
@@ -349,7 +349,7 @@ function handleChartModal(row) {
       }
 
       .num {
-        font-size: 24px;
+        font-size: 26px;
         color: #3271eb;
         font-family: OPPOSans, OPPOSans;
         font-weight: 800;
@@ -399,7 +399,7 @@ function handleChartModal(row) {
       text-align: center;
       margin: 5px 8px;
       border-radius: 8px;
-      padding: 7px 3px;
+      padding: 2px 6px;
       font-family: OPPOSans, OPPOSans;
       font-weight: 500;
       font-size: 16px;
@@ -431,7 +431,7 @@ function handleChartModal(row) {
   text-align: center;
   margin: 2px 6px;
   border-radius: 8px;
-  padding: 5px 10px;
+  padding: 2px 6px;
   font-family: OPPOSans, OPPOSans;
   font-weight: 500;
   font-size: 14px;

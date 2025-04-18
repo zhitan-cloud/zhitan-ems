@@ -9,10 +9,12 @@
 body {
   height: 100%;
   margin: 0;
+  padding: 0;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 label {
@@ -22,10 +24,17 @@ label {
 html {
   height: 100%;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 #app {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 *,
@@ -204,5 +213,42 @@ aside {
   .el-range-separator {
     // ::v-deep(.el-range-separator) {
     color: #999 !important;
+  }
+}
+
+/* 折叠菜单样式调整，确保在所有情况下菜单项居中 */
+.el-menu--collapse {
+  width: 54px !important;
+  
+  .el-sub-menu, .el-menu-item {
+    width: 36px !important;
+    min-width: 36px !important;
+    margin-left: 9px !important; /* 关键：设置固定的左边距9px使菜单项居中 */
+    margin-right: 9px !important;
+  }
+  
+  .el-menu-item, .el-sub-menu__title {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+    
+    .svg-icon, .el-icon {
+      margin: 0 !important; /* 重要：移除图标的所有边距 */
+    }
+    
+    .el-sub-menu__icon-arrow {
+      display: none !important;
+    }
+    
+    > span {
+      display: none !important;
+    }
+  }
+  
+  /* 选中状态样式 */
+  .el-menu-item.is-active, .el-sub-menu.is-active > .el-sub-menu__title {
+    background-color: #3883FA !important;
+    color: #fff !important;
   }
 }

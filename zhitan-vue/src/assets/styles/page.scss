@@ -4,10 +4,35 @@
       display: flex;
 
       .page-container-left {
-        width: 280px;
+        width: 220px;
         min-height: calc(100vh - 148px);
         border-right: 1px solid #1a235d;
-        background: #1F1C49;
+        background: #08234F;
+        
+        .el-tree {
+          &.el-tree--highlight-current,
+          &:not(.el-tree--highlight-current) {
+            .el-tree-node {
+              .el-tree-node__content {
+                .el-tree-node__label,
+                span {
+                  font-size: 14px !important;
+                }
+              }
+              
+              .el-tree-node__expand-icon {
+                font-size: 14px !important;
+              }
+            }
+          }
+        }
+
+        .tree-container, .tree {
+          .el-tree-node__label, 
+          .el-tree-node__content span {
+            font-size: 14px !important;
+          }
+        }
 
         .tree {
           height: calc(100vh - 170px);
@@ -26,10 +51,64 @@
     }
 
     .form-card {
-      background: #1a235d;
-      border-radius: 0px 0px 0px 0px;
-      border: 1px solid #000000;
-      padding: 18px 0 0 15px;
+      background: #08234F;
+      border-radius: 0px;
+      height: 52px;
+      line-height: 52px;
+      margin: 0 16px;
+      display: flex;
+      align-items: center;
+      
+      .el-form.el-form--inline {
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: 100%;
+        
+        .el-form-item {
+          margin-right: 15px;
+          margin-bottom: 0;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          
+          &.is-required {
+            .el-form-item__label::before {
+              vertical-align: middle;
+            }
+          }
+          
+          .el-form-item__label {
+            height: 32px;
+            line-height: 32px;
+            color: #ffffff;
+          }
+          
+          .el-form-item__content {
+            display: flex;
+            align-items: center;
+            height: 32px;
+            line-height: 32px;
+            
+            .el-input, .el-select, .el-date-editor {
+              height: 32px;
+              line-height: 32px;
+            }
+            
+            .el-input__wrapper {
+              height: 32px;
+            }
+            
+            .el-button {
+              height: 32px;
+              line-height: 32px;
+              padding-top: 0;
+              padding-bottom: 0;
+            }
+          }
+        }
+      }
     }
 
     .table-bg-style {
@@ -84,15 +163,39 @@
       display: flex;
 
       .page-container-left {
-        width: 280px;
+        width: 220px;
         min-height: calc(100vh - 148px);
-        border-right: 1px solid #fff;
+        border-right: 1px solid #e8e8e8;
         background: #f1f4fa;
+        
+        .el-tree {
+          &.el-tree--highlight-current,
+          &:not(.el-tree--highlight-current) {
+            .el-tree-node {
+              .el-tree-node__content {
+                .el-tree-node__label,
+                span {
+                  font-size: 14px !important;
+                }
+              }
+              
+              .el-tree-node__expand-icon {
+                font-size: 14px !important;
+              }
+            }
+          }
+        }
 
-        // border-right: 1px solid #1a235d;
+        .tree-container, .tree {
+          .el-tree-node__label,
+          .el-tree-node__content span {
+            font-size: 14px !important;
+          }
+        }
+
         .tree {
-          height: calc(100vh - 170px) !important;
-          max-height: calc(100vh - 170px) !important;
+          height: calc(100vh - 170px);
+          max-height: calc(100vh - 170px);
           overflow-y: auto;
         }
       }
@@ -108,10 +211,56 @@
 
     .form-card {
       background: #fff;
-      // background: #F7F8FA;
-      border-radius: 0px 0px 0px 0px;
-      // border: 1px solid #000000;
-      padding: 18px 0 0 15px;
+      border-radius: 0px;
+      height: 52px;
+      line-height: 52px;
+      margin: 0 16px;
+      display: flex;
+      align-items: center;
+      
+      .el-form.el-form--inline {
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        width: 100%;
+        
+        .el-form-item {
+          margin-right: 15px;
+          margin-bottom: 0;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          
+          .el-form-item__label {
+            height: 32px;
+            line-height: 32px;
+          }
+          
+          .el-form-item__content {
+            display: flex;
+            align-items: center;
+            height: 32px;
+            line-height: 32px;
+            
+            .el-input, .el-select, .el-date-editor {
+              height: 32px;
+              line-height: 32px;
+            }
+            
+            .el-input__wrapper {
+              height: 32px;
+            }
+            
+            .el-button {
+              height: 32px;
+              line-height: 32px;
+              padding-top: 0;
+              padding-bottom: 0;
+            }
+          }
+        }
+      }
     }
     
     .table-bg-style {
@@ -158,6 +307,15 @@
   }
 
 }
+
+// 删除之前添加的全局样式覆盖，避免影响全局
+// 保留调试建议
+/*
+您可以在浏览器中使用以下内联样式进行调试:
+document.querySelectorAll('.page-container-left .el-tree-node__label').forEach(el => {
+  el.style.cssText = 'font-size: 14px !important';
+});
+*/
 
 .padding {
   padding: 15px;

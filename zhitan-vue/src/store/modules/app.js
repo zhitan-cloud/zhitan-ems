@@ -7,7 +7,7 @@ const useAppStore = defineStore(
       sidebar: {
         opened: sessionStorage.getItem('sidebarStatus') ? !!+sessionStorage.getItem('sidebarStatus') : true,
         withoutAnimation: false,
-        hide: false
+        hide: sessionStorage.getItem('sidebarHide') ? JSON.parse(sessionStorage.getItem('sidebarHide')) : false
       },
       device: 'desktop',
       size: sessionStorage.getItem('size') || 'default'
@@ -39,6 +39,20 @@ const useAppStore = defineStore(
       },
       toggleSideBarHide(status) {
         this.sidebar.hide = status
+        sessionStorage.setItem('sidebarHide', status)
+      },
+      openMenu() {
+        this.sidebar.hide = false
+        this.sidebar.opened = true
+        sessionStorage.setItem('sidebarHide', 'false')
+        sessionStorage.setItem('sidebarStatus', 1)
+      },
+      showCollapsedSidebar() {
+        this.sidebar.hide = false
+        this.sidebar.opened = false
+        this.sidebar.withoutAnimation = false
+        sessionStorage.setItem('sidebarHide', 'false')
+        sessionStorage.setItem('sidebarStatus', 0)
       }
     }
   })

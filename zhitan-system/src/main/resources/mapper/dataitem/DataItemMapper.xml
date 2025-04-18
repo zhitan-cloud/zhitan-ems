@@ -161,7 +161,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHEN di.time_type = 'DAY' THEN
         TO_CHAR( di.create_time, 'DD' )
         WHEN di.time_type = 'HOUR' THEN
-        TO_CHAR( di.data_time, 'HH' )
+        TO_CHAR( di.data_time, 'HH24' )
         ELSE TO_CHAR( di.data_time, 'YYMMDD' )
         END AS dataTimeStr,
             di.value,
