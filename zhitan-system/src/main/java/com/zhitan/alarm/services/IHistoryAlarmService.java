@@ -33,4 +33,11 @@ public interface IHistoryAlarmService {
   void updateHistoryAlarm(String alarmCode, HistoryAlarm historyAlarm);
 
   Page<JkHistoryAlarm> selectJkHistoryAlarmPage(JkHistoryAlarm jkHistoryAlarm, Long pageNum, Long pageSize);
+
+  /**
+   * 历史报警分页查询
+   * @param jkHistoryAlarm
+   * @return
+   */
+  List<JkHistoryAlarm> selectHistoryAlarmPageList(JkHistoryAlarm jkHistoryAlarm);
 }

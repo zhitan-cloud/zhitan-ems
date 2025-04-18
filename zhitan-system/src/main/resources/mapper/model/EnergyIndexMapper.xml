@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhitan.model.mapper.EnergyIndexMapper">
 
-  <resultMap type="EnergyIndex" id="EnergyIndexResult">
+  <resultMap type="com.zhitan.model.domain.EnergyIndex" id="EnergyIndexResult">
     <result property="indexId" column="index_id"/>
     <result property="name" column="name"/>
     <result property="code" column="code"/>
@@ -34,7 +34,7 @@
     from energy_index
   </sql>
 
-  <select id="selectEnergyIndexList" parameterType="EnergyIndex" resultMap="EnergyIndexResult">
+  <select id="selectEnergyIndexList" parameterType="com.zhitan.model.domain.EnergyIndex" resultMap="EnergyIndexResult">
     select ni.index_id, name, code, index_type, remark, unit_id, index_category
     from energy_index ei left join node_index ni on ei.index_id = ni.index_id
     <where>
@@ -59,7 +59,7 @@
     <include refid="selectEnergyIndexVo"/>
     where
         index_id IN
-        <foreach collection="list" item="indexId" open="(" separator="," close=")">
+        <foreach collection="indexIds" item="indexId" open="(" separator="," close=")">
           #{indexId}
         </foreach>
   </select>
@@ -145,7 +145,7 @@
     order by ei.order_num
   </select>
 
-  <insert id="insertEnergyIndex" parameterType="EnergyIndex">
+  <insert id="insertEnergyIndex" parameterType="com.zhitan.model.domain.EnergyIndex">
     insert into energy_index
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="indexId != null  and indexId != ''">index_id,</if>
@@ -271,7 +271,7 @@
     </foreach>
   </insert>
 
-  <update id="updateEnergyIndex" parameterType="EnergyIndex">
+  <update id="updateEnergyIndex" parameterType="com.zhitan.model.domain.EnergyIndex">
     update energy_index
     <trim prefix="SET" suffixOverrides=",">
       <if test="name != null  and name != ''">name = #{name},</if>

@@ -7,6 +7,7 @@ import com.zhitan.alarm.domain.HistoryAlarm;
 import com.zhitan.alarm.domain.JkHistoryAlarm;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,10 +36,15 @@ public interface HistoryAlarmMapper {
    */
   List<JkHistoryAlarm> selectHistoryAlarmNoteList(JkHistoryAlarm jkHistoryAlarm);
 
-  void updateHistoryAlarm(@Param("alarmCode") String alarmCode,
-      @Param("historyAlarm") HistoryAlarm historyAlarm);
+  void updateHistoryAlarm(@Param("alarmCode") String alarmCode, @Param("historyAlarm") HistoryAlarm historyAlarm);
 
   Page<JkHistoryAlarm> selectJkHistoryAlarmPage(@Param("jkHistoryAlarm") JkHistoryAlarm jkHistoryAlarm,@Param("page")Page<?> page);
 
-  Integer selectCountByTime(@Param("beginTime") DateTime beginTime, @Param("endTime") DateTime endTime);
+  Integer selectCountByTime(@Param("beginTime") DateTime beginTime,
+                            @Param("endTime") DateTime endTime,
+                            @Param("nodeIdList") List<String> nodeIdList);
+
+    List<JkHistoryAlarm> getHistoryAlarmList(@Param("indexIdList") List<String> indexIdList,
+                                             @Param("beginTime") Date beginTime,
+                                             @Param("endTime")Date endTime);
 }
