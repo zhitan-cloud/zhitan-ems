@@ -2,11 +2,12 @@ package com.zhitan.alarm.services.impl;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.zhitan.alarm.domain.JkHistoryAlarm;
 import com.zhitan.alarm.domain.dto.AlarmAnalysisDTO;
 import com.zhitan.alarm.domain.vo.AlarmAnalysisVO;
 import com.zhitan.alarm.mapper.HistoryAlarmMapper;
-import com.zhitan.alarm.services.IAlarmAnalyisisService;
+import com.zhitan.alarm.services.IAlarmAnalysisService;
 import com.zhitan.basicdata.domain.MeterImplement;
 import com.zhitan.basicdata.domain.SysEnergy;
 import com.zhitan.basicdata.mapper.MeterImplementMapper;
@@ -17,6 +18,7 @@ import com.zhitan.common.utils.StringUtils;
 import com.zhitan.consumptionanalysis.domain.vo.ChartData;
 import com.zhitan.consumptionanalysis.domain.vo.EnergyProportion;
 import com.zhitan.model.domain.EnergyIndex;
+import com.zhitan.model.domain.ModelNode;
 import com.zhitan.model.domain.vo.ModelNodeIndexInfo;
 import com.zhitan.model.mapper.EnergyIndexMapper;
 import com.zhitan.model.mapper.ModelNodeMapper;
@@ -32,14 +34,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * description todu
+ * 报警分析实现
  *
- * @author hmj
- * @date 2024-10-26 17:34
+ * @author
+ * @date
  */
 @Service
 @AllArgsConstructor
-public class AlarmAnalyisisServiceImpl implements IAlarmAnalyisisService {
+public class AlarmAnalyisisServiceImpl implements IAlarmAnalysisService {
 
     private final ModelNodeMapper modelNodeMapper;
     
@@ -50,6 +52,13 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalyisisService {
     private final EnergyIndexMapper energyIndexMapper;
     
     private final SysEnergyMapper sysEnergyMapper;
+
+    /**
+     * 根据节点id获取报警分析信息
+     *
+     * @param alarmAnalysisDTO
+     * @return
+     */
     @Override
     public AlarmAnalysisVO getByNodeId(AlarmAnalysisDTO alarmAnalysisDTO) {
         AlarmAnalysisVO alarmAnalysisVO = new AlarmAnalysisVO();
@@ -171,31 +180,6 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalyisisService {
         return alarmAnalysisVO;
     }
 
-
-    @Override
-    public AlarmAnalysisVO getCountInfo(AlarmAnalysisDTO alarmAnalysisDTO) {
-        AlarmAnalysisVO alarmAnalysisVO = new AlarmAnalysisVO();
-        final String nodeId = alarmAnalysisDTO.getNodeId();
-        final DateTime beginOfMonth = DateUtil.beginOfMonth(new Date());
-        final DateTime endOfMonth = DateUtil.endOfMonth(new Date());
-        final DateTime beginOfYear = DateUtil.beginOfYear(new Date());
-        final DateTime endOfYear = DateUtil.endOfYear(new Date());
-
-        /**
-         * 查询点位与用能单元信息
-         */
-        List<ModelNodeIndexInfo> nodeIndexInforList = modelNodeMapper.getModelNodeIndexIdByNodeId(nodeId,null);
-        List<String> indexIds = nodeIndexInforList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
-
-        Integer monthCount = historyAlarmMapper.selectCountByTime(beginOfMonth,endOfMonth);
-        Integer yearCount = historyAlarmMapper.selectCountByTime(beginOfYear,endOfYear);
-        
-        alarmAnalysisVO.setIndexCount(indexIds.size());
-        alarmAnalysisVO.setMonthCount(monthCount);
-        alarmAnalysisVO.setYearCount(yearCount);
-        return alarmAnalysisVO;
-    }
-
     private double format2Double(double averageEnergy) {
         // 创建DecimalFormat对象，设置保留两位小数
         DecimalFormat df = new DecimalFormat("#.00");
@@ -203,5 +187,42 @@ public class AlarmAnalyisisServiceImpl implements IAlarmAnalyisisService {
         // 格式化结果
         String formattedResult = df.format(averageEnergy);
         return Double.valueOf(formattedResult);
+    }
+
+    /**
+     * 获取报警分析统计信息
+     * @param alarmAnalysisDTO
+     * @return
+     */
+    @Override
+    public AlarmAnalysisVO getCountInfo(AlarmAnalysisDTO alarmAnalysisDTO) {
+
+        AlarmAnalysisVO alarmAnalysisVO = new AlarmAnalysisVO();
+
+        ModelNode parentNode = modelNodeMapper.selectModelNodeById(alarmAnalysisDTO.getNodeId());
+        if(ObjectUtils.isEmpty(parentNode)){
+            return alarmAnalysisVO;
+        }
+
+        // 查询模型下的点位数据
+        List<ModelNodeIndexInfo> nodeIndexInfoList = modelNodeMapper.getAllModelNodeIndexByAddress(parentNode.getModelCode(), parentNode.getAddress());
+        alarmAnalysisVO.setIndexCount(nodeIndexInfoList.size());
+        if (CollectionUtils.isEmpty(nodeIndexInfoList)) {
+            return alarmAnalysisVO;
+        }
+
+        // 获取月报警数、年报警数
+        List<String> indexIdList = nodeIndexInfoList.stream().map(ModelNodeIndexInfo::getIndexId).collect(Collectors.toList());
+
+        DateTime beginOfMonth = DateUtil.beginOfMonth(new Date());
+        DateTime endOfMonth = DateUtil.endOfMonth(new Date());
+        DateTime beginOfYear = DateUtil.beginOfYear(new Date());
+        DateTime endOfYear = DateUtil.endOfYear(new Date());
+        Integer monthCount = historyAlarmMapper.selectCountByTime(beginOfMonth,endOfMonth, indexIdList);
+        Integer yearCount = historyAlarmMapper.selectCountByTime(beginOfYear,endOfYear, indexIdList);
+
+        alarmAnalysisVO.setMonthCount(monthCount);
+        alarmAnalysisVO.setYearCount(yearCount);
+        return alarmAnalysisVO;
     }
 }
