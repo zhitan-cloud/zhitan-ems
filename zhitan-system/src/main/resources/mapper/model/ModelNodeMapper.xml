@@ -466,4 +466,22 @@
           AND di.data_time >= #{dateTimeMap.startTime}
           AND di.data_time &lt;= #{dateTimeMap.endTime}
     </select>
+    <select id="getAllModelNodeIndexByAddress" resultType="com.zhitan.model.domain.vo.ModelNodeIndexInfo">
+        SELECT
+            mn.node_id nodeId,
+            mn.code nodeCode,
+            mn."name" nodeName,
+            ni.index_id indexId,
+            ei."name" indexName,
+            ei.index_type indexType,
+            mi.energy_type
+        FROM
+            "model_node" mn
+                LEFT JOIN "node_index" ni ON mn.node_id = ni.node_id
+                LEFT JOIN energy_index ei ON ni.index_id = ei.index_id
+                LEFT JOIN meter_implement mi ON mi."id" = ei.meter_id
+        WHERE
+            mn.model_code = #{modelCode}
+          AND mn.address LIKE concat( #{address} , '%' )
+    </select>
 </mapper>

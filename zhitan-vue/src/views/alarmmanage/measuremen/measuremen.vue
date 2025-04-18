@@ -97,10 +97,13 @@ let queryParams = ref({
   timeType: null,
   dataTime: null,
   nodeId: null,
+  modelCode: ''
 })
 
 import { getByNodeId, getCountInfo } from "@/api/alarmManage/alarmManage"
 import { el } from "element-plus/es/locales.mjs"
+import { useRoute } from "vue-router"
+const route = useRoute()
 let form = ref({})
 let currentNode = ref()
 
@@ -114,6 +117,7 @@ function handleNodeClick(e) {
   handleTimeType(period.value[0].value)
 
   getByNodeIdFun()
+  getCountInfoFun()
 }
 
 function getByNodeIdFun() {
@@ -155,10 +159,12 @@ function getByNodeIdFun() {
 // getByNodeIdFun()
 function handleQuery() {
   getByNodeIdFun()
+  getCountInfoFun()
 }
 function resetQuery() {
   handleTimeType("YEAR")
   getByNodeIdFun()
+  getCountInfoFun()
 }
 let dataArray = ref({
   indexCount: 0,
@@ -166,14 +172,16 @@ let dataArray = ref({
   monthCount: 0,
 })
 function getCountInfoFun() {
-  getCountInfo(queryParams.value).then((res) => {
+  getCountInfo({
+    ...queryParams.value,
+    modelCode: route.query.modelCode,
+  }).then((res) => {
     if (res.code == 200) {
       dataArray.value = res.data
     }
   })
 }
 
-getCountInfoFun()
 function pieChart(Id, data, name) {
   console.log(data)
   let total = 0
@@ -274,11 +282,11 @@ function getChart(Id, dataList) {
       axisPointer: {
         type: "shadow",
       },
-      axisTick: {
-        show: false,
-        alignWithLabel: true,
-        length: 5,
-      },
+      // axisTick: {
+      //   show: false,
+      //   alignWithLabel: true,
+      //   length: 5,
+      // },
       // 坐标轴刻度线样式
       axisTick: {
         show: false,
@@ -313,11 +321,11 @@ function getChart(Id, dataList) {
         padding: [0, 0, 5, 0],
       },
       // 坐标轴刻度
-      axisTick: {
-        show: false,
-        alignWithLabel: true,
-        length: 5,
-      },
+      // axisTick: {
+      //   show: false,
+      //   alignWithLabel: true,
+      //   length: 5,
+      // },
       // 坐标轴刻度线样式
       axisTick: {
         show: false,
