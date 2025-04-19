@@ -2,7 +2,7 @@
   "name": "zhitan",
   "version": "2.5.2",
   "description": "管理系统",
-  "author": "admin",
+  "author": "zhitan",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
